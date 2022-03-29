@@ -21,7 +21,7 @@ git clone https://github.com/alejandrosantanabonilla/pysoftk.git
 
 pip install -e .
 
-This should work. To test pysfotk (for the moment), you can go to the directory test and type
+This should work. To test pysoftk (for the moment), you can go to the directory test and type
 
 python ANY_FILE_HERE 
 
