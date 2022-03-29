@@ -2,6 +2,10 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Chem import rdDistGeom as molDG
 
+#Disable the unnecessary RDKit warnings
+from rdkit import RDLogger
+RDLogger.DisableLog('rdApp.*')
+
 class Sm(object):
     """ Class to create a new combined molecule
         from two provided RDKit Mol objects.
@@ -47,32 +51,48 @@ class Sm(object):
           Object.
         """
         mol_1, mol_2, atom = self.mol_1, self.mol_2, self.atom
-        combined = Chem.CombineMols(mol_1, mol_2)
-        rwmol = Chem.RWMol(Chem.MolFromSmiles(Chem.MolToSmiles(combined)))
-        conn=[]
-        neigh=[]
-        for atoms in rwmol.GetAtoms():
-           if atoms.GetSymbol() == str(atom):
-               conn.append(atoms.GetIdx())
-               neigh.append([(atoms.GetIdx(),nbr.GetIdx())
-                       for nbr in atoms.GetNeighbors()])
-    
-        br_1,c_1=neigh[0][0]
-        br_3,c_3=neigh[2][0]
-    
-        rwmol.AddBond(c_1, c_3, Chem.BondType.SINGLE)
-    
-        for i in range(0,len(conn),2):
-            rwmol.GetAtomWithIdx(conn[i]).SetAtomicNum(0)
-    
-        mol3=Chem.DeleteSubstructs(rwmol, Chem.MolFromSmarts('[#0]'))
-        mol4=Chem.AddHs(mol3)
-        
+
+        patt=['[*:1]','[',str(atom),']','.','[*:2]',
+        '[',str(atom),']','>>','[*:1]','[*:2]']
+        react="".join(patt)
+        rxn = AllChem.ReactionFromSmarts(str(react))
+
+        m3=[]
+        results = rxn.RunReactants([mol_1, mol_2])
+
+        for products in results:
+            for mol in products:
+                m3.append(Chem.MolToSmiles(mol))
+
+        mol4=Chem.MolFromSmiles(m3[0])
+
         return mol4
-    
+
+    def _bond_order(self, mol):
+       """Function to create bond template
+          for Hydrogen atoms addition.
+
+       Parameters
+       ----------
+       mol : rdkit.Chem.rdchem.Mol
+          First molecule for the new monomer
+       
+       Returns
+       -------
+       mol : rdkit.Chem.rdchem.Mol
+          The resulting combined molecule as RDKit Mol
+          Object.
+       
+       """
+       
+       newMol = AllChem.AssignBondOrdersFromTemplate(mol, mol)
+       newMol_H = Chem.AddHs(newMol)
+       
+       return newMol_H
+       
     def mon_to_poly(self):
        """ Function to create a RDKit Mol object to
-           prepare for grid translation.
+           prepare for x-axis translation.
 
        Returns
        -------
@@ -80,10 +100,11 @@ class Sm(object):
           The resulting combined molecule as RDKit Mol
           Object.
        """
-       #mol_1, mol_2, atom = self.mol_1, self.mol_2, self.atom
-       mol=self.constructor()#mol_1, mol_2, atom)
-       Emb().etkdgv3(mol)
-       return mol
+       mol=self.constructor()
+       newMol_H=self._bond_order(mol)
+       AllChem.EmbedMolecule(newMol_H)
+       
+       return newMol_H
 
     def monomer(self):
         """ Function to produce a single polymer unit
@@ -102,53 +123,8 @@ class Sm(object):
             if atoms.GetSymbol() == str(atom):
                mol.GetAtomWithIdx(atoms.GetIdx()).SetAtomicNum(1)
 
-        Chem.SanitizeMol(mol)
-        Emb().etkdgv3(mol)
+        mol2=mol.GetMol()
+        newMol_H=self._bond_order(mol2)
+        AllChem.EmbedMolecule(newMol_H)
 
-        return mol
-
-   
-class Emb:
-    """ Class created to use the ETKDGV3 
-        method provided in RDKit for 3D
-        Geometry embedding.  
-    """
-    def etkdgv3(self, mol):
-      """Function to perform Geometry embedding.
-
-      Parameters
-      ----------
-      mol : rdkit.Chem.rdchem.Mol
-          The resulting combined molecule as RDKit Mol
-          Object.
-
-      Returns
-      -------
-      mol : rdkit.Chem.rdchem.Mol
-          The resulting embedded molecule as RDKit Mol
-          Object.
-      """
-      ps=molDG.ETKDGv3()
-      ps.useExpTorsionAnglePrefs = True
-      ps.useBasicKnowledge = True
-      ps.enforceChirality = True
-      ps.randomSeed = 1
-      
-      molDG.EmbedMolecule(mol,ps)
-
-      return mol 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return newMol_H

@@ -29,6 +29,11 @@ class Torsional(object):
        -------
        List[int] 
           List of torsional angles
+
+       Note:
+       -----
+       RDKit and networkx libraries need to be installed
+
     """    
     def __init__(self, mol):
        """Initializes the class Torsional

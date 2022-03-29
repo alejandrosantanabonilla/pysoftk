@@ -52,10 +52,7 @@ class Fmt(object):
           raise TypeError("{0} is an invalid molecule".format(mol))
 
         else:
-          AllChem.EmbedMolecule(mol, useRandomCoords=True)
-          u = mda.Universe(mol)
-          molecule = u.atoms
-          molecule.write(str(output_name))
+          Chem.MolToXYZFile(mol, str(output_name))
 
     def pdb_print(self, output_name):
         """Function to print in PDB format
@@ -77,7 +74,6 @@ class Fmt(object):
         except ValueError:
           raise TypeError("{0} is an invalid molecule".format(mol))
         else:
-          AllChem.EmbedMolecule(mol,useRandomCoords=True)
           Chem.MolToPDBFile(mol,str(output_name))
             
           
@@ -101,7 +97,6 @@ class Fmt(object):
         except ValueError:
           raise TypeError("{0} is an invalid molecule".format(mol))
         else:
-          AllChem.EmbedMolecule(mol,useRandomCoords=True)
           Chem.MolToMolFile(mol,str(output_name))
 
 

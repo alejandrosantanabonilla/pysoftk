@@ -1,16 +1,28 @@
 from rdkit import Chem
 from rdkit.Chem import AllChem
+from rdkit.Geometry import Point3D
+from rdkit.Chem import rdDistGeom, rdMolTransforms
 from rdkit.Chem import rdDistGeom as molDG
 
-import itertools
 import numpy as np
 
 import MDAnalysis as mda
-from MDAnalysis.analysis import distances
+
+#Disable the unnecessary RDKit warnings
+from rdkit import RDLogger
+RDLogger.DisableLog('rdApp.*')
 
 class Lp:
     """A class for creating a linear polymer 
        from given RdKit molecules.
+
+       Attributes:
+       -----------
+       mol          The super_monomer molecule to be polarised
+       atom         A place-holder atom to connect the molecule 
+       n_copies     Number of copies to create the polymer
+       shift        A real value to translate the super_monomer 
+                    in a real-grid.
 
        Examples:
        ---------
@@ -18,12 +30,12 @@ class Lp:
 
        Note:
        -----
-       RDKit and MDAnalysis packages must be installed.
+       RDKit package must be installed.
     """
     
-    __slots__ = 'mol', 'atom', 'n_copies'
+    __slots__ = 'mol', 'atom', 'n_copies', 'shift'
 
-    def __init__(self, mol, atom, n_copies):
+    def __init__(self, mol, atom, n_copies, shift):
        """Initialize this class.
           
        Parameters
@@ -31,45 +43,23 @@ class Lp:
        mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
  
-       atom : str
+       atom : 'str'
           The placeholder atom to combine the molecules 
           and form a new monomer
 
-       n_copies: int
+       n_copies: 'int'
           Number of copies to be created for the provided 
           mol object. 
+
+       shift: 'float'
+          X-axis shift to translate the super_monomer
+          object.
        """
+       
        self.mol = mol
        self.atom = atom
        self.n_copies = n_copies
-       
-    def elem(self):
-        """Returns the atomic elements of 
-           an RDKit Mol Object.
-
-        Returns
-        -------
-        List[str]
-          List of atomic symbols
-        """
-        mol=self.mol
-        elements = [atoms.GetSymbol() for atoms in mol.GetAtoms()]
-        return elements
-
-    def atom_3d_coords(self):
-        """Returns the cartesian coordinates of 
-           an RDKit Mol Object.
-
-        Returns
-        -------
-        List[(n,3) float]
-           List of (n,3) cartesian coordinates 
-        """
-        mol=self.mol
-        AllChem.MMFFOptimizeMolecule(mol)
-        pos = [mol.GetConformer().GetAtomPosition(i)
-            for i in range(mol.GetNumAtoms())]
-        return pos
+       self.shift = float(2.5) if shift is None else float(shift)
 
     def max_dist_mol(self):
         """Returns the maximum distance between atoms 
@@ -84,200 +74,174 @@ class Lp:
         bm = molDG.GetMoleculeBoundsMatrix(mol)    
         return np.amax(bm)
 
-    def vdw_val(self):
-        """Returns the vdW radius of a given atom
-           from an RDKit Mol Object.
+
+    def x_shift(self):
+        """Re-calibrate distance between monomers
+     
+        Returns
+        -------
+        shift_final : 'float'
+              Value to translates the unit repetitions 
+        """
         
-        Returns
-        -------
-        dict : dict
-          Dictionary of {str: float}
-          with key:str as an atomic element and item:float 
-          as vdw radii. 
-        """
-        from rdkit.Chem import PeriodicTable as pt
-        atom=self.atom
-        atomic_num=Chem.MolFromSmiles(str(atom)).GetAtomWithIdx(0).GetAtomicNum()
-        vdw_radii=pt.GetRvdw(Chem.GetPeriodicTable(),int(atomic_num))
-        return {str(atom):float(vdw_radii)}
-    
-    def grid_translation(self):
-        """Returns a tuple of cartesian coordinates and elements
-           Grid translated along x-axis in real space from an 
-           RDKit Mol Object.
+        shift=self.shift
+        shift_final=float(self.max_dist_mol())-float(shift)
+        
+        return shift_final
 
-        Returns
-        -------
-        List[(n,3) float]
-           List of (n,3) cartesian coordinates
+    def _copy_mol(self):
+       """Function to replicate super_monomers.
 
-        List[n str]
-           List of n atomic elements 
-        """
-        n_copies=self.n_copies
-        pos = self.atom_3d_coords()
-        symbols = self.elem()
-
-        n_atoms = n_copies * len(symbols)
-        elements=symbols*n_copies
-        molecule = np.array([[pos[i].x,pos[i].y,pos[i].z]
-                              for i in range(len(pos))])
-
-        max_dist=self.max_dist_mol()
-        grid_size = n_copies*(max_dist+0.75) 
-        spacing = max_dist+3.25
-
-        # translating coordinates around a grid
-        coordinates = []
-
-        for i in range(n_copies):
-          x = spacing * (i % grid_size)
-          xyz = np.array([x, 0, 0])
-          coordinates.extend(molecule + xyz.T)
-
-        return coordinates, elements
-
-    def mda_creation(self):
-       """Create a MDAnalysis molecule object.
-
-       Returns
-       -------
-       mda.pol:: MDAnalysis.mda
-            A MDAnalysis object containing the information of 
-            a molecule.
-       """
-       res_1, res_2=self.grid_translation()
-       pos_end=len(res_1)
-       mda_pol= mda.Universe.empty(pos_end,
-                               trajectory=True)
- 
-       mda_pol.atoms.positions=np.array(res_1)
-       mda_pol.add_TopologyAttr('names',res_2)
-       mda_pol.add_TopologyAttr('elements',res_2)
-       mda_pol.add_TopologyAttr('types',res_2)
-       return mda_pol
-       
-    def mda_polymer(self):
-       """
-       Returns
-       -------
-       mda.pol:: MDAnalysis.mda
-            The constructed molecule as a MDAnalysis object.
-
-       brt_ext:: List[tup int]
-            List of tuples with indexes of atom placeholders.
-       """
-       atom=self.atom
-       vdw_list=self.vdw_val()
-       mda_pol=self.mda_creation()
-       
-       query=" ".join(["name",str(atom)])
-       br_dist=mda_pol.select_atoms(str(query))
-       
-       tmp_br=distances.self_distance_array(br_dist.positions)
-       dist_br=np.around(tmp_br, decimals=2)
-
-       br_atoms=[i.index for i in br_dist.atoms]
-       br_comb=list(itertools.combinations(br_atoms,2))
-
-       result=np.transpose(np.where(dist_br == np.amin(dist_br)))
-       result_idx= [i[0] for i in result]
-
-       bond_br=[br_comb[i] for i in result_idx]
-
-       cc_bonds=[(values[0]-1,values[1]-1)
-                     for idx, values in enumerate(bond_br)]
-   
-       bonds_core=mda.topology.guessers.guess_bonds(mda_pol.atoms,
-                                                    mda_pol.atoms.positions,
-                                                    vdwradii=vdw_list)
-
-       max_separation=np.transpose(np.where(dist_br == np.amax(dist_br)))
-       result_max_br = [i[0] for i in max_separation]
-       bond_max_br=[br_comb[i] for i in result_max_br]
-       br_ext = [tup for tup in bond_max_br[0]]
-
-       bonds_total=cc_bonds + list(bonds_core)
-       mda_pol.add_TopologyAttr('bonds',bonds_total)
-       
-       return mda_pol, br_ext
-   
-    def detect_mda_polymer(self): 
-       """ Create a linear polymer 
-      
-       Returns
-       -------
+       Parameters:
+       -----------
        mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
+
+       Returns:
+       --------
+       fragments : `list`
+          List of RDKit Mol objects
        """
-       atom=self.atom
-       result,br_ext=self.mda_polymer()
        
-       mol1=result.atoms.convert_to("RDKIT",NoImplicit=False)
+       mol=self.mol
+       n_copies=self.n_copies
+       
+       fragments=[]
+       for i in range(int(n_copies)):
+           fragments.append(mol)
 
-       all_br=[atoms.GetIdx() for atoms in mol1.GetAtoms()
-                          if atoms.GetSymbol() == str(atom)]
+       return fragments
 
-       br_rmv=sorted(list(set(all_br)-set(br_ext)),reverse=True)
 
-       emol = Chem.EditableMol(mol1)
-       for atom in br_rmv :
-           emol.RemoveAtom(atom)
+    def _polimerisation(self, fragments):
+        """Function to produce a polymer in a
+           recursive manner. 
 
-       mol2=emol.GetMol()
-       return mol2
+        Parameters:
+        -----------
+        fragments: 
+            A list of RDKit objects.
 
-    def linear_polymer(self,ff_itrs=100): 
-        """Construct a linear polymer.  
+        Returns:
+        --------
+        outmol : rdkit.Chem.rdchem.Mol
+             RDKit Mol object
 
-        Parameters
+        """
+        
+        x_offset = self.x_shift()
+        
+        outmol=fragments[0]
+        for idx, values in enumerate(fragments[1:]):
+            outmol = Chem.CombineMols(outmol,values,
+                                      offset=Point3D(x_offset*(idx+1),0.0, 0.0))
+            
+        return outmol
+
+    def _bond_conn(self, outmol):
+        """Function to peruse the bonds and connections of place-hold 
+           atom within a super_monomer object.
+ 
+        Parameters:
         ----------
-        fft_itrs : int
-          RDKit Force Field iteration cycles.     
-
-        Returns
-        -------
-        mol : rdkit.Chem.rdchem.Mol
+        outmol : rdkit.Chem.rdchem.Mol
            RDKit Mol object
+
+        Returns:
+        --------
+        Tuple : `list`
+          A tuple of lists containing connections and 
+          neighbours of the place-holder atom.
+        
         """
         atom=self.atom
-        mol_con=self.detect_mda_polymer()
+        conn=[]; neigh=[]
         
-        mol=Chem.RWMol(mol_con)
+        rwmol = Chem.RWMol(outmol)
 
+        for atoms in rwmol.GetAtoms():
+            if atoms.GetSymbol() == str(atom):
+               conn.append(atoms.GetIdx())
+               neigh.append([(atoms.GetIdx(),nbr.GetIdx())
+                             for nbr in atoms.GetNeighbors()])
+
+        return conn[1:-1], neigh[1:-1]
+
+    def _swap_hyd(self, mol):
+        """Function that seeks for last place-holder atoms 
+           and convert them into Hydrogen atoms.
+
+        Parameters:
+        -----------
+        mol : rdkit.Chem.rdchem.Mol
+            RDKit Mol object
+       
+        Returns:
+        --------
+        newMol_H : rdkit.Chem.rdchem.Mol
+            RDKit Mol object
+
+        """
+       
+        atom=self.atom
+        
         for atoms in mol.GetAtoms():
             if atoms.GetSymbol() == str(atom):
-               mol.GetAtomWithIdx(atoms.GetIdx()).SetAtomicNum(1)
+                mol.GetAtomWithIdx(atoms.GetIdx()).SetAtomicNum(1)
 
-        mol2=mol.GetMol()
+        newMol = AllChem.AssignBondOrdersFromTemplate(mol, mol)
+        newMol_H = Chem.AddHs(newMol, addCoords=True)
+        AllChem.MMFFOptimizeMolecule(newMol_H,maxIters=5)
 
-        AllChem.UFFOptimizeMolecule(mol2,maxIters=int(ff_itrs))
-
-        return mol2
-
-
-
-
-  
-
-
-
+        return newMol_H
    
+    def linear_polymer(self, iter_ff=100):
+       """Function to create a linear polymer 
+          from a given super_monomer object.
 
+       Parameters
+       ----------
+       iter_ff: int
+          the maximum number of iterations used for the FF.
 
+       Returns:
+       --------
+       newMol_H : rdkit.Chem.rdchem.Mol
+            RDKit Mol object
 
+       """
+       atom=self.atom
+       mol=self.mol
+       n_copies=self.n_copies
+       
+       fragments=self._copy_mol()
+       outmol=self._polimerisation(fragments)
+       new_conn,new_neigh=self._bond_conn(outmol)   
 
+       rwmol = Chem.RWMol(outmol)
+       c_bonds=[]
+       
+       for idx, value in enumerate(new_neigh):
+           br,c=value[0]
+           c_bonds.append(c)
 
+       tuple_c_bonds=[(c_bonds[i],c_bonds[i+1])
+                      for i in range(0,len(c_bonds),2)]
 
+       for i in tuple_c_bonds:
+           a,b=i
+           rwmol.AddBond(a, b, Chem.BondType.SINGLE)
 
+       for i in sorted(new_conn, key=None, reverse=True):
+           rwmol.RemoveAtom(i)
 
+       mol3=rwmol.GetMol()
+       AllChem.MMFFOptimizeMolecule(mol3,maxIters=int(iter_ff))
 
-
-
-
-
-
-
+       newMol_H=self._swap_hyd(mol3)
+       
+       return newMol_H
+   
 
 
 

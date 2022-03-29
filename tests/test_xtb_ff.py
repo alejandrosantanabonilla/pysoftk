@@ -14,8 +14,8 @@ mol_2=Chem.MolFromSmiles('c1(ccc(cc1)Br)Br')
 # Creating linear polymer
 a=Sm(mol_1,mol_2,"Br")
 k=a.mon_to_poly()
-new=Lp(k,"Br",10).linear_polymer(5)
-Fmt(new).xyz_print("test_2.xyz")
+new=Lp(k,"Br",4,shift=None).linear_polymer()
+Fmt(new).xyz_print("mol_2.xyz")
 
 # xtb optimisation
-Opt("test_2.xyz").xtb_ff("xtb")
+Opt("mol_2.xyz").xtb_ff("xtb")
