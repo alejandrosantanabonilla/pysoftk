@@ -14,8 +14,8 @@ mol_2=Chem.MolFromSmiles('c1(ccc(cc1)Br)Br')
 # Creating linear polymer
 a=Sm(mol_1,mol_2,"Br")
 k=a.mon_to_poly()
-new=Lp(k,"Br",4,shift=None).linear_polymer(1)
-Fmt(new).xyz_print("mol_1.xyz")
+new=Lp(k,"Br",4).linear_polymer(1)
+Fmt(new).xyz_print("test_1.xyz")
 
 # pyscf semiempirical
-Opt("mol_1.xyz").pyscf_semi(1000)
+Opt("test_1.xyz").pyscf_semi(1000)
