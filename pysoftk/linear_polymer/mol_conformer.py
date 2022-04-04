@@ -3,6 +3,8 @@ from rdkit.Chem import AllChem
 from rdkit.Chem import rdDistGeom as molDG
 from rdkit.Chem import TorsionFingerprints
 
+import MDAnalysis as mda
+
 import numpy as np
 
 class Mcon(object):
@@ -17,9 +19,9 @@ class Mcon(object):
    This class requires RDKit to be installed.
    """
      
-   __slots__ = 'mol','num_conf','max_iter','e_max' 
+   __slots__ = 'mol','num_conf','e_max' 
 
-   def __init__(self, mol, num_conf, max_iter, e_max):
+   def __init__(self, mol, num_conf, e_max):
        """
        Parameters
 
@@ -29,23 +31,18 @@ class Mcon(object):
 
        num_conf: int
           The number of configurations requested to be computed.
-
-       max_iter: int
-          The maximum number of iterations to be used in the FF
-          relaxation.
-     
+    
        e_max: bool, optional (default False)
           If True, reports the conformer with highest energy.
 
        """
        self.mol=mol
        self.num_conf=num_conf
-       self.max_iter=max_iter
        self.e_max=e_max
      
    def conformer(self):
        """
-       Calculate molecular conformers for a given molecule. If 
+       Calculate a molecular conformer for a given molecule. If 
        enabled the highest-energy conformer is returned. 
 
        Returns
@@ -54,33 +51,25 @@ class Mcon(object):
          RDKit Mol object
 
        """
-       mol, num_conf=self.mol, self.num_conf, 
-       max_iter, e_max=self.max_iter, self.e_max
+       mol, num_conf=self.mol, self.num_conf 
+       e_max=self.e_max
 
-       mol=Memb().etkdgv3(mol,num_conf)
+       m, energies=Memb().etkdgv3_energies(mol, num_conf)  
+
+       # Chosing the conformer with highest energy
+       max_e_index=np.argmax(np.around(energies,decimals=4))
 
        new_mol=Chem.Mol(mol)
-       energies = AllChem.MMFFOptimizeMoleculeConfs(mol,
-                                                    maxIters=int(max_iter))
+       
+       new_mol.RemoveAllConformers()
+       new_mol.AddConformer(m.GetConformer(int(max_e_index)),
+                            assignId=True)
 
-       cids=[conf.GetId() for conf in mol.GetConformers()]
-
-       energies_list=np.array([e[1] for e in energies])
-       max_e_index=np.argmax(np.around(energies_list,decimals=4))
-       min_e_index=np.argmin(np.around(energies_list,decimals=4))
-   
-       # Chosing the conformer with higher or lowest energy
-
-       if e_max == "True":
-         new_mol.AddConformer(mol.GetConformer(int(max_e_index)))
-
-       else:
-         new_mol.AddConformer(mol.GetConformer(int(min_e_index)))
 
        return new_mol
-    
+       
 class Memb:
-    def etkdgv3(self, mol, num_conf):
+    def etkdgv3_energies(self, mol, num_conf):
       """Calculate molecular configurations using 
          the RDKit-ETKDG3 method.
          
@@ -93,7 +82,23 @@ class Memb:
          datapoint: rdkit.Chem.rdistGeom.EmbedMultipleConfs
             RDKit Mol object
       """
-      ps = molDG.ETKDGv3()
-      ps.randomSeed = 1
-      molDG.EmbedMultipleConfs(mol,int(num_conf),ps)
-      return mol 
+
+      AllChem.EmbedMolecule(mol)
+      AllChem.MMFFOptimizeMolecule(mol)
+      
+      m=Chem.Mol(mol)
+      
+      ps=molDG.ETKDGv3()
+      ps.randomSeed=0xf00d
+      
+      cids=molDG.EmbedMultipleConfs(m,int(num_conf),ps)
+      mp=AllChem.MMFFGetMoleculeProperties(m, mmffVariant='MMFF94s')
+      AllChem.MMFFOptimizeMoleculeConfs(m, numThreads=0,
+                                        mmffVariant='MMFF94s')
+
+      energies=[]
+      for cid in cids:
+         ff = AllChem.MMFFGetMoleculeForceField(m, mp, confId=cid)
+         energies.append(ff.CalcEnergy())
+
+      return m, energies 
