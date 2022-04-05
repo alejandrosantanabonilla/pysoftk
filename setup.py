@@ -17,6 +17,7 @@ setup(
         "MDAnalysis >= 2.0.0",
         "pathos >= 0.2.8",
         "pyscf >= 2.0.1",
+        "pyscf[geomopt]",
         "pyscf-semiempirical >= 0.1.0",
     ],
 )
