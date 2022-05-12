@@ -13,7 +13,7 @@ mol_2=Chem.MolFromSmiles('c1cc(sc1Br)Br')
 #Creating polymer 1
 a=Sm(mol_1,mol_2,"Br")
 k=a.mon_to_poly()
-new=Lp(k,"Br",3).linear_polymer(10)
+new=Lp(k,"Br",3,shift=1.0).linear_polymer()
 Fmt(new).xyz_print("polymer_1_2.xyz")
 
 #Sample molecule 2

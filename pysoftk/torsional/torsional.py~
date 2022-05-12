@@ -266,9 +266,9 @@ class Torsional(object):
        mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
        """
-       for atom in mol.GetAtoms():
-            atom.SetProp(label, str(atom.GetIdx()+1))
-       return mol
+        for atom in mol.GetAtoms():
+             atom.SetProp(label, str(atom.GetIdx()+1))
+        return mol
   
     def draw_molecule(self, mol, name_pic, atoms_idx):
         """Function to print a molecule into
