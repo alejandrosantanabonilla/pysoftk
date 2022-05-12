@@ -13,7 +13,7 @@ setup(
     #long_description=open('README.txt').read(),
     install_requires=[
         "networkx >= 2.7",
-        "rdkit-pypi==2021.3.1.2",
+        "rdkit-pypi >=2021.3.1.2",
         "MDAnalysis >= 2.0.0",
         "pathos >= 0.2.8",
         "pyscf >= 2.0.1",
