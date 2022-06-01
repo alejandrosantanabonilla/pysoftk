@@ -24,8 +24,6 @@ git clone https://github.com/alejandrosantanabonilla/pysoftk.git
 
 pip install -e .
 
-This should work. To test pysoftk (for the moment), you can go to the directory test and type
+5.) Testing pysoftk
 
-python ANY_FILE_HERE 
-
-that should work indicating that pysoftk is working. 
+You need to go to the folder test and then follow the instructions there.
