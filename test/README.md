@@ -15,6 +15,7 @@ Once this is done the following result should appear:
 # Result of the tests:
 
 ============= test session starts ================
+
 platform linux -- Python 3.8.10, pytest-7.1.2, pluggy-1.0.0
 
 collected 18 items                                                                                               
