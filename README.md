@@ -6,7 +6,7 @@ welcome. To install pysoftk, we encourage to do it inside a virtual environment,
 
 mkdir work_pol
 
-the entes that folder:
+then type
 
 cd work_pol
 
