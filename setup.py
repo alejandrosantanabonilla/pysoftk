@@ -12,6 +12,7 @@ setup(
     description='PySoftK: Python Soft-Matter Kings College London',
     #long_description=open('README.txt').read(),
     install_requires=[
+        "pytest >= 2.7.2",
         "networkx >= 2.7",
         "rdkit-pypi >= 2021.3.1.2",
         "MDAnalysis >= 2.0.0",
