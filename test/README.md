@@ -1,8 +1,8 @@
 # Test-suite
 
-This folder contains a pysoftk unit-test suite. It is written
-to be used in combination with pytest, which is installed in
-the setup.py file used to install pysfotk. 
+This folder contains the PySoftK unit-test suite. It is written
+to be used in combination with the pytest library, which is required and 
+installed in the setup.py file. 
 
 # How to run the test-suite?
 
