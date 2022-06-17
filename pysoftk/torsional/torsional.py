@@ -291,7 +291,7 @@ class Torsional(object):
         None 
            rdkit.Draw.MolToFile Object
         """
-        self.show_atom_number(mol, 'atomLabel')
+        self.show_atom_number(mol, 'molAtomMapNumber')
         
         Draw.MolToFile(mol,str(name_pic)+".png",
                        includeAtomNumbers=True, highlightAtoms=atoms_idx) 
