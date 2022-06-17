@@ -267,7 +267,7 @@ class Torsional(object):
           RDKit Mol object
        """
        for atom in mol.GetAtoms():
-            atom.SetProp(label, str(atom.GetIdx()+1))
+            atom.SetProp(label, str(atom.GetIdx()))
        return mol
   
     def draw_molecule(self, mol, name_pic, atoms_idx):
