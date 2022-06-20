@@ -82,15 +82,20 @@ class Fld:
         
         dir_names = np.array([self._unique_name()
                               for i in range(times)])
+       
+                
+       with ThreadPoolExecutor(max_workers=int(num_cores)) as executor:
+           future = executor.submit(self._make_dir, dir_names)
+           print(future.result())
         
-        try: 
-           with ProcessPool(nodes=num_cores) as pool:
-             pool.map(self._make_dir,dir_names)
-             #pool.close()
-             #pool.join()
+        #try: 
+        #   with ProcessPool(nodes=num_cores) as pool:
+        #     pool.map(self._make_dir,dir_names)
+        #     #pool.close()
+        #     #pool.join()
         
-        finally:
-            pass
+        #finally:
+        #    pass
             
         #except ValueError:
         #   print("Folders could not been created!")
