@@ -72,15 +72,22 @@ class Fld:
         None
            Creates a folder with a provided name.
         """
-        from pathos.pools import ProcessPool
+        #from pathos.pools import ProcessPool
+        from multiprocessing.dummy import Pool as ThreadPool 
+       
         times = int(0) if times is None else int(times)
         
         dir_names = np.array([self._unique_name()
                               for i in range(times)])
         
         try:
-          pool = ProcessPool(nodes=num_cores)
-          pool.map(self._make_dir,dir_names)
+          pool = ThreadPool(int(num_cores))
+          pool.starmap(self._make_dir, zip(files,destinations))
+          pool.close()
+          pool.join()
+          #pool = ProcessPool(nodes=num_cores)
+          #pool.map(self._make_dir,dir_names)
+            
         except ValueError:
            print("Folders could not been created!")
 
