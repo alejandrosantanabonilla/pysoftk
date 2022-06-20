@@ -55,7 +55,7 @@ class Fld:
            Creates a folder with a provided name.
         """
         dir_cwd = pathlib.Path().absolute()
-        os.mkdir("".join((str(dir_cwd),"/",str(dir_names))))
+        os.mkdir("".join((str(dir_cwd),"/", dir_names)))
 
         
     def create(self, times=None, num_cores=None):
@@ -86,7 +86,7 @@ class Fld:
        
                 
         with ThreadPoolExecutor(max_workers=int(num_cores)) as executor:
-           future = executor.submit(self._make_dir, dir_names)
+           future = executor.submit(self._make_dir, str(dir_names))
            print(future.result())
         
         #try: 
