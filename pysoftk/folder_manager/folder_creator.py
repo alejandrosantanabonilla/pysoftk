@@ -55,7 +55,7 @@ class Fld:
            Creates a folder with a provided name.
         """
         dir_cwd = pathlib.Path().absolute()
-        os.mkdir("".join((str(dir_cwd),"/",dir_names)))
+        os.mkdir("".join((str(dir_cwd),"/",str(dir_names)))
 
         
     def create(self, times=None, num_cores=None):
