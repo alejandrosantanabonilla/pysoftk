@@ -72,8 +72,8 @@ class Fld:
         None
            Creates a folder with a provided name.
         """
-        #from pathos.pools import ProcessPool
-        from multiprocessing.dummy import Pool as ThreadPool 
+        from pathos.pools import ProcessPool
+        #from multiprocessing.dummy import Pool as ThreadPool 
        
         times = int(0) if times is None else int(times)
         
@@ -81,12 +81,12 @@ class Fld:
                               for i in range(times)])
         
         try:
-          pool = ThreadPool(int(num_cores))
-          pool.starmap(self._make_dir, dir_names)
+          #pool = ThreadPool(int(num_cores))
+          #pool.map(self._make_dir, dir_names)
+          pool = ProcessPool(nodes=num_cores)
+          pool.map(self._make_dir,dir_names)
           pool.close()
           pool.join()
-          #pool = ProcessPool(nodes=num_cores)
-          #pool.map(self._make_dir,dir_names)
             
         except ValueError:
            print("Folders could not been created!")
@@ -189,9 +189,9 @@ class Fld:
             Folders can not be created.
         """
         import os.path
-        from multiprocessing.dummy import Pool as ThreadPool 
+        #from multiprocessing.dummy import Pool as ThreadPool 
         
-        #from pathos.pools import ProcessPool
+        from pathos.pools import ProcessPool
         
         
         num_cores = int(1) if num_cores is None else int(num_cores)
@@ -207,10 +207,10 @@ class Fld:
                        for i in range(len(names))]
 
         try:
-          #pool = ProcessPool(nodes=int(num_cores))
-          #pool.map(self.copy_dir, files, destinations)
-          pool = ThreadPool(int(num_cores))
-          pool.starmap(self.copy_dir, zip(files,destinations))
+          pool = ProcessPool(nodes=int(num_cores))
+          pool.map(self.copy_dir, files, destinations)
+          #pool = ThreadPool(int(num_cores))
+          #pool.starmap(self.copy_dir, zip(files,destinations))
           pool.close()
           pool.join()
         except ValueError:
