@@ -82,7 +82,7 @@ class Fld:
         
         try:
           pool = ThreadPool(int(num_cores))
-          pool.starmap(self._make_dir, zip(files,destinations))
+          pool.starmap(self._make_dir, dir_names)
           pool.close()
           pool.join()
           #pool = ProcessPool(nodes=num_cores)
