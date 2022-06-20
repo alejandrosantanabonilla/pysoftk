@@ -83,11 +83,14 @@ class Fld:
         dir_names = np.array([self._unique_name()
                               for i in range(times)])
         
+        try: 
+           with ProcessPool(nodes=num_cores) as pool:
+             pool.map(self._make_dir,dir_names)
+             #pool.close()
+             #pool.join()
         
-        with ProcessPool(nodes=num_cores) as pool:
-          pool.map(self._make_dir,dir_names)
-          #pool.close()
-          #pool.join()
+        finally:
+            pass
             
         #except ValueError:
         #   print("Folders could not been created!")
@@ -206,11 +209,14 @@ class Fld:
         destinations= ["".join((dirs[i],"/",names[i]))
                        for i in range(len(names))]
 
-        
-        with ProcessPool(nodes=int(num_cores)) as pool:
-          pool.map(self.copy_dir, files, destinations)
-          #pool.close()
-          #pool.join()
+        try:
+           with ProcessPool(nodes=int(num_cores)) as pool:
+             pool.map(self.copy_dir, files, destinations)
+             #pool.close()
+             #pool.join()
+                
+        finally:
+            pass
         #except ValueError:
         #   print("Folders could not been created!")
 
