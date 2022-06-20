@@ -182,8 +182,11 @@ class Fld:
             Folders can not be created.
         """
         import os.path
-        from pathos.pools import ProcessPool
-
+        from multiprocessing.dummy import Pool as ThreadPool 
+        
+        #from pathos.pools import ProcessPool
+        
+        
         num_cores = int(1) if num_cores is None else int(num_cores)
         
         
@@ -197,8 +200,10 @@ class Fld:
                        for i in range(len(names))]
 
         try:
-          pool = ProcessPool(nodes=int(num_cores))
-          pool.map(self.copy_dir, files, destinations)
+          #pool = ProcessPool(nodes=int(num_cores))
+          #pool.map(self.copy_dir, files, destinations)
+          pool = ThreadPool(int(num_cores))
+          pool.starmap(self.copy_dir, zip(files,destinations))
           pool.close()
           pool.join()
         except ValueError:
