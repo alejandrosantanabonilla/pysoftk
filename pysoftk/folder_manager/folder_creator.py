@@ -87,7 +87,7 @@ class Fld:
                     
         with ProcessPool(nodes=num_cores) as pool:
             pool.map(self._make_dir,dir_names)
-            pool.close()
+        #    pool.close()
         #     #pool.join()
         
         #finally:
@@ -212,7 +212,7 @@ class Fld:
 
         with ProcessPool(nodes=int(num_cores)) as pool:
            pool.map(self.copy_dir, files, destinations)
-           pool.close()
+           #pool.close()
              #pool.join()
                 
         #except ValueError:
