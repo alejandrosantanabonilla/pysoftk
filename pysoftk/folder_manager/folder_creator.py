@@ -36,7 +36,7 @@ class Fld:
                          str(i) for i in range(self.times)])
 
 
-    def __make_dir(self, dir_names):
+    def _make_dir(self, dir_names):
         """Function to create a folder in the
            current working directory.
 
@@ -75,19 +75,19 @@ class Fld:
         from pathos.pools import ProcessPool
         times = int(0) if times is None else int(times)
         
-        dir_names = np.array([self.__unique_name()
+        dir_names = np.array([self._unique_name()
                               for i in range(times)])
         
         try:
           pool = ProcessPool(nodes=num_cores)
-          pool.map(self.__make_dir,dir_names)
+          pool.map(self._make_dir,dir_names)
         except ValueError:
            print("Folders could not been created!")
 
         print ("Succesfully created: " + str(len(dir_names)) + " folders")
         
 
-    def __unique_name(self):
+    def _unique_name(self):
         """Function to create an unique name
       
         Returns
@@ -119,7 +119,7 @@ class Fld:
         return inp_name
 
 
-    def __seek_dir(self):
+    def _seek_dir(self):
         """Function to seek and list directories in
            the current working directory.
 
@@ -192,7 +192,7 @@ class Fld:
         
         self.create(len(names), num_cores)
 
-        dirs = self.__seek_dir()
+        dirs = self._seek_dir()
         destinations= ["".join((dirs[i],"/",names[i]))
                        for i in range(len(names))]
 
