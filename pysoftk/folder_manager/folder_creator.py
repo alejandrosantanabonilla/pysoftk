@@ -6,6 +6,7 @@ import os
 
 import shutil
 import uuid
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 class Fld:
@@ -217,11 +218,9 @@ class Fld:
         try:
            with ProcessPool(nodes=int(num_cores)) as pool:
              pool.map(self.copy_dir, files, destinations)
-             #pool.close()
-             #pool.join()
+             pool.close()
+             pool.join()
                 
-        finally:
-            pass
-        #except ValueError:
-        #   print("Folders could not been created!")
+        except ValueError:
+             print("Folders could not been created!")
 
