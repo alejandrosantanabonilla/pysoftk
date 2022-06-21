@@ -3,6 +3,8 @@ import pathlib
 
 import glob
 import os
+import sys
+import atexit
 
 import shutil
 import uuid
@@ -20,7 +22,8 @@ class Fld:
     """
 
     def __init__(self):
-        pass
+        print_meta_path()
+        atexit.register(self.__close)
             
     def fxd_name(self, testname):
         """Create an array of fixed names for
