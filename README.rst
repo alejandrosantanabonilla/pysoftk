@@ -1,9 +1,9 @@
 PySoftK
 =============
 
-PysoftK is a set of Python tools and programs for modelling and simulating polymers with different topologies. The program is still under active 
-development and contributions are welcome. To install pysoftk, we encourage to do it inside a virtual environment, which can be achieved in the following 
-way:
+**PySoftK** is a set of Python tools and programs for modelling and simulating polymers with different topologies. The program is still under active 
+development and contributions are welcome. A complete introduction into the program can be found in this link Documentation_. To quickly install **PySoftk**, we encourage to do it inside a virtual environment, which can be achieved in the 
+following way:
 
 1.) Create a directory named as you want and access it (in this case called work_pol):
 
@@ -32,14 +32,12 @@ way:
 
   pip install -e .
 
-5.) Testing pysoftk
-
-You need to go to the folder test and then type:
+5.) For testing PySoftK, you need to go to the folder **test** and then type:
 
 .. code-block:: bash
 
   pytest
 
 
-
+.. _Documentation:: https://alejandrosantanabonilla.github.io/pysoftk/
 
