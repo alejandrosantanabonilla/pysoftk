@@ -22,7 +22,6 @@ class Fld:
     """
 
     def __init__(self):
-        print_meta_path()
         atexit.register(self.__close)
             
     def fxd_name(self, testname):
