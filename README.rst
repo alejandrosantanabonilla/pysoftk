@@ -32,8 +32,7 @@ following way:
 
   pip install -e .
 
-.. note:: To use the **calculators** option, the code xtb_ needs to be installed and linked to the executable 
-using the command:
+**NOTE:** To use the **calculators** option, the code xtb_ needs to be installed and linked to the executable using the command:
 
              **export XTBPATH=<prefix_path_where_xtb_is_located>**
   
