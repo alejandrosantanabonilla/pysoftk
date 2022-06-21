@@ -188,7 +188,7 @@ class Fld:
         files = self.seek_files(format_extension)
         names=[os.path.basename(i) for i in files]
         
-        self.create(len(names), num_cores)
+        self.create(len(names))
 
         dirs = self._seek_dir()
         destinations= ["".join((dirs[i],"/",names[i]))
