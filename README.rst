@@ -39,5 +39,5 @@ following way:
   pytest
 
 
-.. _Documentation:: https://alejandrosantanabonilla.github.io/pysoftk/
+.. _Documentation: https://alejandrosantanabonilla.github.io/pysoftk/
 
