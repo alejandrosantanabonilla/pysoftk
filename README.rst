@@ -8,6 +8,7 @@ way:
 1.) Create a directory named as you want and access it (in this case called work_pol):
 
 .. code-block:: bash
+ 
   mkdir work_pol
   cd work_pol
 
