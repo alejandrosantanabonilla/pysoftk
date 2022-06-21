@@ -58,7 +58,7 @@ class Fld:
         os.mkdir("".join((str(dir_cwd),"/", dir_names)))
 
         
-    def create(self, times=None, num_cores=None):
+    def create(self, times=None):
         """Function to create a folder in the
            current working directory.
 
@@ -66,18 +66,12 @@ class Fld:
         ----------
         times : boolean, optional
            Number of times that a folder will be created       
-
-        num_cores : int, optional
-           Number of cores used to create folders in 
-           parallel.
-
+           
         Returns
         -------
         None
            Creates a folder with a provided name.
         """
-
-        from pathos.pools import ProcessPool
 
         times = int(0) if times is None else int(times)
         
@@ -86,18 +80,7 @@ class Fld:
        
         list(map(self._make_dir,dir_names)) 
         
-        #with ProcessPool(nodes=num_cores) as pool:
-        #    pool.map(self._make_dir,dir_names)
-        #    pool.close()
-        #    pool.join()
-        
-        #finally:
-        #    pass
-            
-        #except ValueError:
-        #   print("Folders could not been created!")
-
-        #print ("Succesfully created: " + str(len(dir_names)) + " folders")
+        print ("Succesfully created: " + str(len(dir_names)) + " folders")
         
 
     def _unique_name(self):
@@ -213,8 +196,8 @@ class Fld:
 
         with ProcessPool(nodes=int(num_cores)) as pool:
            pool.map(self.copy_dir, files, destinations)
-           pool.close()
-           pool.join()
+           #pool.close()
+           #pool.join()
                 
         #except ValueError:
         #     print("Folders could not been created!")
