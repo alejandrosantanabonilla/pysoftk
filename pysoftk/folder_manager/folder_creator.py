@@ -4,11 +4,9 @@ import pathlib
 import glob
 import os
 import sys
-import atexit
 
 import shutil
 import uuid
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 class Fld:
@@ -22,7 +20,7 @@ class Fld:
     """
 
     def __init__(self):
-        atexit.register(self.__close)
+        pass
             
     def fxd_name(self, testname):
         """Create an array of fixed names for
@@ -89,8 +87,8 @@ class Fld:
                     
         with ProcessPool(nodes=num_cores) as pool:
             pool.map(self._make_dir,dir_names)
-        #    pool.close()
-        #     #pool.join()
+            pool.close()
+            pool.join()
         
         #finally:
         #    pass
@@ -189,7 +187,7 @@ class Fld:
         -------
         None:
             Move files to directories.
-       
+      
         Raises
         ------
         NotImplementedError
@@ -214,8 +212,8 @@ class Fld:
 
         with ProcessPool(nodes=int(num_cores)) as pool:
            pool.map(self.copy_dir, files, destinations)
-           #pool.close()
-             #pool.join()
+           pool.close()
+           pool.join()
                 
         #except ValueError:
         #     print("Folders could not been created!")
