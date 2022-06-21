@@ -196,8 +196,8 @@ class Fld:
 
         with ProcessPool(nodes=int(num_cores)) as pool:
            pool.map(self.copy_dir, files, destinations)
-           #pool.close()
-           #pool.join()
+           pool.close()
+           pool.join()
                 
         #except ValueError:
         #     print("Folders could not been created!")
