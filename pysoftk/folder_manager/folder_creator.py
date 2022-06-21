@@ -11,7 +11,7 @@ import uuid
 
 class Fld:
     """Create folders automatically to be used as stand-alone application or in along
-       PySoftK
+       PySoftK.
 
     Examples
     --------
