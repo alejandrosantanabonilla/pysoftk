@@ -32,10 +32,10 @@ following way:
 
   pip install -e .
 
-  **Note:** To use the **calculators** option, the code xtb_ needs to be installed and linked to the executable 
-  using the command:
+**Note** To use the **calculators** option, the code xtb_ needs to be installed and linked to the executable 
+using the command:
 
-                **export XTBPATH=<prefix_path_where_xtb_is_located>**
+             **export XTBPATH=<prefix_path_where_xtb_is_located>**
   
 5.) For testing PySoftK, you need to go to the folder **test** and then type:
 
