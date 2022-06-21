@@ -12,14 +12,14 @@ following way:
   mkdir work_pol
   cd work_pol
 
-2.) Create a virtual environment named pol (this name can be change, of course)
+2.) Create a virtual environment named pol (this name can be change, of course) and activate the environment:
 
 .. code-block:: bash
 
    python -m venv pol
    source pol/bin/activate
 
-3.) Get PySoftK from the GitHub repository
+3.) Get PySoftK from the GitHub repository:
 
 .. code-block:: bash
 
@@ -30,11 +30,13 @@ following way:
 
 .. code-block:: bash
 
-  pip install -e .
+   pip install -e .
 
 **NOTE:** To use the **calculators** option, the code xtb_ needs to be installed and linked to the executable using the command:
 
-             **export XTBPATH=<prefix_path_where_xtb_is_located>**
+.. code-block:: bash
+ 
+   export XTBPATH=<prefix_path_where_xtb_is_located>**
   
 5.) For testing PySoftK, you need to go to the folder **test** and then type:
 
