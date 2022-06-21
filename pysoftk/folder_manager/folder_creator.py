@@ -10,8 +10,7 @@ import uuid
 
 
 class Fld:
-    """Create folders automatically to be used 
-       as stand-alone application or in along
+    """Create folders automatically to be used as stand-alone application or in along
        PySoftK
 
     Examples
@@ -199,6 +198,3 @@ class Fld:
            pool.close()
            pool.join()
                 
-        #except ValueError:
-        #     print("Folders could not been created!")
-
