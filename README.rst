@@ -19,19 +19,26 @@ following way:
    python -m venv pol
    source pol/bin/activate
 
-3.) Get pysfotk from the GitHub repository
+3.) Get PySoftK from the GitHub repository
 
 .. code-block:: bash
 
   git clone https://github.com/alejandrosantanabonilla/pysoftk.git
 
 
-4.) Install pysoftk in this folder using the virtual environment
+4.) Install PySoftK in this folder using the virtual environment
 
 .. code-block:: bash
 
   pip install -e .
 
+.. note:: 
+
+  To use the **calculators** option, the code xtb_ needs to be installed and linked to the executable 
+  using the command:
+
+     **export XTBPATH=<prefix_path_where_xtb_is_located>**
+  
 5.) For testing PySoftK, you need to go to the folder **test** and then type:
 
 .. code-block:: bash
@@ -40,4 +47,4 @@ following way:
 
 
 .. _Documentation: https://alejandrosantanabonilla.github.io/pysoftk/
-
+.. _xtb: https://github.com/grimme-lab/xtb
