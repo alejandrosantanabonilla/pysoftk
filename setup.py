@@ -5,7 +5,7 @@ setup(
     version='0.1.0',
     author='A. Santana-Bonilla',
     author_email='k2031560@kcl.ac.uk',
-    packages= find_packages(exclude=["test", "test.*", "test_2", "test.*"]),
+    packages= find_packages(exclude=["test", "test.*", "test2", "test.*"]),
     #scripts=['bin/stowe-towels.py','bin/wash-towels.py'],
     #url='http://pypi.python.org/pypi/TowelStuff/',
     #license='MIT',
