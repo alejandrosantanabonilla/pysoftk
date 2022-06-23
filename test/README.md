@@ -26,8 +26,6 @@ test_folders_func.py ...        [ 44%]
 
 test_format_print.py ....       [ 66%]
 
-test_htp.py .....               [ 72%]
-
 test_sm_func.py .....           [100%]
 
 
