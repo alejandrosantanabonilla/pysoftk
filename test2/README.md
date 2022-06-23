@@ -1,6 +1,6 @@
 # Test-suite
 
-This folder contains the PySoftK unit-test suite. It is written
+This folder contains the PySoftK unit-test suite for Htp Tools. It is written
 to be used in combination with the pytest library, which is required and 
 installed in the setup.py file. 
 
@@ -18,8 +18,8 @@ Once this is done the following result should appear:
 
 platform linux -- Python 3.8.10, pytest-7.1.2, pluggy-1.0.0
 
-collected 18 items                                                                                               
+collected 2 items                                                                                               
 
 test_htp.py .....               [ 100%]
 
-======================  1 passed in 17.88s ========
+======================  2 passed in 35.75s ========
