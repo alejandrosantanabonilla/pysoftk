@@ -44,7 +44,7 @@ def test_organise_files():
 def test_crete_empty_dir():
     
   # Test 3: Create 2 folders with random names using 1 core.
-  Fld().create(2,1)
+  Fld().create(2)
 
   p=Path(os.getcwd())
 

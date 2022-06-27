@@ -3,20 +3,23 @@ import pathlib
 
 import glob
 import os
+import sys
 
 import shutil
 import uuid
 
 
 class Fld:
-    """Create folders automatically to be used 
-       as stand-alone application or in along
-       PySoftK
+    """Create folders automatically to be used as stand-alone application or in along
+       PySoftK.
 
     Examples
     --------
 
     """
+
+    def __init__(self):
+        pass
             
     def fxd_name(self, testname):
         """Create an array of fixed names for
@@ -36,7 +39,7 @@ class Fld:
                          str(i) for i in range(self.times)])
 
 
-    def __make_dir(self, dir_names):
+    def _make_dir(self, dir_names):
         """Function to create a folder in the
            current working directory.
 
@@ -51,10 +54,10 @@ class Fld:
            Creates a folder with a provided name.
         """
         dir_cwd = pathlib.Path().absolute()
-        os.mkdir("".join((str(dir_cwd),"/",dir_names)))
+        os.mkdir("".join((str(dir_cwd),"/", dir_names)))
 
         
-    def create(self, times=None, num_cores=None):
+    def create(self, times=None):
         """Function to create a folder in the
            current working directory.
 
@@ -62,32 +65,24 @@ class Fld:
         ----------
         times : boolean, optional
            Number of times that a folder will be created       
-
-        num_cores : int, optional
-           Number of cores used to create folders in 
-           parallel.
-
+           
         Returns
         -------
         None
            Creates a folder with a provided name.
         """
-        from pathos.pools import ProcessPool
+
         times = int(0) if times is None else int(times)
         
-        dir_names = np.array([self.__unique_name()
+        dir_names = np.array([self._unique_name()
                               for i in range(times)])
+       
+        list(map(self._make_dir,dir_names)) 
         
-        try:
-          pool = ProcessPool(nodes=num_cores)
-          pool.map(self.__make_dir,dir_names)
-        except ValueError:
-           print("Folders could not been created!")
-
         print ("Succesfully created: " + str(len(dir_names)) + " folders")
         
 
-    def __unique_name(self):
+    def _unique_name(self):
         """Function to create an unique name
       
         Returns
@@ -119,7 +114,7 @@ class Fld:
         return inp_name
 
 
-    def __seek_dir(self):
+    def _seek_dir(self):
         """Function to seek and list directories in
            the current working directory.
 
@@ -175,30 +170,31 @@ class Fld:
         -------
         None:
             Move files to directories.
-       
+      
         Raises
         ------
         NotImplementedError
             Folders can not be created.
         """
         import os.path
+        
         from pathos.pools import ProcessPool
-
+        
+        
         num_cores = int(1) if num_cores is None else int(num_cores)
         
         
         files = self.seek_files(format_extension)
         names=[os.path.basename(i) for i in files]
         
-        self.create(len(names), num_cores)
+        self.create(len(names))
 
-        dirs = self.__seek_dir()
+        dirs = self._seek_dir()
         destinations= ["".join((dirs[i],"/",names[i]))
                        for i in range(len(names))]
 
-        try:
-          pool = ProcessPool(nodes=int(num_cores))
-          pool.map(self.copy_dir, files, destinations)
-        except ValueError:
-           print("Folders could not been created!")
-
+        with ProcessPool(nodes=int(num_cores)) as pool:
+           pool.map(self.copy_dir, files, destinations)
+           pool.close()
+           pool.join()
+                
