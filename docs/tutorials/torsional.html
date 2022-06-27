@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automatic torsional angle detection for planar polymers &mdash; PySoftK 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Frequently Asked Questions" href="../faq.html" />
+    <link rel="prev" title="Computing using ab-initio calculators" href="calculator.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PySoftK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="prepare_molecules.html">Preparing monomers for PySoftK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="super_monomer.html">Creating a Polymer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_chains.html">Creating chains of Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calculator.html">Computing using <strong>ab-initio</strong> calculators</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Automatic torsional angle detection for planar polymers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PySoftK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="tutorials.html">Tutorials</a> &raquo;</li>
+      <li>Automatic torsional angle detection for planar polymers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/torsional.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="automatic-torsional-angle-detection-for-planar-polymers">
+<span id="torsional"></span><h1>Automatic torsional angle detection for planar polymers<a class="headerlink" href="#automatic-torsional-angle-detection-for-planar-polymers" title="Permalink to this heading"></a></h1>
+<p><a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> has a module (<a class="reference internal" href="../pysoftk.torsional.html#module-pysoftk.torsional.torsional" title="pysoftk.torsional.torsional"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pysoftk.torsional.torsional</span></code></a>) to automatically detect the atoms involved in torsional angles in planar polymers. Firstly, the corresponding modules from <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> and <a class="reference external" href="https://www.rdkit.org/">RDKit</a> are imported as shown in the following snipet:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysoftk.torsional.torsional</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="kn">from</span> <span class="nn">rdkit</span> <span class="k">import</span> <span class="n">Chem</span>
+<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="k">import</span> <span class="n">AllChem</span>
+</pre></div>
+</div>
+<p>As an example, a thiol-based linear polymer (called <strong>molecules</strong>) is employed to demonstrate the use of the module <a class="reference internal" href="../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional" title="pysoftk.torsional.torsional.Torsional"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pysoftk.torsional.torsional.Torsional</span></code></a>.</p>
+<figure class="align-center">
+<img alt="../_images/longthiol.png" src="../_images/longthiol.png" />
+</figure>
+<p>The corresponding way to invoke the function is shown in the snipet below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#### Torsional angle detection for a molecule in a *.smi file ###</span>
+
+<span class="n">molecules</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s1">&#39;s1c(ccc1)c1sc(cc1)c1cccs1&#39;</span><span class="p">)</span>
+
+<span class="c1"># This list records all tuples of atoms which are involved in</span>
+<span class="c1"># torsional angles for linear polymers.</span>
+
+<span class="n">lst_angles</span><span class="o">=</span><span class="n">Torsional</span><span class="p">(</span><span class="n">molecules</span><span class="p">)</span><span class="o">.</span><span class="n">seek_angles</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Then, <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> function <em>seek_angle</em> searches for all atoms, which are participating in the formation of relevant torsional angles. The function outputs tuples with the atomic enumeration provided by <a class="reference external" href="https://www.rdkit.org/">RDKit</a>. In the previous case, the output provided by the function is:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">(.venv) $</span> <span class="o">[(</span><span class="m">0</span>, <span class="m">1</span>, <span class="m">5</span>, <span class="m">6</span><span class="o">)</span>, <span class="o">(</span><span class="m">0</span>, <span class="m">1</span>, <span class="m">5</span>, <span class="m">9</span><span class="o">)</span>, <span class="o">(</span><span class="m">2</span>, <span class="m">1</span>, <span class="m">5</span>, <span class="m">6</span><span class="o">)</span>, <span class="o">(</span><span class="m">2</span>, <span class="m">1</span>, <span class="m">5</span>, <span class="m">9</span><span class="o">)</span>,
+<span class="go">           (6, 7, 10, 11), (6, 7, 10, 14), (8, 7, 10, 11), (8, 7, 10, 14)]</span>
+</pre></div>
+</div>
+<p>which is printing a list of tuples of all combinations of atoms found to belong to one torsional angle labeled by an atomic index. These indices can be provided to any <a class="reference external" href="https://www.rdkit.org/">RDKit</a> function (using the same initial declared molecule) to obtain other relevant quantities of these atoms.</p>
+<p><a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> is able to produce figures indicating the position of the involved atoms in the detected torsional angle within the molecular complex. The module <a class="reference internal" href="../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional" title="pysoftk.torsional.torsional.Torsional"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pysoftk.torsional.torsional.Torsional</span></code></a> accepts as an argument the <a class="reference external" href="https://www.rdkit.org/">RDKit</a> provided molecule, whilst the function <em>plot_trs_ang</em> receives an user-provided name which will be used to name the corresponding plots. The following lines of code indicates the use of this function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># This for loop iterates over all the previous cases</span>
+<span class="c1"># and creates pictures of the molecule and highlights</span>
+<span class="c1"># the atoms of every detected torsional angle</span>
+
+<span class="n">Torsional</span><span class="p">(</span><span class="n">molecules</span><span class="p">)</span><span class="o">.</span><span class="n">plot_trs_ang</span><span class="p">(</span><span class="s2">&quot;mol_1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The corresponding figures are displayed below, where the user can corrborate the atoms index with the one provided by the function <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> function <em>seek_angle</em>.</p>
+<table class="borderless docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><img alt="../_images/mol_1_mol_0.png" src="../_images/mol_1_mol_0.png" />
+</td>
+<td><img alt="../_images/mol_1_mol_1.png" src="../_images/mol_1_mol_1.png" />
+</td>
+</tr>
+</tbody>
+</table>
+<table class="borderless docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><img alt="../_images/mol_1_mol_2.png" src="../_images/mol_1_mol_2.png" />
+</td>
+<td><img alt="../_images/mol_1_mol_3.png" src="../_images/mol_1_mol_3.png" />
+</td>
+</tr>
+</tbody>
+</table>
+<table class="borderless docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><img alt="../_images/mol_1_mol_4.png" src="../_images/mol_1_mol_4.png" />
+</td>
+<td><img alt="../_images/mol_1_mol_5.png" src="../_images/mol_1_mol_5.png" />
+</td>
+</tr>
+</tbody>
+</table>
+<table class="borderless docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><img alt="../_images/mol_1_mol_6.png" src="../_images/mol_1_mol_6.png" />
+</td>
+<td><img alt="../_images/mol_1_mol_7.png" src="../_images/mol_1_mol_7.png" />
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="calculator.html" class="btn btn-neutral float-left" title="Computing using ab-initio calculators" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../faq.html" class="btn btn-neutral float-right" title="Frequently Asked Questions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Alejandro Santana-Bonilla.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
