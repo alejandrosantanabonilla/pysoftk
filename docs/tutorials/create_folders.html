@@ -82,15 +82,15 @@
   <section id="automatic-folder-creation">
 <span id="folders"></span><h1>Automatic Folder Creation<a class="headerlink" href="#automatic-folder-creation" title="Permalink to this heading"></a></h1>
 <p>The module <a class="reference internal" href="../pysoftk.folder_manager.html#module-pysoftk.folder_manager.folder_creator" title="pysoftk.folder_manager.folder_creator"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pysoftk.folder_manager.folder_creator</span></code></a> is a set of <a class="reference external" href="https://www.python.org/">Python</a> tools that provides a range of functionalities to carry out high-throughput calculations (HTPc).</p>
-<p>In first instance, creation of user-defined number of folders with unique labels can be achieve in the following lines of code:</p>
+<p>In the first instance, the creation of a user-defined number of folders with unique labels can be achieved in the following lines of code:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysoftk.folder_manager.folder_creator</span> <span class="k">import</span> <span class="o">*</span>
 
 <span class="c1"># Create 2 folders with unique labels using 1 core.</span>
-<span class="n">Fld</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">Fld</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
 </pre></div>
 </div>
-<p>The function receives as first argument the number of folders to be created, whilst the second argument declares the number of cores used to perform this operation. We can verify the creation of these folders by typing the following command:</p>
+<p>The function receives as the first argument the number of folders to be created, whilst the second argument declares the number of cores used to perform this operation. We can verify the creation of these folders by typing the following command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ tree
 .
 ├── 37c49461ba7b4206ba5cc5c101485faa
@@ -98,8 +98,8 @@
 └── test_fol_m.py
 </pre></div>
 </div>
-<p>where it can be seen that the two folders (with alphanumeric unique numbers) have been succesfully created in a folder where the <strong>test_fol_m.py</strong> is located.</p>
-<p>Similarly, <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> is able to seek for structures with a provided user extensions (such as .smi, .pdb, .mol, .xyz, etc).</p>
+<p>where it can be seen that the two folders (with unique alphanumeric labels) have been succesfully created in a folder where the <strong>test_fol_m.py</strong> is located.</p>
+<p>Similarly, <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> is able to seek for files with a user-provided extension (such as .smi, .pdb, .mol, .xyz, etc).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rdkit</span> <span class="k">import</span> <span class="n">Chem</span>
 <span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="k">import</span> <span class="n">AllChem</span>
 
@@ -111,8 +111,8 @@
 
 </pre></div>
 </div>
-<p>The variable <strong>a</strong> stores the <em>absolute paths</em> where the files <strong>mol_1.smi</strong> and <strong>mol_2.smi</strong> are stored. Likewise, the lenght of this list indicates the number of files with that given extension present in the current working directory.</p>
-<p>Complementing these previous functions, <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> enables the automatic organization of files into unique labeled folders as indicated in the following snipet:</p>
+<p>The variable <strong>a</strong> stores the <em>absolute paths</em> where the files <strong>mol_1.smi</strong> and <strong>mol_2.smi</strong> are stored. Likewise, the length of this list indicates the number of files with that given extension present in the current working directory.</p>
+<p>Complementing these previous functions, <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> enables the automatic moving of the files into unique labeled folders as indicated in the following snipet:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rdkit</span> <span class="k">import</span> <span class="n">Chem</span>
 <span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="k">import</span> <span class="n">AllChem</span>
 
@@ -135,7 +135,7 @@
 <span class="m">2</span> directories, <span class="m">3</span> files
 </pre></div>
 </div>
-<p>Corroborating the correct allocation of <strong>mol_1.smi</strong> and <strong>mol_2.smi</strong> into unique folders. These collection of <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> tools have been developed to be used independently to the Polymer module and intended to be used as stand-alone or in conjunction with the HTPc tools.</p>
+<p>As shown above, the files <strong>mol_1.smi</strong> and <strong>mol_2.smi</strong> have been correcty allocated into unique folders. This collection of <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> tools has been developed to be used independent of the Polymer module and intended to be used as stand-alone or in conjunction with the HTPc tools.</p>
 </section>
 
 

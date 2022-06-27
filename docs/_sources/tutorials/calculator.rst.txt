@@ -4,7 +4,7 @@
 Computing using **ab-initio** calculators
 =========================================================
 
-The PySoftK_ function :mod:`pysoftk.linear\_polymer.calculators` has been developed to perform geometry optimization at the single files level or as a part of a high-throughput calculation workflow. 
+The PySoftK_ function :mod:`pysoftk.linear\_polymer.calculators` has been developed to perform geometry optimization for a single system or for multiple systems as a part of a high-throughput calculation workflow. 
 
 The following projects have been added to PySoftK_ to perform geometry optimization calculations at different levels of theory.
 
@@ -12,13 +12,13 @@ The following projects have been added to PySoftK_ to perform geometry optimizat
 Geometry optimization using GFN-FF 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-PySoftK_ enables the use of xtb_ as a **calculator** employing a customized Force Field implementation (called as  **xtb_ff**).
-To introduce this functionality, one needs to import the corresponding RDKIT_ auxiliary functions (line 1-2) and the needed modules from PySoftK_ as shown in the following snipet:
+PySoftK_ enables the use of xtb_ as a **calculator** employing a customized Force Field implementation (called **xtb_ff**).
+To introduce this functionality, one needs to import the corresponding RDKit_ auxiliary functions (line 1-2) and the needed modules from PySoftK_ as shown in the following snipet:
 
 .. literalinclude:: xtb_ff.py
    :lines: 1-7
 
-To demonstrate the functionality of this module, two molecules (Benzene and Thiol) are used to create a *super-monomer* (and stored in the variable **a**). The object **a** is later used as initial polymer unit (variable **k**) and replicated 5 times (and stored in variable **new**). The result of this operation is then printed in a **XYZ** file called **test_1.xyz**, using the function **FMT(object).xyz_print(name_to_be_printed)**.
+To demonstrate the functionality of this module, two molecules (Benzene and Thiol) are used to create a *super-monomer* (and stored in the variable **a**). The object **a** is later used as an initial polymer unit (variable **k**) and replicated 5 times (and stored in variable **new**). The result of this operation is then printed in a **XYZ** file called **test_1.xyz**, using the function **FMT(object).xyz_print(name_to_be_printed)**.
 
 .. literalinclude:: xtb_ff.py
    :lines: 9-17
@@ -38,12 +38,12 @@ The *Opt* module receives the name of the **XYZ** to be used by xtb_ whilst the 
 .. literalinclude:: xtb_ff.py
    :lines: 19-20
 
-The results of the geometrical optimization are printed in the file **xtbopt.xyz** and visualized using VMD_.
+The results of the geometrical optimization are printed to the file **xtbopt.xyz** and can be visualized using VMD_.
 	   
 Geometry optimization using PySCF
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-PySoftK_ permits the use of pyscf_ as a **calculator** at the semiempirical-mindo3 level of theory. Initially, one needs to import the corresponding PySoftK_ modules and RDKit_ auxiliary functions as shown below: 
+PySoftK_ also permits the use of pyscf_ as a **calculator** at the semiempirical-mindo3 level of theory. Initially, one needs to import the corresponding PySoftK_ modules and RDKit_ auxiliary functions as shown below: 
 
 .. literalinclude:: pysfc.py
    :lines: 1-7
@@ -55,17 +55,17 @@ As shown in the previous example, the result of this operation is then printed i
 
 .. note:: The only pyscf_ accepted format is **XYZ**.
 	   
-As displayed in the previous section, the *Opt* module accepts as argument the name of the **xyz** file whilst the *pysc_semi*  receives the user-defined number of SCF cycles. 
+As displayed in the previous section, the *Opt* module accepts as an argument the name of the **xyz** file whilst the *pysc_semi*  receives the user-defined number of SCF cycles. 
 
 .. literalinclude:: pysfc.py
    :lines: 20-23
 
-The result of the geometrical optimization is printed in the file **pyscf_final.xyz** and can be visualized using VMD_.
+The result of the geometrical optimization is printed to the file **pyscf_final.xyz** and can be visualized using VMD_.
 	   
 High-Throughput Calculations using the calculators
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-PySoftK_ has been designed with the aim of allowing high-throughput calculations (HTPc) at different levels of theory. This achieved by using the PySoftK_ module :mod:`pysoftk.htp\_tools.calculator\_htp.Htp`. This can be combined with :mod:`pysoftk.folder\_manager.folder\_creator.Fld` for setting up and creating numerical workflows using *ab-initio* calculations.
+PySoftK_ has been designed with the aim of allowing high-throughput calculations (HTPc) at different levels of theory. This is achieved by using the PySoftK_ module :mod:`pysoftk.htp\_tools.calculator\_htp.Htp`, which can be combined with :mod:`pysoftk.folder\_manager.folder\_creator.Fld` for setting up and creating numerical workflows that include *ab-initio* calculations.
 
 The needed PySoftK_ modules and RDKit_ functions are imported as displayed in the following lines of code:
 
@@ -115,7 +115,7 @@ The resulting directories can be browsed using the bash command **tree**
    └── htp_test.py
 
 
-The new module :mod:`pysoftk.htp\_tools.calculator\_htp.Htp` enables to perform HTPc in a simple manner. The command **HTP(format).htp_xtb_ff(executable, processes, cores)** can be used to perform geometry optimizations at different theory levels accessible in PySoftK_, as is indicated in the following lines of code:
+The module :mod:`pysoftk.htp\_tools.calculator\_htp.Htp` enables the user to perform HTPc in a simple manner. Meanwhile, the command **HTP(format).htp_xtb_ff(executable, processes, cores)** can be used to perform geometry optimizations at different theory levels accessible in PySoftK_, as is indicated in the following lines of code:
 
 .. literalinclude:: htp_test.py
    :lines: 30-31

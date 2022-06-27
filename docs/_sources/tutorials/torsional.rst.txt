@@ -4,7 +4,7 @@
 Automatic torsional angle detection for planar polymers
 =========================================================
 
-PySoftK_ has a module (:mod:`pysoftk.torsional.torsional`) to automatic detect the atoms involved in torsional angles in planar polymers. Firstly, the corresponding modules from PySoftK_ and RDKit_ are imported as shown in the following snipet:
+PySoftK_ has a module (:mod:`pysoftk.torsional.torsional`) to automatically detect the atoms involved in torsional angles in planar polymers. Firstly, the corresponding modules from PySoftK_ and RDKit_ are imported as shown in the following snipet:
 
 .. literalinclude:: torsional.py
    :lines: 1-4
@@ -29,7 +29,7 @@ Then, PySoftK_ function *seek_angle* searches for all atoms, which are participa
 
 which is printing a list of tuples of all combinations of atoms found to belong to one torsional angle labeled by an atomic index. These indices can be provided to any RDKit_ function (using the same initial declared molecule) to obtain other relevant quantities of these atoms.
 
-PySoftK_ is able to produce figures indicating the position of the involved atoms in the detected torsional angle within the molecular complex. The module :mod:`pysoftk.torsional.torsional.Torsional` accepts as argument the RDKit_ provided molecule, whilst the function *plot_trs_ang* receives an user-provided name which will be used to name the corresponding plots. The following lines of code indicates the use of this function:
+PySoftK_ is able to produce figures indicating the position of the involved atoms in the detected torsional angle within the molecular complex. The module :mod:`pysoftk.torsional.torsional.Torsional` accepts as an argument the RDKit_ provided molecule, whilst the function *plot_trs_ang* receives an user-provided name which will be used to name the corresponding plots. The following lines of code indicates the use of this function:
 
 .. literalinclude:: torsional.py
    :lines: 18-22
