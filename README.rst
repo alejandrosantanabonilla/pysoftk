@@ -12,7 +12,7 @@ following way:
   mkdir work_pol
   cd work_pol
 
-2.) Create a virtual environment named pol (this name can be change, of course) and activate the environment:
+2.) Create a virtual environment named pol (this name can be changed, of course) and activate the environment:
 
 .. code-block:: bash
 
