@@ -4,6 +4,7 @@ from rdkit.Chem import AllChem
 from pysoftk.linear_polymer.super_monomer import *
 from pysoftk.linear_polymer.mol_conformer import *
 from pysoftk.linear_polymer.linear_polymer import *
+
 from pysoftk.format_printers.format_mol import *
 from pysoftk.folder_manager.folder_creator import *
 from pysoftk.torsional.torsional import *
