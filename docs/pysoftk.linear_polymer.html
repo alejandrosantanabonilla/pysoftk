@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pysoftk.linear_polymer package &mdash; PySoftK 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pysoftk.torsional package" href="pysoftk.torsional.html" />
+    <link rel="prev" title="pysoftk.htp_tools package" href="pysoftk.htp_tools.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> PySoftK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">PySoftK Modular structure</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pysoftk.html">pysoftk package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pysoftk.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.folder_manager.html">pysoftk.folder_manager package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.format_printers.html">pysoftk.format_printers package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.htp_tools.html">pysoftk.htp_tools package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pysoftk.linear_polymer package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.torsional.html">pysoftk.torsional package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.html#module-pysoftk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PySoftK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">PySoftK Modular structure</a> &raquo;</li>
+          <li><a href="pysoftk.html">pysoftk package</a> &raquo;</li>
+      <li>pysoftk.linear_polymer package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/pysoftk.linear_polymer.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pysoftk-linear-polymer-package">
+<h1>pysoftk.linear_polymer package<a class="headerlink" href="#pysoftk-linear-polymer-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-pysoftk.linear_polymer.calculators">
+<span id="pysoftk-linear-polymer-calculators-module"></span><h2>pysoftk.linear_polymer.calculators module<a class="headerlink" href="#module-pysoftk.linear_polymer.calculators" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.calculators.Opt">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.calculators.</span></span><span class="sig-name descname"><span class="pre">Opt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyz_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/calculators.html#Opt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.calculators.Opt" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="simple">
+<dt>Geometrical optimization tools using</dt><dd><p>gfn-xtb2 and pyscf as engines.</p>
+</dd>
+</dl>
+<p>This class requires a GFN-XTB executable and/or a PYSCF semiempirical 
+installation to be used.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.calculators.Opt.pyscf_semi">
+<span class="sig-name descname"><span class="pre">pyscf_semi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">steps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/calculators.html#Opt.pyscf_semi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.calculators.Opt.pyscf_semi" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Function invoking PYSCF semiempirical implementation</dt><dd><p>for geometry optimization.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>steps<span class="classifier">int, optional</span></dt><dd><p>Number of steps which PYSCF code
+will perform the optimization routine.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>None :</dt><dd><p>Print the file pyscf_final.xyz reporting 
+the results from a PYSCF calculation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.calculators.Opt.xtb_ff">
+<span class="sig-name descname"><span class="pre">xtb_ff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xtb_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/calculators.html#Opt.xtb_ff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.calculators.Opt.xtb_ff" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Function invoking GFN-XTB Force-Field implementation</dt><dd><p>for geometry optimization.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>xtb_path<span class="classifier">str</span></dt><dd><p>Path where the GFN-XTB2 executable is 
+located</p>
+</dd>
+<dt>num_cores<span class="classifier">int, optional</span></dt><dd><p>Number of cores which the GFN-XTB2 code
+will use.</p>
+</dd>
+<dt>threshold: str, optional</dt><dd><p>Level of geometry optimization required 
+as defined in GFN-XTB2 code.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>output<span class="classifier">str</span></dt><dd><p>File name output.log containing the optimization
+process carried out by GFN-XTB2.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.calculators.Pyscf_print">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.calculators.</span></span><span class="sig-name descname"><span class="pre">Pyscf_print</span></span><a class="reference internal" href="_modules/pysoftk/linear_polymer/calculators.html#Pyscf_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.calculators.Pyscf_print" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Print a PYSCF object into cartesian 
+coordinates.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.calculators.Pyscf_print.xyz">
+<span class="sig-name descname"><span class="pre">xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/calculators.html#Pyscf_print.xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.calculators.Pyscf_print.xyz" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Function to print a file with Cartesian </dt><dd><p>coordinates from a PYSCF geometry optimization
+calculation.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>mol<span class="classifier">pyscf.gto.mole.Mole</span></dt><dd><p>A PYSCF gto mole Mole object.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>pysfc_final: str</dt><dd><p>An xyz file containing the optimized
+coordinates of the provided PYSCF Mole
+object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pysoftk.linear_polymer.linear_polymer">
+<span id="pysoftk-linear-polymer-linear-polymer-module"></span><h2>pysoftk.linear_polymer.linear_polymer module<a class="headerlink" href="#module-pysoftk.linear_polymer.linear_polymer" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.linear_polymer.</span></span><span class="sig-name descname"><span class="pre">Lp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_copies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for creating a linear polymer 
+from given RdKit molecules.</p>
+<p>mol          The super_monomer molecule to be polarised
+atom         A place-holder atom to connect the molecule 
+n_copies     Number of copies to create the polymer
+shift        A real value to translate the super_monomer</p>
+<blockquote>
+<div><p>in a real-grid.</p>
+</div></blockquote>
+<p>RDKit package must be installed.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.atom">
+<span class="sig-name descname"><span class="pre">atom</span></span><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.atom" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.linear_polymer">
+<span class="sig-name descname"><span class="pre">linear_polymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iter_ff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lp.linear_polymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.linear_polymer" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Function to create a linear polymer </dt><dd><p>from a given super_monomer object.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>iter_ff: int</dt><dd><p>the maximum number of iterations used for the FF.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>newMol_H<span class="classifier">rdkit.Chem.rdchem.Mol</span></dt><dd><p>RDKit Mol object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.max_dist_mol">
+<span class="sig-name descname"><span class="pre">max_dist_mol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lp.max_dist_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.max_dist_mol" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Returns the maximum distance between atoms </dt><dd><p>from an RDKit Mol Object.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>np.float</dt><dd><p>maximum value from a Molecule Bound Matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.mol">
+<span class="sig-name descname"><span class="pre">mol</span></span><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.mol" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.n_copies">
+<span class="sig-name descname"><span class="pre">n_copies</span></span><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.n_copies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.shift">
+<span class="sig-name descname"><span class="pre">shift</span></span><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.shift" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.x_shift">
+<span class="sig-name descname"><span class="pre">x_shift</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lp.x_shift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.x_shift" title="Permalink to this definition"></a></dt>
+<dd><p>Re-calibrate distance between monomers</p>
+<dl class="simple">
+<dt>shift_final<span class="classifier">‘float’</span></dt><dd><p>Value to translates the unit repetitions</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pysoftk.linear_polymer.mol_conformer">
+<span id="pysoftk-linear-polymer-mol-conformer-module"></span><h2>pysoftk.linear_polymer.mol_conformer module<a class="headerlink" href="#module-pysoftk.linear_polymer.mol_conformer" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.mol_conformer.Mcon">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.mol_conformer.</span></span><span class="sig-name descname"><span class="pre">Mcon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_max</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/mol_conformer.html#Mcon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.mol_conformer.Mcon" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Calculates molecular conformers</p>
+<p>This class requires RDKit to be installed.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.mol_conformer.Mcon.conformer">
+<span class="sig-name descname"><span class="pre">conformer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/mol_conformer.html#Mcon.conformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.mol_conformer.Mcon.conformer" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate a molecular conformer for a given molecule. If 
+enabled the highest-energy conformer is returned.</p>
+<dl class="simple">
+<dt>datapoint: rdkit.Chem.Mol</dt><dd><p>RDKit Mol object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.mol_conformer.Mcon.e_max">
+<span class="sig-name descname"><span class="pre">e_max</span></span><a class="headerlink" href="#pysoftk.linear_polymer.mol_conformer.Mcon.e_max" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.mol_conformer.Mcon.mol">
+<span class="sig-name descname"><span class="pre">mol</span></span><a class="headerlink" href="#pysoftk.linear_polymer.mol_conformer.Mcon.mol" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.mol_conformer.Mcon.num_conf">
+<span class="sig-name descname"><span class="pre">num_conf</span></span><a class="headerlink" href="#pysoftk.linear_polymer.mol_conformer.Mcon.num_conf" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.mol_conformer.Memb">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.mol_conformer.</span></span><span class="sig-name descname"><span class="pre">Memb</span></span><a class="reference internal" href="_modules/pysoftk/linear_polymer/mol_conformer.html#Memb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.mol_conformer.Memb" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.mol_conformer.Memb.etkdgv3_energies">
+<span class="sig-name descname"><span class="pre">etkdgv3_energies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_conf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/mol_conformer.html#Memb.etkdgv3_energies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.mol_conformer.Memb.etkdgv3_energies" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate molecular configurations using 
+the RDKit-ETKDG3 method.</p>
+<p>datapoint:</p>
+<dl class="simple">
+<dt>datapoint: rdkit.Chem.rdistGeom.EmbedMultipleConfs</dt><dd><p>RDKit Mol object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pysoftk.linear_polymer.super_monomer">
+<span id="pysoftk-linear-polymer-super-monomer-module"></span><h2>pysoftk.linear_polymer.super_monomer module<a class="headerlink" href="#module-pysoftk.linear_polymer.super_monomer" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Emb">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.super_monomer.</span></span><span class="sig-name descname"><span class="pre">Emb</span></span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Emb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Emb" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class created to use the ETKDGV3 
+method provided in RDKit for 3D
+Geometry embedding.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Emb.etkdgv3">
+<span class="sig-name descname"><span class="pre">etkdgv3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Emb.etkdgv3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Emb.etkdgv3" title="Permalink to this definition"></a></dt>
+<dd><p>Function to perform Geometry embedding.</p>
+<dl class="simple">
+<dt>mol<span class="classifier">rdkit.Chem.rdchem.Mol</span></dt><dd><p>The resulting combined molecule as RDKit Mol
+Object.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>mol<span class="classifier">rdkit.Chem.rdchem.Mol</span></dt><dd><p>The resulting embedded molecule as RDKit Mol
+Object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.super_monomer.</span></span><span class="sig-name descname"><span class="pre">Sm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Sm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="simple">
+<dt>Class to create a new combined molecule</dt><dd><p>from two provided RDKit Mol objects.</p>
+</dd>
+</dl>
+<p>This class requires RDKit to be installed.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.atom">
+<span class="sig-name descname"><span class="pre">atom</span></span><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.atom" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.constructor">
+<span class="sig-name descname"><span class="pre">constructor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Sm.constructor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.constructor" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Function to combine two molecules using an atom</dt><dd><p>placeholder.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>mol_4<span class="classifier">rdkit.Chem.rdchem.Mol</span></dt><dd><p>The resulting combined molecule as RDKit Mol
+Object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.mol_1">
+<span class="sig-name descname"><span class="pre">mol_1</span></span><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.mol_1" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.mol_2">
+<span class="sig-name descname"><span class="pre">mol_2</span></span><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.mol_2" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.mon_to_poly">
+<span class="sig-name descname"><span class="pre">mon_to_poly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Sm.mon_to_poly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.mon_to_poly" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Function to create a RDKit Mol object to</dt><dd><p>prepare for x-axis translation.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>mol<span class="classifier">rdkit.Chem.rdchem.Mol</span></dt><dd><p>The resulting combined molecule as RDKit Mol
+Object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.monomer">
+<span class="sig-name descname"><span class="pre">monomer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Sm.monomer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.monomer" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Function to produce a single polymer unit</dt><dd><p>as an RDKit Mol Object.</p>
+</dd>
+</dl>
+<blockquote>
+<div><p>mol : rdkit.Chem.rdchem.Mol
+The resulting combined molecule as RDKit Mol
+Object.</p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pysoftk.linear_polymer">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pysoftk.linear_polymer" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pysoftk.htp_tools.html" class="btn btn-neutral float-left" title="pysoftk.htp_tools package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pysoftk.torsional.html" class="btn btn-neutral float-right" title="pysoftk.torsional package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Alejandro Santana-Bonilla, Chris Lorenz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
