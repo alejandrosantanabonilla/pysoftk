@@ -28,7 +28,7 @@ Cloning this branch:
 
 .. code-block:: console
 
-   git clone -b tutorials --single-branch 
+   git clone -b pysoftk_docs --single-branch https://github.com/alejandrosantanabonilla/pysoftk.git
 
 Pushing into this branch:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -44,8 +44,8 @@ must show the following result
 .. code-block:: console
 
    * remote origin
-  Fetch URL: 
-  Push  URL: 
+  Fetch URL: https://github.com/alejandrosantanabonilla/pysoftk.git
+  Push  URL: https://github.com/alejandrosantanabonilla/pysoftk.git
   HEAD branch: master
   Remote branch:
     tutorials tracked
