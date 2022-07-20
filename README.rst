@@ -3,7 +3,7 @@ Cloning this branch:
 
 .. code-block:: console
 
-   git clone -b  --single-branch git@github.com:
+   git clone -b pysoft_docs --single-branch git@github.com:
 
 Pushing into this branch:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -23,11 +23,11 @@ must show the following result
   Push  URL: git@github.com:
   HEAD branch: master
   Remote branch:
-    tutorials tracked
+    pysoft_docs tracked
   Local branch configured for 'git pull':
-    tutorials merges with remote tutorials
+    pysoft_docs merges with remote pysoft_docs
   Local ref configured for 'git push':
-    tutorials pushes to tutorials (up-to-date)
+    pysoft_docs pushes to pysoft_docs (up-to-date)
 
 If this is **true**, then you dont need to do anything else of defining origins. Then, to push changes, you just need to do
 
