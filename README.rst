@@ -1,49 +1,41 @@
-PySoftK
-=============
+Cloning this branch:
+^^^^^^^^^^^^^^^^^^^^^^
 
-**PySoftK** is a set of Python tools and programs for modelling and simulating polymers with different topologies. The program is still under active 
-development and contributions are welcome. A complete introduction into the program can be found in this link Documentation_. To quickly install **PySoftk**, we encourage to do it inside a virtual environment, which can be achieved in the 
-following way:
+.. code-block:: console
 
-1.) Create a directory named as you want and access it (in this case called work_pol):
+   git clone -b  --single-branch git@github.com:
 
-.. code-block:: bash
- 
-  mkdir work_pol
-  cd work_pol
+Pushing into this branch:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.) Create a virtual environment named pol (this name can be changed, of course) and activate the environment:
+make changes, if you have used the -b tutorials then 
 
-.. code-block:: bash
+.. code-block:: console
 
-   python -m venv pol
-   source pol/bin/activate
+   git remote show origin 
 
-3.) Get PySoftK from the GitHub repository:
+must show the following result
 
-.. code-block:: bash
+.. code-block:: console
 
-  git clone https://github.com/alejandrosantanabonilla/pysoftk.git
+   * remote origin
+  Fetch URL: git@github.com:
+  Push  URL: git@github.com:
+  HEAD branch: master
+  Remote branch:
+    tutorials tracked
+  Local branch configured for 'git pull':
+    tutorials merges with remote tutorials
+  Local ref configured for 'git push':
+    tutorials pushes to tutorials (up-to-date)
 
+If this is **true**, then you dont need to do anything else of defining origins. Then, to push changes, you just need to do
 
-4.) Install PySoftK in this folder using the virtual environment
+.. code-block:: console
 
-.. code-block:: bash
+    git status  
+    git add --all -f  (sometimes the build directory is seen in the .gitignore)
+    git pull
+    git push
 
-   pip install -e .
-
-**NOTE:** To use the **calculators** option, the code xtb_ needs to be installed and linked to the executable using the command:
-
-.. code-block:: bash
- 
-   export XTBPATH=<prefix_path_where_xtb_is_located>**
-  
-5.) For testing PySoftK, you need to go to the folder **test** and then type:
-
-.. code-block:: bash
-
-  pytest
-
-
-.. _Documentation: https://alejandrosantanabonilla.github.io/pysoftk/
-.. _xtb: https://github.com/grimme-lab/xtb
+and the changes will be done in the tutorials branch.
