@@ -3,7 +3,7 @@ Cloning this branch:
 
 .. code-block:: console
 
-   git clone -b pysoft_docs --single-branch git@github.com:
+   git clone -b pysoft_docs --single-branch git@github.com:alejandrosantanabonilla/pysoftk.git
 
 Pushing into this branch:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -19,8 +19,8 @@ must show the following result
 .. code-block:: console
 
    * remote origin
-  Fetch URL: git@github.com:
-  Push  URL: git@github.com:
+  Fetch URL: git@github.com:alejandrosantanabonilla/pysoftk.git
+  Push  URL: git@github.com:alejandrosantanabonilla/pysoftk.git
   HEAD branch: master
   Remote branch:
     pysoft_docs tracked
