@@ -21,7 +21,7 @@ def test_lp_1():
   a=Sm(mol_1,mol_2,"Br")
   k=a.mon_to_poly()
 
-  new=Lp(k,"Br",3,shift=1.0).linear_polymer()
+  new=Lp(k,"Br",3,shift=1.0).linear_polymer("MMFF")
   Fmt(new).xyz_print("polymer_1_2.xyz")
 
   a=Fld().seek_files("xyz")
@@ -41,7 +41,7 @@ def test_lp_2():
    r=Sm(mol_3,mol_4,"Br")
    g=r.mon_to_poly()
 
-   new_1=Lp(g,"Br",5,shift=1.0).linear_polymer(150)
+   new_1=Lp(g,"Br",5,shift=1.0).linear_polymer("MMFF",150)
 
    Fmt(new_1).xyz_print("polymer_3_4.xyz")
 

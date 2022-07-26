@@ -6,8 +6,6 @@ from rdkit.Chem import rdDistGeom as molDG
 
 import numpy as np
 
-import MDAnalysis as mda
-
 #Disable the unnecessary RDKit warnings
 from rdkit import RDLogger
 RDLogger.DisableLog('rdApp.*')
@@ -101,14 +99,11 @@ class Lp:
        --------
        fragments : `list`
           List of RDKit Mol objects
-       """
-       
+       """    
        mol=self.mol
        n_copies=self.n_copies
        
-       fragments=[]
-       for i in range(int(n_copies)):
-           fragments.append(mol)
+       fragments=[mol for _ in range(int(n_copies))]
 
        return fragments
 
@@ -167,7 +162,7 @@ class Lp:
 
         return conn[1:-1], neigh[1:-1]
 
-    def _swap_hyd(self, mol):
+    def _swap_hyd(self, mol, FF="MMFF"):
         """Function that seeks for last place-holder atoms 
            and convert them into Hydrogen atoms.
 
@@ -191,18 +186,27 @@ class Lp:
 
         newMol = AllChem.AssignBondOrdersFromTemplate(mol, mol)
         newMol_H = Chem.AddHs(newMol, addCoords=True)
-        AllChem.MMFFOptimizeMolecule(newMol_H,maxIters=5)
+
+        if FF == "MMFF":
+           AllChem.MMFFOptimizeMolecule(newMol_H,maxIters=5)
+
+        else:
+           AllChem.UFFOptimizeMolecule(newMol_H,maxIters=5)
 
         return newMol_H
    
-    def linear_polymer(self, iter_ff=100):
+    def linear_polymer(self, FF="MMFF", iter_ff=100):
        """Function to create a linear polymer 
           from a given super_monomer object.
 
        Parameters
-       ----------
+       ------------
+
+       FF : str
+          Selected Force-Field from RDKit options, i.e, UFF or MMFF
+         
        iter_ff: int
-          the maximum number of iterations used for the FF.
+          The maximum number of iterations used for the FF.
 
        Returns:
        --------
@@ -236,9 +240,14 @@ class Lp:
            rwmol.RemoveAtom(i)
 
        mol3=rwmol.GetMol()
-       AllChem.MMFFOptimizeMolecule(mol3,maxIters=int(iter_ff))
 
-       newMol_H=self._swap_hyd(mol3)
+       if FF == "MMFF":
+           AllChem.MMFFOptimizeMolecule(mol3,maxIters=int(iter_ff))
+           newMol_H=self._swap_hyd(mol3, "MMFF")
+
+       else:
+           AllChem.UFFOptimizeMolecule(mol3,maxIters=int(iter_ff))
+           newMol_H=self._swap_hyd(mol3, "UFF")
        
        return newMol_H
    
