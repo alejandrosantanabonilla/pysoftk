@@ -9,10 +9,9 @@ from pysoftk.htp_tools.calculator_htp import *
 import os
 from pathlib import Path
 
-<<<<<<< HEAD
+
 def test_htp_gfn_creation():
-=======
-<<<<<<< HEAD:test/test_htp_ff.py
+=
 def test_htp_ff_creation():
 >>>>>>> 402967b925fa5e49c3ce90593c4d7f6a51e5a347
 
