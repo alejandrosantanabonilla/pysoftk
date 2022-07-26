@@ -36,7 +36,12 @@ following way:
 
 .. code-block:: bash
  
-   export XTBPATH=<prefix_path_where_xtb_is_located>**
+   export PATH="$PATH:$HOME/PATH_TO_FOLDER/xtb-6.4.1/bin"
+   export XTBHOME="PATH_TO_XTB_FOLDER/xtb-6.4.1"
+   ulimit -s unlimited
+
+Replacing **PATH_TO_FOLDER** by the actual path where xtb is stored in your computer.
+
   
 5.) For testing PySoftK, you need to go to the folder **test** and then type:
 
