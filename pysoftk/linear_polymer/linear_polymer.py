@@ -240,7 +240,8 @@ class Lp:
            rwmol.RemoveAtom(i)
 
        mol3=rwmol.GetMol()
-
+       Chem.SanitizeMol(mol3)
+        
        if FF == "MMFF":
            AllChem.MMFFOptimizeMolecule(mol3,maxIters=int(iter_ff))
            newMol_H=self._swap_hyd(mol3, "MMFF")
