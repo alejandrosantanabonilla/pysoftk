@@ -30,7 +30,8 @@ following way:
 
 .. code-block:: bash
 
-   pip install -e .
+   [~] cd pysoftk
+   [~] pip install .
 
 **NOTE:** To use the **calculators** option, the code xtb_ needs to be installed and linked to the executable using the command:
 
