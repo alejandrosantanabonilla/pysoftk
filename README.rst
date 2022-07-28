@@ -9,15 +9,15 @@ following way:
 
 .. code-block:: bash
  
-  mkdir work_pol
-  cd work_pol
+  [~] mkdir work_pol
+  [~] cd work_pol
 
 2.) Create a virtual environment named pol (this name can be changed, of course) and activate the environment:
 
 .. code-block:: bash
 
-   python -m venv pol
-   source pol/bin/activate
+   [~] python -m venv pol
+   [~] source pol/bin/activate
 
 3.) Get PySoftK from the GitHub repository:
 
@@ -30,14 +30,15 @@ following way:
 
 .. code-block:: bash
 
-   pip install -e .
+   [~] cd pysoftk
+   [~] pip install .
 
 **NOTE:** To use the **calculators** option, the code xtb_ needs to be installed and linked to the executable using the command:
 
 .. code-block:: bash
  
-   export PATH="$PATH:$HOME/PATH_TO_FOLDER/xtb-6.4.1/bin"
-   export XTBHOME="PATH_TO_XTB_FOLDER/xtb-6.4.1"
+   export PATH="$PATH:$HOME/PATH_TO_FOLDER/xtb-X.X.X/bin"
+   export XTBHOME="PATH_TO_XTB_FOLDER/xtb-X.X.X"
    ulimit -s unlimited
 
 Replacing **PATH_TO_FOLDER** by the actual path where xtb is stored in your computer.
