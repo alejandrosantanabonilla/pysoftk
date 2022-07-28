@@ -241,11 +241,7 @@ class Lp:
 
        mol3=rwmol.GetMol()
        Chem.SanitizeMol(mol3)
-<<<<<<< HEAD
-       
-=======
-        
->>>>>>> 7b03719286a3005195c4ddb822e83f7ea2bd7116
+
        if FF == "MMFF":
            AllChem.MMFFOptimizeMolecule(mol3,maxIters=int(iter_ff))
            newMol_H=self._swap_hyd(mol3, "MMFF")
