@@ -36,44 +36,46 @@ class Htp(object):
     """
 
     def __init__(self, ending):
-        """Parameters to initialize the HTP process
+      """Parameters to initialize the HTP process
 
         Parameters
         ----------
         ending : str
            Name of the extension to be browsed in a
            provided folder. 
-        """
+      """
         self.ending = ending
 
 
     @staticmethod   
     def xtb_gfn(xtb_path, xyz_geom, init_dir, num_cores=None, threshold=None):
-       """Function invoking GFN-XTB Force-Field implementation
-          for geometry optimization.
+       """Function invoking GFN-XTB Force-Field implementation for 
+           geometry optimization.
 
-          Parameters
-          ----------
-          xtb_path : str
-             Path where the GFN-XTB2 executable is 
-             located
-          num_cores : int, optional
-             Number of cores which the GFN-XTB2 code
-             will use.
-          threshold : str, optional
+       Parameters
+       -----------
+       xtb_path : str
+           Path where the GFN-XTB2 executable is located
+
+       num_cores : int, optional
+             Number of cores which the GFN-XTB2 code will use.
+
+       threshold : str, optional
              Level of geometry optimization required 
-             as defined in GFN-XTB2 code. 
-          xyz_geom : str 
+             as defined in GFN-XTB2 code.
+ 
+       xyz_geom : str 
              Provided geometry to be relaxed.
-          init_dir : str
+
+       init_dir : str
              Root path directory where folders containing 
              the structures are found.
  
-         Returns
-         -------
-          output : str
-             File name output.log containing the optimization
-             process carried out by GFN-XTB2.
+       Returns
+       -------
+       output : str
+          File name output.log containing the optimization
+          process carried out by GFN-XTB2.
        """
     
        num_cores = int(1) if num_cores is None else int(num_cores)
@@ -106,11 +108,10 @@ class Htp(object):
         
     @staticmethod   
     def xtb_ff(xtb_path, xyz_geom, init_dir, num_cores=None, threshold=None):
-       """Function invoking GFN-XTB Force-Field implementation
-          for geometry optimization.
+       """Function invoking GFN-XTB Force-Field implementation for geometry optimization.
 
           Parameters
-          ----------
+          ------------
           xtb_path : str
              Path where the GFN-XTB2 executable is 
              located

@@ -6,35 +6,35 @@ from rdkit.Chem import rdDistGeom as molDG
 
 import numpy as np
 
-#Disable the unnecessary RDKit warnings
 from rdkit import RDLogger
 RDLogger.DisableLog('rdApp.*')
 
 class Lp:
-    """A class for creating a linear polymer 
-       from given RdKit molecules.
+    """
+    A class for creating a linear polymer 
+    from given RdKit molecules.
 
-       Attributes:
-       -----------
-       mol          The super_monomer molecule to be polarised
-       atom         A place-holder atom to connect the molecule 
-       n_copies     Number of copies to create the polymer
-       shift        A real value to translate the super_monomer 
-                    in a real-grid.
+    Attributes:
+    -----------
+    mol          The super_monomer molecule to be polarised
+    atom         A place-holder atom to connect the molecule 
+    n_copies     Number of copies to create the polymer
+    shift        A real value to translate the super_monomer 
+                 in a real-grid.
 
-       Examples:
-       ---------
+    Examples
+    ---------
 
-
-       Note:
-       -----
-       RDKit package must be installed.
+    Note:
+    -----
+    RDKit package must be installed.
     """
     
     __slots__ = 'mol', 'atom', 'n_copies', 'shift'
 
     def __init__(self, mol, atom, n_copies, shift):
-       """Initialize this class.
+       """
+       Initialize this class.
           
        Parameters
        ----------
@@ -49,7 +49,7 @@ class Lp:
           Number of copies to be created for the provided 
           mol object. 
 
-       shift: 'float'
+       shift: float
           X-axis shift to translate the super_monomer
           object.
        """
@@ -240,7 +240,8 @@ class Lp:
            rwmol.RemoveAtom(i)
 
        mol3=rwmol.GetMol()
-
+       Chem.SanitizeMol(mol3)
+       
        if FF == "MMFF":
            AllChem.MMFFOptimizeMolecule(mol3,maxIters=int(iter_ff))
            newMol_H=self._swap_hyd(mol3, "MMFF")
