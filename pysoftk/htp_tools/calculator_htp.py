@@ -44,7 +44,7 @@ class Htp(object):
            Name of the extension to be browsed in a
            provided folder. 
       """
-        self.ending = ending
+      self.ending = ending
 
 
     @staticmethod   
