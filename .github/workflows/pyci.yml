@@ -1,0 +1,40 @@
+# This is a basic workflow to help you get started with Actions
+
+name: pysoftk
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    name: python ${{ matrix.python-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {python-version: "3.7", os: ubuntu-latest, documentation: False}
+          - {python-version: "3.8", os: ubuntu-latest, documentation: True}
+          - {python-version: "3.9", os: ubuntu-latest, documentation: False}
+          - {python-version: "3.10", os: ubuntu-latest, documentation: False}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Upgrade pip
+        run: |
+          python -m pip install --upgrade pip
+      - name: Install Vayesta along with dependencies
+        run: |
+          python -m pip install wheel --user
+          python -m pip install setuptools --upgrade --user
+          python -m pip install . --user
