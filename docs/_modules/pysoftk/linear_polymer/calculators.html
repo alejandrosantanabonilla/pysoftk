@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pysoftk.linear_polymer.calculators &mdash; PySoftK 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PySoftK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">PySoftK Modular structure</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PySoftK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pysoftk.linear_polymer.calculators</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pysoftk.linear_polymer.calculators</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">walk</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">join</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">import</span> <span class="nn">shutil</span><span class="o">,</span> <span class="nn">errno</span>
+
+<div class="viewcode-block" id="Opt"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Opt">[docs]</a><span class="k">class</span> <span class="nc">Opt</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Geometrical optimization tools using</span>
+<span class="sd">        gfn-xtb2 and pyscf as engines.</span>
+
+
+<span class="sd">    Note</span>
+<span class="sd">    -----</span>
+<span class="sd">    This class requires a GFN-XTB executable and/or a PYSCF semiempirical </span>
+<span class="sd">    installation to be used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set up cartesian coordinates</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        xyz_file : str</span>
+<span class="sd">            Name of the external cartesian coordinate file</span>
+<span class="sd">            used for geometry optimization. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xyz_file</span> <span class="o">=</span> <span class="n">xyz_file</span>
+
+<div class="viewcode-block" id="Opt.xtb_ff"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Opt.xtb_ff">[docs]</a>    <span class="k">def</span> <span class="nf">xtb_ff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xtb_path</span><span class="p">,</span> <span class="n">num_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+       <span class="sd">&quot;&quot;&quot;Function invoking GFN-XTB Force-Field implementation</span>
+<span class="sd">          for geometry optimization.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ----------</span>
+<span class="sd">       xtb_path : str</span>
+<span class="sd">          Path where the GFN-XTB2 executable is </span>
+<span class="sd">          located</span>
+<span class="sd">       num_cores : int, optional</span>
+<span class="sd">          Number of cores which the GFN-XTB2 code</span>
+<span class="sd">          will use.</span>
+<span class="sd">       threshold: str, optional</span>
+<span class="sd">          Level of geometry optimization required </span>
+<span class="sd">          as defined in GFN-XTB2 code. </span>
+
+<span class="sd">       Returns</span>
+<span class="sd">       -------</span>
+<span class="sd">       output : str</span>
+<span class="sd">          File name output.log containing the optimization</span>
+<span class="sd">          process carried out by GFN-XTB2.</span>
+<span class="sd">       &quot;&quot;&quot;</span>
+       <span class="n">xyz</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz_file</span>
+    
+       <span class="n">num_cores</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">num_cores</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_cores</span><span class="p">)</span>
+       <span class="n">threshold</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;crude&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">threshold</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">threshold</span><span class="p">)</span>
+
+       <span class="n">init_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+       <span class="n">out_file</span> <span class="o">=</span> <span class="s1">&#39;output.log&#39;</span>
+
+       <span class="n">cmd</span> <span class="o">=</span> <span class="p">(</span>
+               <span class="n">f</span><span class="s1">&#39;</span><span class="si">{xtb_path}</span><span class="s1"> --gfnff </span><span class="si">{xyz}</span><span class="s1"> &#39;</span>            
+               <span class="n">f</span><span class="s1">&#39;--parallel </span><span class="si">{num_cores}</span><span class="s1"> &#39;</span>
+               <span class="n">f</span><span class="s1">&#39;--opt </span><span class="si">{threshold}</span><span class="s1"> &#39;</span>
+             <span class="p">)</span>
+
+       <span class="c1"># Note that sp.call will hold the program until completion</span>
+       <span class="c1"># of the calculation.</span>
+
+       <span class="k">try</span><span class="p">:</span>
+          <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">result</span><span class="p">:</span>
+           <span class="n">sp</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
+              <span class="n">cmd</span><span class="p">,</span>
+              <span class="n">stdin</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+              <span class="n">stdout</span><span class="o">=</span><span class="n">result</span><span class="p">,</span>
+              <span class="n">stderr</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+              <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+              <span class="n">cwd</span><span class="o">=</span><span class="n">init_dir</span>
+             <span class="p">)</span>
+       <span class="k">finally</span><span class="p">:</span>
+           <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> has been relaxed&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xyz</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Opt.pyscf_semi"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Opt.pyscf_semi">[docs]</a>    <span class="k">def</span> <span class="nf">pyscf_semi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function invoking PYSCF semiempirical implementation</span>
+<span class="sd">           for geometry optimization.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        steps : int, optional</span>
+<span class="sd">           Number of steps which PYSCF code</span>
+<span class="sd">           will perform the optimization routine.</span>
+
+<span class="sd">        Results</span>
+<span class="sd">        -------</span>
+<span class="sd">        None :</span>
+<span class="sd">            Print the file pyscf_final.xyz reporting </span>
+<span class="sd">            the results from a PYSCF calculation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">pyscf</span>
+        <span class="kn">from</span> <span class="nn">pyscf</span> <span class="k">import</span> <span class="n">gto</span>
+        <span class="kn">from</span> <span class="nn">pyscf</span> <span class="k">import</span> <span class="n">semiempirical</span>
+        <span class="kn">from</span> <span class="nn">pyscf.geomopt.berny_solver</span> <span class="k">import</span> <span class="n">optimize</span>
+    
+        <span class="n">mol</span><span class="o">=</span><span class="n">gto</span><span class="o">.</span><span class="n">M</span><span class="p">(</span><span class="n">atom</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz_file</span><span class="p">))</span>
+        <span class="n">mf</span><span class="o">=</span><span class="n">semiempirical</span><span class="o">.</span><span class="n">RMINDO3</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="n">mol_eq</span><span class="o">=</span><span class="n">optimize</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span><span class="n">maxsteps</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">steps</span><span class="p">))</span>
+        <span class="n">Pyscf_print</span><span class="p">()</span><span class="o">.</span><span class="n">xyz</span><span class="p">(</span><span class="n">mol_eq</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="Pyscf_print"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Pyscf_print">[docs]</a><span class="k">class</span> <span class="nc">Pyscf_print</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Print a PYSCF object into cartesian </span>
+<span class="sd">        coordinates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Pyscf_print.xyz"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Pyscf_print.xyz">[docs]</a>    <span class="k">def</span> <span class="nf">xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to print a file with Cartesian </span>
+<span class="sd">           coordinates from a PYSCF geometry optimization</span>
+<span class="sd">           calculation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mol : pyscf.gto.mole.Mole</span>
+<span class="sd">          A PYSCF gto mole Mole object.</span>
+
+<span class="sd">        Result</span>
+<span class="sd">        ------</span>
+<span class="sd">        pysfc_final: str</span>
+<span class="sd">          An xyz file containing the optimized</span>
+<span class="sd">          coordinates of the provided PYSCF Mole</span>
+<span class="sd">          object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bohr2angs</span><span class="o">=</span><span class="mf">0.529177</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="n">bohr2angs</span><span class="o">*</span><span class="n">mol</span><span class="o">.</span><span class="n">atom_coords</span><span class="p">()</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;pyscf_final.xyz&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
+             <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">))))</span>
+             <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+             <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">atom</span><span class="p">)):</span>
+                 <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{:.8f}</span><span class="s1"> </span><span class="si">{:.8f}</span><span class="s1"> </span><span class="si">{:.8f}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">atom</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+                                                                 <span class="nb">float</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">])))</span>
+             <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;File pyscf_final.xyz has been created.&quot;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Alejandro Santana-Bonilla, Chris Lorenz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
