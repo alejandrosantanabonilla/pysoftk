@@ -26,7 +26,7 @@ def test_format_2():
    mol_2=Chem.MolFromSmiles('c1(ccc(cc1)Br)Br')
 
    a=Sm(mol_1,mol_2,"Br").monomer()
-   Fmt(a).pdb_print("test_2.mol")
+   Fmt(a).pdb_print("test_2.pdb")
 
    b=Fld().seek_files("pdb")
    assert len(b) == 1
