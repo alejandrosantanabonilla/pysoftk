@@ -47,5 +47,6 @@ jobs:
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
+          working-directory: ./test
           github-token: ${{ secrets.PYSOFTK_COVERAGE }}
           path-to-lcov: coverage.xml
