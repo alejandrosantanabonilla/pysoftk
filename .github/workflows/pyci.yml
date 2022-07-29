@@ -38,4 +38,4 @@ jobs:
       - run: conda install xtb
       - name: run xtb
         run: |
-          ./xtb --opt
+          ./usr/share/miniconda/xtb 
