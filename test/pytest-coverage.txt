@@ -6,27 +6,10 @@ collected 20 items
 
 test_chains_func.py .....                                                [ 25%]
 test_folders_func.py ...                                                 [ 40%]
-test_format_print.py .F....                                              [ 70%]
+test_format_print.py ......                                              [ 70%]
 test_htp_gfn.py .                                                        [ 75%]
 test_sm_func.py .....                                                    [100%]
 
-=================================== FAILURES ===================================
-________________________________ test_format_2 _________________________________
-
-    def test_format_2():
-    
-       mol_1=Chem.MolFromSmiles('c1cc(sc1Br)Br')
-       mol_2=Chem.MolFromSmiles('c1(ccc(cc1)Br)Br')
-    
-       a=Sm(mol_1,mol_2,"Br").monomer()
-       Fmt(a).pdb_print("test_2.mol")
-    
-       b=Fld().seek_files("pdb")
->      assert len(b) == 1
-E      assert 0 == 1
-E       +  where 0 = len([])
-
-test_format_print.py:32: AssertionError
 ---- generated xml file: /home/runner/work/pysoftk/pysoftk/test/pytest.xml -----
 
 ---------- coverage: platform linux, python 3.8.13-final-0 -----------
@@ -44,6 +27,4 @@ TOTAL                                                                           
 
 7 files skipped due to complete coverage.
 
-=========================== short test summary info ============================
-FAILED test_format_print.py::test_format_2 - assert 0 == 1
-======================== 1 failed, 19 passed in 40.40s =========================
+============================= 20 passed in 40.98s ==============================
