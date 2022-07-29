@@ -43,7 +43,7 @@ jobs:
         working-directory: ./test
         run: |
           python -m pip install pytest pytest-cov --user
-          python -m pytest --cov=pysoftk --cov-report html
+          python -m pytest --cov=pysoftk --cov-report xml
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
