@@ -33,10 +33,14 @@ jobs:
       - uses: s-weigand/setup-conda@v1
         with:
            activate-conda: test
-      - run: conda update -n base -c defaults conda
-      - run: conda config --add channels conda-forge
+      - name: Conda installation xtb
       - shell: bash -l {0}
         run: |
+          conda update -n base -c defaults conda
           conda config --add channels conda-forge
           conda install xtb
           conda list
+      - shell: bash -l {0}
+        run: |
+           xtb
+ 
