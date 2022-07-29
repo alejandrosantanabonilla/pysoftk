@@ -18,6 +18,7 @@ jobs:
       matrix:
         python-version: [3.6, 3.7,3.8,3.9]
         os: [ubuntu-latest, macOS-latest]
+ 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
@@ -47,18 +48,28 @@ jobs:
         run: |
           python -m pip install pytest pytest-cov --user
           python -m pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage.txt        
-      
+   
+      - name: Extract branch name
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
       - name: Pytest coverage comment
+        if: ${{ github.ref == 'refs/heads/main' }}
         id: coverageComment
         uses: MishaKav/pytest-coverage-comment@main
         with:
+          hide-comment: true
           pytest-coverage-path: test/pytest-coverage.txt
           junitxml-path: test/pytest.xml
-          title: My Coverage Report Title
-          badge-title: My Badge Coverage Title
-          hide-badge: false
-          hide-report: false
-          create-new-comment: false
-          hide-comment: false
-          report-only-changed-files: false
-          junitxml-title: My JUnit Xml Summary Title
+
+      - name: Update Readme with Coverage Html
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          sed -i '/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n\${{ steps.coverageComment.outputs.coverageHtml }}\n${{ steps.coverageComment.outputs.summaryReport }}\n<!-- Pytest Coverage Comment:End -->' ./README.md
+
+      - name: Commit & Push changes to Readme
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: actions-js/push@master
+        with:
+          message: Update coverage on Readme
+          github_token: ${{ secrets.GITHUB_TOKEN }}
