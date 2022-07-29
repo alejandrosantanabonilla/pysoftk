@@ -33,4 +33,5 @@ jobs:
       - uses: s-weigand/setup-conda@v1
         with:
            activate-conda: false
-      - run: conda install pytest
+      - run: conda config --add channels conda-forge
+      - run: conda install xtb
