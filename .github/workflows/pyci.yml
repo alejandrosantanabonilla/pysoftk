@@ -30,22 +30,39 @@ jobs:
           activate-environment: pysoftk_env
           environment-file: environment.yml
           auto-activate-base: false
+      
       - name: Installation xtb
         run: |
            conda install xtb
+      
       - name: Installing PySoftK
         shell: bash
         run: |
            python -m pip install wheel --user
            python -m pip install setuptools --upgrade --user
            python -m pip install . --user  
+      
       - name: Run PySoftK test
         working-directory: ./test
         run: |
           python -m pip install pytest pytest-cov --user
           python -m pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage.txt        
+      
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
         with:
           pytest-coverage-path: test/pytest-coverage.txt
           junitxml-path: test/pytest.xml
+      
+      - name: Check the output coverage
+        run: |
+          echo "Coverage Percantage - ${{ steps.coverageComment.outputs.coverage }}"
+          echo "Coverage Color - ${{ steps.coverageComment.outputs.color }}"
+          echo "Coverage Html - ${{ steps.coverageComment.outputs.coverageHtml }}"
+          echo "Coverage Warnings - ${{ steps.coverageComment.outputs.warnings }}"
+          echo "Coverage Errors - ${{ steps.coverageComment.outputs.errors }}"
+          echo "Coverage Failures - ${{ steps.coverageComment.outputs.failures }}"
+          echo "Coverage Skipped - ${{ steps.coverageComment.outputs.skipped }}"
+          echo "Coverage Tests - ${{ steps.coverageComment.outputs.tests }}"
+          echo "Coverage Time - ${{ steps.coverageComment.outputs.time }}"
+          echo "Not Success Test Info - ${{ steps.coverageComment.outputs.notSuccessTestInfo }}"
