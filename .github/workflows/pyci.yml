@@ -37,12 +37,7 @@ jobs:
         run: |
           python -m pip install wheel --user
           python -m pip install setuptools --upgrade --user
-          python -m pip install . --user
-      - name: Install PySoftK along with dependencies
-        working-directory: ./test
-        run: |
-          wget https://github.com/grimme-lab/xtb/releases/tag/v6.5.1/xtb-6.5.1-linux-x86_64.tar.xz
-          
+          python -m pip install . --user         
       - name: Run unit tests
         working-directory: ./test
         run: |
