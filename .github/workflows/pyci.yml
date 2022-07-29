@@ -55,6 +55,7 @@ jobs:
           junitxml-path: test/pytest.xml
       
       - name: Check the output coverage
+        shell: bash
         run: |
           echo "Coverage Percantage - ${{ steps.coverageComment.outputs.coverage }}"
           echo "Coverage Color - ${{ steps.coverageComment.outputs.color }}"
