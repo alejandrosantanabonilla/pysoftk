@@ -29,18 +29,12 @@ jobs:
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
-           python-version: ${{ matrix.python-version }}
+          update-conda: true
+          python-version: ${{ matrix.python-version }}
+          conda-channels: anaconda, conda-forge
       - uses: s-weigand/setup-conda@v1
         with:
            activate-conda: test
-      - name: Conda installation xtb
-      - shell: bash -l {0}
-        run: |
-          conda update -n base -c defaults conda
-          conda config --add channels conda-forge
-          conda install xtb
-          conda list
-      - shell: bash -l {0}
-        run: |
-           xtb
- 
+      - run: conda --version
+      - run: conda install xtb
+      - run: conda list
