@@ -33,7 +33,9 @@ jobs:
           python-version: ${{ matrix.python-version }}
           conda-channels: anaconda, conda-forge
           activate-conda: test
-      - run: conda --version
-      - run: conda install xtb
-      - run: conda list
-      - run: xtb
+      - name: Installation xtb
+        run: |
+           conda install xtb
+      - name: Test with pytest
+        run: |
+           conda install pytest
