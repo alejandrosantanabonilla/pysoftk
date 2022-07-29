@@ -43,5 +43,9 @@ jobs:
         working-directory: ./test
         run: |
           python -m pip install pytest pytest-cov --user
-          #python -m pytest
           python -m pytest --cov=pysoftk --cov-report html
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: coverage.xml
