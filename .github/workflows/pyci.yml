@@ -39,10 +39,9 @@ jobs:
            python -m pip install wheel --user
            python -m pip install setuptools --upgrade --user
            python -m pip install . --user  
-      - name: Run unit tests
+      - name: Run PySoftK test
         working-directory: ./test
         run: |
           python -m pip install pytest pytest-cov --user
-          pytest
           #python -m pytest
-          #pytest --cov=pysoftk --cov-report html
+          python -m pytest --cov=pysoftk --cov-report html
