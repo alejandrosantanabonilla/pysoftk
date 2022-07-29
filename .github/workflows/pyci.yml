@@ -32,10 +32,13 @@ jobs:
           update-conda: true
           python-version: ${{ matrix.python-version }}
           conda-channels: anaconda, conda-forge
-          activate-conda: test
       - name: Installation xtb
         run: |
            conda install xtb
       - name: Test with pytest
         run: |
            conda install pytest
+      - name: Pysoftk environment
+        run: |
+           conda create --name pysoftk_env
+           conda activate pysoftk_env
