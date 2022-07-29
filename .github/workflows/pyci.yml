@@ -43,4 +43,5 @@ jobs:
            conda install pytest
       - name: Conda Info
         shell: bash
-        run: python --version
+        run: |
+           python -m pip install --upgrade pip
