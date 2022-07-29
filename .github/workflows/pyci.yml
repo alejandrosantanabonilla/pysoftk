@@ -38,12 +38,14 @@ jobs:
       - name: Installation xtb
         run: |
            conda install xtb
-      - name: Test with pytest
-        run: |
-           conda install pytest
-      - name: Conda Info
+      - name: Installing PySoftK
         shell: bash
         run: |
            python -m pip install wheel --user
            python -m pip install setuptools --upgrade --user
            python -m pip install . --user  
+      - name: Run unit tests
+        working-directory: ./test
+        run: |
+          python -m pip install pytest pytest-cov --user
+          python -m pytest
