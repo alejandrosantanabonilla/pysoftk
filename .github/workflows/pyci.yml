@@ -32,10 +32,10 @@ jobs:
            python-version: ${{ matrix.python-version }}
       - uses: s-weigand/setup-conda@v1
         with:
-           activate-conda: false
+           activate-conda: test
       - run: conda update -n base -c defaults conda
       - run: conda config --add channels conda-forge
-      - run: conda install xtb
-      - name: run xtb
+      - shell: bash -l {0}
         run: |
-          ./usr/share/miniconda/xtb 
+          conda info
+          conda list
