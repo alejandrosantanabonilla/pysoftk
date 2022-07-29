@@ -44,4 +44,6 @@ jobs:
       - name: Conda Info
         shell: bash
         run: |
-           python -m pip install --upgrade pip
+           python -m pip install wheel --user
+           python -m pip install setuptools --upgrade --user
+           python -m pip install . --user  
