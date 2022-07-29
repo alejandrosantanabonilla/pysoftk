@@ -13,18 +13,11 @@ jobs:
   build:
     name: python ${{ matrix.python-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-
     strategy:
       fail-fast: false
       matrix:
         python-version: [3.6, 3.7,3.8,3.9]
-        os: [ubuntu-latest, macOS-latest, windows-latest]
-#        include:
-#          - {python-version: "3.6", os: ubuntu-latest, documentation: True}
-#          - {python-version: "3.7", os: ubuntu-latest, documentation: False}
-#          - {python-version: "3.8", os: ubuntu-latest, documentation: True}
-#          - {python-version: "3.9", os: ubuntu-latest, documentation: False}
-
+        os: [ubuntu-latest, macOS-latest]
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
