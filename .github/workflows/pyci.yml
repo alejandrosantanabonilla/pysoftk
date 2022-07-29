@@ -36,4 +36,4 @@ jobs:
       - run: conda --version
       - run: conda install xtb
       - run: conda list
-      - run: which python
+      - run: xtb
