@@ -39,6 +39,7 @@ jobs:
         run: |
            conda install pytest
       - name: Pysoftk environment
+        shell: bash {0}
         run: |
            conda create --name pysoftk_env
            conda activate pysoftk_env
