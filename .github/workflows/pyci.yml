@@ -43,4 +43,6 @@ jobs:
         working-directory: ./test
         run: |
           python -m pip install pytest pytest-cov --user
-          python -m pytest
+          pytest
+          #python -m pytest
+          #pytest --cov=pysoftk --cov-report html
