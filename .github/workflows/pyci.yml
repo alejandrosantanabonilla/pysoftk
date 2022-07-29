@@ -26,20 +26,12 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.8
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Upgrade pip
-        run: |
-          python -m pip install --upgrade pip
-      - name: Install PySoftK along with dependencies
-        run: |
-          python -m pip install wheel --user
-          python -m pip install setuptools --upgrade --user
-          python -m pip install . --user         
-      - name: Run unit tests
-        working-directory: ./test
-        run: |
-          python -m pip install pytest pytest-cov --user
-          python -m pytest
+           python-version: ${{ matrix.python-version }}
+      - uses: s-weigand/setup-conda@v1
+        with:
+           activate-conda: false
+      - run: conda --version
+      - run: which python
