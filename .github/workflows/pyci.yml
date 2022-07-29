@@ -26,12 +26,16 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.8
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
            python-version: ${{ matrix.python-version }}
       - uses: s-weigand/setup-conda@v1
         with:
            activate-conda: false
+      - run: conda update -n base -c defaults conda
       - run: conda config --add channels conda-forge
       - run: conda install xtb
+      - name: run xtb
+        run: |
+          ./xtb
