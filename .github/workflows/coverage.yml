@@ -6,9 +6,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Setup Conda
+        uses: s-weigand/setup-conda@v1
         with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
-          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+          update-conda: true
+          python-version: ${{ matrix.python-version }}
+          conda-channels: anaconda, conda-forge
+          activate-environment: pysoftk_env
+          environment-file: environment.yml
+          auto-activate-base: false
+      
+      - name: Installation xtb
+        run: |
+           conda install xtb
+      
+      - name: Installing PySoftK
+        shell: bash
+        run: |
+           python -m pip install wheel --user
+           python -m pip install setuptools --upgrade --user
+           python -m pip install . --user  
+      
+      - name: Run PySoftK test
+        working-directory: ./test
+        run: |
+          python -m pip install pytest pytest-cov --user
+          python -m pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage.txt
 
       - name: Extract branch name
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
@@ -20,7 +43,7 @@ jobs:
         uses: MishaKav/pytest-coverage-comment@main
         with:
           hide-comment: true
-          pytest-coverage-path: ./data/pytest-coverage_4.txt
+          pytest-coverage-path: ./data/pytest-coverage.txt
 
       - name: Update Readme with Coverage Html
         if: ${{ github.ref == 'refs/heads/main' }}
