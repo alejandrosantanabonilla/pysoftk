@@ -19,8 +19,8 @@ must show the following result
 .. code-block:: console
 
    * remote origin
-  Fetch URL: git@github.com:alejandrosantanabonilla/pysoftk.git
-  Push  URL: git@github.com:alejandrosantanabonilla/pysoftk.git
+  Fetch URL: git@github.com:PATH_TO/pysoftk.git
+  Push  URL: git@github.com:PATH_TO/pysoftk.git
   HEAD branch: master
   Remote branch:
     pysoft_docs tracked
