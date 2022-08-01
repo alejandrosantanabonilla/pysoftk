@@ -40,11 +40,11 @@ jobs:
          sphinx-apidoc -o ./source ../pysoftk
          ls
          
- #    - name: Build and commit
- #      uses: sphinx-notes/pages@v2
+     - name: Build and commit
+       uses: sphinx-notes/pages@v2
      
- #    - name: Push Changes
- #      uses: ad-m/github-push-action@master
- #      with:
- #         github_token: ${{ secrets. }}
- #         branch: gh-pages
+     - name: Push Changes
+       uses: ad-m/github-push-action@master
+       with:
+          github_token: ${{ secrets. }}
+          branch: gh-pages
