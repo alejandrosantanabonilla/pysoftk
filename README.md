@@ -7,6 +7,9 @@
 
 <!-- Pytest Coverage Comment:End -->
 
+[![pysoftk](https://github.com/alejandrosantanabonilla/pysoftk/actions/workflows/build_docs.yml/badge.svg)](https://github.com/alejandrosantanabonilla/pysoftk/actions/workflows/build_docs.yml)
+
+
 # PySoftK
 
 
