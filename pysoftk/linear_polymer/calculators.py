@@ -27,58 +27,6 @@ class Opt(object):
         """
         self.xyz_file = xyz_file
 
-    def xtb_ff(self, xtb_path, num_cores=None, threshold=None):
-       """Function invoking GFN-XTB Force-Field implementation
-          for geometry optimization.
-
-       Parameters
-       ----------
-       xtb_path : str
-          Path where the GFN-XTB2 executable is 
-          located
-       num_cores : int, optional
-          Number of cores which the GFN-XTB2 code
-          will use.
-       threshold: str, optional
-          Level of geometry optimization required 
-          as defined in GFN-XTB2 code. 
-
-       Returns
-       -------
-       output : str
-          File name output.log containing the optimization
-          process carried out by GFN-XTB2.
-       """
-       xyz=self.xyz_file
-    
-       num_cores = int(1) if num_cores is None else int(num_cores)
-       threshold = str("crude") if threshold is None else str(threshold)
-
-       init_dir = os.getcwd()
-       out_file = 'output.log'
-
-       cmd = (
-               f'{xtb_path} --gfnff {xyz} '            
-               f'--parallel {num_cores} '
-               f'--opt {threshold} '
-             )
-
-       # Note that sp.call will hold the program until completion
-       # of the calculation.
-
-       try:
-          with open(out_file, 'w') as result:
-           sp.call(
-              cmd,
-              stdin=sp.PIPE,
-              stdout=result,
-              stderr=sp.PIPE,
-              shell=True,
-              cwd=init_dir
-             )
-       finally:
-           print ("{} has been relaxed".format(xyz))
-
     def pyscf_semi(self, steps):
         """Function invoking PYSCF semiempirical implementation
            for geometry optimization.

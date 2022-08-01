@@ -41,7 +41,7 @@ def test_organise_files():
        shutil.rmtree(i)
 
 
-def test_crete_empty_dir():
+def test_create_empty_dir():
     
   # Test 3: Create 2 folders with random names using 1 core.
   Fld().create(2)
