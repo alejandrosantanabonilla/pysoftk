@@ -3,8 +3,6 @@ from rdkit.Chem import AllChem
 from rdkit.Chem import rdDistGeom as molDG
 from rdkit.Chem import TorsionFingerprints
 
-import MDAnalysis as mda
-
 import numpy as np
 
 class Mcon(object):

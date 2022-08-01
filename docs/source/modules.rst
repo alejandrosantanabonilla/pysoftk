@@ -1,4 +1,4 @@
-pysoftk
+API
 =======
 
 .. toctree::
