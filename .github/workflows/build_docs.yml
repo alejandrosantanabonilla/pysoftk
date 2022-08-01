@@ -32,4 +32,18 @@ jobs:
      - name: Install PySoftK
        run: |
           pip install .
-          ls
+          
+     - name: Sphinx apidocs
+       run: |
+         cd docs
+         sphinx-apidocs -o ./source ../pysoftk
+         ls
+         
+ #    - name: Build and commit
+ #      uses: sphinx-notes/pages@v2
+     
+ #    - name: Push Changes
+ #      uses: ad-m/github-push-action@master
+ #      with:
+ #         github_token: ${{ secrets. }}
+ #         branch: gh-pages
