@@ -36,7 +36,7 @@ jobs:
      - name: Sphinx apidocs
        run: |
          cd docs
-         sphinx-apidocs -o ./source ../pysoftk
+         bash sphinx-apidoc -o ./source ../pysoftk
          ls
          
  #    - name: Build and commit
