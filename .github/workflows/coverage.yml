@@ -59,6 +59,7 @@ jobs:
         with:
           hide-comment: true
           pytest-coverage-path: ./test/pytest-coverage.txt
+          junitxml-path: ./test/pytest.xml
 
       - name: Update Readme with Coverage Html
         if: ${{ github.ref == 'refs/heads/main' }}
