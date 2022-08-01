@@ -59,4 +59,4 @@ Replacing **PATH_TO_FOLDER** by the actual path where xtb is stored in your comp
 
 [1]: https://alejandrosantanabonilla.github.io/pysoftk/
 [2]: https://github.com/grimme-lab/xtb
->>>>>>> c6f7409ba1533dd4f4a9e8f2f76c8a9666e2731f
+
