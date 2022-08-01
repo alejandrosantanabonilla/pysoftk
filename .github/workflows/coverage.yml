@@ -70,4 +70,4 @@ jobs:
         uses: actions-js/push@master
         with:
           message: Update coverage on Readme
-          github_token: ${{ secrets. }}
+          github_token: ${{ secrets.PYSOFTK_COVERAGE }}
