@@ -2,8 +2,6 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Chem import rdDistGeom as molDG
 
-import MDAnalysis as mda
-
 class Fmt(object):
     """Class printing RDkit Mol Object in 
        different formats

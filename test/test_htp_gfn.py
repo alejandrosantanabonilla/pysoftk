@@ -40,4 +40,7 @@ def test_htp_gfn_creation():
 
   for i in a:
     shutil.rmtree(i)
+<<<<<<< HEAD
 
+=======
+>>>>>>> c6f7409ba1533dd4f4a9e8f2f76c8a9666e2731f
