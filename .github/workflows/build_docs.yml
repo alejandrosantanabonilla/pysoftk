@@ -34,9 +34,10 @@ jobs:
           pip install .
           
      - name: Sphinx apidocs
+       shell: bash
        run: |
          cd docs
-         bash sphinx-apidoc -o ./source ../pysoftk
+         sphinx-apidoc -o ./source ../pysoftk
          ls
          
  #    - name: Build and commit
