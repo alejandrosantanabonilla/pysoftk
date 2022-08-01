@@ -1,0 +1,64 @@
+============================= test session starts ==============================
+platform linux -- Python 3.9.13, pytest-7.1.2, pluggy-1.0.0
+rootdir: /home/runner/work/pysoftk/pysoftk
+plugins: cov-3.0.0
+collected 21 items
+
+test_calculator.py .                                                     [  4%]
+test_chains_func.py .....                                                [ 28%]
+test_folders_func.py ...                                                 [ 42%]
+test_format_print.py ......                                              [ 71%]
+test_htp_gfn.py .                                                        [ 76%]
+test_sm_func.py .....                                                    [100%]
+
+=============================== warnings summary ===============================
+test/test_calculator.py::test_pyscf
+  /home/runner/.local/lib/python3.9/site-packages/pyscf/__init__.py:93: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    if LooseVersion(numpy.__version__) <= '1.8.0':
+
+test/test_calculator.py::test_pyscf
+test/test_calculator.py::test_pyscf
+test/test_calculator.py::test_pyscf
+  /usr/share/miniconda/envs/__setup_conda/lib/python3.9/site-packages/setuptools/_distutils/version.py:346: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    other = LooseVersion(other)
+
+test/test_calculator.py::test_pyscf
+  /home/runner/.local/lib/python3.9/site-packages/pyscf/__init__.py:99: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    elif '1.16.2' <= LooseVersion(numpy.__version__) < '1.18':
+
+test/test_calculator.py::test_pyscf
+  /home/runner/.local/lib/python3.9/site-packages/numpy/ctypeslib.py:137: DeprecationWarning: 
+  
+    `numpy.distutils` is deprecated since NumPy 1.23.0, as a result
+    of the deprecation of `distutils` itself. It will be removed for
+    Python >= 3.12. For older Python versions it will remain present.
+    It is recommended to use `setuptools < 60.0` for those Python versions.
+    For more details, see:
+      https://numpy.org/devdocs/reference/distutils_status_migration.html 
+  
+  
+    from numpy.distutils.misc_util import get_shared_lib_extension
+
+test/test_calculator.py::test_pyscf
+test/test_calculator.py::test_pyscf
+  /home/runner/.local/lib/python3.9/site-packages/pyscf/lib/numpy_helper.py:884: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    if LooseVersion(numpy.__version__) <= LooseVersion('1.6.0'):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+---- generated xml file: /home/runner/work/pysoftk/pysoftk/test/pytest.xml -----
+
+---------- coverage: platform linux, python 3.9.13-final-0 -----------
+Name                                                                                       Stmts   Miss  Cover   Missing
+------------------------------------------------------------------------------------------------------------------------
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/folder_manager/folder_creator.py      51      3    94%   38, 153-154
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/format_printers/format_mol.py         27      6    78%   49-50, 72-73, 95-96
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/htp_tools/calculator_htp.py           52     13    75%   124-149, 222-228
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/linear_polymer/linear_polymer.py      80      3    96%   194, 250-251
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/linear_polymer/super_monomer.py       51      7    86%   154-162
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/torsional/torsional.py                88     10    89%   59-60, 238-249
+------------------------------------------------------------------------------------------------------------------------
+TOTAL                                                                                        414     42    90%
+
+8 files skipped due to complete coverage.
+
+======================= 21 passed, 8 warnings in 48.46s ========================
