@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: pysoftk
+name: Docs Building
 
 # Controls when the workflow will run
 on:
@@ -41,16 +41,10 @@ jobs:
          sphinx-apidoc -o ./source ../pysoftk
          make html
          cd ..
+         
      - name: Deploy
        uses: peaceiris/actions-gh-pages@v3
        with:
          publish_branch: gh-pages
          github_token: ${{ secrets.GITHUB_TOKEN }}
          publish_dir: ./docs/build/html 
- #      uses: sphinx-notes/pages@v2
- #    
- #    - name: Push Changes
- #      uses: ad-m/github-push-action@master
- #      with:
- #         github_token: ${{ secrets.PYSOFTK_DOCS }}
- #         branch: gh-pages
