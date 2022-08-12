@@ -1,5 +1,5 @@
-API
-===
+PySoftK
+==============
 
 .. warning::
    The API documentation is work-in-progress!
