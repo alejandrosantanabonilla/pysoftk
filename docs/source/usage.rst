@@ -1,3 +1,5 @@
+.. include:: /include/links.rst
+
 Usage
 =====
 
@@ -46,7 +48,3 @@ To install PySoftK_, we encourage to do it inside a virtual environment, which c
 
    $ cd test
    (.venv) $ pytest
-
-
-.. _PySoftK: https://github.com/alejandrosantanabonilla/pysoftk
-.. _GitHub: https://github.com/
