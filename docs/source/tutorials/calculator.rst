@@ -25,13 +25,15 @@ To demonstrate the functionality of this module, two molecules (Benzene and Thio
 
 The calculator module :mod:`pysoftk.linear\_polymer.calculators.Opt` can be used to perform a geometry optimization by providing a valid **XYZ** file 
 
-.. note::
+.. warning::
    
    - The only xtb_ accepted geometry format is **XYZ**. 
-   - To globally enable the xtb_ executable, one can define the PATH
-     using the command:
+   - To globally enable the xtb_ executable, one can define the **PATH** 
+     and the **XTBHOME** variables using the commands:
 
-     **export XTBPATH=<prefix_path_where_xtb_is_located>**
+     export PATH="$PATH:$HOME/PATH_TO_FOLDER/xtb-X.X.X/bin"
+     export XTBHOME="PATH_TO_XTB_FOLDER/xtb-X.X.X"
+
    
 The *Opt* module receives the name of the **XYZ** to be used by xtb_ whilst the function *xtb_ff* accepts the **absolute path/alias** where the xtb_ executable is stored (see note for creating an *alias* for xtb_ executable).
 
