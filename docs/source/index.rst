@@ -15,18 +15,13 @@ structure of the polymer that can be used as an input for building the desired i
 
 .. toctree::
    :maxdepth: 2
-   :caption: 
-
-Contents:
----------
-
-.. toctree::
+   :caption: Contents:
 
    about
    usage
    tutorials/tutorials
    faq
-   
+
 ..
    Indices and tables
    ==================
