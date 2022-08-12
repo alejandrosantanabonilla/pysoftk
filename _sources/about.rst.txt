@@ -1,3 +1,5 @@
+.. include:: /include/links.rst
+
 .. _about:
 
 =====
@@ -26,5 +28,3 @@ PySoftK_ has been designed such that it is :
   PySoftK_ has been released under GNU_ Lesser General
   Public License version 3.0 or any later version. 
 
-.. _PySoftK: https://github.com/alejandrosantanabonilla/pysoftk
-.. _GNU: https://www.gnu.org/licenses/gpl-3.0.en.html
