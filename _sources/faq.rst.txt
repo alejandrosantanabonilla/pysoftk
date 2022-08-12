@@ -7,7 +7,7 @@ Frequently Asked Questions
 ==========================
 
 
-How should I cite PySoftK?
+How should I cite PySoftK_?
 ----------------------------
 
 If you find PySoftK useful in your research please cite:

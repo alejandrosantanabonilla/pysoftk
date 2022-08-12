@@ -1,4 +1,4 @@
-.. include:: /include/links.rst
+.. include:: include/links.rst
 
 Usage
 =====
