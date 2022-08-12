@@ -8,6 +8,8 @@
 .. _RDKit: https://www.rdkit.org/
 .. _VMD: https://www.ks.uiuc.edu/Research/vmd/
 .. _asyncio: https://docs.python.org/3/library/asyncio.html
+.. _PySCF-semiempirical: https://github.com/pyscf/semiempirical
+.. _PySCF-install: https://pyscf.org/install.html
 
 .. role:: python(code)
    :language: python
