@@ -116,13 +116,14 @@ To introduce this functionality, one needs to import the corresponding <a class=
 </pre></div>
 </div>
 <p>The calculator module <a class="reference internal" href="../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Opt" title="pysoftk.linear_polymer.calculators.Opt"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pysoftk.linear_polymer.calculators.Opt</span></code></a> can be used to perform a geometry optimization by providing a valid <strong>XYZ</strong> file</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
 <ul>
 <li><p>The only <a class="reference external" href="https://github.com/grimme-lab/xtb">xtb</a> accepted geometry format is <strong>XYZ</strong>.</p></li>
-<li><p>To globally enable the <a class="reference external" href="https://github.com/grimme-lab/xtb">xtb</a> executable, one can define the PATH
-using the command:</p>
-<p><strong>export XTBPATH=&lt;prefix_path_where_xtb_is_located&gt;</strong></p>
+<li><p>To globally enable the <a class="reference external" href="https://github.com/grimme-lab/xtb">xtb</a> executable, one can define the <strong>PATH</strong>
+and the <strong>XTBHOME</strong> variables using the commands:</p>
+<p>export PATH=”$PATH:$HOME/PATH_TO_FOLDER/xtb-X.X.X/bin”
+export XTBHOME=”PATH_TO_XTB_FOLDER/xtb-X.X.X”</p>
 </li>
 </ul>
 </div>
