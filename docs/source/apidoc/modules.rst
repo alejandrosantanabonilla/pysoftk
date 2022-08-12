@@ -1,5 +1,5 @@
 pysoftk
-======
+==========
 
 .. toctree::
    :maxdepth: 1
