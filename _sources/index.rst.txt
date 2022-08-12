@@ -21,6 +21,7 @@ structure of the polymer that can be used as an input for building the desired i
    usage
    tutorials/tutorials
    faq
+   apidoc/modules
 
 ..
    Indices and tables
