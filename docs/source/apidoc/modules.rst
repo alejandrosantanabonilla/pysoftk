@@ -1,11 +1,9 @@
-PySoftK
-==============
+PySoftK Modular structure
+============================
 
-.. warning::
-   The API documentation is work-in-progress!
+In this section, the modular structure of PySoftK is displayed. 
 
-Basic
------
+.. toctree::
+   :maxdepth: 4
 
    pysoftk
-   
