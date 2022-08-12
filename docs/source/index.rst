@@ -14,12 +14,14 @@ block heterpolymers, sequenced heteropolymers and random heteropolymers) and top
 structure of the polymer that can be used as an input for building the desired initial configuration for a molecular dynamcis simulation.
 
 .. toctree::
+   :maxdepth: 3
+   :caption: Contents:
 
    about
    usage
    tutorials/tutorials
    faq
-   modules
+   apidoc/modules
 
 ..
    Indices and tables
