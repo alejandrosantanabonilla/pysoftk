@@ -2,16 +2,21 @@
 platform linux -- Python 3.9.13, pytest-7.1.2, pluggy-1.0.0
 rootdir: /home/runner/work/pysoftk/pysoftk
 plugins: cov-3.0.0
-collected 21 items
+collected 32 items
 
-test_calculator.py .                                                     [  4%]
-test_chains_func.py .....                                                [ 28%]
-test_folders_func.py ...                                                 [ 42%]
-test_format_print.py ......                                              [ 71%]
-test_htp_gfn.py .                                                        [ 76%]
+test_calculator.py .                                                     [  3%]
+test_chains_func.py .....                                                [ 18%]
+test_folders_func.py ...                                                 [ 28%]
+test_format_print.py ......                                              [ 46%]
+test_htp_gfn.py .                                                        [ 50%]
+test_single_monomers.py ...........                                      [ 84%]
 test_sm_func.py .....                                                    [100%]
 
 =============================== warnings summary ===============================
+test_single_monomers.py:83
+  /home/runner/work/pysoftk/pysoftk/test/test_single_monomers.py:83: DeprecationWarning: invalid escape sequence \C
+    a=Chem.MolFromSmiles("C(/C=C(\C)/CBr)Br")
+
 test/test_calculator.py::test_pyscf
   /home/runner/.local/lib/python3.9/site-packages/pyscf/__init__.py:93: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
     if LooseVersion(numpy.__version__) <= '1.8.0':
@@ -19,7 +24,7 @@ test/test_calculator.py::test_pyscf
 test/test_calculator.py::test_pyscf
 test/test_calculator.py::test_pyscf
 test/test_calculator.py::test_pyscf
-  /usr/share/miniconda/envs/__setup_conda/lib/python3.9/site-packages/setuptools/_distutils/version.py:346: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+  /home/runner/.local/lib/python3.9/site-packages/setuptools/_distutils/version.py:346: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
     other = LooseVersion(other)
 
 test/test_calculator.py::test_pyscf
@@ -61,4 +66,4 @@ TOTAL                                                                           
 
 8 files skipped due to complete coverage.
 
-======================= 21 passed, 8 warnings in 48.23s ========================
+======================= 32 passed, 9 warnings in 50.00s ========================
