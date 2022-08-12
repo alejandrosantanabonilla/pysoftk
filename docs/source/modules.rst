@@ -1,7 +1,7 @@
-pysoftk
+API
 ======
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 3
 
-   pysoftk.torsional
+   pysoftk
