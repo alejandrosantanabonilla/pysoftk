@@ -7,5 +7,5 @@ PySoftK
 Basic
 -----
 
-   pysoftk.linear_polymer
+   pysoftk
    
