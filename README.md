@@ -54,6 +54,9 @@ Replacing **PATH_TO_FOLDER** by the actual path where xtb is stored in your comp
   pytest
 ```
 
+[![Stargazers over time](https://starchart.cc/Naereen/badges.svg)](https://starchart.cc/Naereen/badges)
+
+
 [1]: https://alejandrosantanabonilla.github.io/pysoftk/
 [2]: https://github.com/grimme-lab/xtb
 
