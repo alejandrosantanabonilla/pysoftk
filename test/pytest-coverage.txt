@@ -66,4 +66,4 @@ TOTAL                                                                           
 
 8 files skipped due to complete coverage.
 
-======================= 32 passed, 9 warnings in 49.39s ========================
+================== 32 passed, 9 warnings in 64.83s (0:01:04) ===================
