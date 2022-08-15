@@ -4,7 +4,7 @@
 | ----- | ------- | -------- | -------- | ------------------ |
 | 32 | 0 :zzz: | 0 :x: | 0 :fire: | 1m 13s :stopwatch: |
 <!-- Pytest Coverage Comment:End -->
-
+[![Linux](https://svgshare.com/i/Zhy.svg)](https://svgshare.com/i/Zhy.svg)
 # PySoftK
 
 
