@@ -25,7 +25,6 @@ The process to build these kind of polymers is presented in this snapshot:
 
    from rdkit import Chem
    from rdkit.Chem import AllChem
-   from rdkit.Chem import rdDistGeom
 
    from pysoftk.linear_polymer.linear_polymer import *
    from pysoftk.format_printers.format_mol import *
@@ -41,4 +40,38 @@ The process to build these kind of polymers is presented in this snapshot:
    
 The Styrene molecule (**a**) is initially declared using SMILES format. The molecule has been embedded using one the methods available in RDKit_ and then 
 parsed to :mod:`pysoftk.linear\_polymer.super\_linear_polymer` to create an initial polymer structure. 
-   
+
+In some cases, the used monomer exhibits complicated three-dimensional structures which are sometimes not well described using SMILES format. As an 
+example, the following molecule:
+
+.. code-block:: python
+
+   a=Chem.MolFromSmiles('[C@H](CBr)(OBr)C')
+
+Produces the following error, when directly parse to PySoftK_:
+
+.. code-block:: bash
+  
+   ValueError: Bad Conformer Id
+
+This indicates that the molecule has many possible three-dimensional representations. This problem can be solved, by creating a first set of three-
+dimensional coordinates in the following way:
+
+.. code-block:: python
+
+   from rdkit import Chem
+   from rdkit.Chem import AllChem
+
+   from pysoftk.linear_polymer.linear_polymer import *
+   from pysoftk.format_printers.format_mol import *
+
+   #Creatin a 3-D representation by inactivating the isomericSmiles option from RDKit.
+   a=Chem.MolFromSmiles('[C@H](CBr)(OBr)C')
+   b=Chem.MolToSmiles(a, isomericSmiles=False)
+   c=Chem.MolFromSmiles(b)
+
+   # Original Embedding
+   AllChem.EmbedMolecule(c)
+
+   new=Lp(c,"Br",2,shift=1.25).linear_polymer("MMFF",350)
+   Fmt(new).xyz_print("solved.xyz")
