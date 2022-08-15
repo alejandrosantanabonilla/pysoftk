@@ -4,7 +4,7 @@
 From single monomer to polymers using PySoftK
 =========================================================
 
-PySoftK_ is a code that enables the creation of polymers with different compositions and topologies delivering an equilibrated initial configuration. Initially, the user needs to prepare the monomer(s) by signalling the specific molecular regions where the bond creation will take place. Usually a place-holder (such as a predefined atom) can be used for this purpose.  
+PySoftK_ enables to create   
 
 To explicitly show the process, we will use a furan molecule. By using a common visualization program (such as VMD_), the functionalization process is presented below
 
