@@ -45,7 +45,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="prepare_molecules.html">Preparing monomers for PySoftK</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">From single molecules to polymers using PySoftK</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">From single molecules to polymers using PySoftK</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#stereochemistry-issues">Stereochemistry issues</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="super_monomer.html">Creating a Polymer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_chains.html">Creating chains of Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
@@ -96,7 +99,6 @@ polymer formed with a 3-unit repetition.</p>
 <p>The process to build these kind of polymers is presented in this snapshot:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
 <span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
-<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">rdDistGeom</span>
 
 <span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.linear_polymer</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">pysoftk.format_printers.format_mol</span> <span class="kn">import</span> <span class="o">*</span>
@@ -112,6 +114,39 @@ polymer formed with a 3-unit repetition.</p>
 </div>
 <p>The Styrene molecule (<strong>a</strong>) is initially declared using SMILES format. The molecule has been embedded using one the methods available in <a class="reference external" href="https://www.rdkit.org/">RDKit</a> and then
 parsed to <code class="xref py py-mod docutils literal notranslate"><span class="pre">pysoftk.linear_polymer.super_linear_polymer</span></code> to create an initial polymer structure.</p>
+<section id="stereochemistry-issues">
+<h2>Stereochemistry issues<a class="headerlink" href="#stereochemistry-issues" title="Permalink to this heading"></a></h2>
+<p>In some cases, the used monomer exhibits complicated three-dimensional structures which are sometimes not well described using SMILES format. As an
+example, the following molecule:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s1">&#39;[C@H](CBr)(OBr)C&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Produces the following error, when directly parse to <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ValueError: Bad Conformer Id
+</pre></div>
+</div>
+<p>This indicates that the molecule has many possible three-dimensional representations. This problem can be solved, by creating a first set of three-
+dimensional coordinates in the following way:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
+
+<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.linear_polymer</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pysoftk.format_printers.format_mol</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1">#Creatin a 3-D representation by inactivating the isomericSmiles option from RDKit.</span>
+<span class="n">a</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s1">&#39;[C@H](CBr)(OBr)C&#39;</span><span class="p">)</span>
+<span class="n">b</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">isomericSmiles</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">c</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+<span class="c1"># Original Embedding</span>
+<span class="n">AllChem</span><span class="o">.</span><span class="n">EmbedMolecule</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+<span class="n">new</span><span class="o">=</span><span class="n">Lp</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="s2">&quot;Br&quot;</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="n">shift</span><span class="o">=</span><span class="mf">1.25</span><span class="p">)</span><span class="o">.</span><span class="n">linear_polymer</span><span class="p">(</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span><span class="mi">350</span><span class="p">)</span>
+<span class="n">Fmt</span><span class="p">(</span><span class="n">new</span><span class="p">)</span><span class="o">.</span><span class="n">xyz_print</span><span class="p">(</span><span class="s2">&quot;solved.xyz&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Enabling the creation of the corresponding 4-unit polymer.</p>
+</section>
 </section>
 
 
