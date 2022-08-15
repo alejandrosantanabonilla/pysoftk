@@ -17,7 +17,7 @@ presented below:
    :figclass: align-center
 
 **(a)** Represents a functionalized single Styrene molecule in which two Bromine atoms are used as place-holders for bonding formation. **(b)** A Styrene 
-polymer with formed by 3 initial Styrene units. 
+polymer formed by 3 initial Styrene units. 
 
 The process to build these kind of polymers is presented in this snapshot:
 
