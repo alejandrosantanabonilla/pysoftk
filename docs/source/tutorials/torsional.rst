@@ -1,3 +1,5 @@
+.. include:: /include/links.rst
+
 .. _torsional:
 
 =========================================================
@@ -60,9 +62,3 @@ The corresponding figures are displayed below, where the user can corrborate the
 	   
    * - .. image:: mol_1_mol_6.png       
      - .. image:: mol_1_mol_7.png 
-
-       
-.. _VMD: https://www.ks.uiuc.edu/Research/vmd/
-.. _PySoftK: https://github.com/alejandrosantanabonilla/pysoftk
-.. _RDKit: https://www.rdkit.org/
-
