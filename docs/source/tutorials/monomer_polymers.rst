@@ -43,7 +43,7 @@ parsed to :mod:`pysoftk.linear\_polymer.super\_linear_polymer` to create an init
 
 
 Stereochemistry issues
-==========================
+--------------------------
 
 In some cases, the used monomer exhibits complicated three-dimensional structures which are sometimes not well described using SMILES format. As an 
 example, the following molecule:
