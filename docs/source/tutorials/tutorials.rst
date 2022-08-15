@@ -12,6 +12,7 @@ of a ring polymer using pre-existing functions of PySoftK_ introduces the user i
    :maxdepth: 1
 
    prepare_molecules
+   monomer_polymers
    super_monomer
    polymer_chains
    create_folders
