@@ -1,4 +1,4 @@
-
+.. include:: /include/links.rst
 
 .. _monomer_polymers:
 
