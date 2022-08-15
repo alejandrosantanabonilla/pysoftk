@@ -4,7 +4,7 @@
 From single monomer to polymers using PySoftK
 =========================================================
 
-PySoftK_ enables to create   
+PySoftK_ enables to create Polymers from a single monomer. To do so, the user needs to highligthing the positions where the merging process will take place, using a place-holder atom (as presented in 
 
 To explicitly show the process, we will use a furan molecule. By using a common visualization program (such as VMD_), the functionalization process is presented below
 
