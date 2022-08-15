@@ -24,7 +24,7 @@ test/test_calculator.py::test_pyscf
 test/test_calculator.py::test_pyscf
 test/test_calculator.py::test_pyscf
 test/test_calculator.py::test_pyscf
-  /home/runner/.local/lib/python3.9/site-packages/setuptools/_distutils/version.py:346: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+  /usr/share/miniconda/envs/__setup_conda/lib/python3.9/site-packages/setuptools/_distutils/version.py:346: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
     other = LooseVersion(other)
 
 test/test_calculator.py::test_pyscf
@@ -66,4 +66,4 @@ TOTAL                                                                           
 
 8 files skipped due to complete coverage.
 
-================== 32 passed, 9 warnings in 73.59s (0:01:13) ===================
+======================= 32 passed, 9 warnings in 49.39s ========================
