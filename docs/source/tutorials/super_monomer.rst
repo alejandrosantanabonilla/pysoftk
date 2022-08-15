@@ -35,8 +35,7 @@ The final script is:
 
 .. literalinclude:: super_monomer.py
 
-By using common visualization software (such as VMD_), the built
-structure **super_monomer.py** can be displayed as shown:
+By using common visualization software (such as VMD_), the built structure **super_monomer.py** can be displayed as shown:
 
 .. figure:: smonomer.png
    :align: center
