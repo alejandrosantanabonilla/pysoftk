@@ -17,7 +17,7 @@ presented below:
    :figclass: align-center
 
 **(a)** Represents a functionalized single Styrene molecule in which two Bromine atoms are used as place-holders for bonding formation. **(b)** A Styrene 
-polymer formed by 3 initial Styrene units. 
+polymer formed with a 3-unit repetition. 
 
 The process to build these kind of polymers is presented in this snapshot:
 
@@ -40,5 +40,5 @@ The process to build these kind of polymers is presented in this snapshot:
    
    
 The Styrene molecule (**a**) is initially declared using SMILES format. The molecule has been embedded using one the methods available in RDKit_ and then 
-parsed to *linear_polymer* order to create initial structures of a desired polymer.
+parsed to :mod:`pysoftk.linear\_polymer.super\_linear_polymer` to create an initial polymer structure. 
    
