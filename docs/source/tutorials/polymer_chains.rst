@@ -46,7 +46,3 @@ as presented above
    :figclass: align-center
 
 Created a linear polymer with a 3-unit repetition. 
-
-.. _PySoftK: https://github.com/alejandrosantanabonilla/pysoftk
-.. _RDKit: https://www.rdkit.org/
-.. _VMD: https://www.ks.uiuc.edu/Research/vmd/
