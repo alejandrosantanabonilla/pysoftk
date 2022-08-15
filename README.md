@@ -3,7 +3,6 @@
 | Tests | Skipped | Failures | Errors | Time |
 | ----- | ------- | -------- | -------- | ------------------ |
 | 32 | 0 :zzz: | 0 :x: | 0 :fire: | 1m 4s :stopwatch: |
-"
 <!-- Pytest Coverage Comment:End -->
 
 # PySoftK
