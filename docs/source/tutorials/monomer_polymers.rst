@@ -41,6 +41,10 @@ The process to build these kind of polymers is presented in this snapshot:
 The Styrene molecule (**a**) is initially declared using SMILES format. The molecule has been embedded using one the methods available in RDKit_ and then 
 parsed to :mod:`pysoftk.linear\_polymer.super\_linear_polymer` to create an initial polymer structure. 
 
+
+Stereochemistry issues
+==========================
+
 In some cases, the used monomer exhibits complicated three-dimensional structures which are sometimes not well described using SMILES format. As an 
 example, the following molecule:
 
@@ -73,5 +77,7 @@ dimensional coordinates in the following way:
    # Original Embedding
    AllChem.EmbedMolecule(c)
 
-   new=Lp(c,"Br",2,shift=1.25).linear_polymer("MMFF",350)
+   new=Lp(c,"Br",4,shift=1.25).linear_polymer("MMFF",350)
    Fmt(new).xyz_print("solved.xyz")
+   
+Enabling the creation of the corresponding 4-unit polymer. 
