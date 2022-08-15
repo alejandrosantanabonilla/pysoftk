@@ -45,6 +45,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="prepare_molecules.html">Preparing monomers for PySoftK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monomer_polymers.html">From single molecules to polymers using PySoftK</a></li>
 <li class="toctree-l2"><a class="reference internal" href="super_monomer.html">Creating a Polymer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_chains.html">Creating chains of Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
@@ -136,7 +137,7 @@ export XTBHOME=”PATH_TO_XTB_FOLDER/xtb-X.X.X”</p>
 </section>
 <section id="geometry-optimization-using-pyscf">
 <h2>Geometry optimization using PySCF<a class="headerlink" href="#geometry-optimization-using-pyscf" title="Permalink to this heading"></a></h2>
-<p><a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> also permits the use of <a class="reference external" href="https://www.pyscf.org/">pyscf</a> as a <strong>calculator</strong> at the semiempirical-mindo3 level of theory. Initially, one needs to import the corresponding <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> modules and <a class="reference external" href="https://www.rdkit.org/">RDKit</a> auxiliary functions as shown below:</p>
+<p><a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> also permits the use of <a class="reference external" href="https://pyscf.org/">pyscf</a> as a <strong>calculator</strong> at the semiempirical-mindo3 level of theory. Initially, one needs to import the corresponding <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> modules and <a class="reference external" href="https://www.rdkit.org/">RDKit</a> auxiliary functions as shown below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
 <span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
 
@@ -160,7 +161,7 @@ export XTBHOME=”PATH_TO_XTB_FOLDER/xtb-X.X.X”</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The only <a class="reference external" href="https://www.pyscf.org/">pyscf</a> accepted format is <strong>XYZ</strong>.</p>
+<p>The only <a class="reference external" href="https://pyscf.org/">pyscf</a> accepted format is <strong>XYZ</strong>.</p>
 </div>
 <p>As displayed in the previous section, the <em>Opt</em> module accepts as an argument the name of the <strong>xyz</strong> file whilst the <em>pysc_semi</em>  receives the user-defined number of SCF cycles.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># pyscf semiempirical geometry optimization</span>
@@ -305,7 +306,8 @@ export XTBHOME=”PATH_TO_XTB_FOLDER/xtb-X.X.X”</p>
 <span class="m">9</span> directories, <span class="m">55</span> files
 </pre></div>
 </div>
-<p>Thus, each unique-labeled directory displayed the initial <strong>mono_IDX.xyz</strong> structure, and the results after the geometry optimization procedure performed at the <strong>GFN-FF</strong> level of theory. The final relaxed structure is written in the file <strong>xtbopt.xyz</strong>.</p>
+<p>Thus, each unique-labeled directory displayed the initial <strong>mono_IDX.xyz</strong> structure, and the results after the geometry optimization procedure performed
+at the <strong>GFN-FF</strong> level of theory. The final relaxed structure is written in the file <strong>xtbopt.xyz</strong>.</p>
 </section>
 </section>
 

@@ -1,3 +1,5 @@
+.. include:: /include/links.rst
+
 .. _preparing_monomers:
 
 =========================================================
@@ -31,8 +33,5 @@ All the enabled RDKit_ formats are accepted as shown above:
    #PDB FORMAT
    mol_3=Chem.MolFromPDBFile('furan_pysoftk.pdb')
 
-The defined molecules (mol_1, mol_2, and mol_3) demonstrate the various valid formats that can be used to input the structure of a monomer to PySoftK_ in order to create initial structures of a desired polymer. 
-   
-.. _PySoftK: https://github.com/alejandrosantanabonilla/pysoftk
-.. _RDKit: https://www.rdkit.org/
-.. _VMD: https://www.ks.uiuc.edu/Research/vmd/
+The defined molecules (mol_1, mol_2, and mol_3) demonstrate the various valid formats that can be used to input the structure of a monomer to PySoftK_ in 
+order to create initial structures of a desired polymer. 
