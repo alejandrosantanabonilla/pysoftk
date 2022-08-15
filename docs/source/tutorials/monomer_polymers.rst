@@ -1,38 +1,44 @@
+
+
 .. _monomer_polymers:
 
 =========================================================
-From single monomer to polymers using PySoftK
+From single molecules to polymers using PySoftK
 =========================================================
 
-PySoftK_ enables to create Polymers from a single monomer. To do so, the user needs to highligthing the positions where the merging process will take place, using a place-holder atom (as presented in 
+PySoftK_ enables to create Polymers from a single monomer. To do so, the user needs to highligthing the positions where the merging process will take 
+place, using a place-holder atom (as presented in `preparing_monomers`_).   
 
-To explicitly show the process, we will use a furan molecule. By using a common visualization program (such as VMD_), the functionalization process is presented below
+An example is in this section presented using a Styrene molecule. By using a common visualization program (such as VMD_), the functionalized molecule is 
+presented below:
 
-.. figure:: prep-pol.png
+.. figure:: styrene.png
    :align: center
    :figclass: align-center
 
-**(a)** Represents a furan molecule, while **(b)** represents a functionalized furan monomer in which two Bromine atoms are placed at the edges of the mioety and used as place-holders for the places in the monomer which will be bonded to neighboring monomers. The user can use any atom (PySoftK_ is agnostic to the used place-holder), as long as the same atom is used to indicate the regions of the molecule used to create a bond.  
+**(a)** Represents a functionalized single Styrene molecule in which two Bromine atoms are used as place-holders for bonding formation. **(b)** A Styrene 
+polymer with formed by 3 initial Styrene units. 
 
-
-All the enabled RDKit_ formats are accepted as shown above:
+The process to build these kind of polymers is presented in this snapshot:
 
 .. code-block:: python
 
    from rdkit import Chem
    from rdkit.Chem import AllChem
+   from rdkit.Chem import rdDistGeom
 
-   # SMILES FORMAT
-   mol_1=Chem.MolFromSmiles('c1(ccc(o1)Br)Br')
+   from pysoftk.linear_polymer.linear_polymer import *
+   from pysoftk.format_printers.format_mol import *
 
-   # MOL FORMAT
-   mol_2=Chem.MolFromMolFile('furan_pysoftk.mol')
-
-   #PDB FORMAT
-   mol_3=Chem.MolFromPDBFile('furan_pysoftk.pdb')
-
-The defined molecules (mol_1, mol_2, and mol_3) demonstrate the various valid formats that can be used to input the structure of a monomer to PySoftK_ in order to create initial structures of a desired polymer. 
+   a=Chem.MolFromSmiles('c1c([C@@H](CBr)Br)cccc1')
    
-.. _PySoftK: https://github.com/alejandrosantanabonilla/pysoftk
-.. _RDKit: https://www.rdkit.org/
-.. _VMD: https://www.ks.uiuc.edu/Research/vmd/
+   #Embedding is needed for being parsed as a pysoftk.object
+   AllChem.EmbedMolecule(a)
+   
+   new=Lp(a,"Br",2,shift=1.25).linear_polymer("MMFF",350)
+   Fmt(new).xyz_print("styrene_pol.xyz")
+   
+   
+The Styrene molecule (**a**) is initially declared using SMILES format. The molecule has been embedded using one the methods available in RDKit_ and then 
+parsed to *linear_polymer* order to create initial structures of a desired polymer.
+   
