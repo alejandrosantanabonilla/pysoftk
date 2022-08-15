@@ -1,3 +1,5 @@
+.. include:: /include/links.rst
+
 .. _folders:
 
 =================================================================
@@ -51,11 +53,5 @@ To verify that the files have correctly moved, we can use the **tree** bash comm
 
    2 directories, 3 files
 
-As shown above, the files **mol_1.smi** and **mol_2.smi** have been correcty allocated into unique folders. This collection of PySoftK_ tools has been developed to be used independent of the Polymer module and intended to be used as stand-alone or in conjunction with the HTPc tools.
-
-
-
-.. _Python: https://www.python.org/
-.. _PySoftK: https://github.com/alejandrosantanabonilla/pysoftk
-.. _RDKit: https://www.rdkit.org/
-.. _VMD: https://www.ks.uiuc.edu/Research/vmd/
+As shown above, the files **mol_1.smi** and **mol_2.smi** have been correcty allocated into unique folders. This collection of PySoftK_ tools has been 
+developed to be used independent of the Polymer module and intended to be used as stand-alone or in conjunction with the HTPc tools.
