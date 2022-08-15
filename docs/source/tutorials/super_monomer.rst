@@ -1,3 +1,5 @@
+.. include:: /include/links.rst
+
 .. _super_monomer:
 
 =========================================================
@@ -40,6 +42,5 @@ structure **super_monomer.py** can be displayed as shown:
    :align: center
    :figclass: align-center
 
-The Thiol and Benzene mioeties have been joined creating a **super-monomer** that can be further used by PySoftK_ to create different configurations, topologies and/or investigate torsional angles in a polymer. 
-
-.. _VMD: https://www.ks.uiuc.edu/Research/vmd/
+The Thiol and Benzene mioeties have been joined creating a **super-monomer** that can be further used by PySoftK_ to create different configurations, 
+topologies and/or investigate torsional angles in a polymer. 
