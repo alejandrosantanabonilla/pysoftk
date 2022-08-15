@@ -1,3 +1,5 @@
+.. include:: /include/links.rst
+
 .. _calculator:
 
 =========================================================
@@ -195,12 +197,6 @@ PySoftK_ HTPc tools have been developed to perform parallel calculations based o
 
    9 directories, 55 files
 
-Thus, each unique-labeled directory displayed the initial **mono_IDX.xyz** structure, and the results after the geometry optimization procedure performed at the **GFN-FF** level of theory. The final relaxed structure is written in the file **xtbopt.xyz**.  
-	   
-.. _xtb: https://github.com/grimme-lab/xtb
-.. _pyscf: https://www.pyscf.org/
-.. _Python: https://www.python.org/
-.. _PySoftK: https://github.com/alejandrosantanabonilla/pysoftk
-.. _RDKit: https://www.rdkit.org/
-.. _VMD: https://www.ks.uiuc.edu/Research/vmd/
-.. _asyncio: https://docs.python.org/3/library/asyncio.html
+Thus, each unique-labeled directory displayed the initial **mono_IDX.xyz** structure, and the results after the geometry optimization procedure performed 
+at the **GFN-FF** level of theory. The final relaxed structure is written in the file **xtbopt.xyz**.  
+   
