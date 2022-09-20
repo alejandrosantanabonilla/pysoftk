@@ -1,3 +1,5 @@
+name: PySoftK stats
+
 on:
   workflow_dispatch:
 jobs:
@@ -9,4 +11,4 @@ jobs:
       - env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh api -H "Accept: application/vnd.github+json" https://github.com/alejandrosantanabonilla/pysoftk/traffic/views
+          gh api https://github.com/alejandrosantanabonilla/pysoftk/traffic/views
