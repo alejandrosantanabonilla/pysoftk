@@ -3,14 +3,12 @@ name: PySoftK stats
 on:
   workflow_dispatch:
 jobs:
-  use_api:
+  curl:
     runs-on: ubuntu-latest
-    permissions:
-      issues: read
     steps:
-      - env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-            gh api \
-            -H "Accept: application/vnd.github+json" \
-            /repos/alejandrosantanabonilla/pysoftk/traffic/views
+    - name: curl
+      uses: wei/curl@v1
+      with:
+        args:   -H "Accept: application/vnd.github+json" \ 
+                -H "Authorization: Bearer <YOUR-TOKEN>" \
+                 https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/views
