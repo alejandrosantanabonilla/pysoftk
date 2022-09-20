@@ -13,4 +13,4 @@ jobs:
         run: |
             gh api \
             -H "Accept: application/vnd.github+json" \
-            /repos/alejandrosantanabonilla/pysoftk/traffic/clones
+            /repos/alejandrosantanabonilla/pysoftk/traffic/views
