@@ -11,4 +11,4 @@ jobs:
       - env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh api -H "application/vnd.github.v3.raw,*" https://github.com/alejandrosantanabonilla/pysoftk/graphs/traffic
+          gh api -H "Accept: application/vnd.github.v3.raw,*" https://github.com/alejandrosantanabonilla/pysoftk/graphs/traffic
