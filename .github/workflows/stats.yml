@@ -3,12 +3,9 @@ name: PySoftK stats
 on:
   workflow_dispatch:
 jobs:
-  curl:
+  run-updater:
     runs-on: ubuntu-latest
     steps:
-    - name: curl
-      uses: wei/curl@v1
-      with:
-        args:   -H "Accept: application/vnd.github+json" \ 
-                -H "Authorization: Bearer  ${{ secrets.PYSOFTK_VIEWS }}" \
-                 https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/views
+    - name: REST API with curl
+      run: |
+        curl -X GET https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/views
