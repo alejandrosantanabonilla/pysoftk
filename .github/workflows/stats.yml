@@ -11,4 +11,4 @@ jobs:
       - env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh api https://github.com/alejandrosantanabonilla/pysoftk/
+          gh api https://github.com/alejandrosantanabonilla/pysoftk/graphs/traffic
