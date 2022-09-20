@@ -9,4 +9,4 @@ jobs:
       - env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh api https://github.com/alejandrosantanabonilla/pysoftk/
+          gh api -H "Accept: application/vnd.github+json" https://github.com/alejandrosantanabonilla/pysoftk/traffic/views
