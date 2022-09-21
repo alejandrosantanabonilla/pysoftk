@@ -9,5 +9,4 @@ jobs:
     steps:
       - name: Get Token    
         run: |
-            IP=$(curl  -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.PYSOFTK_VIEWS }}" --request GET https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/views)         
-            echo "$IP"
+            curl  -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.PYSOFTK_VIEWS }}" --request GET https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/views -o result.json 
