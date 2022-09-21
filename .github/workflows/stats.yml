@@ -11,5 +11,12 @@ jobs:
         run: |
             curl  -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.PYSOFTK_VIEWS }}" --request GET https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/views -o result.json 
             IP=$(pwd)
-            echo "$IP"
             ls
+
+    # Store this asset in 'gh-storage' branch.
+      - name: Save file in a new orphan storage branch
+        uses: sylvanld/action-storage@v1
+        with:
+          storage-branch: stats
+          src: ./result.json
+          dst: data
