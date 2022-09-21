@@ -4,7 +4,6 @@ name: Build Data
 
 on: 
   workflow_dispatch:
-       branches: [ master ]
 
 jobs:
   build:
