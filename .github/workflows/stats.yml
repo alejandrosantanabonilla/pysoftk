@@ -10,3 +10,4 @@ jobs:
       - name: Get Token    
         run: |
             curl  -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.PYSOFTK_VIEWS }}" --request GET https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/views -o result.json 
+            head -n 1 result.json
