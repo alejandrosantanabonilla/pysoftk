@@ -2,6 +2,11 @@ name: PySoftK stats
 
 on: 
   workflow_dispatch:
+  
+  schedule:
+    - cron: '1 0 1 * *'
+    - cron: '1 0 16 * *'
+    
 jobs:
   test-curl-action:
     name: "Perform REST API"
@@ -10,12 +15,9 @@ jobs:
       - name: Get Token    
         run: |
             curl  -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.PYSOFTK_VIEWS }}" --request GET https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/views -o result.json 
-            IP=$(pwd)
-            ls
  
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: my-artifact
           path: ./result.json
-          retention-days: 5
