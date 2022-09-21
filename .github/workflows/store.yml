@@ -2,9 +2,9 @@
 
 name: Build Data
 
-on:
-  push:
-    branches: [ master ]
+on: 
+  workflow_dispatch:
+       branches: [ master ]
 
 jobs:
   build:
