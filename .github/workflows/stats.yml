@@ -1,11 +1,13 @@
 name: PySoftK stats
 
-on:
+on: 
   workflow_dispatch:
 jobs:
-  run-updater:
+  test-curl-action:
+    name: "Perform REST API"
     runs-on: ubuntu-latest
     steps:
-    - name: REST API with curl
-      run: |
-        curl -X GET https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/views
+      - name: Get Token    
+        run: |
+            response = $(curl  -H "Accept: application/vnd.github+json" -H "Authorization:${{ secrets.USER_NAME }}" --request GET https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/views)         
+            echo "response from curl= $response"
