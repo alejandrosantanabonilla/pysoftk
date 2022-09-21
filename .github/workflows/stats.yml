@@ -12,4 +12,4 @@ jobs:
             curl  -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.PYSOFTK_VIEWS }}" --request GET https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/views -o result.json 
             IP=$(pwd)
             echo "$IP"
-
+            ls
