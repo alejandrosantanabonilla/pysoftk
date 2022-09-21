@@ -9,5 +9,4 @@ jobs:
     steps:
       - name: Get Token    
         run: |
-            response = $(curl  -H "Accept: application/vnd.github+json" -H "Authorization:${{ secrets.PYSOFTK_VIEWS }}" --request GET https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/views)         
-            echo "response from curl= $response"
+            curl  -H "Accept: application/vnd.github+json" -H "Authorization:${{ secrets.PYSOFTK_VIEWS }}" --request GET https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/views         
