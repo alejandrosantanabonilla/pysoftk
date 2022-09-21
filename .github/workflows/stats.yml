@@ -11,3 +11,9 @@ jobs:
         run: |
             curl  -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.PYSOFTK_VIEWS }}" --request GET https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/views -o result.json 
             
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_branch: stats
+          github_token: ${{ secrets.PYSOFTK_VIEW }}
+          publish_dir: ./result.json
