@@ -12,12 +12,26 @@ jobs:
     name: "Perform REST API"
     runs-on: ubuntu-latest
     steps:
-      - name: Get Token    
+      - name: get views    
         run: |
             curl  -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.PYSOFTK_VIEWS }}" --request GET https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/views -o views.json 
  
+      - name: get clones
+        run: |
+            curl  -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.PYSOFTK_VIEWS }}" --request GET https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/clones -o clones.json 
+
+      - name: get referrals
+        run: |
+            curl  -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.PYSOFTK_VIEWS }}" --request GET https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/popular/referrers -o referrers.json 
+ 
+      - name: get paths
+        run: |
+            curl  -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.PYSOFTK_VIEWS }}" --request GET https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/popular/paths -o paths.json 
+
+     
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: my-artifact
-          path: ./views.json
+          path: ./views.json ./clones.json
+          
