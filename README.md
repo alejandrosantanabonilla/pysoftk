@@ -1,4 +1,4 @@
-[![PySoftK testing](https://github.com/alejandrosantanabonilla/pysoftk/actions/workflows/pyci.yml/badge.svg)](https://github.com/alejandrosantanabonilla/pysoftk/actions/workflows/pyci.yml)[![Docs Building](https://github.com/alejandrosantanabonilla/pysoftk/actions/workflows/build_docs.yml/badge.svg)](https://github.com/alejandrosantanabonilla/pysoftk/actions/workflows/build_docs.yml)<!-- Pytest Coverage Comment:Begin -->
+<!-- Pytest Coverage Comment:Begin -->
 <!-- Pytest Coverage Comment:End -->
 
 # PySoftK
