@@ -19,8 +19,7 @@ setup(
         'wheel',
         'tqdm >= 4.64.0',
         'pathos >= 0.2.8',
-        'pyscf >= 2.0.1',
-        'pyscf[geomopt]',
-        'pyscf-semiempirical >= 0.1.0',
+        'pyscf-semiempirical @ git+https://github.com/pyscf/semiempirical',
+        'pyberny',
     ],
 )

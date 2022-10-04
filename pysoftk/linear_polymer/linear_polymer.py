@@ -5,6 +5,7 @@ from rdkit.Chem import rdDistGeom, rdMolTransforms
 from rdkit.Chem import rdDistGeom as molDG
 
 import numpy as np
+from .utils import *
 
 from rdkit import RDLogger
 RDLogger.DisableLog('rdApp.*')
@@ -41,11 +42,11 @@ class Lp:
        mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
  
-       atom : 'str'
+       atom : str
           The placeholder atom to combine the molecules 
           and form a new monomer
 
-       n_copies: 'int'
+       n_copies: int
           Number of copies to be created for the provided 
           mol object. 
 
@@ -161,52 +162,10 @@ class Lp:
                              for nbr in atoms.GetNeighbors()])
 
         return conn[1:-1], neigh[1:-1]
-
-    def _swap_hyd(self, mol, FF="MMFF"):
-        """Function that seeks for last place-holder atoms 
-           and convert them into Hydrogen atoms.
-
-        Parameters:
-        -----------
-        mol : rdkit.Chem.rdchem.Mol
-            RDKit Mol object
-       
-        Returns:
-        --------
-        newMol_H : rdkit.Chem.rdchem.Mol
-            RDKit Mol object
-
-        """
-       
-        atom=self.atom
-        
-        for atoms in mol.GetAtoms():
-            if atoms.GetSymbol() == str(atom):
-                mol.GetAtomWithIdx(atoms.GetIdx()).SetAtomicNum(1)
-
-        newMol = AllChem.AssignBondOrdersFromTemplate(mol, mol)
-        newMol_H = Chem.AddHs(newMol, addCoords=True)
-
-        if FF == "MMFF":
-           AllChem.MMFFOptimizeMolecule(newMol_H,maxIters=5)
-
-        else:
-           AllChem.UFFOptimizeMolecule(newMol_H,maxIters=5)
-
-        return newMol_H
    
-    def linear_polymer(self, FF="MMFF", iter_ff=100):
+    def proto_polymer(self):
        """Function to create a linear polymer 
           from a given super_monomer object.
-
-       Parameters
-       ------------
-
-       FF : str
-          Selected Force-Field from RDKit options, i.e, UFF or MMFF
-         
-       iter_ff: int
-          The maximum number of iterations used for the FF.
 
        Returns:
        --------
@@ -241,17 +200,41 @@ class Lp:
 
        mol3=rwmol.GetMol()
        Chem.SanitizeMol(mol3)
+       
+       return mol3
+
+    def linear_polymer(self, FF="MMFF", iter_ff=100):
+       """Function to create a linear polymer 
+          from a given super_monomer object.
+
+       Parameters
+       ------------
+
+       FF : str
+          Selected Force-Field from RDKit options, i.e, UFF or MMFF
+         
+       iter_ff: int
+          The maximum number of iterations used for the FF.
+
+       Returns:
+       --------
+       newMol_H : rdkit.Chem.rdchem.Mol
+            RDKit Mol object
+
+       """
+
+       mol3=self.proto_polymer()
+
+       atom=self.atom
 
        if FF == "MMFF":
            AllChem.MMFFOptimizeMolecule(mol3,maxIters=int(iter_ff))
-           newMol_H=self._swap_hyd(mol3, "MMFF")
+           newMol_H=swap_hyd(mol3, int(iter_ff), atom, "MMFF")
 
        else:
            AllChem.UFFOptimizeMolecule(mol3,maxIters=int(iter_ff))
-           newMol_H=self._swap_hyd(mol3, "UFF")
-       
-       return newMol_H
-   
+           newMol_H=swap_hyd(mol3, int(iter_ff), atom, "UFF")
 
+       return newMol_H 
 
 

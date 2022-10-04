@@ -83,6 +83,11 @@ class Pyscf_print(object):
              myfile.write('\n')
              for i in range(len(mol.atom)):
                  myfile.write('{} {:.8f} {:.8f} {:.8f}\n'.format(str(mol.atom[i][0]),
-                                                                 float(coords[i][0]),float(coords[i][1]),float(coords[i][2])))
+                                                                 float(coords[i][0]),
+                                                                 float(coords[i][1]),
+                                                                 float(coords[i][2])))
              myfile.write('\n')
         print ("File pyscf_final.xyz has been created.")
+
+
+
