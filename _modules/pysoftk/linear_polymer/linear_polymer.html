@@ -15,6 +15,7 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -77,6 +78,7 @@
 <span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">rdDistGeom</span> <span class="k">as</span> <span class="n">molDG</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">RDLogger</span>
 <span class="n">RDLogger</span><span class="o">.</span><span class="n">DisableLog</span><span class="p">(</span><span class="s1">&#39;rdApp.*&#39;</span><span class="p">)</span>
@@ -113,11 +115,11 @@
 <span class="sd">       mol : rdkit.Chem.rdchem.Mol</span>
 <span class="sd">          RDKit Mol object</span>
 <span class="sd"> </span>
-<span class="sd">       atom : &#39;str&#39;</span>
+<span class="sd">       atom : str</span>
 <span class="sd">          The placeholder atom to combine the molecules </span>
 <span class="sd">          and form a new monomer</span>
 
-<span class="sd">       n_copies: &#39;int&#39;</span>
+<span class="sd">       n_copies: int</span>
 <span class="sd">          Number of copies to be created for the provided </span>
 <span class="sd">          mol object. </span>
 
@@ -233,52 +235,10 @@
                              <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">atoms</span><span class="o">.</span><span class="n">GetNeighbors</span><span class="p">()])</span>
 
         <span class="k">return</span> <span class="n">conn</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">neigh</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">_swap_hyd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Function that seeks for last place-holder atoms </span>
-<span class="sd">           and convert them into Hydrogen atoms.</span>
-
-<span class="sd">        Parameters:</span>
-<span class="sd">        -----------</span>
-<span class="sd">        mol : rdkit.Chem.rdchem.Mol</span>
-<span class="sd">            RDKit Mol object</span>
-<span class="sd">       </span>
-<span class="sd">        Returns:</span>
-<span class="sd">        --------</span>
-<span class="sd">        newMol_H : rdkit.Chem.rdchem.Mol</span>
-<span class="sd">            RDKit Mol object</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-       
-        <span class="n">atom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span>
-        
-        <span class="k">for</span> <span class="n">atoms</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">atoms</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">):</span>
-                <span class="n">mol</span><span class="o">.</span><span class="n">GetAtomWithIdx</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">())</span><span class="o">.</span><span class="n">SetAtomicNum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-        <span class="n">newMol</span> <span class="o">=</span> <span class="n">AllChem</span><span class="o">.</span><span class="n">AssignBondOrdersFromTemplate</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
-        <span class="n">newMol_H</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">newMol</span><span class="p">,</span> <span class="n">addCoords</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">FF</span> <span class="o">==</span> <span class="s2">&quot;MMFF&quot;</span><span class="p">:</span>
-           <span class="n">AllChem</span><span class="o">.</span><span class="n">MMFFOptimizeMolecule</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">,</span><span class="n">maxIters</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-
-        <span class="k">else</span><span class="p">:</span>
-           <span class="n">AllChem</span><span class="o">.</span><span class="n">UFFOptimizeMolecule</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">,</span><span class="n">maxIters</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">newMol_H</span>
    
-<div class="viewcode-block" id="Lp.linear_polymer"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lp.linear_polymer">[docs]</a>    <span class="k">def</span> <span class="nf">linear_polymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">iter_ff</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<div class="viewcode-block" id="Lp.proto_polymer"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lp.proto_polymer">[docs]</a>    <span class="k">def</span> <span class="nf">proto_polymer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
        <span class="sd">&quot;&quot;&quot;Function to create a linear polymer </span>
 <span class="sd">          from a given super_monomer object.</span>
-
-<span class="sd">       Parameters</span>
-<span class="sd">       ------------</span>
-
-<span class="sd">       FF : str</span>
-<span class="sd">          Selected Force-Field from RDKit options, i.e, UFF or MMFF</span>
-<span class="sd">         </span>
-<span class="sd">       iter_ff: int</span>
-<span class="sd">          The maximum number of iterations used for the FF.</span>
 
 <span class="sd">       Returns:</span>
 <span class="sd">       --------</span>
@@ -313,18 +273,42 @@
 
        <span class="n">mol3</span><span class="o">=</span><span class="n">rwmol</span><span class="o">.</span><span class="n">GetMol</span><span class="p">()</span>
        <span class="n">Chem</span><span class="o">.</span><span class="n">SanitizeMol</span><span class="p">(</span><span class="n">mol3</span><span class="p">)</span>
+       
+       <span class="k">return</span> <span class="n">mol3</span></div>
+
+<div class="viewcode-block" id="Lp.linear_polymer"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lp.linear_polymer">[docs]</a>    <span class="k">def</span> <span class="nf">linear_polymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">iter_ff</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+       <span class="sd">&quot;&quot;&quot;Function to create a linear polymer </span>
+<span class="sd">          from a given super_monomer object.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ------------</span>
+
+<span class="sd">       FF : str</span>
+<span class="sd">          Selected Force-Field from RDKit options, i.e, UFF or MMFF</span>
+<span class="sd">         </span>
+<span class="sd">       iter_ff: int</span>
+<span class="sd">          The maximum number of iterations used for the FF.</span>
+
+<span class="sd">       Returns:</span>
+<span class="sd">       --------</span>
+<span class="sd">       newMol_H : rdkit.Chem.rdchem.Mol</span>
+<span class="sd">            RDKit Mol object</span>
+
+<span class="sd">       &quot;&quot;&quot;</span>
+
+       <span class="n">mol3</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">proto_polymer</span><span class="p">()</span>
+
+       <span class="n">atom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span>
 
        <span class="k">if</span> <span class="n">FF</span> <span class="o">==</span> <span class="s2">&quot;MMFF&quot;</span><span class="p">:</span>
            <span class="n">AllChem</span><span class="o">.</span><span class="n">MMFFOptimizeMolecule</span><span class="p">(</span><span class="n">mol3</span><span class="p">,</span><span class="n">maxIters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">iter_ff</span><span class="p">))</span>
-           <span class="n">newMol_H</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_swap_hyd</span><span class="p">(</span><span class="n">mol3</span><span class="p">,</span> <span class="s2">&quot;MMFF&quot;</span><span class="p">)</span>
+           <span class="n">newMol_H</span><span class="o">=</span><span class="n">swap_hyd</span><span class="p">(</span><span class="n">mol3</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">iter_ff</span><span class="p">),</span> <span class="n">atom</span><span class="p">,</span> <span class="s2">&quot;MMFF&quot;</span><span class="p">)</span>
 
        <span class="k">else</span><span class="p">:</span>
            <span class="n">AllChem</span><span class="o">.</span><span class="n">UFFOptimizeMolecule</span><span class="p">(</span><span class="n">mol3</span><span class="p">,</span><span class="n">maxIters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">iter_ff</span><span class="p">))</span>
-           <span class="n">newMol_H</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_swap_hyd</span><span class="p">(</span><span class="n">mol3</span><span class="p">,</span> <span class="s2">&quot;UFF&quot;</span><span class="p">)</span>
-       
-       <span class="k">return</span> <span class="n">newMol_H</span></div></div>
-   
+           <span class="n">newMol_H</span><span class="o">=</span><span class="n">swap_hyd</span><span class="p">(</span><span class="n">mol3</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">iter_ff</span><span class="p">),</span> <span class="n">atom</span><span class="p">,</span> <span class="s2">&quot;UFF&quot;</span><span class="p">)</span>
 
+       <span class="k">return</span> <span class="n">newMol_H</span> </div></div>
 
 
 </pre></div>
