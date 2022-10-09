@@ -33,4 +33,10 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: my-artifact
-          path: ./*.json         
+          path: ./*.json      
+      
+      - name: Archive files
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-stats-report
+          path: data
