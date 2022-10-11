@@ -10,7 +10,9 @@ Frequently Asked Questions
 How should I cite PySoftK_?
 ----------------------------
 
-If you find PySoftK useful in your research please cite:
+If you find PySoftK useful in your research please cite the following articles:
+
+[1] Ziolek, Robert M., et al. "Conformational Heterogeneity and Interchain Percolation Revealed in an Amorphous Conjugated Polymer." ACS nano (2022).
 
 
 Known problems
