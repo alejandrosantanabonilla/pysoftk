@@ -5,6 +5,9 @@ from rdkit.Chem import rdDistGeom
 
 from pysoftk.topologies.diblock import *
 from pysoftk.topologies.ring import *
+from pysoftk.topologies.branched import *
+from pysoftk.topologies.ranpol import *
+
 from pysoftk.format_printers.format_mol import *
 from pysoftk.folder_manager.folder_creator import *
 
@@ -29,7 +32,7 @@ def test_diblock():
 
 def test_pattern():
     
-    mols=[Chem.MolFromSmiles('c1(ccc(cc1)Br)Br'), Chem.MolFromSmiles('BrCCBr')]
+    mols=[Chem.MolFromSmiles('c1(ccc(cc1)Br)Br'),Chem.MolFromSmiles('BrCCBr')]
     string="ABBAAB"
 
     a=Pt(string, mols, "Br").pattern_block_poly()
@@ -51,3 +54,51 @@ def test_ring(mol,expected):
   b=Fld().seek_files("xyz")
   assert len(b) == expected
   os.remove("ring.xyz")
+
+def test_branched_1():
+    core=Chem.MolFromSmiles('BrN(Br)CCN(Br)Br')
+    prob=Chem.MolFromSmiles('[C@H](CCl)(OBr)C')
+
+    # Problematic stereochemistry
+    Chem.MolToMolFile(prob,"mol.mol")
+    arm=Chem.MolFromMolFile('./mol.mol')
+
+    final = Bd(core, arm, "Br").branched_polymer()
+    Fmt(final).xyz_print("bran1.xyz")
+
+    os.remove("mol.mol")
+    b=Fld().seek_files("xyz")
+
+    assert len(b) == 1
+    os.remove("bran1.xyz")
+
+def test_branched_2():
+
+    core=Chem.MolFromSmiles('BrN(Br)CCN(Br)Br')
+    arm=Chem.MolFromSmiles('BrOCCCl')
+
+    final = Bd(core, arm, "Br").branched_polymer()
+    Fmt(final).xyz_print("bran2.xyz")
+
+    b=Fld().seek_files("xyz")
+
+    assert len(b) == 1
+    os.remove("bran2.xyz")
+
+def test_ran_pol():
+    mol_2=Chem.MolFromSmiles('BrCOCBr')
+    mol_4=Chem.MolFromSmiles('c1(ccc(cc1)Br)Br')
+    mol_5=Chem.MolFromSmiles('BrCCBr')
+
+    dia = Rnp(mol_2, mol_4,"Br").random_ab_copolymer(10, 0.4,10)
+    Fmt(dia).xyz_print("dia.xyz")
+  
+    tri = Rnp(mol_2, mol_4,"Br").random_abc_copolymer(mol_2, 15, 0.4, 0.6, 10)
+    Fmt(tri).xyz_print("tri.xyz")
+
+    b=Fld().seek_files("xyz")
+
+    assert len(b) == 2
+    
+    os.remove("dia.xyz")
+    os.remove("tri.xyz")
