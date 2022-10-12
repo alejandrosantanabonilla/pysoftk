@@ -1,8 +1,7 @@
 name: store_art_stats
 
 on: 
-  push:
-    branches: [stats]
+
     
 jobs:
   test-curl-action:
