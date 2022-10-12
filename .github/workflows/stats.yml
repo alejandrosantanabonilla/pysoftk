@@ -54,5 +54,9 @@ jobs:
           recursive: false
           dest: ${{ steps.generate-name.outputs.artifact }} 
           
-      - name: Display structure of downloaded files
-        run: ls 
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_branch: stats
+          github_token: ${{ secrets.PYSOFTK_VIEWS }}
+          publish_dir: ./*.zip 
