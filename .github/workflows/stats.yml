@@ -55,8 +55,8 @@ jobs:
           dest: ${{ steps.generate-name.outputs.artifact }} 
           
       - name: Move to data folder
-        run: mv *.zip data/
+        run: mkdir data && mv *.zip data/
         
       - name: Display structure of downloaded files
-        run: cd data & ls 
+        run: cd data && ls 
           
