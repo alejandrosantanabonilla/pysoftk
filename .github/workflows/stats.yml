@@ -1,4 +1,4 @@
-name: store_artifacts
+name: store_art_stats
 
 on: 
   push:
