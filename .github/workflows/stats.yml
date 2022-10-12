@@ -44,9 +44,15 @@ jobs:
           name: ${{ steps.generate-name.outputs.artifact }}
           path: data
           
+      - name: 'Echo download path'
+        run: echo ${{steps.download.outputs.download-path}}
+          
       - name: zipping files
         uses: vimtor/action-zip@v1
         with:
-          files: ./*.json
+          files: data/
           recursive: false
           dest: ${{ steps.generate-name.outputs.artifact }} 
+          
+      - name: Display structure of downloaded files
+        run: ls 
