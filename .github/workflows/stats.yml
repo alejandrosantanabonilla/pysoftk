@@ -64,8 +64,8 @@ jobs:
       - name: Commit files
         run: |
           cd data_1/pysoftk
-          git config --global user.email "k2031560@kcl.ac.uk"
-          git config --global user.name "alejandrosantanabonilla"
+          git config user.name "$(git log -n 1 --pretty=format:%an)"
+          git config user.email "$(git log -n 1 --pretty=format:%ae)"
           git add *.zip
           git commit -m "Add changes" -a
-          git push 
+          git push -u origin stats
