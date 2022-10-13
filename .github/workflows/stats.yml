@@ -9,8 +9,10 @@ jobs:
     name: "Perform REST API"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PYSOFTK_VIEWS }}
+    
       - name: get views    
         run: |
             curl  -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.PYSOFTK_VIEWS }}" --request GET https://api.github.com/repos/alejandrosantanabonilla/pysoftk/traffic/views -o views.json 
