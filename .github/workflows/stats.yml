@@ -58,7 +58,7 @@ jobs:
              mkdir data_1 
              mv *.zip data_1/
              cd data_1 
-             git clone -b stats https://github.com/alejandrosantanabonilla/pysoftk.git 
+             git clone -b stats git@github.com:alejandrosantanabonilla/pysoftk.git
              mv *.zip pysoftk/ 
         
       - name: Commit files
