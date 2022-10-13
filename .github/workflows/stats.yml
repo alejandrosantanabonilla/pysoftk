@@ -42,10 +42,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: ${{ steps.generate-name.outputs.artifact }}
-          path: data
-          
-      - name: 'Echo download path'
-        run: echo ${{steps.download.outputs.download-path}}
+          path: data          
           
       - name: zipping files
         uses: vimtor/action-zip@v1
@@ -57,10 +54,10 @@ jobs:
       - name: Move to data folder
         run: mkdir data_1 && mv *.zip data_1/
         
-      - name: Deploy
-        uses: s0/git-publish-subdir-action@develop
-        env:
-          REPO: self
-          BRANCH: stats
-          FOLDER: data_1
-          GITHUB_TOKEN: ${{ secrets.PYSOFTK_VIEWS }}      
+      - name: Clone stats branch
+        run: |
+          git clone --branch stats --single-branch https://github.com/alejandrosantanabonilla/pysoftk.git
+          
+      - name: Check content clone
+        run: |
+             cd pysoftk && ls -a
