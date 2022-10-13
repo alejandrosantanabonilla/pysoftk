@@ -54,5 +54,5 @@ jobs:
       - name: Move to data folder
         run: mkdir data_1 && mv *.zip data_1/
           
-      - name: Check content clone
-        run: ls -a
+      - name: Cloning stats
+        run: cd data_1 && git clone -b stats https://github.com/alejandrosantanabonilla/pysoftk.git && ls -a
