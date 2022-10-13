@@ -57,7 +57,20 @@ jobs:
           recursive: false
           dest: ${{ steps.generate-name.outputs.artifact }} 
           
-      - name: Checking folders in the runner
-        run: ls -a
-          
-
+      - name: Staging the artifacts into a folder
+        run: |
+             mkdir data_1
+             mv *.zip data_1/
+             cd data_1
+             git clone -b stats https://github.com/alejandrosantanabonilla/pysoftk.git
+             mv *.zip pysoftk/
+             
+      - name: Commit files
+        run: |
+          cd data_1/pysoftk
+          git config user.name "$(git log -n 1 --pretty=format:%an)"
+          git config user.email "$(git log -n 1 --pretty=format:%ae)"
+          git add *.zip
+          git commit -m "Add changes" -a
+          git remote set-url origin https://alejandrosantanabonilla:${{ secrets.PYSOFTK_VIEWS }}@github.com/alejandrosantanabonilla/pysoftk.git
+          git push -u origin stats
