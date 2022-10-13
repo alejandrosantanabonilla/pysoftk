@@ -55,4 +55,7 @@ jobs:
         run: mkdir data_1 && mv *.zip data_1/
           
       - name: Cloning stats
-        run: cd data_1 && git clone -b stats https://github.com/alejandrosantanabonilla/pysoftk.git && ls -a
+        run: cd data_1 && git clone -b stats https://github.com/alejandrosantanabonilla/pysoftk.git && mv *.zip pysoftk/ 
+        
+      - name: Checking results
+        run: cd data_1/pysoftk/ && ls -a
