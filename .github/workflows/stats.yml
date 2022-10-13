@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.PYSOFTK_VIEWS }}
+          ref: ${{ github.head_ref }}
     
       - name: get views    
         run: |
@@ -68,4 +68,9 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add *.zip
           git commit -m "Add changes" -a
-          git push -u origin stats
+          
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PYSOFTK_VIEWS }}
+          branch: stats
