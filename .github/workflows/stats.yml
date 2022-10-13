@@ -68,5 +68,5 @@ jobs:
           git config user.email "$(git log -n 1 --pretty=format:%ae)"
           git add *.zip
           git commit -m "Add changes" -a
-          git remote add origin https://"$(git log -n 1 --pretty=format:%an)":${{ secrets.PYSOFTK_VIEWS }}@github.com/"$(git log -n 1 --pretty=format:%an)"/pysoftk.git
+          git remote set-url origin https://"$(git log -n 1 --pretty=format:%an)":${{ secrets.PYSOFTK_VIEWS }}@github.com/"$(git log -n 1 --pretty=format:%an)"/pysoftk.git
           git push -u origin stats
