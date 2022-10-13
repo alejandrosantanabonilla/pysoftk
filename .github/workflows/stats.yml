@@ -61,7 +61,7 @@ jobs:
         
       - name: Commit files
         run: |
-          cd data_1
+          cd data_1/pysoftk
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git commit -m "Add changes" -a
