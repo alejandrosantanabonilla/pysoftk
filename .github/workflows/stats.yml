@@ -51,11 +51,18 @@ jobs:
           recursive: false
           dest: ${{ steps.generate-name.outputs.artifact }} 
           
-      - name: Move to data folder
-        run: mkdir data_1 && mv *.zip data_1/
-          
-      - name: Cloning stats
-        run: cd data_1 && git clone -b stats https://github.com/alejandrosantanabonilla/pysoftk.git && mv *.zip pysoftk/ 
+      - name: Staging the artifacts into a folder 
+        run: | 
+             mkdir data_1 
+             mv *.zip data_1/
+             cd data_1 
+             git clone -b stats https://github.com/alejandrosantanabonilla/pysoftk.git 
+             mv *.zip pysoftk/ 
         
-      - name: Checking results
-        run: cd data_1/pysoftk/ && ls -a
+      - name: Commit files
+        run: |
+          cd data_1
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "Add changes" -a
+          git add .
