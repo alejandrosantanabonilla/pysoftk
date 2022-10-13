@@ -53,11 +53,6 @@ jobs:
           
       - name: Move to data folder
         run: mkdir data_1 && mv *.zip data_1/
-        
-      - name: Clone stats branch
-        run: |
-          git clone --branch stats --single-branch https://github.com/alejandrosantanabonilla/pysoftk.git
           
       - name: Check content clone
-        run: |
-             cd pysoftk && ls -a
+        run: ls -a
