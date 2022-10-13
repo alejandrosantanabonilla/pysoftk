@@ -64,7 +64,6 @@ jobs:
       - name: Commit files
         run: |
           cd data_1/pysoftk
-          git config --local user.name "alejandrosantanabonilla"
           git add *.zip
           git commit -m "Add changes" -a
           git push 
