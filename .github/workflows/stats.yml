@@ -68,6 +68,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add *.zip
           git commit -m "Add changes" -a
+          git pull
           
       - name: Push changes
         uses: ad-m/github-push-action@master
