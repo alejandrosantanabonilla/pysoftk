@@ -126,7 +126,7 @@ class Rnp():
     
        return newMol_H
     
-    def random_abc_copolymer(self, mC, len_polymer, pA,
+    def random_abc_copolymer(self, mc, len_polymer, pA,
                              pB, iter_ff=100, FF="MMFF"):
         
        """ 
@@ -203,7 +203,7 @@ class Rnp():
               m3 = ma
 
           elif rand<pAB:
-              m3 = mb#
+              m3 = mb
 
           else:
               m3 = mc
@@ -214,5 +214,3 @@ class Rnp():
        newMol_H=swap_hyd(mol, iter_ff, str(atom), FF)
     
        return newMol_H
-
-#if __name__ == "__main__":
