@@ -128,20 +128,10 @@ class Bd:
        for _ in range(int(nm_ph)):
            res=self.merge_arms(res, arm, str(atom))
 
-       newMol = AllChem.AssignBondOrdersFromTemplate(res, res)
-    
-       mol_h = Chem.AddHs(newMol, addCoords=True)
-       Chem.SanitizeMol(mol_h)
-       AllChem.EmbedMolecule(mol_h, useRandomCoords=True)
-
-       if FF == "MMFF":
-           MMFF_rel(mol_h, iter_ff)
-
-       else:
-           UFF_rel(mol_h, iter_ff)
+       mol_h=swap_hyd(res, iter_ff, str(atom), FF)
     
        return mol_h
 
-#if __name__ == "__main__":
+
     
 

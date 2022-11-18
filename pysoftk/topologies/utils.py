@@ -89,3 +89,44 @@ def count_plholder(mol, atom):
                 num_br=num_br+1
 
     return num_br
+
+def atom_neigh(mol, atom):
+   """
+   Find the neighbours from an atoms inside a 
+   molecule. 
+   """
+   neigh=[]
+   rwmol = Chem.RWMol(mol)
+   for atoms in rwmol.GetAtoms():
+       if atoms.GetSymbol() == str(atom):
+             neigh.append([(atoms.GetIdx(),nbr.GetIdx())
+                           for nbr in atoms.GetNeighbors()])
+
+   return sum(neigh, [])
+
+def tuple_bonds(lst_atm_neigh):
+   """
+   """
+   bond_idx=[]
+   for i in range(1,len(lst_atm_neigh)-1):
+       a,b = lst_atm_neigh[i]
+       bond_idx.append(b)
+
+   return [(bond_idx[i],bond_idx[i+1])
+           for i in range(0,len(bond_idx),2)]
+
+def create_pol(mol, atom, tpb):
+    """
+    """
+    rwmol1 = Chem.RWMol(mol)
+    for i in tpb:
+        a,b=i
+        rwmol1.AddBond(a, b, Chem.BondType.SINGLE)
+
+    plc=Chem.MolFromSmiles(str(atom))
+    new_conn=sum(rwmol1.GetSubstructMatches(plc),())
+
+    for i in sorted(new_conn[1:-1], key=None, reverse=True):
+         rwmol1.RemoveAtom(i)
+         
+    return rwmol1

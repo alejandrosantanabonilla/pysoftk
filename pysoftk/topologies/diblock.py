@@ -160,7 +160,7 @@ class Pt:
        self.mols = mols 
        self.atom = atom
        
-    def pattern_block_poly(self):
+    def pattern_block_poly(self, relax_iterations=100):
         """
         Function to create a polymer based on an alphabetic 
         ordered pattern.
@@ -181,14 +181,19 @@ class Pt:
    
         numbers=['mol_{}'.format(i) for i in range(1,len(mols)+1)]
         od_mols=OrderedDict(list(zip(numbers,mols)))
-   
-        list_rd_mols=[od_mols[i] for i in seq]
+ 
+        list_mol=[od_mols[i] for i in seq]
 
-        monomer1 = sm.Sm(list_rd_mols[0],list_rd_mols[1],str(atom))
-   
-        for i in range(2,len(list_rd_mols)):
-             monomer1=sm.Sm(monomer1.mon_to_poly(),
-                            list_rd_mols[i],str(atom))
+        outmol=Chem.CombineMols(list_mol[0],list_mol[1])
 
-        return monomer1.monomer()
+        for i in range(2,len(list_mol)):
+            outmol=Chem.CombineMols(outmol,list_mol[i])
+
+        lst_ngh=atom_neigh(outmol, str(atom))
+        tpb=tuple_bonds(lst_ngh)
+
+        proto_pol=create_pol(outmol, str(atom), tpb)
+
+        return swap_hyd(proto_pol,relax_iterations,str(atom))
+
 
