@@ -22,11 +22,11 @@ def test_pyscf():
     Fmt(new).xyz_print("test_1.xyz")
 
     # pyscf semiempirical
-    Opt("test_1.xyz").pyscf_semi(1000)
+#    Opt("test_1.xyz").pyscf_semi(1000)
 
     a=Fld().seek_files("xyz")
   
     assert len(a) == 2
 
     os.remove("test_1.xyz")
-    os.remove("pyscf_final.xyz")
+#    os.remove("pyscf_final.xyz")
