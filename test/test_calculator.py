@@ -26,7 +26,7 @@ def test_pyscf():
 
     a=Fld().seek_files("xyz")
   
-    assert len(a) == 2
+    assert len(a) == 1
 
     os.remove("test_1.xyz")
 #    os.remove("pyscf_final.xyz")
