@@ -15,6 +15,11 @@ of a ring polymer using pre-existing functions of PySoftK_ introduces the user i
    monomer_polymers
    super_monomer
    polymer_chains
+   polymer_diblock
+   polymer_random
+   polymer_cyclic
+   polymer_branched
+   polymer_pattern
    create_folders
    calculator
    torsional
