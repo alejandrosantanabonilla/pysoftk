@@ -77,10 +77,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">PySoftK Modular structure</a> &raquo;</li>
-          <li><a href="pysoftk.html">pysoftk package</a> &raquo;</li>
-      <li>pysoftk.topologies package</li>
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">PySoftK Modular structure</a></li>
+          <li class="breadcrumb-item"><a href="pysoftk.html">pysoftk package</a></li>
+      <li class="breadcrumb-item active">pysoftk.topologies package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/pysoftk.topologies.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -95,6 +95,85 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
 </section>
+<section id="module-pysoftk.topologies.branched">
+<span id="pysoftk-topologies-branched-module"></span><h2>pysoftk.topologies.branched module<a class="headerlink" href="#module-pysoftk.topologies.branched" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.topologies.branched.Bd">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.branched.</span></span><span class="sig-name descname"><span class="pre">Bd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">core</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/branched.html#Bd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.branched.Bd" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for creating a branched polymer
+from given RDKit molecules.</p>
+<section id="attributes">
+<h3>Attributes:<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
+<p>core           Molecular core to be decorated
+arm           Molecular branches to be added to the core
+atom         A place-holder atom to connect the molecules</p>
+<p class="rubric">Examples</p>
+</section>
+<section id="note">
+<h3>Note:<a class="headerlink" href="#note" title="Permalink to this heading"></a></h3>
+<p>RDKit package must be installed.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.topologies.branched.Bd.arm">
+<span class="sig-name descname"><span class="pre">arm</span></span><a class="headerlink" href="#pysoftk.topologies.branched.Bd.arm" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.topologies.branched.Bd.atom">
+<span class="sig-name descname"><span class="pre">atom</span></span><a class="headerlink" href="#pysoftk.topologies.branched.Bd.atom" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.topologies.branched.Bd.branched_polymer">
+<span class="sig-name descname"><span class="pre">branched_polymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iter_ff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/branched.html#Bd.branched_polymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.branched.Bd.branched_polymer" title="Permalink to this definition"></a></dt>
+<dd><p>Function</p>
+<blockquote>
+<div><dl class="simple">
+<dt>FF: str</dt><dd><p>Selected FF between MMFF or UFF</p>
+</dd>
+<dt>relax_iterations: int</dt><dd><p>Number of iterations used for relaxing
+a molecular object.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>newMol_H<span class="classifier">rdkit.Chem.rdchem.Mol</span></dt><dd><p>RDKit Mol object</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.topologies.branched.Bd.core">
+<span class="sig-name descname"><span class="pre">core</span></span><a class="headerlink" href="#pysoftk.topologies.branched.Bd.core" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.topologies.branched.Bd.merge_arms">
+<span class="sig-name descname"><span class="pre">merge_arms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">core</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/branched.html#Bd.merge_arms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.branched.Bd.merge_arms" title="Permalink to this definition"></a></dt>
+<dd><p>Function to attach user defined molecules to a provided
+molecular core using a placeholder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>core</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
+<li><p><strong>arm</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
+<li><p><strong>atom</strong> (<em>str</em>) – The placeholder atom to combine the molecules
+and form a new monomer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>mol</strong> – RDKit Mol object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
 <section id="module-pysoftk.topologies.diblock">
 <span id="pysoftk-topologies-diblock-module"></span><h2>pysoftk.topologies.diblock module<a class="headerlink" href="#module-pysoftk.topologies.diblock" title="Permalink to this heading"></a></h2>
 <dl class="py class">
@@ -103,10 +182,15 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A class for creating a diblock copolymers
 from given RDKit molecules.</p>
+<section id="id1">
+<h3>Attributes:<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
 <p>ma           First molecule of the copolymer
 mb           Second molecule of the copolymer
 atom         A place-holder atom to connect the molecules</p>
 <p class="rubric">Examples</p>
+</section>
+<section id="id2">
+<h3>Note:<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
 <p>RDKit package must be installed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pysoftk.topologies.diblock.Db.atom">
@@ -146,6 +230,7 @@ a molecular object.</p></li>
 <span class="sig-name descname"><span class="pre">mb</span></span><a class="headerlink" href="#pysoftk.topologies.diblock.Db.mb" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
+</section>
 </dd></dl>
 
 <dl class="py class">
@@ -154,6 +239,8 @@ a molecular object.</p></li>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A class for creating a Patterned polymers
 from a list of RDKit molecules.</p>
+<section id="id3">
+<h3>Attributes:<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
 <p>pattern      String defining a sequence to order a polymer
 mols         A list of molecules to be arranged in a given</p>
 <blockquote>
@@ -161,6 +248,9 @@ mols         A list of molecules to be arranged in a given</p>
 </div></blockquote>
 <p>atom         A place-holder atom to connect the molecules</p>
 <p class="rubric">Examples</p>
+</section>
+<section id="id4">
+<h3>Note:<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
 <p>RDKit package must be installed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pysoftk.topologies.diblock.Pt.atom">
@@ -179,15 +269,107 @@ mols         A list of molecules to be arranged in a given</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.topologies.diblock.Pt.pattern_block_poly">
-<span class="sig-name descname"><span class="pre">pattern_block_poly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/diblock.html#Pt.pattern_block_poly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.diblock.Pt.pattern_block_poly" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">pattern_block_poly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/diblock.html#Pt.pattern_block_poly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.diblock.Pt.pattern_block_poly" title="Permalink to this definition"></a></dt>
 <dd><p>Function to create a polymer based on an alphabetic
 ordered pattern.</p>
+<section id="returns">
+<h4>Returns:<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h4>
 <dl class="simple">
 <dt>return :: mol</dt><dd><p>A molecular pysoftk object.</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
+</section>
+</dd></dl>
+
+</section>
+<section id="module-pysoftk.topologies.ranpol">
+<span id="pysoftk-topologies-ranpol-module"></span><h2>pysoftk.topologies.ranpol module<a class="headerlink" href="#module-pysoftk.topologies.ranpol" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.topologies.ranpol.Rnp">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.ranpol.</span></span><span class="sig-name descname"><span class="pre">Rnp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/ranpol.html#Rnp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for creating a random copolymer
+from given RDKit molecules.</p>
+<section id="id5">
+<h3>Attributes:<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<p>ma           Molecular core to be decorated
+mb           Molecular branches to be added to the core
+atom         A place-holder atom to connect the molecules</p>
+<p class="rubric">Examples</p>
+</section>
+<section id="id6">
+<h3>Note:<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<p>RDKit package must be installed.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.topologies.ranpol.Rnp.atom">
+<span class="sig-name descname"><span class="pre">atom</span></span><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp.atom" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.topologies.ranpol.Rnp.ma">
+<span class="sig-name descname"><span class="pre">ma</span></span><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp.ma" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.topologies.ranpol.Rnp.mb">
+<span class="sig-name descname"><span class="pre">mb</span></span><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp.mb" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.topologies.ranpol.Rnp.random_ab_copolymer">
+<span class="sig-name descname"><span class="pre">random_ab_copolymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">len_polymer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter_ff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/ranpol.html#Rnp.random_ab_copolymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp.random_ab_copolymer" title="Permalink to this definition"></a></dt>
+<dd><p>Function to build a random copolymer using an user
+provided probability (pA) for merging the monomer
+ma and imposiing the condition pB=1-pA.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>len_polymer</strong> (<em>int</em>) – User defined length of the polymer.</p></li>
+<li><p><strong>pA</strong> (<em>float</em>) – <dl class="simple">
+<dt>User defined attaching probability of</dt><dd><p>ma.</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>iter_ff</strong> (<em>int</em>) – User defined iterations for a FF.</p></li>
+<li><p><strong>FF</strong> (<em>str</em>) – User selected FF between “MMFF” or “UFF”.</p></li>
+<li><p><strong>Return</strong> – </p></li>
+<li><p><strong>-------</strong> – </p></li>
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.topologies.ranpol.Rnp.random_abc_copolymer">
+<span class="sig-name descname"><span class="pre">random_abc_copolymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_polymer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter_ff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/ranpol.html#Rnp.random_abc_copolymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp.random_abc_copolymer" title="Permalink to this definition"></a></dt>
+<dd><p>Function to build a random copolymer based on
+an user defined probability (pA) of merging mA,
+pB for monomer mb, and the condition pC=1-pA-pB.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mc</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object #</p></li>
+<li><p><strong>len_polymer</strong> (<em>float</em>) – User defined length of the polymer.</p></li>
+<li><p><strong>pA</strong> (<em>float</em>) – User defined attaching probability of
+ma.</p></li>
+<li><p><strong>pB</strong> (<em>float</em>) – User defined attaching porbability of
+mb.</p></li>
+<li><p><strong>atom</strong> (<em>str</em>) – User defined atom used as place-holder.</p></li>
+<li><p><strong>iter_ff</strong> (<em>int</em>) – User defined iterations for a FF.#</p></li>
+<li><p><strong>FF</strong> (<em>str</em>) – User selected FF.</p></li>
+<li><p><strong>Return</strong> – </p></li>
+<li><p><strong>-------</strong> – </p></li>
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </dd></dl>
 
 </section>
@@ -199,9 +381,14 @@ ordered pattern.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A class for creating a circular (ring-shaped) polymer
 from given RDKit molecules.</p>
+<section id="id7">
+<h3>Attributes:<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
 <p>mol          First molecule of the copolymer
 atom         A place-holder atom to connect the molecules</p>
 <p class="rubric">Examples</p>
+</section>
+<section id="id8">
+<h3>Note:<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h3>
 <p>RDKit package must be installed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pysoftk.topologies.ring.Rn.atom">
@@ -282,52 +469,88 @@ using the LP function.</p></li>
 </dl>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 </section>
 <section id="module-pysoftk.topologies.utils">
 <span id="pysoftk-topologies-utils-module"></span><h2>pysoftk.topologies.utils module<a class="headerlink" href="#module-pysoftk.topologies.utils" title="Permalink to this heading"></a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.topologies.utils.atom_neigh">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.utils.</span></span><span class="sig-name descname"><span class="pre">atom_neigh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/utils.html#atom_neigh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.utils.atom_neigh" title="Permalink to this definition"></a></dt>
+<dd><p>Find the neighbours from an atoms inside a
+molecule.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.topologies.utils.count_plholder">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.utils.</span></span><span class="sig-name descname"><span class="pre">count_plholder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/utils.html#count_plholder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.utils.count_plholder" title="Permalink to this definition"></a></dt>
+<dd><p>Function to count the number of user defined
+atomic placeholders.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.topologies.utils.create_pol">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.utils.</span></span><span class="sig-name descname"><span class="pre">create_pol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tpb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/utils.html#create_pol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.utils.create_pol" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.topologies.utils.pattern_mol_seq">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.utils.</span></span><span class="sig-name descname"><span class="pre">pattern_mol_seq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/utils.html#pattern_mol_seq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.utils.pattern_mol_seq" title="Permalink to this definition"></a></dt>
 <dd><p>Function to create a list of molecules
-based on a user provided pattern.</p>
+based on a user provided pattern.
+Parameters:
+————
+pattern:: str</p>
+<blockquote>
+<div><p>A string value containing the desired pattern.</p>
+</div></blockquote>
 <dl class="simple">
-<dt>pattern:: str</dt><dd><p>A string value containing the desired pattern.</p>
-</dd>
 <dt>mols :: list</dt><dd><p>List containing the names of the molecules to form
 a polymer with a given pattern.</p>
 </dd>
 </dl>
+<section id="id9">
+<h3>Returns:<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h3>
 <dl class="simple">
 <dt>return :: list</dt><dd><p>List with the correct sequence of molecular fragments
 to be merged.</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.topologies.utils.pattern_recon">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.utils.</span></span><span class="sig-name descname"><span class="pre">pattern_recon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/utils.html#pattern_recon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.utils.pattern_recon" title="Permalink to this definition"></a></dt>
 <dd><p>Function to find unique values from a string pattern</p>
+<section id="parameters">
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h3>
 <dl class="simple">
 <dt>pattern :: str</dt><dd><p>Variable containing the pattern written in a string.</p>
 </dd>
 </dl>
+</section>
+<section id="id10">
+<h3>Returns:<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h3>
 <dl class="simple">
 <dt>result :: list</dt><dd><p>Returns the unique values of the pattern in alphabetic
 order.</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.topologies.utils.pattern_repl">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.utils.</span></span><span class="sig-name descname"><span class="pre">pattern_repl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tup_repl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/utils.html#pattern_repl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.utils.pattern_repl" title="Permalink to this definition"></a></dt>
 <dd><p>Function to perform a pattern replacement using tuples
-generated by pattern and molecular names.</p>
-<dl>
-<dt>pattern :: str</dt><dd><blockquote>
+generated by pattern and molecular names.
+Parameters:
+————
+pattern :: str</p>
+<blockquote>
+<div><blockquote>
 <div><p>Variable containing the pattern written in a string</p>
 </div></blockquote>
 <dl class="simple">
@@ -335,8 +558,7 @@ generated by pattern and molecular names.</p>
 string pattern.</p>
 </dd>
 </dl>
-</dd>
-</dl>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py function">
@@ -344,6 +566,11 @@ string pattern.</p>
 <span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.utils.</span></span><span class="sig-name descname"><span class="pre">seek_plhold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/utils.html#seek_plhold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.utils.seek_plhold" title="Permalink to this definition"></a></dt>
 <dd><p>Function Seeking for a specific placeholder atom</p>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.topologies.utils.tuple_bonds">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.utils.</span></span><span class="sig-name descname"><span class="pre">tuple_bonds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst_atm_neigh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/utils.html#tuple_bonds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.utils.tuple_bonds" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 </section>
 <section id="module-pysoftk.topologies">

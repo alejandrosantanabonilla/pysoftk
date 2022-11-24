@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creating random Polymers &mdash; PySoftK 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Creating cyclic Polymers" href="polymer_cyclic.html" />
+    <link rel="prev" title="Creating diblock Polymers" href="polymer_diblock.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PySoftK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="prepare_molecules.html">Preparing monomers for PySoftK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monomer_polymers.html">From single molecules to polymers using PySoftK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="super_monomer.html">Creating a Polymer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_chains.html">Creating chains of Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_diblock.html">Creating diblock Polymers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Creating random Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_cyclic.html">Creating cyclic Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calculator.html">Computing using <strong>ab-initio</strong> calculators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="torsional.html">Automatic torsional angle detection for planar polymers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">PySoftK Modular structure</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PySoftK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="tutorials.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Creating random Polymers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/polymer_random.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="creating-random-polymers">
+<span id="polymer-pattern"></span><h1>Creating random Polymers<a class="headerlink" href="#creating-random-polymers" title="Permalink to this heading"></a></h1>
+<p><a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> supports the construction of random linear copolymers which consist of two or three different monomers. Our approach uses the command <strong>Rnp(mol_1,mol_2,atom).random_ab_copolymer(len,pA,iter_ff,FF)</strong> to build a random copolymer of length len that contains two monomers, <strong>mol_1</strong> and <strong>mol_2</strong>. The number of <strong>mol_1</strong> and <strong>mol_2</strong> monomers in the resulting polymer are determined from <strong>pA len</strong> and <strong>(1-pA)len</strong>, respectively.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
+
+<span class="n">mol_1</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;BrCOCBr&quot;</span><span class="p">)</span>
+<span class="n">mol_2</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;c1(ccc(cc1)Br)Br&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then, we can create a polymer with a diblock random topology, by using the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysoftk.topologies.ranpol</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">ran</span><span class="o">=</span><span class="n">Rnp</span><span class="p">(</span><span class="n">mol_1</span><span class="p">,</span><span class="n">mol_2</span><span class="p">,</span><span class="s2">&quot;Br&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">random_ab_copolymer</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mf">0.4</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The new molecular unit (stored in the variable <strong>ran</strong>) can be used to replicate and form a diblock random polymer with a given desired number of units (in total <strong>5</strong>). A probability of <strong>0.4</strong> to be merged is defined by the user, while <strong>10</strong> steps for geometry optimization has been requested. The structure can be printed in XYZ format by adding the following lines of code as can be seen in this snipet:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysoftk.format_printers.format_mol</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">Fmt</span><span class="p">(</span><span class="n">ran</span><span class="p">)</span><span class="o">.</span><span class="n">xyz_print</span><span class="p">(</span><span class="s2">&quot;random2.xyz&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By using a common visualization program (such as <a class="reference external" href="https://www.ks.uiuc.edu/Research/vmd/">VMD</a>), the built structure <strong>random2.xyz</strong> can be displayed and the result as presented above</p>
+<figure class="align-center">
+<img alt="../_images/random2.png" src="../_images/random2.png" />
+</figure>
+<p>Created a diblock polymer with 5 units.</p>
+<p>Similarly <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> can be used to generate random linear copolymers consisting of three different monomers via the command <strong>Rnp(mol_1,mol_2,atom).random_abc_copolymer(mol_3, len, pA, pB, iter_ff, FF)</strong>. In this case, the resulting polymer will contain len monomers, such that the number of <strong>mol_1</strong>, <strong>mol_2</strong> and <strong>mol_3</strong> monomer is <strong>pA len</strong>, <strong>pB len</strong> and <strong>(1-pA-pB) len</strong>, respectively</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysoftk.topologies.ranpol</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">mol_3</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;c1cc(oc1Br)Br&quot;</span><span class="p">)</span>
+<span class="n">tri</span><span class="o">=</span><span class="n">Rnp</span><span class="p">(</span><span class="n">mol_1</span><span class="p">,</span><span class="n">mol_2</span><span class="p">,</span><span class="s2">&quot;Br&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">random_abc_copolymer</span><span class="p">(</span><span class="n">mol_3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mf">0.4</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">Fmt</span><span class="p">(</span><span class="n">tri</span><span class="p">)</span><span class="o">.</span><span class="n">xyz_print</span><span class="p">(</span><span class="s2">&quot;random3.xyz&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The result of this function is displayed in the figure below.</p>
+<figure class="align-center">
+<img alt="../_images/random3.png" src="../_images/random3.png" />
+</figure>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="polymer_diblock.html" class="btn btn-neutral float-left" title="Creating diblock Polymers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="polymer_cyclic.html" class="btn btn-neutral float-right" title="Creating cyclic Polymers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Alejandro Santana-Bonilla, Chris Lorenz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

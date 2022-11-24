@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Creating chains of Polymers &mdash; PySoftK 0.0.1 documentation</title>
+  <title>Creating branched Polymers &mdash; PySoftK 0.0.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -21,8 +21,8 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Creating diblock Polymers" href="polymer_diblock.html" />
-    <link rel="prev" title="Creating a Polymer" href="super_monomer.html" /> 
+    <link rel="next" title="Creating patterned Polymers" href="polymer_pattern.html" />
+    <link rel="prev" title="Creating cyclic Polymers" href="polymer_cyclic.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,11 +48,11 @@
 <li class="toctree-l2"><a class="reference internal" href="prepare_molecules.html">Preparing monomers for PySoftK</a></li>
 <li class="toctree-l2"><a class="reference internal" href="monomer_polymers.html">From single molecules to polymers using PySoftK</a></li>
 <li class="toctree-l2"><a class="reference internal" href="super_monomer.html">Creating a Polymer</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Creating chains of Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_chains.html">Creating chains of Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_diblock.html">Creating diblock Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_random.html">Creating random Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_cyclic.html">Creating cyclic Polymers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Creating branched Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="calculator.html">Computing using <strong>ab-initio</strong> calculators</a></li>
@@ -78,9 +78,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a></li>
           <li class="breadcrumb-item"><a href="tutorials.html">Tutorials</a></li>
-      <li class="breadcrumb-item active">Creating chains of Polymers</li>
+      <li class="breadcrumb-item active">Creating branched Polymers</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/tutorials/polymer_chains.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/tutorials/polymer_branched.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -88,54 +88,42 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="creating-chains-of-polymers">
-<span id="polymer-chains"></span><h1>Creating chains of Polymers<a class="headerlink" href="#creating-chains-of-polymers" title="Permalink to this heading"></a></h1>
-<p>Let’s try to create our first polymer by merging two similar molecules using the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pysoftk.linear_polymer.super_linear_polymer</span></code> function.</p>
-<p>First, we need to import the corresponding modules from <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> allowing us to merge the initial molecules (i.e create a super-monomer) and read them using <a class="reference external" href="https://www.rdkit.org/">RDKit</a></p>
+  <section id="creating-branched-polymers">
+<span id="polymer-branched"></span><h1>Creating branched Polymers<a class="headerlink" href="#creating-branched-polymers" title="Permalink to this heading"></a></h1>
+<p>Branched polymers are another topology that is enabled in <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a>. Generally, branched polymers are a set of secondary polymer chains linked to a primary backbone. <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> builds this topology by employing the user-supplied atomic placeholder as an indicator of the number of branch points from the primary backbone present in this structure. Thus, for instance, a backbone with four placeholders will generate a model where four branches (arms) are attached at the regions on the backbone indicated by the user. The command <strong>Bd(core,arm,atom).branched_polymer(FF,ff_iter)</strong> is used to generate a branched polymer with a backbone of core and arms described by arm.</p>
+<p>The inputted structures for core and arm can be simple monomers and therefore inputted as previously discussed or they can be resultant structures from any of the other commands and then inputted into the branched function. Incorporation can be carried out using the current <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> structure as part of the module topology  <a class="reference internal" href="../pysoftk.topologies.html#module-pysoftk.topologies.branched" title="pysoftk.topologies.branched"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pysoftk.topologies.branched</span></code></a> function.</p>
+<p>First, we need to import the initial molecules and read it using <a class="reference external" href="https://www.rdkit.org/">RDKit</a>, as shownin the following snippet:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
 <span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
 
-<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.super_monomer</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.linear_polymer</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.format_printers.format_mol</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">core</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;BrN(Br)CCN(Br)Br&quot;</span><span class="p">)</span>
+<span class="n">arm</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;C(CC(=O)OCCOC(=O)CCBr)Br&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Then, the molecules are created (using SMILES format) and read
-using the following lines of code:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mol_1</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s1">&#39;c1cc(sc1Br)Br&#39;</span><span class="p">)</span>
-<span class="n">mol_2</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s1">&#39;c1cc(sc1Br)Br&#39;</span><span class="p">)</span>
+<p>Then, we can create a branched topology, by using the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysoftk.topologies.branched</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">bran</span><span class="o">=</span><span class="n">Bd</span><span class="p">(</span><span class="n">core</span><span class="p">,</span><span class="n">arm</span><span class="p">,</span><span class="s2">&quot;Br&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">branched_polymer</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Once the initial molecular units are defined, we can create
-a polymer (i.e a super-monomer in <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> language)
-as indicated in the following lines:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="o">=</span><span class="n">Sm</span><span class="p">(</span><span class="n">mol_1</span><span class="p">,</span><span class="n">mol_2</span><span class="p">,</span><span class="s2">&quot;Br&quot;</span><span class="p">)</span>
-<span class="n">k</span><span class="o">=</span><span class="n">a</span><span class="o">.</span><span class="n">mon_to_poly</span><span class="p">()</span>
+<p>The new molecular unit (stored in the variable <strong>bran</strong>) can be used to replicate and form a polymer with a given desired architecture. To print the structure in XYZ format, one needs to add the following lines of conde as can be seen in this snipet:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysoftk.format_printers.format_mol</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">Fmt</span><span class="p">(</span><span class="n">bran</span><span class="p">)</span><span class="o">.</span><span class="n">xyz_print</span><span class="p">(</span><span class="s2">&quot;branched.xyz&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The new molecular unit (stored in the variable <strong>k</strong>) can be
-used to replicate and form a polymer with a given desired
-number of units (in this case 3) and printed in XYZ format,
-as can be seen in this code snipet:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">new</span><span class="o">=</span><span class="n">Lp</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="s2">&quot;Br&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">shift</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">linear_polymer</span><span class="p">()</span>
-<span class="n">Fmt</span><span class="p">(</span><span class="n">new</span><span class="p">)</span><span class="o">.</span><span class="n">xyz_print</span><span class="p">(</span><span class="s2">&quot;polymer_1_2.xyz&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>By using a common visualization program (such as <a class="reference external" href="https://www.ks.uiuc.edu/Research/vmd/">VMD</a>), the built
-structure <strong>polymer_1_2.xyz</strong> can be displayed and the result
-as presented above</p>
+<p>By using a common visualization program (such as <a class="reference external" href="https://www.ks.uiuc.edu/Research/vmd/">VMD</a>), the built structure <strong>branched.xyz</strong> can be displayed and the result as presented above</p>
 <figure class="align-center">
-<img alt="../_images/chain.png" src="../_images/chain.png" />
+<img alt="../_images/branched.png" src="../_images/branched.png" />
 </figure>
-<p>Created a linear polymer with a 3-unit repetition.</p>
+<p>Created a branched polymer with 4 arms.</p>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="super_monomer.html" class="btn btn-neutral float-left" title="Creating a Polymer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="polymer_diblock.html" class="btn btn-neutral float-right" title="Creating diblock Polymers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="polymer_cyclic.html" class="btn btn-neutral float-left" title="Creating cyclic Polymers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="polymer_pattern.html" class="btn btn-neutral float-right" title="Creating patterned Polymers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

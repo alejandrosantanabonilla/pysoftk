@@ -59,9 +59,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>pysoftk.topologies.diblock</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pysoftk.topologies.diblock</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -233,7 +233,7 @@
        <span class="bp">self</span><span class="o">.</span><span class="n">mols</span> <span class="o">=</span> <span class="n">mols</span> 
        <span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">atom</span>
        
-<div class="viewcode-block" id="Pt.pattern_block_poly"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.diblock.Pt.pattern_block_poly">[docs]</a>    <span class="k">def</span> <span class="nf">pattern_block_poly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Pt.pattern_block_poly"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.diblock.Pt.pattern_block_poly">[docs]</a>    <span class="k">def</span> <span class="nf">pattern_block_poly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to create a polymer based on an alphabetic </span>
 <span class="sd">        ordered pattern.</span>
@@ -254,16 +254,21 @@
    
         <span class="n">numbers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mol_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">mols</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
         <span class="n">od_mols</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">numbers</span><span class="p">,</span><span class="n">mols</span><span class="p">)))</span>
-   
-        <span class="n">list_rd_mols</span><span class="o">=</span><span class="p">[</span><span class="n">od_mols</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">]</span>
+ 
+        <span class="n">list_mol</span><span class="o">=</span><span class="p">[</span><span class="n">od_mols</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">]</span>
 
-        <span class="n">monomer1</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Sm</span><span class="p">(</span><span class="n">list_rd_mols</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">list_rd_mols</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
-   
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">list_rd_mols</span><span class="p">)):</span>
-             <span class="n">monomer1</span><span class="o">=</span><span class="n">sm</span><span class="o">.</span><span class="n">Sm</span><span class="p">(</span><span class="n">monomer1</span><span class="o">.</span><span class="n">mon_to_poly</span><span class="p">(),</span>
-                            <span class="n">list_rd_mols</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
+        <span class="n">outmol</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">CombineMols</span><span class="p">(</span><span class="n">list_mol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">list_mol</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">monomer1</span><span class="o">.</span><span class="n">monomer</span><span class="p">()</span></div></div>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">list_mol</span><span class="p">)):</span>
+            <span class="n">outmol</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">CombineMols</span><span class="p">(</span><span class="n">outmol</span><span class="p">,</span><span class="n">list_mol</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+        <span class="n">lst_ngh</span><span class="o">=</span><span class="n">atom_neigh</span><span class="p">(</span><span class="n">outmol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
+        <span class="n">tpb</span><span class="o">=</span><span class="n">tuple_bonds</span><span class="p">(</span><span class="n">lst_ngh</span><span class="p">)</span>
+
+        <span class="n">proto_pol</span><span class="o">=</span><span class="n">create_pol</span><span class="p">(</span><span class="n">outmol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">tpb</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">swap_hyd</span><span class="p">(</span><span class="n">proto_pol</span><span class="p">,</span><span class="n">relax_iterations</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span></div></div>
+
 
 </pre></div>
 

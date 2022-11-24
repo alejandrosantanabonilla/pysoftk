@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pysoftk.topologies.branched &mdash; PySoftK 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> PySoftK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">PySoftK Modular structure</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PySoftK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pysoftk.topologies.branched</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pysoftk.topologies.branched</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
+<span class="kn">from</span> <span class="nn">rdkit.Geometry</span> <span class="kn">import</span> <span class="n">Point3D</span>
+<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">rdDistGeom</span><span class="p">,</span> <span class="n">rdMolTransforms</span>
+<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">rdDistGeom</span> <span class="k">as</span> <span class="n">molDG</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.utils</span> <span class="kn">import</span> <span class="o">*</span>
+
+<div class="viewcode-block" id="Bd"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.branched.Bd">[docs]</a><span class="k">class</span> <span class="nc">Bd</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for creating a branched polymer </span>
+<span class="sd">    from given RDKit molecules.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    core           Molecular core to be decorated</span>
+<span class="sd">    arm           Molecular branches to be added to the core</span>
+<span class="sd">    atom         A place-holder atom to connect the molecules </span>
+<span class="sd"> </span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ---------</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">    -----</span>
+<span class="sd">    RDKit package must be installed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="s1">&#39;core&#39;</span><span class="p">,</span> <span class="s1">&#39;arm&#39;</span><span class="p">,</span> <span class="s1">&#39;atom&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core</span><span class="p">,</span> <span class="n">arm</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+       <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">       Initialize this class.</span>
+<span class="sd">          </span>
+<span class="sd">       Parameters</span>
+<span class="sd">       ----------</span>
+<span class="sd">       core : rdkit.Chem.rdchem.Mol</span>
+<span class="sd">            RDKit Mol object</span>
+
+<span class="sd">       arm : rdkit.Chem.rdchem.Mol</span>
+<span class="sd">            RDKit Mol object</span>
+<span class="sd"> </span>
+<span class="sd">       atom : str</span>
+<span class="sd">            The placeholder atom to combine the molecules </span>
+<span class="sd">            and form a new monomer</span>
+
+<span class="sd">       &quot;&quot;&quot;</span>
+       
+       <span class="bp">self</span><span class="o">.</span><span class="n">core</span> <span class="o">=</span> <span class="n">core</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">arm</span> <span class="o">=</span> <span class="n">arm</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">atom</span>
+
+<div class="viewcode-block" id="Bd.merge_arms"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.branched.Bd.merge_arms">[docs]</a>    <span class="k">def</span> <span class="nf">merge_arms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core</span><span class="p">,</span> <span class="n">arm</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+       <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">       Function to attach user defined molecules to a provided</span>
+<span class="sd">       molecular core using a placeholder.</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ----------</span>
+<span class="sd">       core : rdkit.Chem.rdchem.Mol</span>
+<span class="sd">            RDKit Mol object</span>
+
+<span class="sd">       arm : rdkit.Chem.rdchem.Mol</span>
+<span class="sd">            RDKit Mol object</span>
+<span class="sd"> </span>
+<span class="sd">       atom : str</span>
+<span class="sd">            The placeholder atom to combine the molecules </span>
+<span class="sd">            and form a new monomer</span>
+
+<span class="sd">       Return</span>
+<span class="sd">       -------</span>
+
+<span class="sd">       mol : rdkit.Chem.rdchem.Mol</span>
+<span class="sd">             RDKit Mol object</span>
+<span class="sd">       &quot;&quot;&quot;</span>
+       
+       <span class="n">outmol</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">CombineMols</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">arm</span><span class="p">)</span>
+       <span class="n">AllChem</span><span class="o">.</span><span class="n">EmbedMolecule</span><span class="p">(</span><span class="n">outmol</span><span class="p">)</span>
+
+       <span class="n">new_bond</span><span class="o">=</span><span class="n">seek_plhold</span><span class="p">(</span><span class="n">outmol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
+    
+       <span class="c1"># New way to flatten a list using sum function</span>
+       <span class="n">at</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">new_bond</span><span class="p">,</span> <span class="p">[])</span>
+
+       <span class="n">br_1</span><span class="p">,</span><span class="n">c_1</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+       <span class="n">br_2</span><span class="p">,</span><span class="n">c_2</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">at</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+       <span class="n">rwmol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">RWMol</span><span class="p">(</span><span class="n">outmol</span><span class="p">)</span>     
+       <span class="n">rwmol</span><span class="o">.</span><span class="n">AddBond</span><span class="p">(</span><span class="n">c_1</span><span class="p">,</span> <span class="n">c_2</span><span class="p">,</span> <span class="n">Chem</span><span class="o">.</span><span class="n">BondType</span><span class="o">.</span><span class="n">SINGLE</span><span class="p">)</span>
+
+       <span class="n">rwmol</span><span class="o">.</span><span class="n">RemoveAtom</span><span class="p">(</span><span class="n">br_2</span><span class="p">)</span>
+       <span class="n">rwmol</span><span class="o">.</span><span class="n">RemoveAtom</span><span class="p">(</span><span class="n">br_1</span><span class="p">)</span>
+
+       <span class="n">mol</span><span class="o">=</span><span class="n">rwmol</span><span class="o">.</span><span class="n">GetMol</span><span class="p">()</span>
+
+       <span class="k">return</span> <span class="n">mol</span></div>
+
+    
+<div class="viewcode-block" id="Bd.branched_polymer"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.branched.Bd.branched_polymer">[docs]</a>    <span class="k">def</span> <span class="nf">branched_polymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iter_ff</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">):</span>
+       <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">       Function</span>
+
+<span class="sd">        FF: str</span>
+<span class="sd">            Selected FF between MMFF or UFF</span>
+
+<span class="sd">        relax_iterations: int  </span>
+<span class="sd">            Number of iterations used for relaxing </span>
+<span class="sd">            a molecular object.  </span>
+
+<span class="sd">        Return</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        newMol_H : rdkit.Chem.rdchem.Mol</span>
+<span class="sd">             RDKit Mol object</span>
+<span class="sd">       &quot;&quot;&quot;</span>
+
+       <span class="n">core</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core</span>
+       <span class="n">arm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">arm</span>
+       <span class="n">atom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span>
+       
+       <span class="n">res</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">merge_arms</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">arm</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
+       <span class="n">AllChem</span><span class="o">.</span><span class="n">EmbedMolecule</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+    
+       <span class="n">nm_ph</span><span class="o">=</span><span class="n">count_plholder</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
+    
+       <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">nm_ph</span><span class="p">)):</span>
+           <span class="n">res</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">merge_arms</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">arm</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
+
+       <span class="n">mol_h</span><span class="o">=</span><span class="n">swap_hyd</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">FF</span><span class="p">)</span>
+    
+       <span class="k">return</span> <span class="n">mol_h</span></div></div>
+
+
+    
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Alejandro Santana-Bonilla, Chris Lorenz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

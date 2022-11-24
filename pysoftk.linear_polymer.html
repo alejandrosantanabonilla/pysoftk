@@ -77,10 +77,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">PySoftK Modular structure</a> &raquo;</li>
-          <li><a href="pysoftk.html">pysoftk package</a> &raquo;</li>
-      <li>pysoftk.linear_polymer package</li>
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">PySoftK Modular structure</a></li>
+          <li class="breadcrumb-item"><a href="pysoftk.html">pysoftk package</a></li>
+      <li class="breadcrumb-item active">pysoftk.linear_polymer package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/pysoftk.linear_polymer.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -172,6 +172,8 @@ object.</p></li>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A class for creating a linear polymer
 from given RdKit molecules.</p>
+<section id="attributes">
+<h3>Attributes:<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
 <p>mol          The super_monomer molecule to be polarised
 atom         A place-holder atom to connect the molecule
 n_copies     Number of copies to create the polymer
@@ -180,6 +182,9 @@ shift        A real value to translate the super_monomer</p>
 <div><p>in a real-grid.</p>
 </div></blockquote>
 <p class="rubric">Examples</p>
+</section>
+<section id="note">
+<h3>Note:<a class="headerlink" href="#note" title="Permalink to this heading"></a></h3>
 <p>RDKit package must be installed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.atom">
@@ -240,10 +245,13 @@ shift        A real value to translate the super_monomer</p>
 <dt>Function to create a linear polymer</dt><dd><p>from a given super_monomer object.</p>
 </dd>
 </dl>
+<section id="returns">
+<h4>Returns:<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h4>
 <dl class="simple">
 <dt>newMol_H<span class="classifier">rdkit.Chem.rdchem.Mol</span></dt><dd><p>RDKit Mol object</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py attribute">
@@ -265,6 +273,7 @@ shift        A real value to translate the super_monomer</p>
 </dl>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 </section>
@@ -275,6 +284,8 @@ shift        A real value to translate the super_monomer</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.mol_conformer.</span></span><span class="sig-name descname"><span class="pre">Mcon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_max</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/mol_conformer.html#Mcon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.mol_conformer.Mcon" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Calculates molecular conformers</p>
+<section id="example">
+<h3>Example:<a class="headerlink" href="#example" title="Permalink to this heading"></a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This class requires RDKit to be installed.</p>
@@ -309,6 +320,7 @@ enabled the highest-energy conformer is returned.</p>
 <span class="sig-name descname"><span class="pre">num_conf</span></span><a class="headerlink" href="#pysoftk.linear_polymer.mol_conformer.Mcon.num_conf" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
+</section>
 </dd></dl>
 
 <dl class="py class">
