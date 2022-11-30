@@ -46,5 +46,5 @@ jobs:
        uses: peaceiris/actions-gh-pages@v3
        with:
          publish_branch: gh-pages
-         github_token: ${{ secrets.GITHUB_TOKEN }}
+         github_token: ${{ secrets.PYSOFTK_DOCS }}
          publish_dir: ./docs/build/html 
