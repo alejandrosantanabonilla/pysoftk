@@ -17,12 +17,12 @@ Geometry optimization using GFN-FF
 PySoftK_ enables the use of xtb_ as a **calculator** employing a customized Force Field implementation (called **xtb_ff**).
 To introduce this functionality, one needs to import the corresponding RDKit_ auxiliary functions (line 1-2) and the needed modules from PySoftK_ as shown in the following snipet:
 
-.. literalinclude:: xtb_ff.py
+.. literalinclude:: scripts/xtb_ff.py
    :lines: 1-7
 
 To demonstrate the functionality of this module, two molecules (Benzene and Thiol) are used to create a *super-monomer* (and stored in the variable **a**). The object **a** is later used as an initial polymer unit (variable **k**) and replicated 5 times (and stored in variable **new**). The result of this operation is then printed in a **XYZ** file called **test_1.xyz**, using the function **FMT(object).xyz_print(name_to_be_printed)**.
 
-.. literalinclude:: xtb_ff.py
+.. literalinclude:: scripts/xtb_ff.py
    :lines: 9-17
 
 The calculator module :mod:`pysoftk.linear\_polymer.calculators.Opt` can be used to perform a geometry optimization by providing a valid **XYZ** file 
@@ -39,7 +39,7 @@ The calculator module :mod:`pysoftk.linear\_polymer.calculators.Opt` can be used
    
 The *Opt* module receives the name of the **XYZ** to be used by xtb_ whilst the function *xtb_ff* accepts the **absolute path/alias** where the xtb_ executable is stored (see note for creating an *alias* for xtb_ executable).
 
-.. literalinclude:: xtb_ff.py
+.. literalinclude:: scripts/xtb_ff.py
    :lines: 19-20
 
 The results of the geometrical optimization are printed to the file **xtbopt.xyz** and can be visualized using VMD_.
@@ -49,19 +49,19 @@ Geometry optimization using PySCF
 
 PySoftK_ also permits the use of pyscf_ as a **calculator** at the semiempirical-mindo3 level of theory. Initially, one needs to import the corresponding PySoftK_ modules and RDKit_ auxiliary functions as shown below: 
 
-.. literalinclude:: pysfc.py
+.. literalinclude:: scripts/pysfc.py
    :lines: 1-7
 
 As shown in the previous example, the result of this operation is then printed in a **XYZ** file called **test_2.xyz**, using the function **FMT(object).xyz_print(name_to_be_printed)**.    
 
-.. literalinclude:: pysfc.py
+.. literalinclude:: scripts/pysfc.py
    :lines: 10-18
 
 .. note:: The only pyscf_ accepted format is **XYZ**.
 	   
 As displayed in the previous section, the *Opt* module accepts as an argument the name of the **xyz** file whilst the *pysc_semi*  receives the user-defined number of SCF cycles. 
 
-.. literalinclude:: pysfc.py
+.. literalinclude:: scripts/pysfc.py
    :lines: 20-23
 
 The result of the geometrical optimization is printed to the file **pyscf_final.xyz** and can be visualized using VMD_.
@@ -73,23 +73,23 @@ PySoftK_ has been designed with the aim of allowing high-throughput calculations
 
 The needed PySoftK_ modules and RDKit_ functions are imported as displayed in the following lines of code:
 
-.. literalinclude:: htp_test.py
+.. literalinclude:: scripts/htp_test.py
    :lines: 1-10
 
 For this example, a set of 10 linear Polymers (using Thiol as initial monomer) are assembled and merged into one **super-monomer**. 
 
-.. literalinclude:: htp_test.py
+.. literalinclude:: scripts/htp_test.py
    :lines: 19-22
 
 Each of these new molecules is uniquely printed using the name **mono_IDX.xyz**
 (employing the module :mod:`pysoftk.format\_printers package`) as indicated in the following lines of code:
 
-.. literalinclude:: htp_test.py
+.. literalinclude:: scripts/htp_test.py
    :lines: 24-25
 
 The resulting files are organized using the module :mod:`pysoftk.folder\_manager.folder\_creator.Fld` where the function *seek_files* browses for files with the extension **.xyz**. To organize the files into folders, PySoftK_ utilizes the function *file_to_dir* indicating the type of files (**.xyz**) and the number of cores (**2**) which are requested to perform this operation:
 
-.. literalinclude:: htp_test.py
+.. literalinclude:: scripts/htp_test.py
    :lines: 27-28
 
 The resulting directories can be browsed using the bash command **tree**
@@ -121,7 +121,7 @@ The resulting directories can be browsed using the bash command **tree**
 
 The module :mod:`pysoftk.htp\_tools.calculator\_htp.Htp` enables the user to perform HTPc in a simple manner. Meanwhile, the command **HTP(format).htp_xtb_ff(executable, processes, cores)** can be used to perform geometry optimizations at different theory levels accessible in PySoftK_, as is indicated in the following lines of code:
 
-.. literalinclude:: htp_test.py
+.. literalinclude:: scripts/htp_test.py
    :lines: 30-31
 
 PySoftK_ HTPc tools have been developed to perform parallel calculations based on the structures created in the folders. This is achieved by using asyncio_ parallel paradigm. The results of the workflow can be browsed using **tree** bash command as shown in the following snipet:

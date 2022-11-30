@@ -89,7 +89,7 @@
            <div itemprop="articleBody">
              
   <section id="creating-random-polymers">
-<span id="polymer-pattern"></span><h1>Creating random Polymers<a class="headerlink" href="#creating-random-polymers" title="Permalink to this heading"></a></h1>
+<span id="polymer-random"></span><h1>Creating random Polymers<a class="headerlink" href="#creating-random-polymers" title="Permalink to this heading"></a></h1>
 <p><a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> supports the construction of random linear copolymers which consist of two or three different monomers. Our approach uses the command <strong>Rnp(mol_1,mol_2,atom).random_ab_copolymer(len,pA,iter_ff,FF)</strong> to build a random copolymer of length len that contains two monomers, <strong>mol_1</strong> and <strong>mol_2</strong>. The number of <strong>mol_1</strong> and <strong>mol_2</strong> monomers in the resulting polymer are determined from <strong>pA len</strong> and <strong>(1-pA)len</strong>, respectively.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
 <span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
@@ -111,10 +111,12 @@
 </pre></div>
 </div>
 <p>By using a common visualization program (such as <a class="reference external" href="https://www.ks.uiuc.edu/Research/vmd/">VMD</a>), the built structure <strong>random2.xyz</strong> can be displayed and the result as presented above</p>
-<figure class="align-center">
+<figure class="align-center" id="id1">
 <img alt="../_images/random2.png" src="../_images/random2.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure</strong> Random diblock polymer with 5 units.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
 </figure>
-<p>Created a diblock polymer with 5 units.</p>
 <p>Similarly <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> can be used to generate random linear copolymers consisting of three different monomers via the command <strong>Rnp(mol_1,mol_2,atom).random_abc_copolymer(mol_3, len, pA, pB, iter_ff, FF)</strong>. In this case, the resulting polymer will contain len monomers, such that the number of <strong>mol_1</strong>, <strong>mol_2</strong> and <strong>mol_3</strong> monomer is <strong>pA len</strong>, <strong>pB len</strong> and <strong>(1-pA-pB) len</strong>, respectively</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysoftk.topologies.ranpol</span> <span class="kn">import</span> <span class="o">*</span>
 
@@ -124,8 +126,11 @@
 </pre></div>
 </div>
 <p>The result of this function is displayed in the figure below.</p>
-<figure class="align-center">
+<figure class="align-center" id="id2">
 <img alt="../_images/random3.png" src="../_images/random3.png" />
+<figcaption>
+<p><span class="caption-text"><strong>Figure</strong> Random triblock 5-unit repetition polymer</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
 </figure>
 </section>
 

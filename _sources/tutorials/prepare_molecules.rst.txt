@@ -10,7 +10,7 @@ PySoftK_ is a code that enables the creation of polymers with different composit
 
 To explicitly show the process, we will use a furan molecule. By using a common visualization program (such as VMD_), the functionalization process is presented below
 
-.. figure:: prep-pol.png
+.. figure:: images/prep-pol.png
    :align: center
    :figclass: align-center
 

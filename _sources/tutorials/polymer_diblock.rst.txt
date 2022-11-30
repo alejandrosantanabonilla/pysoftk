@@ -11,25 +11,25 @@ which can be used. The command **Db(ma,mb,atom).diblock_copolymer(len_block_A,le
 is used to generate a diblock copolymer that consists of a block containing **len_block_A** monomers of **ma** and a block containing **len_block_B** monomers of **mb**. 
 
 
-.. literalinclude:: diblock.py
+.. literalinclude:: scripts/diblock.py
    :lines: 1-5
 
 Then, we can create a polymer with a diblock topology, by using the following commands:
 
-.. literalinclude:: diblock.py
+.. literalinclude:: scripts/diblock.py
    :lines: 7-9
 
 The new molecular unit (stored in the variable **di**) can be used to replicate and form a polymer with a given desired number of units (in total 12). The structure can be printed in XYZ format by adding the following lines of code as can be seen in this snipet:
 
-.. literalinclude:: diblock.py
+.. literalinclude:: scripts/diblock.py
    :lines: 11-13
 
 By using a common visualization program (such as VMD_), the built structure **diblock.xyz** can be displayed and the result as presented above
 
-.. figure:: diblock.png
+.. figure:: images/diblock.png
    :width: 350px
    :align: center
    :height: 350px
    :figclass: align-center
 
-Created a diblock polymer with 12 units. 
+   **Figure** Diblock polymer with 12 units. 
