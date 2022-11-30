@@ -10,7 +10,7 @@ The module :mod:`pysoftk.folder\_manager.folder\_creator` is a set of Python_ to
 
 In the first instance, the creation of a user-defined number of folders with unique labels can be achieved in the following lines of code: 
 
-.. literalinclude:: test_folder.py
+.. literalinclude:: scripts/test_folder.py
    :lines: 1-5
 
 The function receives as the first argument the number of folders to be created, whilst the second argument declares the number of cores used to perform this operation. We can verify the creation of these folders by typing the following command:
@@ -28,7 +28,7 @@ where it can be seen that the two folders (with unique alphanumeric labels) have
    
 Similarly, PySoftK_ is able to seek for files with a user-provided extension (such as .smi, .pdb, .mol, .xyz, etc). 
 
-.. literalinclude:: test_folder.py
+.. literalinclude:: scripts/test_folder.py
    :lines: 6-14
 
 The variable **a** stores the *absolute paths* where the files **mol_1.smi** and **mol_2.smi** are stored. Likewise, the length of this list indicates the number of files with that given extension present in the current working directory.
@@ -36,7 +36,7 @@ The variable **a** stores the *absolute paths* where the files **mol_1.smi** and
 Complementing these previous functions, PySoftK_ enables the automatic moving of the files into unique labeled folders as indicated in the following snipet:
 
 
-.. literalinclude:: test_folder.py
+.. literalinclude:: scripts/test_folder.py
    :lines: 15-22
 
 To verify that the files have correctly moved, we can use the **tree** bash command as indicated above:

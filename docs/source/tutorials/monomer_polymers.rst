@@ -7,12 +7,12 @@ From single molecules to polymers using PySoftK
 =========================================================
 
 PySoftK_ enables to create Polymers from a single monomer. To do so, the user needs to highligthing the positions where the merging process will take 
-place, using a place-holder atom (as presented in `preparing_monomers`_).   
+place, using a place-holder atom.   
 
 An example is in this section presented using a Styrene molecule. By using a common visualization program (such as VMD_), the functionalized molecule is 
 presented below:
 
-.. figure:: styrene.png
+.. figure:: images/styrene.png
    :align: center
    :figclass: align-center
 

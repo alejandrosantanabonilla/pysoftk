@@ -12,23 +12,25 @@ The inputted structures for core and arm can be simple monomers and therefore in
 
 First, we need to import the initial molecules and read it using RDKit_, as shownin the following snippet:
 
-.. literalinclude:: branched.py
+.. literalinclude:: scripts/branched.py
    :lines: 1-5
 
 Then, we can create a branched topology, by using the following commands:
 
-.. literalinclude:: branched.py
+.. literalinclude:: scripts/branched.py
    :lines: 7-9
 
 The new molecular unit (stored in the variable **bran**) can be used to replicate and form a polymer with a given desired architecture. To print the structure in XYZ format, one needs to add the following lines of conde as can be seen in this snipet:
 
-.. literalinclude:: branched.py
-   :lines: 11-13
+.. literalinclude:: scripts/branched.py
+   :lines: 11-12
 
 By using a common visualization program (such as VMD_), the built structure **branched.xyz** can be displayed and the result as presented above
 
-.. figure:: branched.png
+.. figure:: images/branched.png
+   :width: 375px
    :align: center
+   :height: 350px
    :figclass: align-center
 
-Created a branched polymer with 4 arms. 
+   **Figure** Branched polymer with 4 arms. 
