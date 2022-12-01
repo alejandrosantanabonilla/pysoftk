@@ -58,11 +58,10 @@ These are instructions to
 
 1. It is recommended to create a new virtual environment in which the pySoftWhere dependencies can be installed, for example
 
-.. code-block:: console
-   
+```console
    conda create --name pysw_env
    conda activate pysw_env
-
+```
 
 2. Make a directory to download pySoftWhere and change to this directory
 
