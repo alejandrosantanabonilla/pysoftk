@@ -73,7 +73,7 @@ These are instructions to
 3. Download [PySoftK][1] from Github
 
 ```console
-   (pysoftk_env) git clone 
+   (pysoftk_env) git clone https://github.com/alejandrosantanabonilla/pysoftk.git
 ```
 
 4. Install [PySoftK][1] and its dependencies as required
