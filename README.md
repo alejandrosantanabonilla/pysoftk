@@ -9,8 +9,12 @@
 # PySoftK
 
 **PySoftK** is a set of Python tools and programs for modelling and simulating polymers with different topologies. The program is still under active 
-development and contributions are welcome. A complete introduction into the program can be found in this link [Documentation][1]. To quickly install 
-**PySoftk**, we encourage to do it inside a virtual environment, which can be achieved in the following way:
+development and contributions are welcome. A complete introduction into the program can be found in this link [Documentation][1]. 
+
+
+# Pip installation
+
+To quickly install **PySoftk**, we encourage to do it inside a virtual environment, which can be achieved in the following way:
 
 1. Create a directory named as you want and access it (in this case called work_pol):
 
@@ -47,7 +51,51 @@ development and contributions are welcome. A complete introduction into the prog
    ulimit -s unlimited
 ```
 
+
+# Conda installation
+
+These are instructions to 
+
+1. It is recommended to create a new virtual environment in which the pySoftWhere dependencies can be installed, for example
+
+.. code-block:: console
+   
+   conda create --name pysw_env
+   conda activate pysw_env
+
+
+2. Make a directory to download pySoftWhere and change to this directory
+
+.. code-block:: console
+   
+   (pysw_env) mkdir pysw_dir
+   (pysw_env) cd pysw_dir
+
+3. Download pySoftWhere from Github
+
+.. code-block:: console
+   
+   (pysw_env) git clone https://github.com/rmziolek/pySoftWhere.git 
+
+4. Install pySoftWhere and its dependencies as required
+
+.. code-block:: console
+
+   (pysw_env) cd pySoftWhere
+   (pysw_env) pip install -e .
+
+5. You may need to add the pySoftWhere installation directory to your .bashrc or .zshrc file
+
+.. code-block:: console
+    
+    PATH=$PATH:/<path to>/pysw_dir	
+
+That's it, you're ready to use pySoftWhere (remember to activate pysw_env!)
+
+
 Replacing **PATH_TO_FOLDER** by the actual path where xtb is stored in your computer.
+  
+# Testing your installation:
   
 5. For testing PySoftK, you need to go to the folder **test** and then type:
 
