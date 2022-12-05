@@ -35,3 +35,20 @@ All the enabled RDKit_ formats are accepted as shown above:
 
 The defined molecules (mol_1, mol_2, and mol_3) demonstrate the various valid formats that can be used to input the structure of a monomer to PySoftK_ in 
 order to create initial structures of a desired polymer. 
+
+
+Atomic Placeholders for PySoftK
+===================================
+
+As mentioned previously, PySoftK_ is agnostic to the use of any **atomic place holders** defined by the user. As an example, the molecule thiol has been functionalised with the atom **Pt** as can be seen in the following snippet:
+
+.. code-block:: python
+
+   from rdkit import Chem
+   from rdkit.Chem import AllChem
+
+   # SMILES FORMAT
+   mol_1=Chem.MolFromSmiles("c1(ccc(s1)[Pt])[Pt]")
+
+
+This monomer can be further used to construct polymers as indicating in the following tutorials. 

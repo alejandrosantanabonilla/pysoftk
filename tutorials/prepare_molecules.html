@@ -45,7 +45,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Preparing monomers for PySoftK</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Preparing monomers for PySoftK</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#atomic-placeholders-for-pysoftk">Atomic Placeholders for PySoftK</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="monomer_polymers.html">From single molecules to polymers using PySoftK</a></li>
 <li class="toctree-l2"><a class="reference internal" href="super_monomer.html">Creating a Polymer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_chains.html">Creating chains of Polymers</a></li>
@@ -112,6 +115,18 @@
 </div>
 <p>The defined molecules (mol_1, mol_2, and mol_3) demonstrate the various valid formats that can be used to input the structure of a monomer to <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> in
 order to create initial structures of a desired polymer.</p>
+<section id="atomic-placeholders-for-pysoftk">
+<h2>Atomic Placeholders for PySoftK<a class="headerlink" href="#atomic-placeholders-for-pysoftk" title="Permalink to this heading"></a></h2>
+<p>As mentioned previously, <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> is agnostic to the use of any <strong>atomic place holders</strong> defined by the user. As an example, the molecule thiol has been functionalised with the atom <strong>Pt</strong> as can be seen in the following snippet:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
+
+<span class="c1"># SMILES FORMAT</span>
+<span class="n">mol_1</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;c1(ccc(s1)[Pt])[Pt]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This monomer can be further used to construct polymers as indicating in the following tutorials.</p>
+</section>
 </section>
 
 
