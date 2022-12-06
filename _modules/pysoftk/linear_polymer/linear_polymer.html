@@ -88,19 +88,25 @@
 <span class="sd">    A class for creating a linear polymer </span>
 <span class="sd">    from given RdKit molecules.</span>
 
-<span class="sd">    Attributes:</span>
+<span class="sd">    Attributes</span>
 <span class="sd">    -----------</span>
+
 <span class="sd">    mol          The super_monomer molecule to be polarised</span>
+
 <span class="sd">    atom         A place-holder atom to connect the molecule </span>
+
 <span class="sd">    n_copies     Number of copies to create the polymer</span>
+
 <span class="sd">    shift        A real value to translate the super_monomer </span>
 <span class="sd">                 in a real-grid.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    ---------</span>
 
-<span class="sd">    Note:</span>
+
+<span class="sd">    Note</span>
 <span class="sd">    -----</span>
+
 <span class="sd">    RDKit package must be installed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -111,7 +117,8 @@
 <span class="sd">       Initialize this class.</span>
 <span class="sd">          </span>
 <span class="sd">       Parameters</span>
-<span class="sd">       ----------</span>
+<span class="sd">       -----------</span>
+
 <span class="sd">       mol : rdkit.Chem.rdchem.Mol</span>
 <span class="sd">          RDKit Mol object</span>
 <span class="sd"> </span>
@@ -137,8 +144,9 @@
         <span class="sd">&quot;&quot;&quot;Returns the maximum distance between atoms </span>
 <span class="sd">           from an RDKit Mol Object.</span>
 
-<span class="sd">        Returns</span>
+<span class="sd">        Return</span>
 <span class="sd">        -------</span>
+
 <span class="sd">        np.float</span>
 <span class="sd">           maximum value from a Molecule Bound Matrix </span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -150,8 +158,9 @@
 <div class="viewcode-block" id="Lp.x_shift"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lp.x_shift">[docs]</a>    <span class="k">def</span> <span class="nf">x_shift</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Re-calibrate distance between monomers</span>
 <span class="sd">     </span>
-<span class="sd">        Returns</span>
+<span class="sd">        Return</span>
 <span class="sd">        -------</span>
+
 <span class="sd">        shift_final : &#39;float&#39;</span>
 <span class="sd">              Value to translates the unit repetitions </span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -164,16 +173,19 @@
     <span class="k">def</span> <span class="nf">_copy_mol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
        <span class="sd">&quot;&quot;&quot;Function to replicate super_monomers.</span>
 
-<span class="sd">       Parameters:</span>
+<span class="sd">       Parameters</span>
 <span class="sd">       -----------</span>
+
 <span class="sd">       mol : rdkit.Chem.rdchem.Mol</span>
 <span class="sd">          RDKit Mol object</span>
 
-<span class="sd">       Returns:</span>
+<span class="sd">       Return</span>
 <span class="sd">       --------</span>
+
 <span class="sd">       fragments : `list`</span>
 <span class="sd">          List of RDKit Mol objects</span>
 <span class="sd">       &quot;&quot;&quot;</span>    
+
        <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
        <span class="n">n_copies</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_copies</span>
        
@@ -186,13 +198,15 @@
         <span class="sd">&quot;&quot;&quot;Function to produce a polymer in a</span>
 <span class="sd">           recursive manner. </span>
 
-<span class="sd">        Parameters:</span>
+<span class="sd">        Parameters</span>
 <span class="sd">        -----------</span>
-<span class="sd">        fragments: </span>
+<span class="sd">       </span>
+<span class="sd">        fragments: list </span>
 <span class="sd">            A list of RDKit objects.</span>
 
-<span class="sd">        Returns:</span>
+<span class="sd">        Return</span>
 <span class="sd">        --------</span>
+
 <span class="sd">        outmol : rdkit.Chem.rdchem.Mol</span>
 <span class="sd">             RDKit Mol object</span>
 
@@ -211,13 +225,15 @@
         <span class="sd">&quot;&quot;&quot;Function to peruse the bonds and connections of place-hold </span>
 <span class="sd">           atom within a super_monomer object.</span>
 <span class="sd"> </span>
-<span class="sd">        Parameters:</span>
-<span class="sd">        ----------</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        -----------</span>
+
 <span class="sd">        outmol : rdkit.Chem.rdchem.Mol</span>
 <span class="sd">           RDKit Mol object</span>
 
-<span class="sd">        Returns:</span>
+<span class="sd">        Return</span>
 <span class="sd">        --------</span>
+
 <span class="sd">        Tuple : `list`</span>
 <span class="sd">          A tuple of lists containing connections and </span>
 <span class="sd">          neighbours of the place-holder atom.</span>
@@ -240,8 +256,9 @@
        <span class="sd">&quot;&quot;&quot;Function to create a linear polymer </span>
 <span class="sd">          from a given super_monomer object.</span>
 
-<span class="sd">       Returns:</span>
+<span class="sd">       Returns</span>
 <span class="sd">       --------</span>
+
 <span class="sd">       newMol_H : rdkit.Chem.rdchem.Mol</span>
 <span class="sd">            RDKit Mol object</span>
 
@@ -281,7 +298,7 @@
 <span class="sd">          from a given super_monomer object.</span>
 
 <span class="sd">       Parameters</span>
-<span class="sd">       ------------</span>
+<span class="sd">       -----------</span>
 
 <span class="sd">       FF : str</span>
 <span class="sd">          Selected Force-Field from RDKit options, i.e, UFF or MMFF</span>
@@ -289,8 +306,10 @@
 <span class="sd">       iter_ff: int</span>
 <span class="sd">          The maximum number of iterations used for the FF.</span>
 
-<span class="sd">       Returns:</span>
+
+<span class="sd">       Return</span>
 <span class="sd">       --------</span>
+
 <span class="sd">       newMol_H : rdkit.Chem.rdchem.Mol</span>
 <span class="sd">            RDKit Mol object</span>
 

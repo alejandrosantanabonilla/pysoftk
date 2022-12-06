@@ -80,29 +80,39 @@
 <span class="kn">import</span> <span class="nn">time</span>
 
 <div class="viewcode-block" id="Htp"><a class="viewcode-back" href="../../../pysoftk.htp_tools.html#pysoftk.htp_tools.calculator_htp.Htp">[docs]</a><span class="k">class</span> <span class="nc">Htp</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Class enabling High-throughput calculations in different created folders for provided molecules.</span>
+    <span class="sd">&quot;&quot;&quot;Class enabling High-throughput calculations in different created </span>
+<span class="sd">       folders for provided molecules.</span>
 
 <span class="sd">    Attributes </span>
 <span class="sd">    ----------</span>
+
 <span class="sd">    ending : str</span>
 <span class="sd">       Extension of the molecular format used to perform a</span>
 <span class="sd">       search within many directories.</span>
+
 <span class="sd">    xtb_path : str</span>
 <span class="sd">          Path where the xtb executable is located. </span>
+
 <span class="sd">    xyz_geom : str</span>
 <span class="sd">          Name of the supplied molecule in .xyz format</span>
+
 <span class="sd">    init_dir : str</span>
 <span class="sd">          Path where the calculation is starting (optional)</span>
+
 <span class="sd">    num_cores : int, optional</span>
 <span class="sd">          Number of cores which the GFN-XTB2 code</span>
 <span class="sd">          will use.</span>
+
 <span class="sd">    threshold: str, optional</span>
 <span class="sd">          Level of geometry optimization required </span>
 <span class="sd">          as defined in GFN-XTB2 code. </span>
 <span class="sd">        </span>
 <span class="sd">    Note</span>
 <span class="sd">    -----</span>
-<span class="sd">    This class requires tqdm, GFN-XTB and/or PYSCF semiempirical installation to be used. </span>
+
+<span class="sd">    This class requires tqdm, GFN-XTB and/or PYSCF semiempirical </span>
+<span class="sd">    installation to be used.</span>
+<span class="sd"> </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ending</span><span class="p">):</span>
@@ -110,18 +120,22 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+
 <span class="sd">        ending : str</span>
 <span class="sd">           Name of the extension to be browsed in a provided folder. </span>
+
 <span class="sd">      &quot;&quot;&quot;</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">ending</span> <span class="o">=</span> <span class="n">ending</span>
 
 
 <div class="viewcode-block" id="Htp.xtb_gfn"><a class="viewcode-back" href="../../../pysoftk.htp_tools.html#pysoftk.htp_tools.calculator_htp.Htp.xtb_gfn">[docs]</a>    <span class="nd">@staticmethod</span>   
     <span class="k">def</span> <span class="nf">xtb_gfn</span><span class="p">(</span><span class="n">xtb_path</span><span class="p">,</span> <span class="n">xyz_geom</span><span class="p">,</span> <span class="n">init_dir</span><span class="p">,</span> <span class="n">num_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot;Function invoking GFN-XTB Force-Field implementation for geometry optimization.</span>
+       <span class="sd">&quot;&quot;&quot;Function invoking GFN-XTB Force-Field implementation for </span>
+<span class="sd">          geometry optimization.</span>
 
 <span class="sd">       Parameters</span>
 <span class="sd">       -----------</span>
+
 <span class="sd">       xtb_path : str</span>
 <span class="sd">           Path where the GFN-XTB2 executable is located</span>
 
@@ -129,17 +143,22 @@
 <span class="sd">             Number of cores which the GFN-XTB2 code will use.</span>
 
 <span class="sd">       threshold : str, optional</span>
-<span class="sd">             Level of geometry optimization required as defined in GFN-XTB2 code.</span>
+<span class="sd">             Level of geometry optimization required as defined in </span>
+<span class="sd">             GFN-XTB2 code.</span>
+
 <span class="sd">       xyz_geom : str </span>
 <span class="sd">             Provided geometry to be relaxed.</span>
 
 <span class="sd">       init_dir : str</span>
-<span class="sd">             Root path directory where folders containing the structures are found.</span>
+<span class="sd">             Root path directory where folders containing the structures </span>
+<span class="sd">             are found.</span>
 <span class="sd"> </span>
 <span class="sd">       Returns</span>
 <span class="sd">       -------</span>
+
 <span class="sd">       output : str</span>
-<span class="sd">          File name output.log containing the optimization process carried out by GFN-XTB2.</span>
+<span class="sd">          File name output.log containing the optimization process carried </span>
+<span class="sd">          out by GFN-XTB2.</span>
 <span class="sd">       &quot;&quot;&quot;</span>
     
        <span class="n">num_cores</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">num_cores</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_cores</span><span class="p">)</span>
@@ -172,26 +191,35 @@
         
 <div class="viewcode-block" id="Htp.xtb_ff"><a class="viewcode-back" href="../../../pysoftk.htp_tools.html#pysoftk.htp_tools.calculator_htp.Htp.xtb_ff">[docs]</a>    <span class="nd">@staticmethod</span>   
     <span class="k">def</span> <span class="nf">xtb_ff</span><span class="p">(</span><span class="n">xtb_path</span><span class="p">,</span> <span class="n">xyz_geom</span><span class="p">,</span> <span class="n">init_dir</span><span class="p">,</span> <span class="n">num_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot;Function invoking GFN-XTB Force-Field implementation for geometry optimization.</span>
+       <span class="sd">&quot;&quot;&quot;Function invoking GFN-XTB Force-Field implementation for </span>
+<span class="sd">          geometry optimization.</span>
 
-<span class="sd">          Parameters</span>
-<span class="sd">          ------------</span>
-<span class="sd">          xtb_path : str</span>
-<span class="sd">             Path where the GFN-XTB2 executable is located</span>
+<span class="sd">       Parameters</span>
+<span class="sd">       -----------</span>
 
-<span class="sd">          num_cores : int, optional</span>
-<span class="sd">             Number of cores used by the GFN-XTB code.</span>
-<span class="sd">          threshold : str, optional</span>
-<span class="sd">             Level of geometry optimization required as defined in GFN-XTB2 code. </span>
-<span class="sd">          xyz_geom : str </span>
-<span class="sd">             Provided geometry to be relaxed.</span>
-<span class="sd">          init_dir : str</span>
-<span class="sd">             Root path directory where folders containing the structures are found.</span>
+<span class="sd">       xtb_path : str</span>
+<span class="sd">           Path where the GFN-XTB2 executable is located</span>
+
+<span class="sd">       num_cores : int, optional</span>
+<span class="sd">           Number of cores used by the GFN-XTB code.</span>
+
+<span class="sd">       threshold : str, optional</span>
+<span class="sd">           Level of geometry optimization required as defined in </span>
+<span class="sd">           GFN-XTB2 code.</span>
 <span class="sd"> </span>
-<span class="sd">         Returns</span>
-<span class="sd">         -------</span>
-<span class="sd">          output : str</span>
-<span class="sd">             File name output.log containing the optimization process carried out by GFN-XTB2.</span>
+<span class="sd">       xyz_geom : str </span>
+<span class="sd">           Provided geometry to be relaxed.</span>
+
+<span class="sd">       init_dir : str</span>
+<span class="sd">           Root path directory where folders containing the </span>
+<span class="sd">           structures are found.</span>
+<span class="sd"> </span>
+<span class="sd">       Returns</span>
+<span class="sd">       --------</span>
+
+<span class="sd">       output : str</span>
+<span class="sd">           File name output.log containing the optimization process </span>
+<span class="sd">           carried out by GFN-XTB2.</span>
 <span class="sd">       &quot;&quot;&quot;</span>
     
        <span class="n">num_cores</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">num_cores</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_cores</span><span class="p">)</span>
@@ -224,18 +252,24 @@
     <span class="k">def</span> <span class="nf">_find_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">pattern</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Function to find files within a given directory</span>
 <span class="sd">           based on a provided pattern.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+
 <span class="sd">        directory : str</span>
 <span class="sd">           Path of the main directory where the search will</span>
 <span class="sd">           be carried out. </span>
+
 <span class="sd">        pattern : str</span>
 <span class="sd">           Provided Alpha-pattern (extension of the molecular</span>
 <span class="sd">           file) which will be used to perform the search.</span>
+
 <span class="sd">        Results</span>
-<span class="sd">        -------</span>
+<span class="sd">        --------</span>
+
 <span class="sd">        None :</span>
 <span class="sd">            The results of the search as a string</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">basename</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
@@ -249,12 +283,14 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+
 <span class="sd">        file_ending : str</span>
 <span class="sd">           Extension of the provided pattern to perform </span>
 <span class="sd">           the search.</span>
 
 <span class="sd">        Results</span>
 <span class="sd">        -------</span>
+
 <span class="sd">        gmts : list</span>
 <span class="sd">           A list of the resulting files within the </span>
 <span class="sd">           current working directory with the provided</span>
@@ -273,23 +309,29 @@
 
 <span class="sd">       Parameters</span>
 <span class="sd">       ----------</span>
+
 <span class="sd">       path_xtb : str</span>
 <span class="sd">          Path where the xtb executable is located. </span>
+
 <span class="sd">       max_work : int</span>
 <span class="sd">          Number of maximum amount of workers in a concurrent job</span>
 <span class="sd">          Default is 1.</span>
+
 <span class="sd">       num_cores : int, optional</span>
 <span class="sd">          Number of cores which the GFN-XTB2 code</span>
 <span class="sd">          will use.</span>
+
 <span class="sd">       threshold: str, optional</span>
 <span class="sd">          Level of geometry optimization required </span>
 <span class="sd">          as defined in GFN-XTB2 code. </span>
 
 <span class="sd">       Return</span>
 <span class="sd">       ------</span>
+
 <span class="sd">       None : </span>
 <span class="sd">          A relaxed structure as produced by the GFN-XTB2 </span>
 <span class="sd">          code.</span>
+
 <span class="sd">       &quot;&quot;&quot;</span>
        
        <span class="n">ending</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ending</span>
@@ -310,20 +352,25 @@
 
 <span class="sd">       Parameters</span>
 <span class="sd">       ----------</span>
+
 <span class="sd">       path_xtb : str</span>
 <span class="sd">          Path where the xtb executable is located. </span>
+
 <span class="sd">       max_work : int</span>
 <span class="sd">          Number of maximum amount of workers in a concurrent job</span>
 <span class="sd">          Default is 1.</span>
+
 <span class="sd">       num_cores : int, optional</span>
 <span class="sd">          Number of cores which the GFN-XTB2 code</span>
 <span class="sd">          will use.</span>
+
 <span class="sd">       threshold: str, optional</span>
 <span class="sd">          Level of geometry optimization required </span>
 <span class="sd">          as defined in GFN-XTB2 code. </span>
 
 <span class="sd">       Return</span>
 <span class="sd">       ------</span>
+
 <span class="sd">       None : </span>
 <span class="sd">          A relaxed structure as produced by the GFN-XTB2 </span>
 <span class="sd">          code.</span>

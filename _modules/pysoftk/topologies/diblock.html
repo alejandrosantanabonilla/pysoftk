@@ -92,18 +92,22 @@
 <span class="sd">    A class for creating a diblock copolymers </span>
 <span class="sd">    from given RDKit molecules.</span>
 
-<span class="sd">    Attributes:</span>
+<span class="sd">    Attributes</span>
 <span class="sd">    -----------</span>
+
 <span class="sd">    ma           First molecule of the copolymer</span>
+
 <span class="sd">    mb           Second molecule of the copolymer</span>
+
 <span class="sd">    atom         A place-holder atom to connect the molecules </span>
 <span class="sd"> </span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    ---------</span>
 
-<span class="sd">    Note:</span>
+<span class="sd">    Note</span>
 <span class="sd">    -----</span>
+
 <span class="sd">    RDKit package must be installed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -115,6 +119,7 @@
 <span class="sd">          </span>
 <span class="sd">       Parameters</span>
 <span class="sd">       ----------</span>
+
 <span class="sd">       ma : rdkit.Chem.rdchem.Mol</span>
 <span class="sd">            RDKit Mol object</span>
 
@@ -135,7 +140,8 @@
 <div class="viewcode-block" id="Db.diblock_copolymer"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.diblock.Db.diblock_copolymer">[docs]</a>    <span class="k">def</span> <span class="nf">diblock_copolymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">len_block_A</span><span class="p">,</span> <span class="n">len_block_B</span><span class="p">,</span>
                              <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Function to create a diblock copolymer based on a </span>
+        <span class="sd">&quot;&quot;&quot;Function to create a diblock copolymer </span>
+
 
 <span class="sd">        Parameters</span>
 <span class="sd">        -----------</span>
@@ -192,19 +198,23 @@
 <span class="sd">    A class for creating a Patterned polymers </span>
 <span class="sd">    from a list of RDKit molecules.</span>
 
-<span class="sd">    Attributes:</span>
+<span class="sd">    Attributes</span>
 <span class="sd">    -----------</span>
+
 <span class="sd">    pattern      String defining a sequence to order a polymer</span>
+
 <span class="sd">    mols         A list of molecules to be arranged in a given </span>
 <span class="sd">                 sequence</span>
+
 <span class="sd">    atom         A place-holder atom to connect the molecules </span>
 <span class="sd"> </span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    ---------</span>
 
-<span class="sd">    Note:</span>
+<span class="sd">    Note</span>
 <span class="sd">    -----</span>
+
 <span class="sd">    RDKit package must be installed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -216,6 +226,7 @@
 <span class="sd">          </span>
 <span class="sd">       Parameters</span>
 <span class="sd">       -----------</span>
+
 <span class="sd">       pattern :: str</span>
 <span class="sd">            Variable containing the desired pattern written </span>
 <span class="sd">            in a string.</span>
@@ -238,8 +249,10 @@
 <span class="sd">        Function to create a polymer based on an alphabetic </span>
 <span class="sd">        ordered pattern.</span>
 <span class="sd">    </span>
-<span class="sd">        Returns:</span>
-<span class="sd">        ---------</span>
+
+<span class="sd">        Return</span>
+<span class="sd">        --------</span>
+
 <span class="sd">        return :: mol</span>
 <span class="sd">             A molecular pysoftk object.      </span>
 

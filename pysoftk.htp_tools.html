@@ -101,7 +101,10 @@
 <dt class="sig sig-object py" id="pysoftk.htp_tools.calculator_htp.Htp">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.htp_tools.calculator_htp.</span></span><span class="sig-name descname"><span class="pre">Htp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ending</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/htp_tools/calculator_htp.html#Htp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class enabling High-throughput calculations in different created folders for provided molecules.</p>
+<dl class="simple">
+<dt>Class enabling High-throughput calculations in different created</dt><dd><p>folders for provided molecules.</p>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pysoftk.htp_tools.calculator_htp.Htp.ending">
 <span class="sig-name descname"><span class="pre">ending</span></span><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.ending" title="Permalink to this definition"></a></dt>
@@ -173,7 +176,8 @@ as defined in GFN-XTB2 code.</p>
 
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This class requires tqdm, GFN-XTB and/or PYSCF semiempirical installation to be used.</p>
+<p>This class requires tqdm, GFN-XTB and/or PYSCF semiempirical
+installation to be used.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.htp_tools.calculator_htp.Htp.htp_xtb_ff">
@@ -236,27 +240,28 @@ code.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.htp_tools.calculator_htp.Htp.xtb_ff">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xtb_ff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xtb_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_geom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/htp_tools/calculator_htp.html#Htp.xtb_ff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.xtb_ff" title="Permalink to this definition"></a></dt>
-<dd><p>Function invoking GFN-XTB Force-Field implementation for geometry optimization.</p>
-<blockquote>
-<div><dl class="simple">
-<dt>xtb_path<span class="classifier">str</span></dt><dd><p>Path where the GFN-XTB2 executable is located</p>
-</dd>
-<dt>num_cores<span class="classifier">int, optional</span></dt><dd><p>Number of cores used by the GFN-XTB code.</p>
-</dd>
-<dt>threshold<span class="classifier">str, optional</span></dt><dd><p>Level of geometry optimization required as defined in GFN-XTB2 code.</p>
-</dd>
-<dt>xyz_geom<span class="classifier">str</span></dt><dd><p>Provided geometry to be relaxed.</p>
-</dd>
-<dt>init_dir<span class="classifier">str</span></dt><dd><p>Root path directory where folders containing the structures are found.</p>
+<dd><dl class="simple">
+<dt>Function invoking GFN-XTB Force-Field implementation for</dt><dd><p>geometry optimization.</p>
 </dd>
 </dl>
-</div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>output</strong> – File name output.log containing the optimization process carried out by GFN-XTB2.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xtb_path</strong> (<em>str</em>) – Path where the GFN-XTB2 executable is located</p></li>
+<li><p><strong>num_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of cores used by the GFN-XTB code.</p></li>
+<li><p><strong>threshold</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of geometry optimization required as defined in
+GFN-XTB2 code.</p></li>
+<li><p><strong>xyz_geom</strong> (<em>str</em>) – Provided geometry to be relaxed.</p></li>
+<li><p><strong>init_dir</strong> (<em>str</em>) – Root path directory where folders containing the
+structures are found.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>output</strong> – File name output.log containing the optimization process
+carried out by GFN-XTB2.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -264,19 +269,25 @@ code.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.htp_tools.calculator_htp.Htp.xtb_gfn">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xtb_gfn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xtb_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_geom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/htp_tools/calculator_htp.html#Htp.xtb_gfn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.xtb_gfn" title="Permalink to this definition"></a></dt>
-<dd><p>Function invoking GFN-XTB Force-Field implementation for geometry optimization.</p>
+<dd><dl class="simple">
+<dt>Function invoking GFN-XTB Force-Field implementation for</dt><dd><p>geometry optimization.</p>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>xtb_path</strong> (<em>str</em>) – Path where the GFN-XTB2 executable is located</p></li>
 <li><p><strong>num_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of cores which the GFN-XTB2 code will use.</p></li>
-<li><p><strong>threshold</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of geometry optimization required as defined in GFN-XTB2 code.</p></li>
+<li><p><strong>threshold</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of geometry optimization required as defined in
+GFN-XTB2 code.</p></li>
 <li><p><strong>xyz_geom</strong> (<em>str</em>) – Provided geometry to be relaxed.</p></li>
-<li><p><strong>init_dir</strong> (<em>str</em>) – Root path directory where folders containing the structures are found.</p></li>
+<li><p><strong>init_dir</strong> (<em>str</em>) – Root path directory where folders containing the structures
+are found.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>output</strong> – File name output.log containing the optimization process carried out by GFN-XTB2.</p>
+<dd class="field-even"><p><strong>output</strong> – File name output.log containing the optimization process carried
+out by GFN-XTB2.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>str</p>

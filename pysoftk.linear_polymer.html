@@ -172,20 +172,32 @@ object.</p></li>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A class for creating a linear polymer
 from given RdKit molecules.</p>
-<section id="attributes">
-<h3>Attributes:<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
-<p>mol          The super_monomer molecule to be polarised
-atom         A place-holder atom to connect the molecule
-n_copies     Number of copies to create the polymer
-shift        A real value to translate the super_monomer</p>
-<blockquote>
-<div><p>in a real-grid.</p>
-</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">mol</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">The</span> <span class="pre">super_monomer</span> <span class="pre">molecule</span> <span class="pre">to</span> <span class="pre">be</span> <span class="pre">polarised</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">atom</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">A</span> <span class="pre">place-holder</span> <span class="pre">atom</span> <span class="pre">to</span> <span class="pre">connect</span> <span class="pre">the</span> <span class="pre">molecule</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">n_copies</span>&#160;&#160;&#160;&#160; <span class="pre">Number</span> <span class="pre">of</span> <span class="pre">copies</span> <span class="pre">to</span> <span class="pre">create</span> <span class="pre">the</span> <span class="pre">polymer</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">shift</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">A</span> <span class="pre">real</span> <span class="pre">value</span> <span class="pre">to</span> <span class="pre">translate</span> <span class="pre">the</span> <span class="pre">super_monomer</span></span></dt>
+<dd><p>in a real-grid.</p>
+</dd></dl>
+
 <p class="rubric">Examples</p>
-</section>
-<section id="note">
-<h3>Note:<a class="headerlink" href="#note" title="Permalink to this heading"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>RDKit package must be installed.</p>
+</div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.atom">
 <span class="sig-name descname"><span class="pre">atom</span></span><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.atom" title="Permalink to this definition"></a></dt>
@@ -203,10 +215,13 @@ shift        A real value to translate the super_monomer</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>FF</strong> (<em>str</em>) – Selected Force-Field from RDKit options, i.e, UFF or MMFF</p></li>
 <li><p><strong>iter_ff</strong> (<em>int</em>) – The maximum number of iterations used for the FF.</p></li>
-<li><p><strong>Returns</strong> – </p></li>
-<li><p><strong>--------</strong> – </p></li>
-<li><p><strong>newMol_H</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>newMol_H</strong> – RDKit Mol object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
 </dd>
 </dl>
 </dd></dl>
@@ -245,13 +260,14 @@ shift        A real value to translate the super_monomer</p>
 <dt>Function to create a linear polymer</dt><dd><p>from a given super_monomer object.</p>
 </dd>
 </dl>
-<section id="returns">
-<h4>Returns:<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h4>
-<dl class="simple">
-<dt>newMol_H<span class="classifier">rdkit.Chem.rdchem.Mol</span></dt><dd><p>RDKit Mol object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>newMol_H</strong> – RDKit Mol object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>rdkit.Chem.rdchem.Mol</p>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 <dl class="py attribute">
@@ -273,7 +289,6 @@ shift        A real value to translate the super_monomer</p>
 </dl>
 </dd></dl>
 
-</section>
 </dd></dl>
 
 </section>
@@ -284,8 +299,7 @@ shift        A real value to translate the super_monomer</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.mol_conformer.</span></span><span class="sig-name descname"><span class="pre">Mcon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_max</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/mol_conformer.html#Mcon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.mol_conformer.Mcon" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Calculates molecular conformers</p>
-<section id="example">
-<h3>Example:<a class="headerlink" href="#example" title="Permalink to this heading"></a></h3>
+<p class="rubric">Example</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This class requires RDKit to be installed.</p>
@@ -320,7 +334,6 @@ enabled the highest-energy conformer is returned.</p>
 <span class="sig-name descname"><span class="pre">num_conf</span></span><a class="headerlink" href="#pysoftk.linear_polymer.mol_conformer.Mcon.num_conf" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
-</section>
 </dd></dl>
 
 <dl class="py class">
@@ -334,7 +347,10 @@ enabled the highest-energy conformer is returned.</p>
 the RDKit-ETKDG3 method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>datapoint</strong> – </p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.Mol</em>) – RDKit Mol object</p></li>
+<li><p><strong>num_conf</strong> (<em>int</em>) – The number of configurations requested to be computed.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>datapoint</strong> – RDKit Mol object</p>

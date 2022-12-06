@@ -86,18 +86,23 @@
 <span class="sd">    A class for creating a branched polymer </span>
 <span class="sd">    from given RDKit molecules.</span>
 
-<span class="sd">    Attributes:</span>
+<span class="sd">    Attributes</span>
 <span class="sd">    -----------</span>
+
 <span class="sd">    core           Molecular core to be decorated</span>
+
 <span class="sd">    arm           Molecular branches to be added to the core</span>
+
 <span class="sd">    atom         A place-holder atom to connect the molecules </span>
 <span class="sd"> </span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    ---------</span>
 
-<span class="sd">    Note:</span>
+
+<span class="sd">    Note</span>
 <span class="sd">    -----</span>
+
 <span class="sd">    RDKit package must be installed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -108,7 +113,8 @@
 <span class="sd">       Initialize this class.</span>
 <span class="sd">          </span>
 <span class="sd">       Parameters</span>
-<span class="sd">       ----------</span>
+<span class="sd">       -----------</span>
+
 <span class="sd">       core : rdkit.Chem.rdchem.Mol</span>
 <span class="sd">            RDKit Mol object</span>
 
@@ -132,6 +138,7 @@
 
 <span class="sd">       Parameters</span>
 <span class="sd">       ----------</span>
+
 <span class="sd">       core : rdkit.Chem.rdchem.Mol</span>
 <span class="sd">            RDKit Mol object</span>
 
@@ -173,12 +180,15 @@
     
 <div class="viewcode-block" id="Bd.branched_polymer"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.branched.Bd.branched_polymer">[docs]</a>    <span class="k">def</span> <span class="nf">branched_polymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iter_ff</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">):</span>
        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">       Function</span>
+<span class="sd">       Function to create branched polymers</span>
 
-<span class="sd">        FF: str</span>
+<span class="sd">       Parameters</span>
+<span class="sd">       -----------</span>
+
+<span class="sd">       FF: str</span>
 <span class="sd">            Selected FF between MMFF or UFF</span>
 
-<span class="sd">        relax_iterations: int  </span>
+<span class="sd">       relax_iterations: int  </span>
 <span class="sd">            Number of iterations used for relaxing </span>
 <span class="sd">            a molecular object.  </span>
 
