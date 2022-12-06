@@ -16,20 +16,8 @@ from .utils import *
 from pysoftk.linear_polymer.utils import *
 
 class Rnp():
-    """
-    A class for creating a random copolymer 
-    from given RDKit molecules.
-
-    Attributes
-    -----------
-
-    ma           Molecular core to be decorated
-
-    mb           Molecular branches to be added to the core
-
-    atom         A place-holder atom to connect the molecules 
- 
-
+    """A class for creating a random copolymer from given RDKit molecules.
+       
     Examples
     ---------
 
@@ -40,14 +28,14 @@ class Rnp():
     RDKit package must be installed.
     """
     
-    __slots__ = 'ma', 'mb', 'atom'
+    __slots__ = ['ma', 'mb', 'atom']
 
     def __init__(self, ma, mb, atom):
        """
        Initialize this class.
-          
+
        Parameters
-       ----------
+       -----------
 
        ma : rdkit.Chem.rdchem.Mol
             RDKit Mol object
@@ -56,9 +44,8 @@ class Rnp():
             RDKit Mol object
  
        atom : str
-            The placeholder atom to combine the molecules 
-            and form a new monomer
-
+            The placeholder atom to combine the molecules and form a new monomer
+          
        """
        
        self.ma = ma
@@ -67,10 +54,7 @@ class Rnp():
 
     def random_ab_copolymer(self, len_polymer, pA,
                             iter_ff=100, FF="MMFF"):
-       """ 
-       Function to build a random copolymer using an user 
-       provided probability (pA) for merging the monomer 
-       ma and imposiing the condition pB=1-pA.
+       """ Function to build a random copolymer using an user provided probability (pA) for merging the monomer ma and imposiing the condition pB=1-pA.
 
 
        Parameters
@@ -80,8 +64,7 @@ class Rnp():
           User defined length of the polymer.
 
        pA: float
-          User defined attaching probability of
-           ma.
+          User defined attaching probability of ma.
 
        iter_ff: int
            User defined iterations for a FF.
@@ -136,10 +119,7 @@ class Rnp():
     def random_abc_copolymer(self, mc, len_polymer, pA,
                              pB, iter_ff=100, FF="MMFF"):
         
-       """ 
-       Function to build a random copolymer based on  
-       an user defined probability (pA) of merging mA, 
-       pB for monomer mb, and the condition pC=1-pA-pB.
+       """ Function to build a random copolymer based on an user defined probability (pA) of merging mA, pB for monomer mb, and the condition pC=1-pA-pB.
 
        Parameters
        -----------
@@ -151,18 +131,16 @@ class Rnp():
            User defined length of the polymer.
 
        pA: float
-           User defined attaching probability of
-           ma.
+           User defined attaching probability of ma.
 
        pB: float
-           User defined attaching porbability of
-           mb.
+           User defined attaching porbability of mb.
 
        atom: str
            User defined atom used as place-holder.
 
        iter_ff: int
-           User defined iterations for a FF.#
+           User defined iterations for a FF.
 
        FF: str
            User selected FF.      

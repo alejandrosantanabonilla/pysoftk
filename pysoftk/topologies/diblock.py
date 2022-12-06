@@ -15,19 +15,7 @@ from pysoftk.linear_polymer import super_monomer  as sm
 from pysoftk.linear_polymer.utils import *
 
 class Db:
-    """
-    A class for creating a diblock copolymers 
-    from given RDKit molecules.
-
-    Attributes
-    -----------
-
-    ma           First molecule of the copolymer
-
-    mb           Second molecule of the copolymer
-
-    atom         A place-holder atom to connect the molecules 
- 
+    """A class for creating a diblock copolymers from given RDKit molecules.
 
     Examples
     ---------
@@ -38,14 +26,14 @@ class Db:
     RDKit package must be installed.
     """
     
-    __slots__ = 'ma', 'mb', 'atom'
+    __slots__ = ['ma', 'mb', 'atom']
 
     def __init__(self, ma, mb, atom):
        """
        Initialize this class.
-          
+
        Parameters
-       ----------
+       -----------
 
        ma : rdkit.Chem.rdchem.Mol
             RDKit Mol object
@@ -54,9 +42,9 @@ class Db:
             RDKit Mol object
  
        atom : str
-            The placeholder atom to combine the molecules 
-            and form a new monomer
-
+            The placeholder atom to combine the molecules and form a new monomer
+       
+          
        """
        
        self.ma = ma
@@ -83,8 +71,7 @@ class Db:
             Selected FF between MMFF or UFF
 
         relax_iterations: int  
-            Number of iterations used for relaxing 
-            a molecular object.  
+            Number of iterations used for relaxing a molecular object.  
 
         Return
         -------
@@ -121,21 +108,8 @@ class Db:
 
 
 class Pt:
-    """
-    A class for creating a Patterned polymers 
-    from a list of RDKit molecules.
-
-    Attributes
-    -----------
-
-    pattern      String defining a sequence to order a polymer
-
-    mols         A list of molecules to be arranged in a given 
-                 sequence
-
-    atom         A place-holder atom to connect the molecules 
- 
-
+    """A class for creating a Patterned polymers from a list of RDKit molecules.
+    
     Examples
     ---------
 
@@ -145,26 +119,24 @@ class Pt:
     RDKit package must be installed.
     """
     
-    __slots__ = 'pattern', 'mols', 'atom'
+    __slots__ = ['pattern', 'mols', 'atom']
 
     def __init__(self, pattern, mols, atom):
        """
        Initialize this class.
-          
+
        Parameters
        -----------
 
-       pattern :: str
-            Variable containing the desired pattern written 
-            in a string.
+       pattern : str
+            Variable containing the desired pattern written in a string.
 
-       mols :: list
+       mols : list
             List containing RDKit molecular objects.
 
-       atom :: str
-            Variable containing the atomic place holder for
-            merging the molecules.
-
+       atom : str
+            Variable containing the atomic place holder for merging the molecules.
+          
        """
        
        self.pattern = pattern
@@ -173,14 +145,13 @@ class Pt:
        
     def pattern_block_poly(self, relax_iterations=100):
         """
-        Function to create a polymer based on an alphabetic 
-        ordered pattern.
+        Function to create a polymer based on an alphabetic ordered pattern.
     
 
         Return
         --------
 
-        return :: mol
+        return : mol
              A molecular pysoftk object.      
 
         """

@@ -3,18 +3,14 @@ from rdkit.Chem import AllChem
 from rdkit.Chem import rdDistGeom as molDG
 
 class Fmt(object):
-    """Class printing RDkit Mol Object in 
-       different formats
+    """Class printing RDkit Mol Object in different formats
           
     Returns
     -------
-    file : str
-            A file with the provided molecule
-            in a chosen format.
 
-    Note
-    ----
-    This class requires MDanalysis to be installed. 
+    file : str
+            A file with the provided molecule in a chosen format.
+
     """
     
     def __init__(self, mol):
@@ -22,9 +18,9 @@ class Fmt(object):
 
        Parameters
        ----------
+
        mol : Chem.rdchem.Mol
-           an RDKit Mol object Molecule to be 
-           printed in a given format.
+           An RDKit Mol object Molecule to be printed in a given format.
        """
        self.mol = mol
     
@@ -33,14 +29,16 @@ class Fmt(object):
         
         Parameters
         ----------
+
         output_name : str 
            A provided name for an output file.
      
+
         Raises
         ------
+
         ValueError:
-            If not an RDKit Mol Object raises 
-            TypeError as invalid molecule.
+            If not an RDKit Mol Object raises TypeError as invalid molecule.
         """
         mol=self.mol
         
@@ -57,14 +55,15 @@ class Fmt(object):
 
         Parameters
         ----------
+
         output_name : str 
            A provided name for a file.
  
         Raises
         ------
+
         ValueError:
-            If not an RDKit Mol Object raises 
-            TypeError as invalid molecule.
+            If not an RDKit Mol Object raises TypeError as invalid molecule.
         """
         mol=self.mol
         try:
@@ -80,14 +79,14 @@ class Fmt(object):
 
         Parameters
         ----------
+
         output_name : str 
            A provided name for a file.
  
         Raises
         ------
         ValueError:
-            If not an RDKit Mol Object raises 
-            TypeError as invalid molecule.
+            If not an RDKit Mol Object raises TypeError as invalid molecule.
         """
         mol=self.mol
         try:

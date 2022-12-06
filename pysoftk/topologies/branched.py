@@ -10,22 +10,10 @@ from pysoftk.linear_polymer.utils import *
 
 class Bd:
     """
-    A class for creating a branched polymer 
-    from given RDKit molecules.
-
-    Attributes
-    -----------
-
-    core           Molecular core to be decorated
-
-    arm           Molecular branches to be added to the core
-
-    atom         A place-holder atom to connect the molecules 
- 
-
+    A class for creating a branched polymer from given RDKit molecules.
+     
     Examples
     ---------
-
 
     Note
     -----
@@ -33,25 +21,12 @@ class Bd:
     RDKit package must be installed.
     """
     
-    __slots__ = 'core', 'arm', 'atom'
+    __slots__ = ['core', 'arm', 'atom']
 
     def __init__(self, core, arm, atom):
        """
        Initialize this class.
           
-       Parameters
-       -----------
-
-       core : rdkit.Chem.rdchem.Mol
-            RDKit Mol object
-
-       arm : rdkit.Chem.rdchem.Mol
-            RDKit Mol object
- 
-       atom : str
-            The placeholder atom to combine the molecules 
-            and form a new monomer
-
        """
        
        self.core = core
@@ -59,9 +34,7 @@ class Bd:
        self.atom = atom
 
     def merge_arms(self, core, arm, atom):
-       """ 
-       Function to attach user defined molecules to a provided
-       molecular core using a placeholder.
+       """ Function to attach user defined molecules to a provided molecular core using a placeholder.
 
        Parameters
        ----------
@@ -73,8 +46,7 @@ class Bd:
             RDKit Mol object
  
        atom : str
-            The placeholder atom to combine the molecules 
-            and form a new monomer
+            The placeholder atom to combine the molecules and form a new monomer
 
        Return
        -------
@@ -106,8 +78,7 @@ class Bd:
 
     
     def branched_polymer(self, iter_ff=100, FF="MMFF"):
-       """
-       Function to create branched polymers
+       """Function to create branched polymers
 
        Parameters
        -----------
@@ -116,8 +87,7 @@ class Bd:
             Selected FF between MMFF or UFF
 
        relax_iterations: int  
-            Number of iterations used for relaxing 
-            a molecular object.  
+            Number of iterations used for relaxing a molecular object.  
 
         Return
         -------

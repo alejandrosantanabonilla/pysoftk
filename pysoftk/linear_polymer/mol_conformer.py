@@ -18,7 +18,7 @@ class Mcon(object):
    This class requires RDKit to be installed.
    """
      
-   __slots__ = 'mol','num_conf','e_max' 
+   __slots__ = ['mol','num_conf','e_max']
 
    def __init__(self, mol, num_conf, e_max):
        """
@@ -70,8 +70,7 @@ class Mcon(object):
        
 class Memb:
     def etkdgv3_energies(self, mol, num_conf):
-      """Calculate molecular configurations using 
-         the RDKit-ETKDG3 method.
+      """Calculate molecular configurations using the RDKit-ETKDG3 method.
          
          Parameters
          ----------

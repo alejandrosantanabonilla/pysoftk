@@ -11,26 +11,12 @@ from itertools import chain
 
 class Torsional(object):
     """
-       A class for detecting torsional angles in a 
-       linear polymer.
+       A class for detecting torsional angles in a linear conjugated polymer.
           
-       Parameters
-       ----------
-
-       mol: rdkit.Chem.rdchem.Mol
-            RDKit Mol object
-      
 
        Examples
        --------
 
-       
-
-       Returns
-       -------
-
-       List[int] 
-          List of torsional angles
     """    
     def __init__(self, mol):
        """Initializes the class Torsional
@@ -44,8 +30,7 @@ class Torsional(object):
        self.mol = mol
     
     def validate_mol(self, mol):
-      """Function that validates an object as
-         RDKit Mol object.
+      """Function that validates an object as RDKit Mol object.
 
        Parameters
        ----------
@@ -67,25 +52,23 @@ class Torsional(object):
         return mol
        
     def seek_angles(self):
-      """List of torsional angles in a planar
-         polymer.
+      """List of torsional angles in a planar polymer.
 
       Return
       -------
 
-      List[int]
+      List: int
         List of atomic indexes for torsional angles
       """
       return self.list_dhdl_atoms()
 
     def __list_ring_atoms(self):
-      """Function to compute the inner rings
-         belonging to an RDKit Mol object.
+      """Function to compute the inner rings belonging to an RDKit Mol object.
        
        Return
        -------
 
-       List[int]
+       List : int
         List of atomic indexes for torsional angles
       """
       rdkit_mol=self.validate_mol(self.mol)
@@ -94,15 +77,13 @@ class Torsional(object):
       return [list(values) for idx,values in enumerate(ri.AtomRings())]
 
     def mol_graph(self):
-      """Function to create a NetworkX graph based 
-         on an RDKit molecule.
+      """Function to create a NetworkX graph based on an RDKit molecule.
       
       Return
       ------
 
       G : Networkx.Graph
-        A networkx graph object updated with 
-        an RDKit Mol object.
+        A networkx graph object updated with an RDKit Mol object.
       """
       mol=self.validate_mol(self.mol)
       G=nx.Graph()
@@ -123,13 +104,12 @@ class Torsional(object):
       return G
 
     def __dihedral_atoms(self):
-      """Function that computes the dihedral
-         atoms of an RDKit molecule.
+      """Function that computes the dihedral atoms of an RDKit molecule.
 
       Return
       ------
 
-      List[int]
+      List: int
         List of atomic indexes for dihedral angles
       """
       graph = self.mol_graph()
@@ -157,15 +137,13 @@ class Torsional(object):
       return dhdl_atms
    
     def __paths_dihedral_atoms(self):
-      """Function that computes atomic indexes
-         with 4 neighbours.
+      """Function that computes atomic indexes with 4 neighbours.
 
       Return
       ------
 
-      List[int]
-        List of all paths produced by tuple of indexes
-        of atoms.
+      List: int
+        List of all paths produced by tuple of indexes of atoms.
       """
       graph=self.mol_graph()
       dh_atoms=self.__dihedral_atoms()
@@ -178,13 +156,12 @@ class Torsional(object):
       return paths
   
     def __comb_dihedral_atoms(self):
-      """ Function to detect atoms with 
-          exact 4 neighbours.
+      """ Function to detect atoms with exact 4 neighbours.
       
       Return
       ------
 
-      List[int]
+      List: int
         List of atoms with 4 neigbours
       """
       paths=self.__paths_dihedral_atoms()
@@ -196,15 +173,13 @@ class Torsional(object):
       return atm_comb
 
     def __prbm_cases(self):
-      """Function to detect atoms with complex
-         environments.
+      """Function to detect atoms with complex environments.
       
       Return
       ------
 
-      List[int]
-        List of atomic indexes for atoms with complex
-        environment.
+      List: int
+        List of atomic indexes for atoms with complex environment.
       """
       lst_rng_atm=self.__list_ring_atoms()
       cmb_dhr_atm=self.__comb_dihedral_atoms()
@@ -226,7 +201,7 @@ class Torsional(object):
       Return
       ------ 
 
-      List[int]
+      List: int
         List of atomic indexes for dihedral atoms
       """
       prb_cas=self.__prbm_cases()
@@ -240,8 +215,7 @@ class Torsional(object):
       return sorted(list(set_ttl-set_dlt))
 
     def mol_graph_neigh(self, mol):
-      """Function to compute adjacency matrix
-         from an RDKit Mol object.
+      """Function to compute adjacency matrix from an RDKit Mol object.
        
        Return
        ------
@@ -263,8 +237,7 @@ class Torsional(object):
       return G
 
     def show_atom_number(self, mol, label):
-       """Function to set atomic numbers to an 
-          RDKit Mol object.
+       """Function to set atomic numbers to an RDKit Mol object.
 
        Parameters
        ----------
@@ -287,8 +260,7 @@ class Torsional(object):
        return mol
   
     def draw_molecule(self, mol, name_pic, atoms_idx):
-        """Function to print a molecule into
-           a PNG file.
+        """Function to print a molecule into a PNG file.
 
         Parameters
         ----------
@@ -315,8 +287,7 @@ class Torsional(object):
                        includeAtomNumbers=True, highlightAtoms=atoms_idx) 
   
     def plot_trs_ang(self, name):
-      """Function to plot torsional atoms 
-         from an RDKit Mol Object.
+      """Function to plot torsional atoms from an RDKit Mol Object.
       
       Parameters
       -----------

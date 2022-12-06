@@ -10,8 +10,7 @@ import uuid
 
 
 class Fld:
-    """Create folders automatically to be used as stand-alone application or in along
-       PySoftK.
+    """Create folders automatically to be used as stand-alone application or along PySoftK.
 
     Examples
     --------
@@ -22,8 +21,7 @@ class Fld:
         pass
             
     def fxd_name(self, testname):
-        """Create an array of fixed names for
-           folders.
+        """Create an array of fixed names for folders.
 
         Parameters
         ----------
@@ -42,8 +40,7 @@ class Fld:
 
 
     def _make_dir(self, dir_names):
-        """Function to create a folder in the
-           current working directory.
+        """Function to create a folder in the current working directory.
 
         Parameters
         ----------
@@ -62,8 +59,7 @@ class Fld:
 
         
     def create(self, times=None):
-        """Function to create a folder in the
-           current working directory.
+        """Function to create a folder in the current working directory.
 
         Parameters
         ----------
@@ -74,7 +70,7 @@ class Fld:
         Returns
         -------
 
-        None
+        None : None
            Creates a folder with a provided name.
         """
 
@@ -93,6 +89,7 @@ class Fld:
       
         Returns
         -------
+
         name : str
            Creates a folder with a random name.
         """
@@ -101,15 +98,13 @@ class Fld:
 
 
     def seek_files(self, format_extension):
-        """Function to seek files in the current 
-           working directory.
+        """Function to seek files in the current working directory.
        
         Parameters
         ----------
 
         format_extension : str
-            Extension used to seek in the current 
-            working directory
+            Extension used to seek in the current working directory
  
         Returns
         -------
@@ -123,15 +118,13 @@ class Fld:
 
 
     def _seek_dir(self):
-        """Function to seek and list directories in
-           the current working directory.
+        """Function to seek and list directories in the current working directory.
 
         Returns
         -------
 
         folder_dir : List[n str]
-           Sorted list of folders inside the current working 
-           directory.
+           Sorted list of folders inside the current working directory.
         """
         import re
         directory = pathlib.Path().absolute()
@@ -166,8 +159,7 @@ class Fld:
 
         
     def file_to_dir(self, format_extension, num_cores=None):
-        """Function to move files to directories 
-           in parallel
+        """Function to move files to directories in parallel
   
         Parameters
         ----------

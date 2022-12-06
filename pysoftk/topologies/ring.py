@@ -15,17 +15,7 @@ from pysoftk.linear_polymer.utils import *
 from .utils import * 
 
 class Rn:
-    """
-    A class for creating a circular (ring-shaped) polymer 
-    from given RDKit molecules.
-
-    Attributes
-    -----------
-
-    mol          First molecule of the copolymer
-
-    atom         A place-holder atom to connect the molecules 
- 
+    """A class for creating a circular (ring-shaped) polymer from given RDKit molecules.
 
     Examples
     ---------
@@ -36,22 +26,10 @@ class Rn:
     RDKit package must be installed.
     """
     
-    __slots__ = 'mol', 'atom'
+    __slots__ = ['mol', 'atom']
 
     def __init__(self, mol, atom):
-       """
-       Initialize this class.
-          
-       Parameters
-       ----------
-
-       mol : rdkit.Chem.rdchem.Mol
-            RDKit Mol object
- 
-       atom : str
-            The placeholder atom to combine the 
-            molecules and form a new monomer
-
+       """Initialize this class.
        """
        
        self.mol=mol
@@ -60,11 +38,16 @@ class Rn:
 
     def pol_ring(self, len_polymer=2, FF="MMFF",
                  iters=100, shift=1.25): 
-      """
-      Function to create a polymer with ring structure (circular)
+      """ Function to create a polymer with ring structure (circular)
 
       Parameters
       -----------
+
+      mol : rdkit.Chem.rdchem.Mol
+            RDKit Mol object
+ 
+      atom : str
+            The placeholder atom to combine the molecules and form a new monomer
 
       len_polymer: int
          Extension of the polymer
@@ -73,12 +56,10 @@ class Rn:
          Selected FF to perform a relaxation
  
       iter: int
-         Number of iterations to perform a FF geometry
-         Optimisation.
+         Number of iterations to perform a FF geometry optimisation.
 
       shift: float
-         User defined shift for spacing the monomers 
-         using the LP function.
+         User defined shift for spacing the monomers using the LP function.
 
       Return
       -------
@@ -99,9 +80,7 @@ class Rn:
       return pol_ring
        
     def create_ring(self, mol, atom):
-      """ 
-      Function to create a circular polymer based on 
-      a RDKit molecular object.
+      """Function to create a circular polymer based on a RDKit molecular object.
 
       Parameters
       ----------
@@ -110,8 +89,7 @@ class Rn:
             RDKit Mol object
  
       atom : str
-            The placeholder atom to combine the 
-            molecules and form a new monomer
+            The placeholder atom to combine the molecules and form a new monomer
     
       Return
       -------
@@ -139,8 +117,7 @@ class Rn:
    
 
     def check_proto(self, mol, FF="MMFF", iters=100):
-      """
-      Function to check the proto polymer creation.
+      """Function to check the proto polymer creation.
 
 
       Parameters
@@ -150,12 +127,10 @@ class Rn:
             RDKit Mol object
       
       FF:  str
-           Selected FF to perform a 
-           relaxation
+           Selected FF to perform a relaxation
  
       iter: int
-           Number of iterations to perform a 
-           FF geometry optimisation.
+           Number of iterations to perform a FF geometry optimisation.
 
       Return
       -------

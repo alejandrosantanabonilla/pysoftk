@@ -6,14 +6,13 @@ import subprocess as sp
 import shutil, errno
 
 class Opt(object):
-    """ Geometrical optimization tools using
-        gfn-xtb2 and pyscf as engines.
+    """ Geometrical optimization tools using GFN-XTB2 and PySCF as engines.
 
 
     Note
     -----
-    This class requires a GFN-XTB executable and/or a PYSCF semiempirical 
-    installation to be used.
+
+    This class requires a GFN-XTB executable and/or a PYSCF semiempirical installation to be used.
     """
 
     def __init__(self, xyz_file):
@@ -21,24 +20,26 @@ class Opt(object):
         
         Parameters
         ----------
+
         xyz_file : str
-            Name of the external cartesian coordinate file
-            used for geometry optimization. 
+            Name of the external cartesian coordinate file used for geometry optimization. 
+
         """
         self.xyz_file = xyz_file
 
     def pyscf_semi(self, steps):
-        """Function invoking PYSCF semiempirical implementation
-           for geometry optimization.
+        """Function invoking PYSCF semiempirical implementation for geometry optimization.
 
         Parameters
         ----------
-        steps : int, optional
-           Number of steps which PYSCF code
-           will perform the optimization routine.
 
-        Results
+        steps : int, optional
+           Number of steps which PYSCF code will perform the optimization routine.
+
+
+        Return
         -------
+
         None :
             Print the file pyscf_final.xyz reporting 
             the results from a PYSCF calculation.
@@ -59,21 +60,19 @@ class Pyscf_print(object):
     """
 
     def xyz(self, mol):
-        """Function to print a file with Cartesian 
-           coordinates from a PYSCF geometry optimization
-           calculation.
+        """Function to print a file with Cartesian coordinates from a PYSCF geometry optimization calculation.
 
         Parameters
         ----------
+       
         mol : pyscf.gto.mole.Mole
-          A PYSCF gto mole Mole object.
+            A PySCF gto mole Mole object.
 
-        Result
+        Return
         ------
+
         pysfc_final: str
-          An xyz file containing the optimized
-          coordinates of the provided PYSCF Mole
-          object.
+          An xyz file containing the optimized coordinates of the provided PYSCF Mole object.
         """
         bohr2angs=0.529177
         coords = bohr2angs*mol.atom_coords()

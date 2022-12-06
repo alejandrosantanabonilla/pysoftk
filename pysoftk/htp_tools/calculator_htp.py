@@ -7,8 +7,7 @@ from tqdm import tqdm
 import time
 
 class Htp(object):
-    """Class enabling High-throughput calculations in different created 
-       folders for provided molecules.
+    """Class enabling High-throughput calculations in different created folders for provided molecules.
 
     Attributes 
     ----------
@@ -37,8 +36,7 @@ class Htp(object):
     Note
     -----
 
-    This class requires tqdm, GFN-XTB and/or PYSCF semiempirical 
-    installation to be used.
+    This class requires tqdm, GFN-XTB and/or PYSCF semiempirical installation to be used.
  
     """
 
@@ -57,8 +55,7 @@ class Htp(object):
 
     @staticmethod   
     def xtb_gfn(xtb_path, xyz_geom, init_dir, num_cores=None, threshold=None):
-       """Function invoking GFN-XTB Force-Field implementation for 
-          geometry optimization.
+       """Function invoking GFN-XTB Force-Field implementation for geometry optimization.
 
        Parameters
        -----------
@@ -77,15 +74,13 @@ class Htp(object):
              Provided geometry to be relaxed.
 
        init_dir : str
-             Root path directory where folders containing the structures 
-             are found.
+             Root path directory where folders containing the structures are found.
  
        Returns
        -------
 
        output : str
-          File name output.log containing the optimization process carried 
-          out by GFN-XTB2.
+          File name output.log containing the optimization process carried out by GFN-XTB2.
        """
     
        num_cores = int(1) if num_cores is None else int(num_cores)
@@ -118,8 +113,7 @@ class Htp(object):
         
     @staticmethod   
     def xtb_ff(xtb_path, xyz_geom, init_dir, num_cores=None, threshold=None):
-       """Function invoking GFN-XTB Force-Field implementation for 
-          geometry optimization.
+       """Function invoking GFN-XTB Force-Field implementation for geometry optimization.
 
        Parameters
        -----------
@@ -131,22 +125,19 @@ class Htp(object):
            Number of cores used by the GFN-XTB code.
 
        threshold : str, optional
-           Level of geometry optimization required as defined in 
-           GFN-XTB2 code.
+           Level of geometry optimization required as defined in GFN-XTB2 code.
  
        xyz_geom : str 
            Provided geometry to be relaxed.
 
        init_dir : str
-           Root path directory where folders containing the 
-           structures are found.
+           Root path directory where folders containing the structures are found.
  
        Returns
        --------
 
        output : str
-           File name output.log containing the optimization process 
-           carried out by GFN-XTB2.
+           File name output.log containing the optimization process carried out by GFN-XTB2.
        """
     
        num_cores = int(1) if num_cores is None else int(num_cores)
@@ -177,19 +168,16 @@ class Htp(object):
            pass
 
     def _find_files(self, directory, pattern):
-        """Function to find files within a given directory
-           based on a provided pattern.
+        """Function to find files within a given directory based on a provided pattern.
 
         Parameters
         ----------
 
         directory : str
-           Path of the main directory where the search will
-           be carried out. 
+           Path of the main directory where the search will be carried out. 
 
         pattern : str
-           Provided Alpha-pattern (extension of the molecular
-           file) which will be used to perform the search.
+           Provided Alpha-pattern (extension of the molecular file) which will be used to perform the search.
 
         Results
         --------
@@ -205,23 +193,19 @@ class Htp(object):
                     yield filename
        
     def _seek_files(self, file_ending):
-        """Function to seek files within the current working 
-           directory based on a provided pattern.
+        """Function to seek files within the current working directory based on a provided pattern.
 
         Parameters
         ----------
 
         file_ending : str
-           Extension of the provided pattern to perform 
-           the search.
+           Extension of the provided pattern to perform the search.
 
         Results
         -------
 
         gmts : list
-           A list of the resulting files within the 
-           current working directory with the provided
-           extension (ending). 
+           A list of the resulting files within the current working directory with the provided extension (ending). 
 
         """
         seek_file = "".join(("*",".", str(file_ending)))
@@ -231,8 +215,7 @@ class Htp(object):
 
 
     def htp_xtb_ff(self, path_xtb, max_work, cores, threshold="crude"):
-       """Function to perform a parallel concurrent calculation
-          at the gfn-ff level of theory.
+       """Function to perform a parallel concurrent calculation at the gfn-ff level of theory.
 
        Parameters
        ----------
@@ -241,23 +224,19 @@ class Htp(object):
           Path where the xtb executable is located. 
 
        max_work : int
-          Number of maximum amount of workers in a concurrent job
-          Default is 1.
+          Number of maximum amount of workers in a concurrent job default is 1.
 
        num_cores : int, optional
-          Number of cores which the GFN-XTB2 code
-          will use.
+          Number of cores which the GFN-XTB2 code will use.
 
        threshold: str, optional
-          Level of geometry optimization required 
-          as defined in GFN-XTB2 code. 
+          Level of geometry optimization required as defined in GFN-XTB2 code. 
 
        Return
        ------
 
        None : 
-          A relaxed structure as produced by the GFN-XTB2 
-          code.
+          A relaxed structure as produced by the GFN-XTB2 code.
 
        """
        
@@ -274,8 +253,7 @@ class Htp(object):
 
 
     def htp_xtb_gfn(self, path_xtb, max_work, cores, threshold="crude"):
-       """Function to perform a parallel concurrent calculation
-           at the gfn-xtb level of theory.
+       """Function to perform a parallel concurrent calculation at the gfn-xtb level of theory.
 
        Parameters
        ----------
@@ -284,23 +262,19 @@ class Htp(object):
           Path where the xtb executable is located. 
 
        max_work : int
-          Number of maximum amount of workers in a concurrent job
-          Default is 1.
+          Number of maximum amount of workers in a concurrent job default is 1.
 
        num_cores : int, optional
-          Number of cores which the GFN-XTB2 code
-          will use.
+          Number of cores which the GFN-XTB2 code will use.
 
        threshold: str, optional
-          Level of geometry optimization required 
-          as defined in GFN-XTB2 code. 
+          Level of geometry optimization required as defined in GFN-XTB2 code. 
 
        Return
        ------
 
        None : 
-          A relaxed structure as produced by the GFN-XTB2 
-          code.
+          A relaxed structure as produced by the GFN-XTB2 code.
        """
        
        ending = self.ending

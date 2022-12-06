@@ -12,20 +12,7 @@ RDLogger.DisableLog('rdApp.*')
 
 class Lp:
     """
-    A class for creating a linear polymer 
-    from given RdKit molecules.
-
-    Attributes
-    -----------
-
-    mol          The super_monomer molecule to be polarised
-
-    atom         A place-holder atom to connect the molecule 
-
-    n_copies     Number of copies to create the polymer
-
-    shift        A real value to translate the super_monomer 
-                 in a real-grid.
+    A class for creating a linear polymer from given RdKit molecules.
 
     Examples
     ---------
@@ -37,7 +24,7 @@ class Lp:
     RDKit package must be installed.
     """
     
-    __slots__ = 'mol', 'atom', 'n_copies', 'shift'
+    __slots__ = ['mol', 'atom', 'n_copies', 'shift']
 
     def __init__(self, mol, atom, n_copies, shift):
        """
@@ -50,16 +37,13 @@ class Lp:
           RDKit Mol object
  
        atom : str
-          The placeholder atom to combine the molecules 
-          and form a new monomer
+          The placeholder atom to combine the molecules and form a new monomer
 
        n_copies: int
-          Number of copies to be created for the provided 
-          mol object. 
+          Number of copies to be created for the provided mol object. 
 
        shift: float
-          X-axis shift to translate the super_monomer
-          object.
+          X-axis shift to translate the super_monomer object.
        """
        
        self.mol = mol
@@ -68,8 +52,7 @@ class Lp:
        self.shift = float(2.5) if shift is None else float(shift)
 
     def max_dist_mol(self):
-        """Returns the maximum distance between atoms 
-           from an RDKit Mol Object.
+        """Returns the maximum distance between atoms from an RDKit Mol Object.
 
         Return
         -------
@@ -122,8 +105,7 @@ class Lp:
 
 
     def _polimerisation(self, fragments):
-        """Function to produce a polymer in a
-           recursive manner. 
+        """Function to produce a polymer in a recursive manner. 
 
         Parameters
         -----------
@@ -149,8 +131,7 @@ class Lp:
         return outmol
 
     def _bond_conn(self, outmol):
-        """Function to peruse the bonds and connections of place-hold 
-           atom within a super_monomer object.
+        """Function to peruse the bonds and connections of place-hold atom within a super_monomer object.
  
         Parameters
         -----------
@@ -180,8 +161,7 @@ class Lp:
         return conn[1:-1], neigh[1:-1]
    
     def proto_polymer(self):
-       """Function to create a linear polymer 
-          from a given super_monomer object.
+       """Function to create a linear polymer from a given super_monomer object.
 
        Returns
        --------
@@ -221,8 +201,7 @@ class Lp:
        return mol3
 
     def linear_polymer(self, FF="MMFF", iter_ff=100):
-       """Function to create a linear polymer 
-          from a given super_monomer object.
+       """Function to create a linear polymer from a given super_monomer object.
 
        Parameters
        -----------
