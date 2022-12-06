@@ -19,17 +19,20 @@ class Rn:
     A class for creating a circular (ring-shaped) polymer 
     from given RDKit molecules.
 
-    Attributes:
+    Attributes
     -----------
+
     mol          First molecule of the copolymer
+
     atom         A place-holder atom to connect the molecules 
  
 
     Examples
     ---------
 
-    Note:
+    Note
     -----
+
     RDKit package must be installed.
     """
     
@@ -41,6 +44,7 @@ class Rn:
           
        Parameters
        ----------
+
        mol : rdkit.Chem.rdchem.Mol
             RDKit Mol object
  
@@ -61,6 +65,7 @@ class Rn:
 
       Parameters
       -----------
+
       len_polymer: int
          Extension of the polymer
 
@@ -77,6 +82,7 @@ class Rn:
 
       Return
       -------
+
       pol_ring : rdkit.Chem.rdchem.Mol
            RDKit Mol object
      
@@ -99,6 +105,7 @@ class Rn:
 
       Parameters
       ----------
+
       mol : rdkit.Chem.rdchem.Mol
             RDKit Mol object
  
@@ -108,6 +115,7 @@ class Rn:
     
       Return
       -------
+
       final : rdkit.Chem.rdchem.Mol
            RDKit Mol object
 
@@ -134,6 +142,7 @@ class Rn:
       """
       Function to check the proto polymer creation.
 
+
       Parameters
       -----------
       
@@ -150,6 +159,7 @@ class Rn:
 
       Return
       -------
+
       newMol_H : rdkit.Chem.rdchem.Mol
             RDKit Mol object
 

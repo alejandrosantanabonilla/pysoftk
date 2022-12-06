@@ -16,6 +16,7 @@ class Torsional(object):
           
        Parameters
        ----------
+
        mol: rdkit.Chem.rdchem.Mol
             RDKit Mol object
       
@@ -27,6 +28,7 @@ class Torsional(object):
 
        Returns
        -------
+
        List[int] 
           List of torsional angles
     """    
@@ -35,6 +37,7 @@ class Torsional(object):
 
        Parameters
        ----------
+
        mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
        """
@@ -46,11 +49,13 @@ class Torsional(object):
 
        Parameters
        ----------
+
        mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
     
        Return
        -------
+
        mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
       """
@@ -67,6 +72,7 @@ class Torsional(object):
 
       Return
       -------
+
       List[int]
         List of atomic indexes for torsional angles
       """
@@ -78,6 +84,7 @@ class Torsional(object):
        
        Return
        -------
+
        List[int]
         List of atomic indexes for torsional angles
       """
@@ -92,6 +99,7 @@ class Torsional(object):
       
       Return
       ------
+
       G : Networkx.Graph
         A networkx graph object updated with 
         an RDKit Mol object.
@@ -120,6 +128,7 @@ class Torsional(object):
 
       Return
       ------
+
       List[int]
         List of atomic indexes for dihedral angles
       """
@@ -153,6 +162,7 @@ class Torsional(object):
 
       Return
       ------
+
       List[int]
         List of all paths produced by tuple of indexes
         of atoms.
@@ -173,6 +183,7 @@ class Torsional(object):
       
       Return
       ------
+
       List[int]
         List of atoms with 4 neigbours
       """
@@ -190,6 +201,7 @@ class Torsional(object):
       
       Return
       ------
+
       List[int]
         List of atomic indexes for atoms with complex
         environment.
@@ -213,6 +225,7 @@ class Torsional(object):
 
       Return
       ------ 
+
       List[int]
         List of atomic indexes for dihedral atoms
       """
@@ -232,6 +245,7 @@ class Torsional(object):
        
        Return
        ------
+
        mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
       """
@@ -254,6 +268,7 @@ class Torsional(object):
 
        Parameters
        ----------
+
        label : str
           Added Atomic Property to an 
           RDKit Mol Object
@@ -263,6 +278,7 @@ class Torsional(object):
        
        Return
        ------
+
        mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
        """
@@ -276,6 +292,7 @@ class Torsional(object):
 
         Parameters
         ----------
+
         mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
  
@@ -287,7 +304,8 @@ class Torsional(object):
              be highligthed.
        
         Return
-        ------
+        -------
+
         None 
            rdkit.Draw.MolToFile Object
         """
@@ -300,13 +318,15 @@ class Torsional(object):
       """Function to plot torsional atoms 
          from an RDKit Mol Object.
       
-      Parameter
-      ---------
+      Parameters
+      -----------
+
       name : str
           Name of the RDKit Mol object 
 
       Return
-      ------
+      -------
+
       draw_molecule : PNG 
             A PNG RDKit Mol object
       """

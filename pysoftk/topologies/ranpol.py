@@ -20,18 +20,23 @@ class Rnp():
     A class for creating a random copolymer 
     from given RDKit molecules.
 
-    Attributes:
+    Attributes
     -----------
+
     ma           Molecular core to be decorated
+
     mb           Molecular branches to be added to the core
+
     atom         A place-holder atom to connect the molecules 
  
 
     Examples
     ---------
 
-    Note:
+
+    Note
     -----
+
     RDKit package must be installed.
     """
     
@@ -43,6 +48,7 @@ class Rnp():
           
        Parameters
        ----------
+
        ma : rdkit.Chem.rdchem.Mol
             RDKit Mol object
 
@@ -83,8 +89,9 @@ class Rnp():
        FF: str
            User selected FF between "MMFF" or "UFF".      
  
-       Return:
+       Return
        -------    
+
        mol: rdkit.Chem.rdchem.Mol
           RDKit Mol object
         
@@ -136,6 +143,7 @@ class Rnp():
 
        Parameters
        -----------
+
        mc: rdkit.Chem.rdchem.Mol
            RDKit Mol object #
 
@@ -159,7 +167,7 @@ class Rnp():
        FF: str
            User selected FF.      
  
-       Return:
+       Return
        -------
     
        mol: rdkit.Chem.rdchem.Mol

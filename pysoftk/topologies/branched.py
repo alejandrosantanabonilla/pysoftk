@@ -13,18 +13,23 @@ class Bd:
     A class for creating a branched polymer 
     from given RDKit molecules.
 
-    Attributes:
+    Attributes
     -----------
+
     core           Molecular core to be decorated
+
     arm           Molecular branches to be added to the core
+
     atom         A place-holder atom to connect the molecules 
  
 
     Examples
     ---------
 
-    Note:
+
+    Note
     -----
+
     RDKit package must be installed.
     """
     
@@ -35,7 +40,8 @@ class Bd:
        Initialize this class.
           
        Parameters
-       ----------
+       -----------
+
        core : rdkit.Chem.rdchem.Mol
             RDKit Mol object
 
@@ -59,6 +65,7 @@ class Bd:
 
        Parameters
        ----------
+
        core : rdkit.Chem.rdchem.Mol
             RDKit Mol object
 
@@ -100,12 +107,15 @@ class Bd:
     
     def branched_polymer(self, iter_ff=100, FF="MMFF"):
        """
-       Function
+       Function to create branched polymers
 
-        FF: str
+       Parameters
+       -----------
+
+       FF: str
             Selected FF between MMFF or UFF
 
-        relax_iterations: int  
+       relax_iterations: int  
             Number of iterations used for relaxing 
             a molecular object.  
 

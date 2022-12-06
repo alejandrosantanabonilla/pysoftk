@@ -27,11 +27,13 @@ class Fld:
 
         Parameters
         ----------
+
         testname: str
             Base name to be used as name
 
         Returns
         -------
+
         np.ndarray
            An array of names for folders
         """
@@ -45,11 +47,13 @@ class Fld:
 
         Parameters
         ----------
+
         dir_names : str
            Name of the folder that will be created.       
 
         Returns
         -------
+
         None
            Creates a folder with a provided name.
         """
@@ -63,11 +67,13 @@ class Fld:
 
         Parameters
         ----------
+
         times : boolean, optional
            Number of times that a folder will be created       
            
         Returns
         -------
+
         None
            Creates a folder with a provided name.
         """
@@ -100,12 +106,14 @@ class Fld:
        
         Parameters
         ----------
+
         format_extension : str
             Extension used to seek in the current 
             working directory
  
         Returns
         -------
+
         inp_name : str
             
         """
@@ -120,6 +128,7 @@ class Fld:
 
         Returns
         -------
+
         folder_dir : List[n str]
            Sorted list of folders inside the current working 
            directory.
@@ -139,6 +148,7 @@ class Fld:
 
         Parameters
         ----------
+
         source : str
           Source path where the files is located.
 
@@ -147,6 +157,7 @@ class Fld:
         
         Returns
         -------
+
         None
            Creates a folder with a provided name.
         """
@@ -160,6 +171,7 @@ class Fld:
   
         Parameters
         ----------
+
         format_extension : str
             Format extension used to seek.
     
@@ -168,6 +180,7 @@ class Fld:
 
         Results
         -------
+
         None:
             Move files to directories.
       

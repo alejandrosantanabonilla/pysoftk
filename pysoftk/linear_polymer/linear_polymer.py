@@ -15,19 +15,25 @@ class Lp:
     A class for creating a linear polymer 
     from given RdKit molecules.
 
-    Attributes:
+    Attributes
     -----------
+
     mol          The super_monomer molecule to be polarised
+
     atom         A place-holder atom to connect the molecule 
+
     n_copies     Number of copies to create the polymer
+
     shift        A real value to translate the super_monomer 
                  in a real-grid.
 
     Examples
     ---------
 
-    Note:
+
+    Note
     -----
+
     RDKit package must be installed.
     """
     
@@ -38,7 +44,8 @@ class Lp:
        Initialize this class.
           
        Parameters
-       ----------
+       -----------
+
        mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
  
@@ -64,8 +71,9 @@ class Lp:
         """Returns the maximum distance between atoms 
            from an RDKit Mol Object.
 
-        Returns
+        Return
         -------
+
         np.float
            maximum value from a Molecule Bound Matrix 
         """
@@ -77,8 +85,9 @@ class Lp:
     def x_shift(self):
         """Re-calibrate distance between monomers
      
-        Returns
+        Return
         -------
+
         shift_final : 'float'
               Value to translates the unit repetitions 
         """
@@ -91,16 +100,19 @@ class Lp:
     def _copy_mol(self):
        """Function to replicate super_monomers.
 
-       Parameters:
+       Parameters
        -----------
+
        mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
 
-       Returns:
+       Return
        --------
+
        fragments : `list`
           List of RDKit Mol objects
        """    
+
        mol=self.mol
        n_copies=self.n_copies
        
@@ -113,13 +125,15 @@ class Lp:
         """Function to produce a polymer in a
            recursive manner. 
 
-        Parameters:
+        Parameters
         -----------
-        fragments: 
+       
+        fragments: list 
             A list of RDKit objects.
 
-        Returns:
+        Return
         --------
+
         outmol : rdkit.Chem.rdchem.Mol
              RDKit Mol object
 
@@ -138,13 +152,15 @@ class Lp:
         """Function to peruse the bonds and connections of place-hold 
            atom within a super_monomer object.
  
-        Parameters:
-        ----------
+        Parameters
+        -----------
+
         outmol : rdkit.Chem.rdchem.Mol
            RDKit Mol object
 
-        Returns:
+        Return
         --------
+
         Tuple : `list`
           A tuple of lists containing connections and 
           neighbours of the place-holder atom.
@@ -167,8 +183,9 @@ class Lp:
        """Function to create a linear polymer 
           from a given super_monomer object.
 
-       Returns:
+       Returns
        --------
+
        newMol_H : rdkit.Chem.rdchem.Mol
             RDKit Mol object
 
@@ -208,7 +225,7 @@ class Lp:
           from a given super_monomer object.
 
        Parameters
-       ------------
+       -----------
 
        FF : str
           Selected Force-Field from RDKit options, i.e, UFF or MMFF
@@ -216,8 +233,10 @@ class Lp:
        iter_ff: int
           The maximum number of iterations used for the FF.
 
-       Returns:
+
+       Return
        --------
+
        newMol_H : rdkit.Chem.rdchem.Mol
             RDKit Mol object
 

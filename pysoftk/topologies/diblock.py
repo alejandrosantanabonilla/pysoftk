@@ -19,18 +19,22 @@ class Db:
     A class for creating a diblock copolymers 
     from given RDKit molecules.
 
-    Attributes:
+    Attributes
     -----------
+
     ma           First molecule of the copolymer
+
     mb           Second molecule of the copolymer
+
     atom         A place-holder atom to connect the molecules 
  
 
     Examples
     ---------
 
-    Note:
+    Note
     -----
+
     RDKit package must be installed.
     """
     
@@ -42,6 +46,7 @@ class Db:
           
        Parameters
        ----------
+
        ma : rdkit.Chem.rdchem.Mol
             RDKit Mol object
 
@@ -62,7 +67,8 @@ class Db:
     def diblock_copolymer(self, len_block_A, len_block_B,
                              FF="MMFF", relax_iterations=100):
 
-        """Function to create a diblock copolymer based on a 
+        """Function to create a diblock copolymer 
+
 
         Parameters
         -----------
@@ -119,19 +125,23 @@ class Pt:
     A class for creating a Patterned polymers 
     from a list of RDKit molecules.
 
-    Attributes:
+    Attributes
     -----------
+
     pattern      String defining a sequence to order a polymer
+
     mols         A list of molecules to be arranged in a given 
                  sequence
+
     atom         A place-holder atom to connect the molecules 
  
 
     Examples
     ---------
 
-    Note:
+    Note
     -----
+
     RDKit package must be installed.
     """
     
@@ -143,6 +153,7 @@ class Pt:
           
        Parameters
        -----------
+
        pattern :: str
             Variable containing the desired pattern written 
             in a string.
@@ -165,8 +176,10 @@ class Pt:
         Function to create a polymer based on an alphabetic 
         ordered pattern.
     
-        Returns:
-        ---------
+
+        Return
+        --------
+
         return :: mol
              A molecular pysoftk object.      
 

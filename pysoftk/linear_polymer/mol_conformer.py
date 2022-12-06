@@ -8,12 +8,13 @@ import numpy as np
 class Mcon(object):
    """Calculates molecular conformers
 
-   Example:
+   Example
    --------
 
 
    Note
    -----
+
    This class requires RDKit to be installed.
    """
      
@@ -22,8 +23,8 @@ class Mcon(object):
    def __init__(self, mol, num_conf, e_max):
        """
        Parameters
-
        ----------
+
        mol: rdkit.Chem.rdchem.Mol
             RDKit Mol object
 
@@ -43,8 +44,9 @@ class Mcon(object):
        Calculate a molecular conformer for a given molecule. If 
        enabled the highest-energy conformer is returned. 
 
-       Returns
+       Return
        -------
+
        datapoint: rdkit.Chem.Mol
          RDKit Mol object
 
@@ -73,10 +75,17 @@ class Memb:
          
          Parameters
          ----------
-         datapoint: 
+         
+         mol: rdkit.Chem.Mol
+             RDKit Mol object
+
+         num_conf: int
+             The number of configurations requested to be computed.
+
         
-         Returns
-         -------
+         Return
+         --------
+
          datapoint: rdkit.Chem.rdistGeom.EmbedMultipleConfs
             RDKit Mol object
       """
