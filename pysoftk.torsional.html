@@ -100,29 +100,12 @@
 <dt class="sig sig-object py" id="pysoftk.torsional.torsional.Torsional">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.torsional.torsional.</span></span><span class="sig-name descname"><span class="pre">Torsional</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A class for detecting torsional angles in a
-linear polymer.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p>
-</dd>
-</dl>
+<p>A class for detecting torsional angles in a linear conjugated polymer.</p>
 <p class="rubric">Examples</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>List of torsional angles</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>List[int]</p>
-</dd>
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.torsional.torsional.Torsional.draw_molecule">
 <span class="sig-name descname"><span class="pre">draw_molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_pic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.draw_molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.draw_molecule" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to print a molecule into</dt><dd><p>a PNG file.</p>
-</dd>
-</dl>
+<dd><p>Function to print a molecule into a PNG file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -147,10 +130,10 @@ be highligthed.</p></li>
 <dd><p>Function to compute all dihedral atoms</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>List of atomic indexes for dihedral atoms</p>
+<dd class="field-odd"><p><strong>List</strong> – List of atomic indexes for dihedral atoms</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>List[int]</p>
+<dd class="field-even"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -158,14 +141,10 @@ be highligthed.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.torsional.torsional.Torsional.mol_graph">
 <span class="sig-name descname"><span class="pre">mol_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.mol_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.mol_graph" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to create a NetworkX graph based</dt><dd><p>on an RDKit molecule.</p>
-</dd>
-</dl>
+<dd><p>Function to create a NetworkX graph based on an RDKit molecule.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>G</strong> – A networkx graph object updated with
-an RDKit Mol object.</p>
+<dd class="field-odd"><p><strong>G</strong> – A networkx graph object updated with an RDKit Mol object.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>Networkx.Graph</p>
@@ -176,10 +155,7 @@ an RDKit Mol object.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.torsional.torsional.Torsional.mol_graph_neigh">
 <span class="sig-name descname"><span class="pre">mol_graph_neigh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.mol_graph_neigh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.mol_graph_neigh" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to compute adjacency matrix</dt><dd><p>from an RDKit Mol object.</p>
-</dd>
-</dl>
+<dd><p>Function to compute adjacency matrix from an RDKit Mol object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><strong>mol</strong> – RDKit Mol object</p>
@@ -193,10 +169,7 @@ an RDKit Mol object.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.torsional.torsional.Torsional.plot_trs_ang">
 <span class="sig-name descname"><span class="pre">plot_trs_ang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.plot_trs_ang"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.plot_trs_ang" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to plot torsional atoms</dt><dd><p>from an RDKit Mol Object.</p>
-</dd>
-</dl>
+<dd><p>Function to plot torsional atoms from an RDKit Mol Object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – Name of the RDKit Mol object</p>
@@ -213,16 +186,13 @@ an RDKit Mol object.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.torsional.torsional.Torsional.seek_angles">
 <span class="sig-name descname"><span class="pre">seek_angles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.seek_angles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.seek_angles" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>List of torsional angles in a planar</dt><dd><p>polymer.</p>
-</dd>
-</dl>
+<dd><p>List of torsional angles in a planar polymer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>List of atomic indexes for torsional angles</p>
+<dd class="field-odd"><p><strong>List</strong> – List of atomic indexes for torsional angles</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>List[int]</p>
+<dd class="field-even"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -230,10 +200,7 @@ an RDKit Mol object.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.torsional.torsional.Torsional.show_atom_number">
 <span class="sig-name descname"><span class="pre">show_atom_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.show_atom_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.show_atom_number" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to set atomic numbers to an</dt><dd><p>RDKit Mol object.</p>
-</dd>
-</dl>
+<dd><p>Function to set atomic numbers to an RDKit Mol object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -254,10 +221,7 @@ RDKit Mol Object</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.torsional.torsional.Torsional.validate_mol">
 <span class="sig-name descname"><span class="pre">validate_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.validate_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.validate_mol" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function that validates an object as</dt><dd><p>RDKit Mol object.</p>
-</dd>
-</dl>
+<dd><p>Function that validates an object as RDKit Mol object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p>

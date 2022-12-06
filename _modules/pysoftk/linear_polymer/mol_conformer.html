@@ -91,7 +91,7 @@
 <span class="sd">   This class requires RDKit to be installed.</span>
 <span class="sd">   &quot;&quot;&quot;</span>
      
-   <span class="vm">__slots__</span> <span class="o">=</span> <span class="s1">&#39;mol&#39;</span><span class="p">,</span><span class="s1">&#39;num_conf&#39;</span><span class="p">,</span><span class="s1">&#39;e_max&#39;</span> 
+   <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mol&#39;</span><span class="p">,</span><span class="s1">&#39;num_conf&#39;</span><span class="p">,</span><span class="s1">&#39;e_max&#39;</span><span class="p">]</span>
 
    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">num_conf</span><span class="p">,</span> <span class="n">e_max</span><span class="p">):</span>
        <span class="sd">&quot;&quot;&quot;</span>
@@ -143,8 +143,7 @@
        
 <div class="viewcode-block" id="Memb"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.mol_conformer.Memb">[docs]</a><span class="k">class</span> <span class="nc">Memb</span><span class="p">:</span>
 <div class="viewcode-block" id="Memb.etkdgv3_energies"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.mol_conformer.Memb.etkdgv3_energies">[docs]</a>    <span class="k">def</span> <span class="nf">etkdgv3_energies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">num_conf</span><span class="p">):</span>
-      <span class="sd">&quot;&quot;&quot;Calculate molecular configurations using </span>
-<span class="sd">         the RDKit-ETKDG3 method.</span>
+      <span class="sd">&quot;&quot;&quot;Calculate molecular configurations using the RDKit-ETKDG3 method.</span>
 <span class="sd">         </span>
 <span class="sd">         Parameters</span>
 <span class="sd">         ----------</span>

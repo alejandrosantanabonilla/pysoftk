@@ -101,32 +101,25 @@
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.calculators.Opt">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.calculators.</span></span><span class="sig-name descname"><span class="pre">Opt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyz_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/calculators.html#Opt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.calculators.Opt" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="simple">
-<dt>Geometrical optimization tools using</dt><dd><p>gfn-xtb2 and pyscf as engines.</p>
-</dd>
-</dl>
+<p>Geometrical optimization tools using GFN-XTB2 and PySCF as engines.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This class requires a GFN-XTB executable and/or a PYSCF semiempirical
-installation to be used.</p>
+<p>This class requires a GFN-XTB executable and/or a PYSCF semiempirical installation to be used.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.calculators.Opt.pyscf_semi">
 <span class="sig-name descname"><span class="pre">pyscf_semi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">steps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/calculators.html#Opt.pyscf_semi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.calculators.Opt.pyscf_semi" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function invoking PYSCF semiempirical implementation</dt><dd><p>for geometry optimization.</p>
-</dd>
-</dl>
+<dd><p>Function invoking PYSCF semiempirical implementation for geometry optimization.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>steps</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of steps which PYSCF code
-will perform the optimization routine.</p></li>
-<li><p><strong>Results</strong> – </p></li>
-<li><p><strong>-------</strong> – </p></li>
-<li><p><strong>None</strong> – Print the file pyscf_final.xyz reporting
-the results from a PYSCF calculation.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>steps</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of steps which PYSCF code will perform the optimization routine.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Print the file pyscf_final.xyz reporting
+the results from a PYSCF calculation.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -142,21 +135,16 @@ coordinates.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.calculators.Pyscf_print.xyz">
 <span class="sig-name descname"><span class="pre">xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/calculators.html#Pyscf_print.xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.calculators.Pyscf_print.xyz" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to print a file with Cartesian</dt><dd><p>coordinates from a PYSCF geometry optimization
-calculation.</p>
-</dd>
-</dl>
+<dd><p>Function to print a file with Cartesian coordinates from a PYSCF geometry optimization calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>mol</strong> (<em>pyscf.gto.mole.Mole</em>) – A PYSCF gto mole Mole object.</p></li>
-<li><p><strong>Result</strong> – </p></li>
-<li><p><strong>------</strong> – </p></li>
-<li><p><strong>pysfc_final</strong> (<em>str</em>) – An xyz file containing the optimized
-coordinates of the provided PYSCF Mole
-object.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>mol</strong> (<em>pyscf.gto.mole.Mole</em>) – A PySCF gto mole Mole object.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>pysfc_final</strong> – An xyz file containing the optimized coordinates of the provided PYSCF Mole object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -170,29 +158,7 @@ object.</p></li>
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.linear_polymer.</span></span><span class="sig-name descname"><span class="pre">Lp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_copies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A class for creating a linear polymer
-from given RdKit molecules.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">mol</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">The</span> <span class="pre">super_monomer</span> <span class="pre">molecule</span> <span class="pre">to</span> <span class="pre">be</span> <span class="pre">polarised</span></span></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">atom</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">A</span> <span class="pre">place-holder</span> <span class="pre">atom</span> <span class="pre">to</span> <span class="pre">connect</span> <span class="pre">the</span> <span class="pre">molecule</span></span></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">n_copies</span>&#160;&#160;&#160;&#160; <span class="pre">Number</span> <span class="pre">of</span> <span class="pre">copies</span> <span class="pre">to</span> <span class="pre">create</span> <span class="pre">the</span> <span class="pre">polymer</span></span></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">shift</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">A</span> <span class="pre">real</span> <span class="pre">value</span> <span class="pre">to</span> <span class="pre">translate</span> <span class="pre">the</span> <span class="pre">super_monomer</span></span></dt>
-<dd><p>in a real-grid.</p>
-</dd></dl>
-
+<p>A class for creating a linear polymer from given RdKit molecules.</p>
 <p class="rubric">Examples</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -206,10 +172,7 @@ from given RdKit molecules.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.linear_polymer">
 <span class="sig-name descname"><span class="pre">linear_polymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter_ff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lp.linear_polymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.linear_polymer" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to create a linear polymer</dt><dd><p>from a given super_monomer object.</p>
-</dd>
-</dl>
+<dd><p>Function to create a linear polymer from a given super_monomer object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -229,10 +192,7 @@ from given RdKit molecules.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.max_dist_mol">
 <span class="sig-name descname"><span class="pre">max_dist_mol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lp.max_dist_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.max_dist_mol" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Returns the maximum distance between atoms</dt><dd><p>from an RDKit Mol Object.</p>
-</dd>
-</dl>
+<dd><p>Returns the maximum distance between atoms from an RDKit Mol Object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>maximum value from a Molecule Bound Matrix</p>
@@ -256,10 +216,7 @@ from given RdKit molecules.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.proto_polymer">
 <span class="sig-name descname"><span class="pre">proto_polymer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lp.proto_polymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.proto_polymer" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to create a linear polymer</dt><dd><p>from a given super_monomer object.</p>
-</dd>
-</dl>
+<dd><p>Function to create a linear polymer from a given super_monomer object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><strong>newMol_H</strong> – RDKit Mol object</p>
@@ -343,8 +300,7 @@ enabled the highest-energy conformer is returned.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.mol_conformer.Memb.etkdgv3_energies">
 <span class="sig-name descname"><span class="pre">etkdgv3_energies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_conf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/mol_conformer.html#Memb.etkdgv3_energies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.mol_conformer.Memb.etkdgv3_energies" title="Permalink to this definition"></a></dt>
-<dd><p>Calculate molecular configurations using
-the RDKit-ETKDG3 method.</p>
+<dd><p>Calculate molecular configurations using the RDKit-ETKDG3 method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -370,21 +326,17 @@ the RDKit-ETKDG3 method.</p>
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Emb">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.super_monomer.</span></span><span class="sig-name descname"><span class="pre">Emb</span></span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Emb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Emb" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class created to use the ETKDGV3
-method provided in RDKit for 3D
-Geometry embedding.</p>
+<p>Class created to use the ETKDGV3 method provided in RDKit for 3D Geometry embedding.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Emb.etkdgv3">
 <span class="sig-name descname"><span class="pre">etkdgv3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Emb.etkdgv3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Emb.etkdgv3" title="Permalink to this definition"></a></dt>
 <dd><p>Function to perform Geometry embedding.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The resulting combined molecule as RDKit Mol
-Object.</p>
+<dd class="field-odd"><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The resulting combined molecule as RDKit Mol Object.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>mol</strong> – The resulting embedded molecule as RDKit Mol
-Object.</p>
+<dd class="field-even"><p><strong>mol</strong> – The resulting embedded molecule as RDKit Mol Object.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
@@ -398,10 +350,7 @@ Object.</p>
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.super_monomer.</span></span><span class="sig-name descname"><span class="pre">Sm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Sm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="simple">
-<dt>Class to create a new combined molecule</dt><dd><p>from two provided RDKit Mol objects.</p>
-</dd>
-</dl>
+<p>Class to create a new combined molecule from two provided RDKit Mol objects.</p>
 <p class="rubric">Example</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -415,14 +364,10 @@ Object.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.constructor">
 <span class="sig-name descname"><span class="pre">constructor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Sm.constructor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.constructor" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to combine two molecules using an atom</dt><dd><p>placeholder.</p>
-</dd>
-</dl>
+<dd><p>Function to combine two molecules using an atom placeholder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>mol_4</strong> – The resulting combined molecule as RDKit Mol
-Object.</p>
+<dd class="field-odd"><p><strong>mol_4</strong> – The resulting combined molecule as RDKit Mol Object.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>rdkit.Chem.rdchem.Mol</p>
@@ -443,14 +388,10 @@ Object.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.mon_to_poly">
 <span class="sig-name descname"><span class="pre">mon_to_poly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Sm.mon_to_poly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.mon_to_poly" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to create a RDKit Mol object to</dt><dd><p>prepare for x-axis translation.</p>
-</dd>
-</dl>
+<dd><p>Function to create a RDKit Mol object to prepare for x-axis translation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>mol</strong> – The resulting combined molecule as RDKit Mol
-Object.</p>
+<dd class="field-odd"><p><strong>mol</strong> – The resulting combined molecule as RDKit Mol Object.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>rdkit.Chem.rdchem.Mol</p>
@@ -461,16 +402,12 @@ Object.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.monomer">
 <span class="sig-name descname"><span class="pre">monomer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Sm.monomer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.monomer" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to produce a single polymer unit</dt><dd><p>as an RDKit Mol Object.</p>
-</dd>
-</dl>
+<dd><p>Function to produce a single polymer unit as an RDKit Mol Object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><ul class="simple">
 <li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>)</p></li>
-<li><p><em>The resulting combined molecule as RDKit Mol</em></p></li>
-<li><p><em>Object.</em></p></li>
+<li><p><em>The resulting combined molecule as RDKit Mol Object.</em></p></li>
 </ul>
 </p>
 </dd>

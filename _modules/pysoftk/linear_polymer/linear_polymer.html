@@ -85,20 +85,7 @@
 
 <div class="viewcode-block" id="Lp"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lp">[docs]</a><span class="k">class</span> <span class="nc">Lp</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class for creating a linear polymer </span>
-<span class="sd">    from given RdKit molecules.</span>
-
-<span class="sd">    Attributes</span>
-<span class="sd">    -----------</span>
-
-<span class="sd">    mol          The super_monomer molecule to be polarised</span>
-
-<span class="sd">    atom         A place-holder atom to connect the molecule </span>
-
-<span class="sd">    n_copies     Number of copies to create the polymer</span>
-
-<span class="sd">    shift        A real value to translate the super_monomer </span>
-<span class="sd">                 in a real-grid.</span>
+<span class="sd">    A class for creating a linear polymer from given RdKit molecules.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    ---------</span>
@@ -110,7 +97,7 @@
 <span class="sd">    RDKit package must be installed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="s1">&#39;mol&#39;</span><span class="p">,</span> <span class="s1">&#39;atom&#39;</span><span class="p">,</span> <span class="s1">&#39;n_copies&#39;</span><span class="p">,</span> <span class="s1">&#39;shift&#39;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mol&#39;</span><span class="p">,</span> <span class="s1">&#39;atom&#39;</span><span class="p">,</span> <span class="s1">&#39;n_copies&#39;</span><span class="p">,</span> <span class="s1">&#39;shift&#39;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">n_copies</span><span class="p">,</span> <span class="n">shift</span><span class="p">):</span>
        <span class="sd">&quot;&quot;&quot;</span>
@@ -123,16 +110,13 @@
 <span class="sd">          RDKit Mol object</span>
 <span class="sd"> </span>
 <span class="sd">       atom : str</span>
-<span class="sd">          The placeholder atom to combine the molecules </span>
-<span class="sd">          and form a new monomer</span>
+<span class="sd">          The placeholder atom to combine the molecules and form a new monomer</span>
 
 <span class="sd">       n_copies: int</span>
-<span class="sd">          Number of copies to be created for the provided </span>
-<span class="sd">          mol object. </span>
+<span class="sd">          Number of copies to be created for the provided mol object. </span>
 
 <span class="sd">       shift: float</span>
-<span class="sd">          X-axis shift to translate the super_monomer</span>
-<span class="sd">          object.</span>
+<span class="sd">          X-axis shift to translate the super_monomer object.</span>
 <span class="sd">       &quot;&quot;&quot;</span>
        
        <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">mol</span>
@@ -141,8 +125,7 @@
        <span class="bp">self</span><span class="o">.</span><span class="n">shift</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mf">2.5</span><span class="p">)</span> <span class="k">if</span> <span class="n">shift</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">shift</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Lp.max_dist_mol"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lp.max_dist_mol">[docs]</a>    <span class="k">def</span> <span class="nf">max_dist_mol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the maximum distance between atoms </span>
-<span class="sd">           from an RDKit Mol Object.</span>
+        <span class="sd">&quot;&quot;&quot;Returns the maximum distance between atoms from an RDKit Mol Object.</span>
 
 <span class="sd">        Return</span>
 <span class="sd">        -------</span>
@@ -195,8 +178,7 @@
 
 
     <span class="k">def</span> <span class="nf">_polimerisation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragments</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Function to produce a polymer in a</span>
-<span class="sd">           recursive manner. </span>
+        <span class="sd">&quot;&quot;&quot;Function to produce a polymer in a recursive manner. </span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        -----------</span>
@@ -222,8 +204,7 @@
         <span class="k">return</span> <span class="n">outmol</span>
 
     <span class="k">def</span> <span class="nf">_bond_conn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outmol</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Function to peruse the bonds and connections of place-hold </span>
-<span class="sd">           atom within a super_monomer object.</span>
+        <span class="sd">&quot;&quot;&quot;Function to peruse the bonds and connections of place-hold atom within a super_monomer object.</span>
 <span class="sd"> </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        -----------</span>
@@ -253,8 +234,7 @@
         <span class="k">return</span> <span class="n">conn</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">neigh</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
    
 <div class="viewcode-block" id="Lp.proto_polymer"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lp.proto_polymer">[docs]</a>    <span class="k">def</span> <span class="nf">proto_polymer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot;Function to create a linear polymer </span>
-<span class="sd">          from a given super_monomer object.</span>
+       <span class="sd">&quot;&quot;&quot;Function to create a linear polymer from a given super_monomer object.</span>
 
 <span class="sd">       Returns</span>
 <span class="sd">       --------</span>
@@ -294,8 +274,7 @@
        <span class="k">return</span> <span class="n">mol3</span></div>
 
 <div class="viewcode-block" id="Lp.linear_polymer"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lp.linear_polymer">[docs]</a>    <span class="k">def</span> <span class="nf">linear_polymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">iter_ff</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot;Function to create a linear polymer </span>
-<span class="sd">          from a given super_monomer object.</span>
+       <span class="sd">&quot;&quot;&quot;Function to create a linear polymer from a given super_monomer object.</span>
 
 <span class="sd">       Parameters</span>
 <span class="sd">       -----------</span>

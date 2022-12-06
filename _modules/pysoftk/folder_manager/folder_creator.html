@@ -83,8 +83,7 @@
 
 
 <div class="viewcode-block" id="Fld"><a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld">[docs]</a><span class="k">class</span> <span class="nc">Fld</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Create folders automatically to be used as stand-alone application or in along</span>
-<span class="sd">       PySoftK.</span>
+    <span class="sd">&quot;&quot;&quot;Create folders automatically to be used as stand-alone application or along PySoftK.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -95,8 +94,7 @@
         <span class="k">pass</span>
             
 <div class="viewcode-block" id="Fld.fxd_name"><a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.fxd_name">[docs]</a>    <span class="k">def</span> <span class="nf">fxd_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">testname</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create an array of fixed names for</span>
-<span class="sd">           folders.</span>
+        <span class="sd">&quot;&quot;&quot;Create an array of fixed names for folders.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -115,8 +113,7 @@
 
 
     <span class="k">def</span> <span class="nf">_make_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dir_names</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Function to create a folder in the</span>
-<span class="sd">           current working directory.</span>
+        <span class="sd">&quot;&quot;&quot;Function to create a folder in the current working directory.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -135,8 +132,7 @@
 
         
 <div class="viewcode-block" id="Fld.create"><a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Function to create a folder in the</span>
-<span class="sd">           current working directory.</span>
+        <span class="sd">&quot;&quot;&quot;Function to create a folder in the current working directory.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -147,7 +143,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 
-<span class="sd">        None</span>
+<span class="sd">        None : None</span>
 <span class="sd">           Creates a folder with a provided name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -166,6 +162,7 @@
 <span class="sd">      </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
+
 <span class="sd">        name : str</span>
 <span class="sd">           Creates a folder with a random name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -174,15 +171,13 @@
 
 
 <div class="viewcode-block" id="Fld.seek_files"><a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.seek_files">[docs]</a>    <span class="k">def</span> <span class="nf">seek_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_extension</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Function to seek files in the current </span>
-<span class="sd">           working directory.</span>
+        <span class="sd">&quot;&quot;&quot;Function to seek files in the current working directory.</span>
 <span class="sd">       </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 
 <span class="sd">        format_extension : str</span>
-<span class="sd">            Extension used to seek in the current </span>
-<span class="sd">            working directory</span>
+<span class="sd">            Extension used to seek in the current working directory</span>
 <span class="sd"> </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -196,15 +191,13 @@
 
 
     <span class="k">def</span> <span class="nf">_seek_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Function to seek and list directories in</span>
-<span class="sd">           the current working directory.</span>
+        <span class="sd">&quot;&quot;&quot;Function to seek and list directories in the current working directory.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 
 <span class="sd">        folder_dir : List[n str]</span>
-<span class="sd">           Sorted list of folders inside the current working </span>
-<span class="sd">           directory.</span>
+<span class="sd">           Sorted list of folders inside the current working directory.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">import</span> <span class="nn">re</span>
         <span class="n">directory</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
@@ -239,8 +232,7 @@
 
         
 <div class="viewcode-block" id="Fld.file_to_dir"><a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.file_to_dir">[docs]</a>    <span class="k">def</span> <span class="nf">file_to_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_extension</span><span class="p">,</span> <span class="n">num_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Function to move files to directories </span>
-<span class="sd">           in parallel</span>
+        <span class="sd">&quot;&quot;&quot;Function to move files to directories in parallel</span>
 <span class="sd">  </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

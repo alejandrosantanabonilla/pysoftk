@@ -76,18 +76,14 @@
 <span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">rdDistGeom</span> <span class="k">as</span> <span class="n">molDG</span>
 
 <div class="viewcode-block" id="Fmt"><a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt">[docs]</a><span class="k">class</span> <span class="nc">Fmt</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Class printing RDkit Mol Object in </span>
-<span class="sd">       different formats</span>
+    <span class="sd">&quot;&quot;&quot;Class printing RDkit Mol Object in different formats</span>
 <span class="sd">          </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    file : str</span>
-<span class="sd">            A file with the provided molecule</span>
-<span class="sd">            in a chosen format.</span>
 
-<span class="sd">    Note</span>
-<span class="sd">    ----</span>
-<span class="sd">    This class requires MDanalysis to be installed. </span>
+<span class="sd">    file : str</span>
+<span class="sd">            A file with the provided molecule in a chosen format.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
@@ -95,9 +91,9 @@
 
 <span class="sd">       Parameters</span>
 <span class="sd">       ----------</span>
+
 <span class="sd">       mol : Chem.rdchem.Mol</span>
-<span class="sd">           an RDKit Mol object Molecule to be </span>
-<span class="sd">           printed in a given format.</span>
+<span class="sd">           An RDKit Mol object Molecule to be printed in a given format.</span>
 <span class="sd">       &quot;&quot;&quot;</span>
        <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">mol</span>
     
@@ -106,14 +102,16 @@
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+
 <span class="sd">        output_name : str </span>
 <span class="sd">           A provided name for an output file.</span>
 <span class="sd">     </span>
+
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
+
 <span class="sd">        ValueError:</span>
-<span class="sd">            If not an RDKit Mol Object raises </span>
-<span class="sd">            TypeError as invalid molecule.</span>
+<span class="sd">            If not an RDKit Mol Object raises TypeError as invalid molecule.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
         
@@ -130,14 +128,15 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+
 <span class="sd">        output_name : str </span>
 <span class="sd">           A provided name for a file.</span>
 <span class="sd"> </span>
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
+
 <span class="sd">        ValueError:</span>
-<span class="sd">            If not an RDKit Mol Object raises </span>
-<span class="sd">            TypeError as invalid molecule.</span>
+<span class="sd">            If not an RDKit Mol Object raises TypeError as invalid molecule.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
         <span class="k">try</span><span class="p">:</span>
@@ -153,14 +152,14 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+
 <span class="sd">        output_name : str </span>
 <span class="sd">           A provided name for a file.</span>
 <span class="sd"> </span>
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
 <span class="sd">        ValueError:</span>
-<span class="sd">            If not an RDKit Mol Object raises </span>
-<span class="sd">            TypeError as invalid molecule.</span>
+<span class="sd">            If not an RDKit Mol Object raises TypeError as invalid molecule.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
         <span class="k">try</span><span class="p">:</span>
