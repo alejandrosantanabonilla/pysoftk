@@ -53,7 +53,7 @@ class Db:
 
        
     def diblock_copolymer(self, len_block_A, len_block_B,
-                             FF="MMFF", relax_iterations=100, swap_H=False):
+                             FF="MMFF", relax_iterations=100, swap_H=True):
 
         """Function to create a diblock copolymer 
 
@@ -150,7 +150,7 @@ class Pt:
        self.mols = mols 
        self.atom = atom
        
-    def pattern_block_poly(self, relax_iterations=100, FF="MMFF",swap_H=False):
+    def pattern_block_poly(self, relax_iterations=100, FF="MMFF",swap_H=True):
         """
         Function to create a polymer based on an alphabetic ordered pattern.
     
@@ -203,6 +203,3 @@ class Pt:
             newMol_H=no_swap(proto_pol, relax_iterations, FF)
             
         return newMol_H
-
-
-
