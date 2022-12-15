@@ -53,7 +53,7 @@ class Rnp():
        self.atom = atom
 
     def random_ab_copolymer(self, len_polymer, pA,
-                            iter_ff=100, FF="MMFF", swap_H=False):
+                            iter_ff=100, FF="MMFF", swap_H=True):
        """ Function to build a random copolymer using an user provided probability (pA) for merging the monomer ma and imposiing the condition pB=1-pA.
 
 
@@ -125,7 +125,7 @@ class Rnp():
        return newMol_H
     
     def random_abc_copolymer(self, mc, len_polymer, pA,
-                             pB, iter_ff=100, FF="MMFF", swap_H=False):
+                             pB, iter_ff=100, FF="MMFF", swap_H=True):
         
        """ Function to build a random copolymer based on an user defined probability (pA) of merging mA, pB for monomer mb, and the condition pC=1-pA-pB.
 
