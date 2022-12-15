@@ -77,7 +77,7 @@ class Bd:
        return mol
 
     
-    def branched_polymer(self, iter_ff=100, FF="MMFF", swap_H=False):
+    def branched_polymer(self, iter_ff=100, FF="MMFF", swap_H=True):
        """Function to create branched polymers
 
        Parameters
