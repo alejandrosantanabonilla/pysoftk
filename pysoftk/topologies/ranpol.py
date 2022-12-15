@@ -53,7 +53,7 @@ class Rnp():
        self.atom = atom
 
     def random_ab_copolymer(self, len_polymer, pA,
-                            iter_ff=100, FF="MMFF"):
+                            iter_ff=100, FF="MMFF", swap_H=False):
        """ Function to build a random copolymer using an user provided probability (pA) for merging the monomer ma and imposiing the condition pB=1-pA.
 
 
@@ -71,6 +71,9 @@ class Rnp():
 
        FF: str
            User selected FF between "MMFF" or "UFF".      
+
+        swap_H: bool
+             Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species.   
  
        Return
        -------    
@@ -112,12 +115,17 @@ class Rnp():
           monomer=sm.Sm(monomer.mon_to_poly(), m3, str(atom))
         
        mol=monomer.mon_to_poly()
-       newMol_H=swap_hyd(mol, iter_ff, str(atom), FF)
-    
+
+       if swap_H == "True":
+         newMol_H=swap_hyd(mol, iter_ff, str(atom), FF)
+
+       else:
+         newMol_H=no_swap(mol, iter_ff, FF)
+
        return newMol_H
     
     def random_abc_copolymer(self, mc, len_polymer, pA,
-                             pB, iter_ff=100, FF="MMFF"):
+                             pB, iter_ff=100, FF="MMFF", swap_H=False):
         
        """ Function to build a random copolymer based on an user defined probability (pA) of merging mA, pB for monomer mb, and the condition pC=1-pA-pB.
 
@@ -144,6 +152,9 @@ class Rnp():
 
        FF: str
            User selected FF.      
+
+       swap_H: bool
+             Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species.   
  
        Return
        -------
@@ -197,6 +208,11 @@ class Rnp():
           monomer=sm.Sm(monomer.mon_to_poly(), m3, str(atom))
        
        mol = monomer.mon_to_poly()
-       newMol_H=swap_hyd(mol, iter_ff, str(atom), FF)
-    
+
+       if swap_H == "True":
+         newMol_H=swap_hyd(mol, iter_ff, str(atom), FF)
+
+       else:
+         newMol_H=no_swap(mol, iter_ff, FF)
+
        return newMol_H

@@ -77,7 +77,7 @@ class Bd:
        return mol
 
     
-    def branched_polymer(self, iter_ff=100, FF="MMFF"):
+    def branched_polymer(self, iter_ff=100, FF="MMFF", swap_H=False):
        """Function to create branched polymers
 
        Parameters
@@ -87,12 +87,15 @@ class Bd:
             Selected FF between MMFF or UFF
 
        relax_iterations: int  
-            Number of iterations used for relaxing a molecular object.  
+            Number of iterations used for relaxing a molecular object. 
 
-        Return
-        -------
+        swap_H: bool
+             Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species.   
 
-        newMol_H : rdkit.Chem.rdchem.Mol
+       Return
+       -------
+
+       newMol_H : rdkit.Chem.rdchem.Mol
              RDKit Mol object
        """
 
@@ -108,9 +111,13 @@ class Bd:
        for _ in range(int(nm_ph)):
            res=self.merge_arms(res, arm, str(atom))
 
-       mol_h=swap_hyd(res, iter_ff, str(atom), FF)
-    
-       return mol_h
+       if swap_H == "True":
+         mol=swap_hyd(res, iter_ff, str(atom), FF)
+
+       else:
+         mol=no_swap(res, iter_ff, FF)
+            
+       return mol
 
 
     

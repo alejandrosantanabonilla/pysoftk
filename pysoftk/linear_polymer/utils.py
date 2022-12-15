@@ -3,6 +3,28 @@ from rdkit.Chem import AllChem
 from rdkit import RDLogger
 RDLogger.DisableLog('rdApp.*')
 
+def no_swap(mol, iter_ff, FF="MMFF"):
+       """ 
+       Function to sanitize a molecule with Hydrogens and the user defined atomic place holder.
+        
+       """
+       
+       newMol = AllChem.AssignBondOrdersFromTemplate(mol, mol)
+       newMol_H = Chem.AddHs(newMol, addCoords=True)
+
+       # This for dealing with big polymers
+       Chem.SanitizeMol(newMol_H)
+       AllChem.EmbedMolecule(newMol_H, useRandomCoords=True)
+
+       if FF == "MMFF":
+           MMFF_rel(newMol_H,iter_ff)
+
+       else:
+           UFF_rel(newMol_H, iter_ff)
+           
+
+       return newMol_H       
+
 
 def swap_hyd(mol, iter_ff, atom, FF="MMFF"):
        """

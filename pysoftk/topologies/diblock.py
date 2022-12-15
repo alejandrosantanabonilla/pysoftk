@@ -53,7 +53,7 @@ class Db:
 
        
     def diblock_copolymer(self, len_block_A, len_block_B,
-                             FF="MMFF", relax_iterations=100):
+                             FF="MMFF", relax_iterations=100, swap_H=False):
 
         """Function to create a diblock copolymer 
 
@@ -71,7 +71,10 @@ class Db:
             Selected FF between MMFF or UFF
 
         relax_iterations: int  
-            Number of iterations used for relaxing a molecular object.  
+            Number of iterations used for relaxing a molecular object.
+
+        swap_H: bool
+             Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species.   
 
         Return
         -------
@@ -102,8 +105,12 @@ class Db:
 
         mol=diblock.mon_to_poly()  
 
-        newMol_H=swap_hyd(mol, relax_iterations, str(atom), FF)
-        
+        if swap_H == "True":
+            newMol_H=swap_hyd(mol, relax_iterations, str(atom), FF)
+
+        else:
+            newMol_H=no_swap(mol, relax_iterations, FF)
+            
         return newMol_H
 
 
@@ -143,10 +150,21 @@ class Pt:
        self.mols = mols 
        self.atom = atom
        
-    def pattern_block_poly(self, relax_iterations=100):
+    def pattern_block_poly(self, relax_iterations=100, FF="MMFF",swap_H=False):
         """
         Function to create a polymer based on an alphabetic ordered pattern.
     
+        Parameters
+        -----------
+
+        relax_iterations: int  
+            Number of iterations used for relaxing a molecular object.
+
+        FF: str
+            Selected FF between MMFF or UFF
+
+        swap_H: bool
+             Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species. 
 
         Return
         --------
@@ -178,6 +196,13 @@ class Pt:
 
         proto_pol=create_pol(outmol, str(atom), tpb)
 
-        return swap_hyd(proto_pol,relax_iterations,str(atom))
+        if swap_H == "True":
+          newMol_H=swap_hyd(proto_pol, relax_iterations, str(atom), FF)
+
+        else:
+            newMol_H=no_swap(proto_pol, relax_iterations, FF)
+            
+        return newMol_H
+
 
 
