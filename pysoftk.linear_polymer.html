@@ -423,18 +423,83 @@ enabled the highest-energy conformer is returned.</p>
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.utils.MMFF_rel">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.utils.</span></span><span class="sig-name descname"><span class="pre">MMFF_rel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter_ff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/utils.html#MMFF_rel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.utils.MMFF_rel" title="Permalink to this definition"></a></dt>
 <dd><p>Function to employ a MMFF molecular mechanics FF.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
+<li><p><strong>iter_ff</strong> (<em>int</em>) – Number of iterations to perform a FF geometry optimization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>mol</strong> – RDKit Mol object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.utils.UFF_rel">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.utils.</span></span><span class="sig-name descname"><span class="pre">UFF_rel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter_ff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/utils.html#UFF_rel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.utils.UFF_rel" title="Permalink to this definition"></a></dt>
 <dd><p>Function to employ an UFF molecular mechanics FF.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
+<li><p><strong>iter_ff</strong> (<em>int</em>) – Number of iterations to perform a FF geometry optimization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>mol</strong> – RDKit Mol object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.utils.no_swap">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.utils.</span></span><span class="sig-name descname"><span class="pre">no_swap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter_ff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/utils.html#no_swap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.utils.no_swap" title="Permalink to this definition"></a></dt>
+<dd><p>Function to sanitize a molecule with Hydrogens and the user defined atomic place holder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
+<li><p><strong>FF</strong> (<em>str</em>) – Selected FF to perform a relaxation</p></li>
+<li><p><strong>iter_ff</strong> (<em>int</em>) – Number of iterations to perform a FF geometry optimization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>newMol_H</strong> – RDKit Mol object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.utils.swap_hyd">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.utils.</span></span><span class="sig-name descname"><span class="pre">swap_hyd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter_ff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/utils.html#swap_hyd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.utils.swap_hyd" title="Permalink to this definition"></a></dt>
-<dd><p>Swap Hydrogens</p>
+<dd><p>Function to swap atomic place holders to Hydrogen atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
+<li><p><strong>iter_ff</strong> (<em>int</em>) – Number of iterations to perform a FF geometry optimization.</p></li>
+<li><p><strong>atom</strong> (<em>str</em>) – The placeholder atom to combine the molecules and form a new monomer.</p></li>
+<li><p><strong>FF</strong> (<em>str</em>) – Selected FF to perform a geometry optimization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>newMol_H</strong> – RDKit Mol object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

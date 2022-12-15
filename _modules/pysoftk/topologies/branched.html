@@ -150,7 +150,7 @@
        <span class="k">return</span> <span class="n">mol</span></div>
 
     
-<div class="viewcode-block" id="Bd.branched_polymer"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.branched.Bd.branched_polymer">[docs]</a>    <span class="k">def</span> <span class="nf">branched_polymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iter_ff</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Bd.branched_polymer"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.branched.Bd.branched_polymer">[docs]</a>    <span class="k">def</span> <span class="nf">branched_polymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iter_ff</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">swap_H</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
        <span class="sd">&quot;&quot;&quot;Function to create branched polymers</span>
 
 <span class="sd">       Parameters</span>
@@ -160,12 +160,15 @@
 <span class="sd">            Selected FF between MMFF or UFF</span>
 
 <span class="sd">       relax_iterations: int  </span>
-<span class="sd">            Number of iterations used for relaxing a molecular object.  </span>
+<span class="sd">            Number of iterations used for relaxing a molecular object. </span>
 
-<span class="sd">        Return</span>
-<span class="sd">        -------</span>
+<span class="sd">        swap_H: bool</span>
+<span class="sd">             Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species.   </span>
 
-<span class="sd">        newMol_H : rdkit.Chem.rdchem.Mol</span>
+<span class="sd">       Return</span>
+<span class="sd">       -------</span>
+
+<span class="sd">       newMol_H : rdkit.Chem.rdchem.Mol</span>
 <span class="sd">             RDKit Mol object</span>
 <span class="sd">       &quot;&quot;&quot;</span>
 
@@ -181,9 +184,13 @@
        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">nm_ph</span><span class="p">)):</span>
            <span class="n">res</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">merge_arms</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">arm</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
 
-       <span class="n">mol_h</span><span class="o">=</span><span class="n">swap_hyd</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">FF</span><span class="p">)</span>
-    
-       <span class="k">return</span> <span class="n">mol_h</span></div></div>
+       <span class="k">if</span> <span class="n">swap_H</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
+         <span class="n">mol</span><span class="o">=</span><span class="n">swap_hyd</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">FF</span><span class="p">)</span>
+
+       <span class="k">else</span><span class="p">:</span>
+         <span class="n">mol</span><span class="o">=</span><span class="n">no_swap</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">,</span> <span class="n">FF</span><span class="p">)</span>
+            
+       <span class="k">return</span> <span class="n">mol</span></div></div>
 
 
     

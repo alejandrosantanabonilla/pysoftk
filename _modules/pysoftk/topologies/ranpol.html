@@ -126,7 +126,7 @@
        <span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">atom</span>
 
 <div class="viewcode-block" id="Rnp.random_ab_copolymer"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.ranpol.Rnp.random_ab_copolymer">[docs]</a>    <span class="k">def</span> <span class="nf">random_ab_copolymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">len_polymer</span><span class="p">,</span> <span class="n">pA</span><span class="p">,</span>
-                            <span class="n">iter_ff</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">):</span>
+                            <span class="n">iter_ff</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">swap_H</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
        <span class="sd">&quot;&quot;&quot; Function to build a random copolymer using an user provided probability (pA) for merging the monomer ma and imposiing the condition pB=1-pA.</span>
 
 
@@ -144,6 +144,9 @@
 
 <span class="sd">       FF: str</span>
 <span class="sd">           User selected FF between &quot;MMFF&quot; or &quot;UFF&quot;.      </span>
+
+<span class="sd">        swap_H: bool</span>
+<span class="sd">             Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species.   </span>
 <span class="sd"> </span>
 <span class="sd">       Return</span>
 <span class="sd">       -------    </span>
@@ -185,12 +188,17 @@
           <span class="n">monomer</span><span class="o">=</span><span class="n">sm</span><span class="o">.</span><span class="n">Sm</span><span class="p">(</span><span class="n">monomer</span><span class="o">.</span><span class="n">mon_to_poly</span><span class="p">(),</span> <span class="n">m3</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
         
        <span class="n">mol</span><span class="o">=</span><span class="n">monomer</span><span class="o">.</span><span class="n">mon_to_poly</span><span class="p">()</span>
-       <span class="n">newMol_H</span><span class="o">=</span><span class="n">swap_hyd</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">FF</span><span class="p">)</span>
-    
+
+       <span class="k">if</span> <span class="n">swap_H</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
+         <span class="n">newMol_H</span><span class="o">=</span><span class="n">swap_hyd</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">FF</span><span class="p">)</span>
+
+       <span class="k">else</span><span class="p">:</span>
+         <span class="n">newMol_H</span><span class="o">=</span><span class="n">no_swap</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">,</span> <span class="n">FF</span><span class="p">)</span>
+
        <span class="k">return</span> <span class="n">newMol_H</span></div>
     
 <div class="viewcode-block" id="Rnp.random_abc_copolymer"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.ranpol.Rnp.random_abc_copolymer">[docs]</a>    <span class="k">def</span> <span class="nf">random_abc_copolymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mc</span><span class="p">,</span> <span class="n">len_polymer</span><span class="p">,</span> <span class="n">pA</span><span class="p">,</span>
-                             <span class="n">pB</span><span class="p">,</span> <span class="n">iter_ff</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">):</span>
+                             <span class="n">pB</span><span class="p">,</span> <span class="n">iter_ff</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">swap_H</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         
        <span class="sd">&quot;&quot;&quot; Function to build a random copolymer based on an user defined probability (pA) of merging mA, pB for monomer mb, and the condition pC=1-pA-pB.</span>
 
@@ -217,6 +225,9 @@
 
 <span class="sd">       FF: str</span>
 <span class="sd">           User selected FF.      </span>
+
+<span class="sd">       swap_H: bool</span>
+<span class="sd">             Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species.   </span>
 <span class="sd"> </span>
 <span class="sd">       Return</span>
 <span class="sd">       -------</span>
@@ -270,8 +281,13 @@
           <span class="n">monomer</span><span class="o">=</span><span class="n">sm</span><span class="o">.</span><span class="n">Sm</span><span class="p">(</span><span class="n">monomer</span><span class="o">.</span><span class="n">mon_to_poly</span><span class="p">(),</span> <span class="n">m3</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
        
        <span class="n">mol</span> <span class="o">=</span> <span class="n">monomer</span><span class="o">.</span><span class="n">mon_to_poly</span><span class="p">()</span>
-       <span class="n">newMol_H</span><span class="o">=</span><span class="n">swap_hyd</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">FF</span><span class="p">)</span>
-    
+
+       <span class="k">if</span> <span class="n">swap_H</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
+         <span class="n">newMol_H</span><span class="o">=</span><span class="n">swap_hyd</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">FF</span><span class="p">)</span>
+
+       <span class="k">else</span><span class="p">:</span>
+         <span class="n">newMol_H</span><span class="o">=</span><span class="n">no_swap</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">,</span> <span class="n">FF</span><span class="p">)</span>
+
        <span class="k">return</span> <span class="n">newMol_H</span></div></div>
 </pre></div>
 
