@@ -8,7 +8,7 @@
 <!-- Pytest Coverage Comment:End -->
 
 <p align="center">
-    <img width="200" src="pysoftklogo.png" >
+    <img width="450" src="pysoftklogo.png" >
 </p>
 
 
