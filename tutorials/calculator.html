@@ -54,6 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="polymer_cyclic.html">Creating cyclic Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combined_modules.html">Creating new polymers from different modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Computing using <strong>ab-initio</strong> calculators</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#geometry-optimization-using-gfn-ff">Geometry optimization using GFN-FF</a></li>
@@ -213,27 +214,27 @@ export XTBHOME=”PATH_TO_XTB_FOLDER/xtb-X.X.X”</p>
 </pre></div>
 </div>
 <p>The resulting directories can be browsed using the bash command <strong>tree</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ tree
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>tree
 .
-├── 1b03a28c7fc94cb081071ad04947957a
-│   └── mono_4.xyz
-├── 1ebe629956554d31a1ffcf141fdb6923
-│   └── mono_7.xyz
-├── 233a3381070640088bc983ebd8c91d5c
-│   └── mono_0.xyz
-├── 565413cfde9747548c07430c4d2ea2db
-│   └── mono_6.xyz
-├── 62338a8a73c54d1daef85a19919cd4e2
-│   └── mono_3.xyz
-├── 63f899b660504aa9b4ee4854712f876e
-│   └── mono_2.xyz
-├── 67552ebcc87a496e85ce8f8198aa6af3
-│   └── mono_5.xyz
-├── c6a52c74b4eb414f93837643d2d49736
-│   └── mono_1.xyz
-├── e7518a8bf80540a6a3bc49567788db7f
-│   └── mono_8.xyz
-└── htp_test.py
+├──<span class="w"> </span>1b03a28c7fc94cb081071ad04947957a
+│<span class="w">   </span>└──<span class="w"> </span>mono_4.xyz
+├──<span class="w"> </span>1ebe629956554d31a1ffcf141fdb6923
+│<span class="w">   </span>└──<span class="w"> </span>mono_7.xyz
+├──<span class="w"> </span>233a3381070640088bc983ebd8c91d5c
+│<span class="w">   </span>└──<span class="w"> </span>mono_0.xyz
+├──<span class="w"> </span>565413cfde9747548c07430c4d2ea2db
+│<span class="w">   </span>└──<span class="w"> </span>mono_6.xyz
+├──<span class="w"> </span>62338a8a73c54d1daef85a19919cd4e2
+│<span class="w">   </span>└──<span class="w"> </span>mono_3.xyz
+├──<span class="w"> </span>63f899b660504aa9b4ee4854712f876e
+│<span class="w">   </span>└──<span class="w"> </span>mono_2.xyz
+├──<span class="w"> </span>67552ebcc87a496e85ce8f8198aa6af3
+│<span class="w">   </span>└──<span class="w"> </span>mono_5.xyz
+├──<span class="w"> </span>c6a52c74b4eb414f93837643d2d49736
+│<span class="w">   </span>└──<span class="w"> </span>mono_1.xyz
+├──<span class="w"> </span>e7518a8bf80540a6a3bc49567788db7f
+│<span class="w">   </span>└──<span class="w"> </span>mono_8.xyz
+└──<span class="w"> </span>htp_test.py
 </pre></div>
 </div>
 <p>The module <a class="reference internal" href="../pysoftk.htp_tools.html#pysoftk.htp_tools.calculator_htp.Htp" title="pysoftk.htp_tools.calculator_htp.Htp"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pysoftk.htp_tools.calculator_htp.Htp</span></code></a> enables the user to perform HTPc in a simple manner. Meanwhile, the command <strong>HTP(format).htp_xtb_ff(executable, processes, cores)</strong> can be used to perform geometry optimizations at different theory levels accessible in <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a>, as is indicated in the following lines of code:</p>
@@ -242,74 +243,74 @@ export XTBHOME=”PATH_TO_XTB_FOLDER/xtb-X.X.X”</p>
 </pre></div>
 </div>
 <p><a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> HTPc tools have been developed to perform parallel calculations based on the structures created in the folders. This is achieved by using <a class="reference external" href="https://docs.python.org/3/library/asyncio.html">asyncio</a> parallel paradigm. The results of the workflow can be browsed using <strong>tree</strong> bash command as shown in the following snipet:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ tree
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>tree
 .
-├── 0d20dd8cab29474dbdcb7364c22cf3fb
-│   ├── gfnff_charges
-│   ├── gfnff_topo
-│   ├── mono_4.xyz
-│   ├── output.log
-│   ├── xtbopt.log
-│   └── xtbopt.xyz
-├── 0e5a6600dbcd49e48a220ec104065bf0
-│   ├── gfnff_charges
-│   ├── gfnff_topo
-│   ├── mono_7.xyz
-│   ├── output.log
-│   ├── xtbopt.log
-│   └── xtbopt.xyz
-├── 2da5bca994c84c318a1f46aae2231ee9
-│   ├── gfnff_charges
-│   ├── gfnff_topo
-│   ├── mono_0.xyz
-│   ├── output.log
-│   ├── xtbopt.log
-│   └── xtbopt.xyz
-├── 3281ff7c3fd7441da807e780ea25565e
-│   ├── gfnff_charges
-│   ├── gfnff_topo
-│   ├── mono_6.xyz
-│   ├── output.log
-│   ├── xtbopt.log
-│   └── xtbopt.xyz
-├── 58517f622f6c480a92f9e7c106a39057
-│   ├── gfnff_charges
-│   ├── gfnff_topo
-│   ├── mono_3.xyz
-│   ├── output.log
-│   ├── xtbopt.log
-│   └── xtbopt.xyz
-├── 5eec59e5ed974034b25202c70462c746
-│   ├── gfnff_charges
-│   ├── gfnff_topo
-│   ├── mono_2.xyz
-│   ├── output.log
-│   ├── xtbopt.log
-│   └── xtbopt.xyz
-├── 8880bb92c693459c8ae25d623d55f51c
-│   ├── gfnff_charges
-│   ├── gfnff_topo
-│   ├── mono_5.xyz
-│   ├── output.log
-│   ├── xtbopt.log
-│   └── xtbopt.xyz
-├── e2d9f9fe94944261972ad263f464c19e
-│   ├── gfnff_charges
-│   ├── gfnff_topo
-│   ├── mono_1.xyz
-│   ├── output.log
-│   ├── xtbopt.log
-│   └── xtbopt.xyz
-├── ebdb493877f147c2acf4cc8660fc67bb
-│   ├── gfnff_charges
-│   ├── gfnff_topo
-│   ├── mono_8.xyz
-│   ├── output.log
-│   ├── xtbopt.log
-│   └── xtbopt.xyz
-└── htp_test.py
+├──<span class="w"> </span>0d20dd8cab29474dbdcb7364c22cf3fb
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_charges
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_topo
+│<span class="w">   </span>├──<span class="w"> </span>mono_4.xyz
+│<span class="w">   </span>├──<span class="w"> </span>output.log
+│<span class="w">   </span>├──<span class="w"> </span>xtbopt.log
+│<span class="w">   </span>└──<span class="w"> </span>xtbopt.xyz
+├──<span class="w"> </span>0e5a6600dbcd49e48a220ec104065bf0
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_charges
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_topo
+│<span class="w">   </span>├──<span class="w"> </span>mono_7.xyz
+│<span class="w">   </span>├──<span class="w"> </span>output.log
+│<span class="w">   </span>├──<span class="w"> </span>xtbopt.log
+│<span class="w">   </span>└──<span class="w"> </span>xtbopt.xyz
+├──<span class="w"> </span>2da5bca994c84c318a1f46aae2231ee9
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_charges
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_topo
+│<span class="w">   </span>├──<span class="w"> </span>mono_0.xyz
+│<span class="w">   </span>├──<span class="w"> </span>output.log
+│<span class="w">   </span>├──<span class="w"> </span>xtbopt.log
+│<span class="w">   </span>└──<span class="w"> </span>xtbopt.xyz
+├──<span class="w"> </span>3281ff7c3fd7441da807e780ea25565e
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_charges
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_topo
+│<span class="w">   </span>├──<span class="w"> </span>mono_6.xyz
+│<span class="w">   </span>├──<span class="w"> </span>output.log
+│<span class="w">   </span>├──<span class="w"> </span>xtbopt.log
+│<span class="w">   </span>└──<span class="w"> </span>xtbopt.xyz
+├──<span class="w"> </span>58517f622f6c480a92f9e7c106a39057
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_charges
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_topo
+│<span class="w">   </span>├──<span class="w"> </span>mono_3.xyz
+│<span class="w">   </span>├──<span class="w"> </span>output.log
+│<span class="w">   </span>├──<span class="w"> </span>xtbopt.log
+│<span class="w">   </span>└──<span class="w"> </span>xtbopt.xyz
+├──<span class="w"> </span>5eec59e5ed974034b25202c70462c746
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_charges
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_topo
+│<span class="w">   </span>├──<span class="w"> </span>mono_2.xyz
+│<span class="w">   </span>├──<span class="w"> </span>output.log
+│<span class="w">   </span>├──<span class="w"> </span>xtbopt.log
+│<span class="w">   </span>└──<span class="w"> </span>xtbopt.xyz
+├──<span class="w"> </span>8880bb92c693459c8ae25d623d55f51c
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_charges
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_topo
+│<span class="w">   </span>├──<span class="w"> </span>mono_5.xyz
+│<span class="w">   </span>├──<span class="w"> </span>output.log
+│<span class="w">   </span>├──<span class="w"> </span>xtbopt.log
+│<span class="w">   </span>└──<span class="w"> </span>xtbopt.xyz
+├──<span class="w"> </span>e2d9f9fe94944261972ad263f464c19e
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_charges
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_topo
+│<span class="w">   </span>├──<span class="w"> </span>mono_1.xyz
+│<span class="w">   </span>├──<span class="w"> </span>output.log
+│<span class="w">   </span>├──<span class="w"> </span>xtbopt.log
+│<span class="w">   </span>└──<span class="w"> </span>xtbopt.xyz
+├──<span class="w"> </span>ebdb493877f147c2acf4cc8660fc67bb
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_charges
+│<span class="w">   </span>├──<span class="w"> </span>gfnff_topo
+│<span class="w">   </span>├──<span class="w"> </span>mono_8.xyz
+│<span class="w">   </span>├──<span class="w"> </span>output.log
+│<span class="w">   </span>├──<span class="w"> </span>xtbopt.log
+│<span class="w">   </span>└──<span class="w"> </span>xtbopt.xyz
+└──<span class="w"> </span>htp_test.py
 
-<span class="m">9</span> directories, <span class="m">55</span> files
+<span class="m">9</span><span class="w"> </span>directories,<span class="w"> </span><span class="m">55</span><span class="w"> </span>files
 </pre></div>
 </div>
 <p>Thus, each unique-labeled directory displayed the initial <strong>mono_IDX.xyz</strong> structure, and the results after the geometry optimization procedure performed

@@ -22,7 +22,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Computing using ab-initio calculators" href="calculator.html" />
-    <link rel="prev" title="Creating patterned Polymers" href="polymer_pattern.html" /> 
+    <link rel="prev" title="Creating new polymers from different modules" href="combined_modules.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,6 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="polymer_cyclic.html">Creating cyclic Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combined_modules.html">Creating new polymers from different modules</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Automatic Folder Creation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="calculator.html">Computing using <strong>ab-initio</strong> calculators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="torsional.html">Automatic torsional angle detection for planar polymers</a></li>
@@ -100,11 +101,11 @@
 </pre></div>
 </div>
 <p>The function receives as the first argument the number of folders to be created, whilst the second argument declares the number of cores used to perform this operation. We can verify the creation of these folders by typing the following command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ tree
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>tree
 .
-├── 37c49461ba7b4206ba5cc5c101485faa
-├── f819d762c1234f89a1bd762022a5007c
-└── test_fol_m.py
+├──<span class="w"> </span>37c49461ba7b4206ba5cc5c101485faa
+├──<span class="w"> </span>f819d762c1234f89a1bd762022a5007c
+└──<span class="w"> </span>test_fol_m.py
 </pre></div>
 </div>
 <p>where it can be seen that the two folders (with unique alphanumeric labels) have been succesfully created in a folder where the <strong>test_fol_m.py</strong> is located.</p>
@@ -133,15 +134,15 @@
 </pre></div>
 </div>
 <p>To verify that the files have correctly moved, we can use the <strong>tree</strong> bash command as indicated above:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ tree
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>tree
 
-├── 8fa730a5245c4656ac305a7ecc9bba07
-│   └── mol_2.smi
-├── b38be2d4de134b49915c7d8c694959f3
-│   └── mol_1.smi
-└── test_folder.py
+├──<span class="w"> </span>8fa730a5245c4656ac305a7ecc9bba07
+│<span class="w">   </span>└──<span class="w"> </span>mol_2.smi
+├──<span class="w"> </span>b38be2d4de134b49915c7d8c694959f3
+│<span class="w">   </span>└──<span class="w"> </span>mol_1.smi
+└──<span class="w"> </span>test_folder.py
 
-<span class="m">2</span> directories, <span class="m">3</span> files
+<span class="m">2</span><span class="w"> </span>directories,<span class="w"> </span><span class="m">3</span><span class="w"> </span>files
 </pre></div>
 </div>
 <p>As shown above, the files <strong>mol_1.smi</strong> and <strong>mol_2.smi</strong> have been correcty allocated into unique folders. This collection of <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> tools has been
@@ -152,7 +153,7 @@ developed to be used independent of the Polymer module and intended to be used a
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="polymer_pattern.html" class="btn btn-neutral float-left" title="Creating patterned Polymers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="combined_modules.html" class="btn btn-neutral float-left" title="Creating new polymers from different modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="calculator.html" class="btn btn-neutral float-right" title="Computing using ab-initio calculators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

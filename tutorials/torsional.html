@@ -54,6 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="polymer_cyclic.html">Creating cyclic Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combined_modules.html">Creating new polymers from different modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="calculator.html">Computing using <strong>ab-initio</strong> calculators</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Automatic torsional angle detection for planar polymers</a></li>
@@ -113,7 +114,7 @@
 </pre></div>
 </div>
 <p>Then, <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> function <em>seek_angle</em> searches for all atoms, which are participating in the formation of relevant torsional angles. The function outputs tuples with the atomic enumeration provided by <a class="reference external" href="https://www.rdkit.org/">RDKit</a>. In the previous case, the output provided by the function is:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span><span class="o">[(</span><span class="m">0</span>, <span class="m">1</span>, <span class="m">5</span>, <span class="m">6</span><span class="o">)</span>, <span class="o">(</span><span class="m">0</span>, <span class="m">1</span>, <span class="m">5</span>, <span class="m">9</span><span class="o">)</span>, <span class="o">(</span><span class="m">2</span>, <span class="m">1</span>, <span class="m">5</span>, <span class="m">6</span><span class="o">)</span>, <span class="o">(</span><span class="m">2</span>, <span class="m">1</span>, <span class="m">5</span>, <span class="m">9</span><span class="o">)</span>,
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span><span class="o">[(</span><span class="m">0</span>,<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="m">5</span>,<span class="w"> </span><span class="m">6</span><span class="o">)</span>,<span class="w"> </span><span class="o">(</span><span class="m">0</span>,<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="m">5</span>,<span class="w"> </span><span class="m">9</span><span class="o">)</span>,<span class="w"> </span><span class="o">(</span><span class="m">2</span>,<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="m">5</span>,<span class="w"> </span><span class="m">6</span><span class="o">)</span>,<span class="w"> </span><span class="o">(</span><span class="m">2</span>,<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="m">5</span>,<span class="w"> </span><span class="m">9</span><span class="o">)</span>,
 <span class="go">           (6, 7, 10, 11), (6, 7, 10, 14), (8, 7, 10, 11), (8, 7, 10, 14)]</span>
 </pre></div>
 </div>

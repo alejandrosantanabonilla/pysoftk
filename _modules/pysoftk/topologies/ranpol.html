@@ -89,7 +89,7 @@
 <span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.utils</span> <span class="kn">import</span> <span class="o">*</span>
 
 <div class="viewcode-block" id="Rnp"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.ranpol.Rnp">[docs]</a><span class="k">class</span> <span class="nc">Rnp</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;A class for creating a random copolymer from given RDKit molecules.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for creating a random copolymer from given RDKit molecules.</span>
 <span class="sd">       </span>
 <span class="sd">    Examples</span>
 <span class="sd">    ---------</span>
@@ -104,7 +104,7 @@
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ma&#39;</span><span class="p">,</span> <span class="s1">&#39;mb&#39;</span><span class="p">,</span> <span class="s1">&#39;atom&#39;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ma</span><span class="p">,</span> <span class="n">mb</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">       Initialize this class.</span>
 
 <span class="sd">       Parameters</span>
@@ -127,7 +127,7 @@
 
 <div class="viewcode-block" id="Rnp.random_ab_copolymer"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.ranpol.Rnp.random_ab_copolymer">[docs]</a>    <span class="k">def</span> <span class="nf">random_ab_copolymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">len_polymer</span><span class="p">,</span> <span class="n">pA</span><span class="p">,</span>
                             <span class="n">iter_ff</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">swap_H</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot; Function to build a random copolymer using an user provided probability (pA) for merging the monomer ma and imposiing the condition pB=1-pA.</span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot; Function to build a random copolymer using an user provided probability (pA) for merging the monomer ma and imposiing the condition pB=1-pA.</span>
 
 
 <span class="sd">       Parameters</span>
@@ -199,8 +199,8 @@
     
 <div class="viewcode-block" id="Rnp.random_abc_copolymer"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.ranpol.Rnp.random_abc_copolymer">[docs]</a>    <span class="k">def</span> <span class="nf">random_abc_copolymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mc</span><span class="p">,</span> <span class="n">len_polymer</span><span class="p">,</span> <span class="n">pA</span><span class="p">,</span>
                              <span class="n">pB</span><span class="p">,</span> <span class="n">iter_ff</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">swap_H</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        
-       <span class="sd">&quot;&quot;&quot; Function to build a random copolymer based on an user defined probability (pA) of merging mA, pB for monomer mb, and the condition pC=1-pA-pB.</span>
+<span class="w">        </span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot; Function to build a random copolymer based on an user defined probability (pA) of merging mA, pB for monomer mb, and the condition pC=1-pA-pB.</span>
 
 <span class="sd">       Parameters</span>
 <span class="sd">       -----------</span>

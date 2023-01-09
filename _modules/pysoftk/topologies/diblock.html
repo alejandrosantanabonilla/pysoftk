@@ -88,7 +88,7 @@
 <span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.utils</span> <span class="kn">import</span> <span class="o">*</span>
 
 <div class="viewcode-block" id="Db"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.diblock.Db">[docs]</a><span class="k">class</span> <span class="nc">Db</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A class for creating a diblock copolymers from given RDKit molecules.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for creating a diblock copolymers from given RDKit molecules.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    ---------</span>
@@ -102,7 +102,7 @@
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ma&#39;</span><span class="p">,</span> <span class="s1">&#39;mb&#39;</span><span class="p">,</span> <span class="s1">&#39;atom&#39;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ma</span><span class="p">,</span> <span class="n">mb</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">       Initialize this class.</span>
 
 <span class="sd">       Parameters</span>
@@ -128,7 +128,7 @@
 <div class="viewcode-block" id="Db.diblock_copolymer"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.diblock.Db.diblock_copolymer">[docs]</a>    <span class="k">def</span> <span class="nf">diblock_copolymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">len_block_A</span><span class="p">,</span> <span class="n">len_block_B</span><span class="p">,</span>
                              <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">swap_H</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Function to create a diblock copolymer </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to create a diblock copolymer </span>
 
 
 <span class="sd">        Parameters</span>
@@ -188,7 +188,7 @@
 
 
 <div class="viewcode-block" id="Pt"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.diblock.Pt">[docs]</a><span class="k">class</span> <span class="nc">Pt</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A class for creating a Patterned polymers from a list of RDKit molecules.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for creating a Patterned polymers from a list of RDKit molecules.</span>
 <span class="sd">    </span>
 <span class="sd">    Examples</span>
 <span class="sd">    ---------</span>
@@ -202,7 +202,7 @@
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pattern&#39;</span><span class="p">,</span> <span class="s1">&#39;mols&#39;</span><span class="p">,</span> <span class="s1">&#39;atom&#39;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">mols</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">       Initialize this class.</span>
 
 <span class="sd">       Parameters</span>
@@ -224,7 +224,7 @@
        <span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">atom</span>
        
 <div class="viewcode-block" id="Pt.pattern_block_poly"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.diblock.Pt.pattern_block_poly">[docs]</a>    <span class="k">def</span> <span class="nf">pattern_block_poly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span><span class="n">swap_H</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to create a polymer based on an alphabetic ordered pattern.</span>
 <span class="sd">    </span>
 <span class="sd">        Parameters</span>

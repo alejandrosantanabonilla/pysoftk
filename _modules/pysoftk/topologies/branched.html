@@ -82,7 +82,7 @@
 <span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.utils</span> <span class="kn">import</span> <span class="o">*</span>
 
 <div class="viewcode-block" id="Bd"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.branched.Bd">[docs]</a><span class="k">class</span> <span class="nc">Bd</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class for creating a branched polymer from given RDKit molecules.</span>
 <span class="sd">     </span>
 <span class="sd">    Examples</span>
@@ -97,7 +97,7 @@
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;core&#39;</span><span class="p">,</span> <span class="s1">&#39;arm&#39;</span><span class="p">,</span> <span class="s1">&#39;atom&#39;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core</span><span class="p">,</span> <span class="n">arm</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">       Initialize this class.</span>
 <span class="sd">          </span>
 <span class="sd">       &quot;&quot;&quot;</span>
@@ -107,7 +107,7 @@
        <span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">atom</span>
 
 <div class="viewcode-block" id="Bd.merge_arms"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.branched.Bd.merge_arms">[docs]</a>    <span class="k">def</span> <span class="nf">merge_arms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core</span><span class="p">,</span> <span class="n">arm</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot; Function to attach user defined molecules to a provided molecular core using a placeholder.</span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot; Function to attach user defined molecules to a provided molecular core using a placeholder.</span>
 
 <span class="sd">       Parameters</span>
 <span class="sd">       ----------</span>
@@ -151,7 +151,7 @@
 
     
 <div class="viewcode-block" id="Bd.branched_polymer"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.branched.Bd.branched_polymer">[docs]</a>    <span class="k">def</span> <span class="nf">branched_polymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iter_ff</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">swap_H</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot;Function to create branched polymers</span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot;Function to create branched polymers</span>
 
 <span class="sd">       Parameters</span>
 <span class="sd">       -----------</span>

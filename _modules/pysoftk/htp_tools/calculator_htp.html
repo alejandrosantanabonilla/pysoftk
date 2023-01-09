@@ -80,7 +80,7 @@
 <span class="kn">import</span> <span class="nn">time</span>
 
 <div class="viewcode-block" id="Htp"><a class="viewcode-back" href="../../../pysoftk.htp_tools.html#pysoftk.htp_tools.calculator_htp.Htp">[docs]</a><span class="k">class</span> <span class="nc">Htp</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Class enabling High-throughput calculations in different created folders for provided molecules.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class enabling High-throughput calculations in different created folders for provided molecules.</span>
 
 <span class="sd">    Attributes </span>
 <span class="sd">    ----------</span>
@@ -114,7 +114,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ending</span><span class="p">):</span>
-      <span class="sd">&quot;&quot;&quot;Parameters to initialize the HTP process</span>
+<span class="w">      </span><span class="sd">&quot;&quot;&quot;Parameters to initialize the HTP process</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -128,7 +128,7 @@
 
 <div class="viewcode-block" id="Htp.xtb_gfn"><a class="viewcode-back" href="../../../pysoftk.htp_tools.html#pysoftk.htp_tools.calculator_htp.Htp.xtb_gfn">[docs]</a>    <span class="nd">@staticmethod</span>   
     <span class="k">def</span> <span class="nf">xtb_gfn</span><span class="p">(</span><span class="n">xtb_path</span><span class="p">,</span> <span class="n">xyz_geom</span><span class="p">,</span> <span class="n">init_dir</span><span class="p">,</span> <span class="n">num_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot;Function invoking GFN-XTB Force-Field implementation for geometry optimization.</span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot;Function invoking GFN-XTB Force-Field implementation for geometry optimization.</span>
 
 <span class="sd">       Parameters</span>
 <span class="sd">       -----------</span>
@@ -186,7 +186,7 @@
         
 <div class="viewcode-block" id="Htp.xtb_ff"><a class="viewcode-back" href="../../../pysoftk.htp_tools.html#pysoftk.htp_tools.calculator_htp.Htp.xtb_ff">[docs]</a>    <span class="nd">@staticmethod</span>   
     <span class="k">def</span> <span class="nf">xtb_ff</span><span class="p">(</span><span class="n">xtb_path</span><span class="p">,</span> <span class="n">xyz_geom</span><span class="p">,</span> <span class="n">init_dir</span><span class="p">,</span> <span class="n">num_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot;Function invoking GFN-XTB Force-Field implementation for geometry optimization.</span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot;Function invoking GFN-XTB Force-Field implementation for geometry optimization.</span>
 
 <span class="sd">       Parameters</span>
 <span class="sd">       -----------</span>
@@ -241,7 +241,7 @@
            <span class="k">pass</span></div>
 
     <span class="k">def</span> <span class="nf">_find_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">pattern</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Function to find files within a given directory based on a provided pattern.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to find files within a given directory based on a provided pattern.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -266,7 +266,7 @@
                     <span class="k">yield</span> <span class="n">filename</span>
        
     <span class="k">def</span> <span class="nf">_seek_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_ending</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Function to seek files within the current working directory based on a provided pattern.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to seek files within the current working directory based on a provided pattern.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -288,7 +288,7 @@
 
 
 <div class="viewcode-block" id="Htp.htp_xtb_ff"><a class="viewcode-back" href="../../../pysoftk.htp_tools.html#pysoftk.htp_tools.calculator_htp.Htp.htp_xtb_ff">[docs]</a>    <span class="k">def</span> <span class="nf">htp_xtb_ff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_xtb</span><span class="p">,</span> <span class="n">max_work</span><span class="p">,</span> <span class="n">cores</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="s2">&quot;crude&quot;</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot;Function to perform a parallel concurrent calculation at the gfn-ff level of theory.</span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot;Function to perform a parallel concurrent calculation at the gfn-ff level of theory.</span>
 
 <span class="sd">       Parameters</span>
 <span class="sd">       ----------</span>
@@ -326,7 +326,7 @@
 
 
 <div class="viewcode-block" id="Htp.htp_xtb_gfn"><a class="viewcode-back" href="../../../pysoftk.htp_tools.html#pysoftk.htp_tools.calculator_htp.Htp.htp_xtb_gfn">[docs]</a>    <span class="k">def</span> <span class="nf">htp_xtb_gfn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_xtb</span><span class="p">,</span> <span class="n">max_work</span><span class="p">,</span> <span class="n">cores</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="s2">&quot;crude&quot;</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot;Function to perform a parallel concurrent calculation at the gfn-xtb level of theory.</span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot;Function to perform a parallel concurrent calculation at the gfn-xtb level of theory.</span>
 
 <span class="sd">       Parameters</span>
 <span class="sd">       ----------</span>

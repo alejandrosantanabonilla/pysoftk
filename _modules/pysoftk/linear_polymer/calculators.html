@@ -79,7 +79,7 @@
 <span class="kn">import</span> <span class="nn">shutil</span><span class="o">,</span> <span class="nn">errno</span>
 
 <div class="viewcode-block" id="Opt"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Opt">[docs]</a><span class="k">class</span> <span class="nc">Opt</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Geometrical optimization tools using GFN-XTB2 and PySCF as engines.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Geometrical optimization tools using GFN-XTB2 and PySCF as engines.</span>
 
 
 <span class="sd">    Note</span>
@@ -89,7 +89,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz_file</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set up cartesian coordinates</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up cartesian coordinates</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -101,7 +101,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">xyz_file</span> <span class="o">=</span> <span class="n">xyz_file</span>
 
 <div class="viewcode-block" id="Opt.pyscf_semi"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Opt.pyscf_semi">[docs]</a>    <span class="k">def</span> <span class="nf">pyscf_semi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Function invoking PYSCF semiempirical implementation for geometry optimization.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function invoking PYSCF semiempirical implementation for geometry optimization.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -128,12 +128,12 @@
         <span class="n">Pyscf_print</span><span class="p">()</span><span class="o">.</span><span class="n">xyz</span><span class="p">(</span><span class="n">mol_eq</span><span class="p">)</span></div></div>
 
 <div class="viewcode-block" id="Pyscf_print"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Pyscf_print">[docs]</a><span class="k">class</span> <span class="nc">Pyscf_print</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Print a PYSCF object into cartesian </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Print a PYSCF object into cartesian </span>
 <span class="sd">        coordinates.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Pyscf_print.xyz"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Pyscf_print.xyz">[docs]</a>    <span class="k">def</span> <span class="nf">xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Function to print a file with Cartesian coordinates from a PYSCF geometry optimization calculation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to print a file with Cartesian coordinates from a PYSCF geometry optimization calculation.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
