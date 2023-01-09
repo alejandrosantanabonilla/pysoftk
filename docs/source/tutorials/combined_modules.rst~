@@ -1,0 +1,49 @@
+.. include:: /include/links.rst
+
+.. _combined_modules:
+
+=========================================================
+Creating new polymers from different modules
+=========================================================
+
+Another important functionality of PySoftK_ is the possibility to create different polymer architectures
+by combining different modules. 
+
+Let's create a patterned polymer by permuting four monomers using the :mod:`pysoftk.topologies.diblock` function.
+
+First, we need to import the corresponding modules from PySoftK_ to allow us to read and join the monomers
+using RDKit_.
+
+.. literalinclude:: scripts/combined_func.py
+   :lines: 1-7
+
+Then, we can create the alphabetic permutations and define the monomers whose SMILES codes have been inputted  using  RDKit_ :
+
+.. literalinclude:: scripts/combined_func.py
+  :lines: 6-8
+
+Once the monomers have been created, the PySoftK_ function can be used to create the patterned
+polymer:
+	 
+.. literalinclude:: scripts/combined_func.py
+  :lines: 11-18
+
+The newly created polymer topology can be **used** as an initial monomer for futher modelling.
+In this case, we use the linear polymer function (:mod:`pysoftk.linear\_polymer.super\_monomer`)
+uses the previous patterned polymer as initial monomer and creates a new linear polymer
+of two-unit repetition. 
+
+.. literalinclude:: scripts/combined_func.py
+  :lines: 20-25
+
+The final script is:
+
+.. literalinclude:: scripts/combined_func.py
+
+By using common visualization software (such as VMD_), the built structure **combined_func.py** can be displayed as shown:
+
+.. figure:: images/smonomer.png
+   :align: center
+   :figclass: align-center
+
+Creating a patterned-linear polymer using different modules of PySoftK_. 
