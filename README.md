@@ -7,7 +7,10 @@
 
 <!-- Pytest Coverage Comment:End -->
 
-# PySoftK
+<p align="center">
+    <img width="450" src="pysoftklogo.png" >
+</p>
+
 
 **PySoftK** is a set of Python tools and programs for modelling and simulating polymers with different topologies. The program is still under active 
 development and contributions are welcome. A complete introduction into the program can be found in this link [Documentation][1]. 
