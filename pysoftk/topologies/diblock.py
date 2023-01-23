@@ -1,6 +1,7 @@
 import rdkit
 from rdkit import Chem
 from rdkit.Chem import AllChem
+from rdkit.Geometry import Point3D
 
 from rdkit import RDLogger
 RDLogger.DisableLog('rdApp.*')
@@ -53,7 +54,7 @@ class Db:
 
        
     def diblock_copolymer(self, len_block_A, len_block_B,
-                             FF="MMFF", relax_iterations=100, swap_H=True):
+                             FF="MMFF", relax_iterations=100):
 
         """Function to create a diblock copolymer 
 
@@ -73,45 +74,27 @@ class Db:
         relax_iterations: int  
             Number of iterations used for relaxing a molecular object.
 
-        swap_H: bool
-             Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species.   
-
         Return
         -------
 
-        newMol_H : rdkit.Chem.rdchem.Mol
+        diblock : rdkit.Chem.rdchem.Mol
              RDKit Mol object
         """
 
         ma=self.ma
         mb=self.mb
         atom=self.atom
-              
-        monomer = sm.Sm(ma, ma, str(atom))
+
+        string_1='A'*len_block_A
+        monomer=Pt(string_1, [ma], str(atom)).pattern_block_poly()
+
+
+        string_2='B'*len_block_B
+        monomer2=Pt(string_2, [mb], str(atom)).pattern_block_poly()
         
-        for i in range(len_block_A-2):
-            monomer=sm.Sm(monomer.mon_to_poly(),
-                                  ma, str(atom))
-    
-        monomer2 = sm.Sm(mb, mb, str(atom))
-        
-        for i in range(len_block_B-2):
-             monomer2=sm.Sm(monomer2.mon_to_poly(),
-                                    mb, str(atom))
-    
-        diblock = sm.Sm(monomer.mon_to_poly(),
-                              monomer2.mon_to_poly(),
-                              str(atom))
-
-        mol=diblock.mon_to_poly()  
-
-        if swap_H == "True":
-            newMol_H=swap_hyd(mol, relax_iterations, str(atom), FF)
-
-        else:
-            newMol_H=no_swap(mol, relax_iterations, FF)
+        diblock=sm.Sm(monomer, monomer2, str(atom)).monomer()
             
-        return newMol_H
+        return diblock
 
 
 class Pt:
