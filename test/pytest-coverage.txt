@@ -50,12 +50,12 @@ Name                                                                            
 /home/runner/.local/lib/python3.9/site-packages/pysoftk/linear_polymer/utils.py               31      4    87%   39, 85, 135-137
 /home/runner/.local/lib/python3.9/site-packages/pysoftk/topologies/branched.py                40      1    98%   115
 /home/runner/.local/lib/python3.9/site-packages/pysoftk/topologies/diblock.py                 54      1    98%   183
-/home/runner/.local/lib/python3.9/site-packages/pysoftk/topologies/ranpol.py                  73      9    88%   95, 102, 120, 175, 181, 186, 192, 206, 213
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/topologies/ranpol.py                  73     10    86%   93, 100, 120, 177-181, 186, 192, 206, 213
 /home/runner/.local/lib/python3.9/site-packages/pysoftk/topologies/ring.py                    42      1    98%   151
 /home/runner/.local/lib/python3.9/site-packages/pysoftk/torsional/torsional.py                88     10    89%   49-50, 226-237
 ------------------------------------------------------------------------------------------------------------------------
-TOTAL                                                                                        699     57    92%
+TOTAL                                                                                        699     58    92%
 
 10 files skipped due to complete coverage.
 
-================== 69 passed, 3 warnings in 138.07s (0:02:18) ==================
+================== 69 passed, 3 warnings in 136.73s (0:02:16) ==================
