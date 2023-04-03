@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.torsional package &mdash; PySoftK 0.0.1 documentation</title>
@@ -12,9 +12,6 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -29,11 +26,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> PySoftK
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PySoftK
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -76,7 +77,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="modules.html">PySoftK Modular structure</a></li>
           <li class="breadcrumb-item"><a href="pysoftk.html">pysoftk package</a></li>
       <li class="breadcrumb-item active">pysoftk.torsional package</li>
@@ -107,7 +108,7 @@
 <span class="sig-name descname"><span class="pre">draw_molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_pic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.draw_molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.draw_molecule" title="Permalink to this definition"></a></dt>
 <dd><p>Function to print a molecule into a PNG file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
 <li><p><strong>name_pic</strong> (<em>str</em>) – Name of the created PNG object</p></li>
@@ -115,10 +116,10 @@
 be highligthed.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>rdkit.Draw.MolToFile Object</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -129,10 +130,10 @@ be highligthed.</p></li>
 <span class="sig-name descname"><span class="pre">list_dhdl_atoms</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.list_dhdl_atoms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.list_dhdl_atoms" title="Permalink to this definition"></a></dt>
 <dd><p>Function to compute all dihedral atoms</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>List</strong> – List of atomic indexes for dihedral atoms</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
@@ -143,10 +144,10 @@ be highligthed.</p></li>
 <span class="sig-name descname"><span class="pre">mol_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.mol_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.mol_graph" title="Permalink to this definition"></a></dt>
 <dd><p>Function to create a NetworkX graph based on an RDKit molecule.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>G</strong> – A networkx graph object updated with an RDKit Mol object.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>Networkx.Graph</p>
 </dd>
 </dl>
@@ -157,10 +158,10 @@ be highligthed.</p></li>
 <span class="sig-name descname"><span class="pre">mol_graph_neigh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.mol_graph_neigh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.mol_graph_neigh" title="Permalink to this definition"></a></dt>
 <dd><p>Function to compute adjacency matrix from an RDKit Mol object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>mol</strong> – RDKit Mol object</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>rdkit.Chem.rdchem.Mol</p>
 </dd>
 </dl>
@@ -171,13 +172,13 @@ be highligthed.</p></li>
 <span class="sig-name descname"><span class="pre">plot_trs_ang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.plot_trs_ang"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.plot_trs_ang" title="Permalink to this definition"></a></dt>
 <dd><p>Function to plot torsional atoms from an RDKit Mol Object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – Name of the RDKit Mol object</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>draw_molecule</strong> – A PNG RDKit Mol object</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>PNG</p>
 </dd>
 </dl>
@@ -188,10 +189,10 @@ be highligthed.</p></li>
 <span class="sig-name descname"><span class="pre">seek_angles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.seek_angles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.seek_angles" title="Permalink to this definition"></a></dt>
 <dd><p>List of torsional angles in a planar polymer.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>List</strong> – List of atomic indexes for torsional angles</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
@@ -202,17 +203,17 @@ be highligthed.</p></li>
 <span class="sig-name descname"><span class="pre">show_atom_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.show_atom_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.show_atom_number" title="Permalink to this definition"></a></dt>
 <dd><p>Function to set atomic numbers to an RDKit Mol object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – Added Atomic Property to an
 RDKit Mol Object</p></li>
 <li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>mol</strong> – RDKit Mol object</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
 </dd>
 </dl>
@@ -223,13 +224,13 @@ RDKit Mol Object</p></li>
 <span class="sig-name descname"><span class="pre">validate_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.validate_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.validate_mol" title="Permalink to this definition"></a></dt>
 <dd><p>Function that validates an object as RDKit Mol object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>mol</strong> – RDKit Mol object</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
 </dd>
 </dl>

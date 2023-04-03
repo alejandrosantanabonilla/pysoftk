@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.folder_manager package &mdash; PySoftK 0.0.1 documentation</title>
@@ -12,9 +12,6 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -30,11 +27,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> PySoftK
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PySoftK
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -77,7 +78,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="modules.html">PySoftK Modular structure</a></li>
           <li class="breadcrumb-item"><a href="pysoftk.html">pysoftk package</a></li>
       <li class="breadcrumb-item active">pysoftk.folder_manager package</li>
@@ -108,16 +109,16 @@
 <span class="sig-name descname"><span class="pre">copy_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.copy_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.copy_dir" title="Permalink to this definition"></a></dt>
 <dd><p>Function to copy files to directories.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>source</strong> (<em>str</em>) – Source path where the files is located.</p></li>
 <li><p><strong>destination</strong> (<em>str</em>) – Source path where the directory is located.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Creates a folder with a provided name.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -128,13 +129,13 @@
 <span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.create" title="Permalink to this definition"></a></dt>
 <dd><p>Function to create a folder in the current working directory.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>times</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Number of times that a folder will be created</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>None</strong> – Creates a folder with a provided name.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -145,7 +146,7 @@
 <span class="sig-name descname"><span class="pre">file_to_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format_extension</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.file_to_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.file_to_dir" title="Permalink to this definition"></a></dt>
 <dd><p>Function to move files to directories in parallel</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>format_extension</strong> (<em>str</em>) – Format extension used to seek.</p></li>
 <li><p><strong>num_cores</strong> (<em>int. optional</em>) – Number of cores to be used.</p></li>
@@ -154,7 +155,7 @@
 <li><p><strong>None</strong> – Move files to directories.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>NotImplementedError</strong> – Folders can not be created.</p>
 </dd>
 </dl>
@@ -165,13 +166,13 @@
 <span class="sig-name descname"><span class="pre">fxd_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">testname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.fxd_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.fxd_name" title="Permalink to this definition"></a></dt>
 <dd><p>Create an array of fixed names for folders.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>testname</strong> (<em>str</em>) – Base name to be used as name</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>An array of names for folders</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
@@ -182,13 +183,13 @@
 <span class="sig-name descname"><span class="pre">seek_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format_extension</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.seek_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.seek_files" title="Permalink to this definition"></a></dt>
 <dd><p>Function to seek files in the current working directory.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>format_extension</strong> (<em>str</em>) – Extension used to seek in the current working directory</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>inp_name</strong></p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>

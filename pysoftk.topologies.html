@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.topologies package &mdash; PySoftK 0.0.1 documentation</title>
@@ -12,9 +12,6 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -30,11 +27,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> PySoftK
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PySoftK
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -77,7 +78,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="modules.html">PySoftK Modular structure</a></li>
           <li class="breadcrumb-item"><a href="pysoftk.html">pysoftk package</a></li>
       <li class="breadcrumb-item active">pysoftk.topologies package</li>
@@ -122,7 +123,7 @@
 <span class="sig-name descname"><span class="pre">branched_polymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iter_ff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swap_H</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/branched.html#Bd.branched_polymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.branched.Bd.branched_polymer" title="Permalink to this definition"></a></dt>
 <dd><p>Function to create branched polymers</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>FF</strong> (<em>str</em>) – Selected FF between MMFF or UFF</p></li>
 <li><p><strong>relax_iterations</strong> (<em>int</em>) – <p>Number of iterations used for relaxing a molecular object.</p>
@@ -133,10 +134,10 @@
 </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>newMol_H</strong> – RDKit Mol object</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
 </dd>
 </dl>
@@ -152,17 +153,17 @@
 <span class="sig-name descname"><span class="pre">merge_arms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">core</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/branched.html#Bd.merge_arms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.branched.Bd.merge_arms" title="Permalink to this definition"></a></dt>
 <dd><p>Function to attach user defined molecules to a provided molecular core using a placeholder.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>core</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
 <li><p><strong>arm</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
 <li><p><strong>atom</strong> (<em>str</em>) – The placeholder atom to combine the molecules and form a new monomer</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>mol</strong> – RDKit Mol object</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
 </dd>
 </dl>
@@ -190,22 +191,21 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.topologies.diblock.Db.diblock_copolymer">
-<span class="sig-name descname"><span class="pre">diblock_copolymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">len_block_A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_block_B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swap_H</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/diblock.html#Db.diblock_copolymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.diblock.Db.diblock_copolymer" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">diblock_copolymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">len_block_A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_block_B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/diblock.html#Db.diblock_copolymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.diblock.Db.diblock_copolymer" title="Permalink to this definition"></a></dt>
 <dd><p>Function to create a diblock copolymer</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>len_block_A</strong> (<em>int</em>) – Length of the molecular block A</p></li>
 <li><p><strong>len_block_B</strong> (<em>int</em>) – Length of the molecular block B</p></li>
 <li><p><strong>FF</strong> (<em>str</em>) – Selected FF between MMFF or UFF</p></li>
 <li><p><strong>relax_iterations</strong> (<em>int</em>) – Number of iterations used for relaxing a molecular object.</p></li>
-<li><p><strong>swap_H</strong> (<em>bool</em>) – Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>newMol_H</strong> – RDKit Mol object</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>diblock</strong> – RDKit Mol object</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
 </dd>
 </dl>
@@ -253,17 +253,17 @@
 <span class="sig-name descname"><span class="pre">pattern_block_poly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swap_H</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/diblock.html#Pt.pattern_block_poly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.diblock.Pt.pattern_block_poly" title="Permalink to this definition"></a></dt>
 <dd><p>Function to create a polymer based on an alphabetic ordered pattern.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>relax_iterations</strong> (<em>int</em>) – Number of iterations used for relaxing a molecular object.</p></li>
 <li><p><strong>FF</strong> (<em>str</em>) – Selected FF between MMFF or UFF</p></li>
 <li><p><strong>swap_H</strong> (<em>bool</em>) – Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>return</strong> – A molecular pysoftk object.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>mol</p>
 </dd>
 </dl>
@@ -304,7 +304,7 @@
 <span class="sig-name descname"><span class="pre">random_ab_copolymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">len_polymer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter_ff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swap_H</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/ranpol.html#Rnp.random_ab_copolymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp.random_ab_copolymer" title="Permalink to this definition"></a></dt>
 <dd><p>Function to build a random copolymer using an user provided probability (pA) for merging the monomer ma and imposiing the condition pB=1-pA.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>len_polymer</strong> (<em>int</em>) – User defined length of the polymer.</p></li>
 <li><p><strong>pA</strong> (<em>float</em>) – User defined attaching probability of ma.</p></li>
@@ -317,10 +317,10 @@
 </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>mol</strong> – RDKit Mol object</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
 </dd>
 </dl>
@@ -331,7 +331,7 @@
 <span class="sig-name descname"><span class="pre">random_abc_copolymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_polymer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter_ff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swap_H</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/ranpol.html#Rnp.random_abc_copolymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp.random_abc_copolymer" title="Permalink to this definition"></a></dt>
 <dd><p>Function to build a random copolymer based on an user defined probability (pA) of merging mA, pB for monomer mb, and the condition pC=1-pA-pB.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mc</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object #</p></li>
 <li><p><strong>len_polymer</strong> (<em>float</em>) – User defined length of the polymer.</p></li>
@@ -343,10 +343,10 @@
 <li><p><strong>swap_H</strong> (<em>bool</em>) – Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>mol</strong> – RDKit Mol object</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
 </dd>
 </dl>
@@ -377,17 +377,17 @@
 <span class="sig-name descname"><span class="pre">check_proto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/ring.html#Rn.check_proto"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ring.Rn.check_proto" title="Permalink to this definition"></a></dt>
 <dd><p>Function to check the proto polymer creation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
 <li><p><strong>FF</strong> (<em>str</em>) – Selected FF to perform a relaxation</p></li>
 <li><p><strong>iter</strong> (<em>int</em>) – Number of iterations to perform a FF geometry optimisation.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>newMol_H</strong> – RDKit Mol object</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
 </dd>
 </dl>
@@ -398,16 +398,16 @@
 <span class="sig-name descname"><span class="pre">create_ring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/ring.html#Rn.create_ring"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ring.Rn.create_ring" title="Permalink to this definition"></a></dt>
 <dd><p>Function to create a circular polymer based on a RDKit molecular object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
 <li><p><strong>atom</strong> (<em>str</em>) – The placeholder atom to combine the molecules and form a new monomer</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>final</strong> – RDKit Mol object</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
 </dd>
 </dl>
@@ -423,7 +423,7 @@
 <span class="sig-name descname"><span class="pre">pol_ring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">len_polymer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.25</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/ring.html#Rn.pol_ring"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ring.Rn.pol_ring" title="Permalink to this definition"></a></dt>
 <dd><p>Function to create a polymer with ring structure (circular)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
 <li><p><strong>atom</strong> (<em>str</em>) – The placeholder atom to combine the molecules and form a new monomer</p></li>
@@ -433,10 +433,10 @@
 <li><p><strong>shift</strong> (<em>float</em>) – User defined shift for spacing the monomers using the LP function.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>pol_ring</strong> – RDKit Mol object</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
 </dd>
 </dl>
@@ -452,16 +452,16 @@
 <span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.utils.</span></span><span class="sig-name descname"><span class="pre">atom_neigh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/utils.html#atom_neigh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.utils.atom_neigh" title="Permalink to this definition"></a></dt>
 <dd><p>Find the neighbours from an atoms inside a molecule.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
 <li><p><strong>atom</strong> (<em>str</em>) – The placeholder atom</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>neigh</strong> – List of neighbors</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
@@ -472,16 +472,16 @@
 <span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.utils.</span></span><span class="sig-name descname"><span class="pre">count_plholder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/utils.html#count_plholder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.utils.count_plholder" title="Permalink to this definition"></a></dt>
 <dd><p>Function to count the number of user defined atomic placeholders.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
 <li><p><strong>atom</strong> (<em>str</em>) – The placeholder atom</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>num_br</strong> – Number of atomic place holders inside a molecule.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
@@ -492,7 +492,7 @@
 <span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.utils.</span></span><span class="sig-name descname"><span class="pre">create_pol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tpb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/utils.html#create_pol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.utils.create_pol" title="Permalink to this definition"></a></dt>
 <dd><p>Function to create polymers.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
 <li><p><strong>atom</strong> (<em>str</em>) – The placeholder atom</p></li>
@@ -504,10 +504,10 @@
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>rmwol1</strong> – RDKit Mol object</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>rdkit.Chem.rdchem.Mol</p>
 </dd>
 </dl>
@@ -518,16 +518,16 @@
 <span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.utils.</span></span><span class="sig-name descname"><span class="pre">pattern_mol_seq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/utils.html#pattern_mol_seq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.utils.pattern_mol_seq" title="Permalink to this definition"></a></dt>
 <dd><p>Function to create a list of molecules based on a user provided pattern.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>pattern</strong> (<em>str</em>) – A string value containing the desired pattern.</p></li>
 <li><p><strong>mols</strong> (<em>list</em>) – List containing the names of the molecules to form a polymer with a given pattern.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>return</strong> – List with the correct sequence of molecular fragments to be merged.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
@@ -538,13 +538,13 @@
 <span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.utils.</span></span><span class="sig-name descname"><span class="pre">pattern_recon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/utils.html#pattern_recon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.utils.pattern_recon" title="Permalink to this definition"></a></dt>
 <dd><p>Function to find unique values from a string pattern.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>pattern</strong> (<em>str</em>) – Variable containing the pattern written in a string.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>result</strong> – Returns the unique values of the pattern in alphabetic order.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
@@ -555,13 +555,13 @@
 <span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.utils.</span></span><span class="sig-name descname"><span class="pre">pattern_repl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tup_repl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/utils.html#pattern_repl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.utils.pattern_repl" title="Permalink to this definition"></a></dt>
 <dd><p>Function to perform a pattern replacement using tuples generated by pattern and molecular names.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>pattern</strong> (<em>str</em>) – Variable containing the pattern written in a string</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>return</strong> – Returns the names of the molecules as provided by the string pattern.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
@@ -572,16 +572,16 @@
 <span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.utils.</span></span><span class="sig-name descname"><span class="pre">seek_plhold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/utils.html#seek_plhold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.utils.seek_plhold" title="Permalink to this definition"></a></dt>
 <dd><p>Function Seeking for a specific placeholder atom.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
 <li><p><strong>atom</strong> (<em>str</em>) – The placeholder atom</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>return</strong> – List of neighbors from the place holder atom.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
@@ -592,13 +592,13 @@
 <span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.utils.</span></span><span class="sig-name descname"><span class="pre">tuple_bonds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst_atm_neigh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/utils.html#tuple_bonds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.utils.tuple_bonds" title="Permalink to this definition"></a></dt>
 <dd><p>Function to seek atomic neighbours</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>lst_atm_neigh</strong> (<em>list</em>) – List containing atoms for getting neighbors.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>return</strong> – A list of tuples with the neighbors of the parsed atoms.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>

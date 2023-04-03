@@ -11,9 +11,6 @@
   <![endif]-->
   
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -27,11 +24,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> PySoftK
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PySoftK
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -59,7 +60,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
       <li class="breadcrumb-item active">pysoftk.topologies.diblock</li>
       <li class="wy-breadcrumbs-aside">
@@ -74,6 +75,7 @@
 <span></span><span class="kn">import</span> <span class="nn">rdkit</span>
 <span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
 <span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
+<span class="kn">from</span> <span class="nn">rdkit.Geometry</span> <span class="kn">import</span> <span class="n">Point3D</span>
 
 <span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">RDLogger</span>
 <span class="n">RDLogger</span><span class="o">.</span><span class="n">DisableLog</span><span class="p">(</span><span class="s1">&#39;rdApp.*&#39;</span><span class="p">)</span>
@@ -126,7 +128,7 @@
 
        
 <div class="viewcode-block" id="Db.diblock_copolymer"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.diblock.Db.diblock_copolymer">[docs]</a>    <span class="k">def</span> <span class="nf">diblock_copolymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">len_block_A</span><span class="p">,</span> <span class="n">len_block_B</span><span class="p">,</span>
-                             <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">swap_H</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                             <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
 
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to create a diblock copolymer </span>
 
@@ -146,45 +148,27 @@
 <span class="sd">        relax_iterations: int  </span>
 <span class="sd">            Number of iterations used for relaxing a molecular object.</span>
 
-<span class="sd">        swap_H: bool</span>
-<span class="sd">             Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species.   </span>
-
 <span class="sd">        Return</span>
 <span class="sd">        -------</span>
 
-<span class="sd">        newMol_H : rdkit.Chem.rdchem.Mol</span>
+<span class="sd">        diblock : rdkit.Chem.rdchem.Mol</span>
 <span class="sd">             RDKit Mol object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">ma</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ma</span>
         <span class="n">mb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mb</span>
         <span class="n">atom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span>
-              
-        <span class="n">monomer</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Sm</span><span class="p">(</span><span class="n">ma</span><span class="p">,</span> <span class="n">ma</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
+
+        <span class="n">string_1</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="o">*</span><span class="n">len_block_A</span>
+        <span class="n">monomer</span><span class="o">=</span><span class="n">Pt</span><span class="p">(</span><span class="n">string_1</span><span class="p">,</span> <span class="p">[</span><span class="n">ma</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span><span class="o">.</span><span class="n">pattern_block_poly</span><span class="p">()</span>
+
+
+        <span class="n">string_2</span><span class="o">=</span><span class="s1">&#39;B&#39;</span><span class="o">*</span><span class="n">len_block_B</span>
+        <span class="n">monomer2</span><span class="o">=</span><span class="n">Pt</span><span class="p">(</span><span class="n">string_2</span><span class="p">,</span> <span class="p">[</span><span class="n">mb</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span><span class="o">.</span><span class="n">pattern_block_poly</span><span class="p">()</span>
         
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">len_block_A</span><span class="o">-</span><span class="mi">2</span><span class="p">):</span>
-            <span class="n">monomer</span><span class="o">=</span><span class="n">sm</span><span class="o">.</span><span class="n">Sm</span><span class="p">(</span><span class="n">monomer</span><span class="o">.</span><span class="n">mon_to_poly</span><span class="p">(),</span>
-                                  <span class="n">ma</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
-    
-        <span class="n">monomer2</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Sm</span><span class="p">(</span><span class="n">mb</span><span class="p">,</span> <span class="n">mb</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
-        
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">len_block_B</span><span class="o">-</span><span class="mi">2</span><span class="p">):</span>
-             <span class="n">monomer2</span><span class="o">=</span><span class="n">sm</span><span class="o">.</span><span class="n">Sm</span><span class="p">(</span><span class="n">monomer2</span><span class="o">.</span><span class="n">mon_to_poly</span><span class="p">(),</span>
-                                    <span class="n">mb</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
-    
-        <span class="n">diblock</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Sm</span><span class="p">(</span><span class="n">monomer</span><span class="o">.</span><span class="n">mon_to_poly</span><span class="p">(),</span>
-                              <span class="n">monomer2</span><span class="o">.</span><span class="n">mon_to_poly</span><span class="p">(),</span>
-                              <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
-
-        <span class="n">mol</span><span class="o">=</span><span class="n">diblock</span><span class="o">.</span><span class="n">mon_to_poly</span><span class="p">()</span>  
-
-        <span class="k">if</span> <span class="n">swap_H</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
-            <span class="n">newMol_H</span><span class="o">=</span><span class="n">swap_hyd</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">FF</span><span class="p">)</span>
-
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">newMol_H</span><span class="o">=</span><span class="n">no_swap</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">,</span> <span class="n">FF</span><span class="p">)</span>
+        <span class="n">diblock</span><span class="o">=</span><span class="n">sm</span><span class="o">.</span><span class="n">Sm</span><span class="p">(</span><span class="n">monomer</span><span class="p">,</span> <span class="n">monomer2</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span><span class="o">.</span><span class="n">monomer</span><span class="p">()</span>
             
-        <span class="k">return</span> <span class="n">newMol_H</span></div></div>
+        <span class="k">return</span> <span class="n">diblock</span></div></div>
 
 
 <div class="viewcode-block" id="Pt"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.diblock.Pt">[docs]</a><span class="k">class</span> <span class="nc">Pt</span><span class="p">:</span>
