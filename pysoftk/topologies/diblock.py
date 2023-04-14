@@ -178,10 +178,10 @@ class Pt:
 
         proto_pol=create_pol(outmol, str(atom), tpb)
         
-        if swap_H == True:
+        if swap_H:
             newMol_H=swap_hyd(proto_pol, relax_iterations, str(atom), FF)
 
-        else:
-            newMol_H=no_swap(proto_pol, relax_iterations, str(atom), FF)
+        if not swap_H:
+            newMol_H=no_swap(proto_pol, relax_iterations, FF)
             
         return newMol_H
