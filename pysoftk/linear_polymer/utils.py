@@ -101,6 +101,9 @@ def MMFF_rel(mol, iter_ff, vdw_par=0.001):
 
     iter_ff: int
           Number of iterations to perform a FF geometry optimization.
+          
+    vdw_par: float
+          Extension of the vdW interaction range. 
 
     Returns
     ---------
@@ -124,6 +127,9 @@ def UFF_rel(mol, iter_ff, vdw_par=0.001):
 
     iter_ff: int
           Number of iterations to perform a FF geometry optimization.
+          
+    vdw_par: float
+          Extension of the vdW interaction range. 
     
 
     Returns
