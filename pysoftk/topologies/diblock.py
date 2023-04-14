@@ -160,7 +160,6 @@ class Pt:
         mols=self.mols
         atom=self.atom
 
-        
         names=['mol_{}+'.format(i) for i in range(1,len(mols)+1)]
         seq=pattern_mol_seq(names,pattern)
    
@@ -178,11 +177,11 @@ class Pt:
         tpb=tuple_bonds(lst_ngh)
 
         proto_pol=create_pol(outmol, str(atom), tpb)
-
-        if swap_H == "True":
-          newMol_H=swap_hyd(proto_pol, relax_iterations, str(atom), FF)
+        
+        if swap_H == True:
+            newMol_H=swap_hyd(proto_pol, relax_iterations, str(atom), FF)
 
         else:
-            newMol_H=no_swap(proto_pol, relax_iterations, FF)
+            newMol_H=no_swap(proto_pol, relax_iterations, str(atom), FF)
             
         return newMol_H
