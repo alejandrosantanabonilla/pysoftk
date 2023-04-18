@@ -53,23 +53,18 @@ def test_lp_2():
 def test_mol_conformer():
 
   # Test 3 creating a conformer with MMFF force field
-  mol_1=Chem.MolFromSmiles('c1cc(sc1Br)Br')
-  mol_2=Chem.MolFromSmiles('c1cc(sc1Br)Br')
-  
-  # Original molecule
-  a=Sm(mol_1,mol_2,"Br")
-  k=a.monomer()
-
+  a=Chem.MolFromSmiles('c1cc(oc1c1ccccc1)c1sccc1')
+  m=AllChem.AddHs(a)
 
   # Computing the conformer with highest energy
-  l=Mcon(k,1000,e_max=True).conformer()
+  Mcon(m,10).conformer("conformers")
 
-  Fmt(l).xyz_print("new.xyz")
-  a=Fld().seek_files("xyz")
+  mols=Chem.SDMolSupplier('conformers.sdf')
+  res=[m for m in mols]
   
-  assert len(a) == 1
+  assert len(res) == 10
 
-  os.remove("new.xyz")
+  os.remove("conformers.sdf")
 
 def test_torsional_list():
 
