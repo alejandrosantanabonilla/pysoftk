@@ -61,7 +61,7 @@ def test_threemols(comb, expected):
          Chem.MolFromSmiles('c1cc(oc1Br)Br'),
          Chem.MolFromSmiles('c1cc(sc1Br)Br')]
 
-   b=Pt(comb, mols, "Br").pattern_block_poly()
+   b=Pt(comb, mols, "Br").pattern_block_poly(swap_H=False)
    assert Chem.MolToSmiles(b) == expected
 
 
@@ -76,7 +76,7 @@ def test_fourmols(comb, expected):
          Chem.MolFromSmiles('BrCCBr')]
 
 
-   a=Pt(str(comb), mols, "Br").pattern_block_poly()
+   a=Pt(str(comb), mols, "Br").pattern_block_poly(swap_H=False)
    assert Chem.MolToSmiles(a) == expected
 
 
