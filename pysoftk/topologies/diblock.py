@@ -86,11 +86,11 @@ class Db:
         atom=self.atom
 
         string_1='A'*len_block_A
-        monomer=Pt(string_1, [ma], str(atom)).pattern_block_poly()
+        monomer=Pt(string_1, [ma], str(atom)).pattern_block_poly(swap_H=False)
 
 
         string_2='B'*len_block_B
-        monomer2=Pt(string_2, [mb], str(atom)).pattern_block_poly()
+        monomer2=Pt(string_2, [mb], str(atom)).pattern_block_poly(swap_H=False)
         
         diblock=sm.Sm(monomer, monomer2, str(atom)).monomer()
             
