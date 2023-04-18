@@ -116,11 +116,11 @@ class Rnp():
         
        mol=monomer.mon_to_poly()
 
-       if swap_H == "True":
-         newMol_H=swap_hyd(mol, iter_ff, str(atom), FF)
+       if swap_H:
+            newMol_H=swap_hyd(proto_pol, relax_iterations, str(atom), FF)
 
-       else:
-         newMol_H=no_swap(mol, iter_ff, FF)
+       if not swap_H:
+            newMol_H=no_swap(proto_pol, relax_iterations, FF)
 
        return newMol_H
     
@@ -209,10 +209,10 @@ class Rnp():
        
        mol = monomer.mon_to_poly()
 
-       if swap_H == "True":
-         newMol_H=swap_hyd(mol, iter_ff, str(atom), FF)
+       if swap_H:
+           newMol_H=swap_hyd(proto_pol, relax_iterations, str(atom), FF)
 
-       else:
-         newMol_H=no_swap(mol, iter_ff, FF)
+       if not swap_H:
+           newMol_H=no_swap(proto_pol, relax_iterations, FF)
 
        return newMol_H
