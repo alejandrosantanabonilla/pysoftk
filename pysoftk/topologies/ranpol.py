@@ -53,7 +53,7 @@ class Rnp():
        self.atom = atom
 
     def random_ab_copolymer(self, len_polymer, pA,
-                            iter_ff=100, FF="MMFF", swap_H=True):
+                            relax_iterations=100, FF="MMFF", swap_H=True):
        """ Function to build a random copolymer using an user provided probability (pA) for merging the monomer ma and imposiing the condition pB=1-pA.
 
 
@@ -116,16 +116,16 @@ class Rnp():
         
        mol=monomer.mon_to_poly()
 
-       if swap_H == "True":
-         newMol_H=swap_hyd(mol, iter_ff, str(atom), FF)
+       if swap_H:
+            newMol_H=swap_hyd(mol, relax_iterations, str(atom), FF)
 
-       else:
-         newMol_H=no_swap(mol, iter_ff, FF)
+       if not swap_H:
+            newMol_H=no_swap(mol, relax_iterations, FF)
 
        return newMol_H
     
     def random_abc_copolymer(self, mc, len_polymer, pA,
-                             pB, iter_ff=100, FF="MMFF", swap_H=True):
+                             pB, relax_iterations=100, FF="MMFF", swap_H=True):
         
        """ Function to build a random copolymer based on an user defined probability (pA) of merging mA, pB for monomer mb, and the condition pC=1-pA-pB.
 
@@ -209,10 +209,10 @@ class Rnp():
        
        mol = monomer.mon_to_poly()
 
-       if swap_H == "True":
-         newMol_H=swap_hyd(mol, iter_ff, str(atom), FF)
+       if swap_H:
+           newMol_H=swap_hyd(mol, relax_iterations, str(atom), FF)
 
-       else:
-         newMol_H=no_swap(mol, iter_ff, FF)
+       if not swap_H:
+           newMol_H=no_swap(mol, relax_iterations, FF)
 
        return newMol_H

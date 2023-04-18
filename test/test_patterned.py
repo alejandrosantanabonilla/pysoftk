@@ -17,6 +17,7 @@ from pysoftk.linear_polymer.utils import *
 
 # PYTESTS
 
+
 testdata1=[('ABC', '[H]c1c(-c2sc(Br)c([H])c2[H])oc(-c2c([H])c([H])c(Br)c([H])c2[H])c1[H]'),
            ('ACB', '[H]c1c(Br)oc(-c2sc(-c3c([H])c([H])c(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
            ('BAC', '[H]c1c(Br)oc(-c2c([H])c([H])c(-c3sc(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
@@ -61,7 +62,7 @@ def test_threemols(comb, expected):
          Chem.MolFromSmiles('c1cc(oc1Br)Br'),
          Chem.MolFromSmiles('c1cc(sc1Br)Br')]
 
-   b=Pt(comb, mols, "Br").pattern_block_poly()
+   b=Pt(comb, mols, "Br").pattern_block_poly(swap_H=False)
    assert Chem.MolToSmiles(b) == expected
 
 
@@ -76,7 +77,7 @@ def test_fourmols(comb, expected):
          Chem.MolFromSmiles('BrCCBr')]
 
 
-   a=Pt(str(comb), mols, "Br").pattern_block_poly()
+   a=Pt(str(comb), mols, "Br").pattern_block_poly(swap_H=False)
    assert Chem.MolToSmiles(a) == expected
 
 
