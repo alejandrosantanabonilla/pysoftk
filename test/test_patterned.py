@@ -17,7 +17,7 @@ from pysoftk.linear_polymer.utils import *
 
 # PYTESTS
 
-testdata1=[('ABC', '[H]c1oc(-c2sc(-c3c([H])c([H])c([H])c([H])c3[H])c([H])c2[H])c([H])c1[H]',
+testdata1=[('ABC', '[H]c1c(Br)oc(-c2sc(-c3c([H])c([H])c(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
            ('ACB', '[H]c1c(Br)oc(-c2sc(-c3c([H])c([H])c(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
            ('BAC', '[H]c1c(Br)oc(-c2c([H])c([H])c(-c3sc(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
            ('BCA', '[H]c1c(Br)oc(-c2sc(-c3c([H])c([H])c(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
