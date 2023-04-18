@@ -89,7 +89,7 @@ def swap_hyd(mol, iter_ff, atom, FF="MMFF"):
        
        
        
-def MMFF_rel(mol, iter_ff):
+def MMFF_rel(mol, iter_ff, vdw_par=0.001):
     """Function to employ a MMFF molecular mechanics FF.
     
 
@@ -101,6 +101,9 @@ def MMFF_rel(mol, iter_ff):
 
     iter_ff: int
           Number of iterations to perform a FF geometry optimization.
+          
+    vdw_par: float
+          Extension of the vdW interaction range. 
 
     Returns
     ---------
@@ -109,11 +112,11 @@ def MMFF_rel(mol, iter_ff):
           RDKit Mol object
     """
 
-    AllChem.MMFFOptimizeMolecule(mol, maxIters=int(iter_ff))
+    AllChem.MMFFOptimizeMolecule(mol, nonBondedThresh=float(vdw_par), maxIters=int(iter_ff))
 
     return mol
 
-def UFF_rel(mol, iter_ff):
+def UFF_rel(mol, iter_ff, vdw_par=0.001):
     """Function to employ an UFF molecular mechanics FF.
 
     Parameters
@@ -124,6 +127,9 @@ def UFF_rel(mol, iter_ff):
 
     iter_ff: int
           Number of iterations to perform a FF geometry optimization.
+          
+    vdw_par: float
+          Extension of the vdW interaction range. 
     
 
     Returns
@@ -132,6 +138,48 @@ def UFF_rel(mol, iter_ff):
     mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
     """
-    AllChem.UFFOptimizeMolecule(mol, maxIters=int(iter_ff))
+    AllChem.UFFOptimizeMolecule(mol, vdwThresh=float(vdw_par), maxIters=int(iter_ff))
 
     return mol
+
+def etkdgv3_energies(mol, num_conf=1):
+   """Calculate molecular configurations using the RDKit-ETKDG3 method.
+      
+      Parameters
+      ----------
+       
+      mol: rdkit.Chem.Mol
+          RDKit Mol object
+
+      num_conf: int
+          The number of configurations requested to be computed.
+
+     
+      Return
+      --------
+
+      datapoint: rdkit.Chem.rdistGeom.EmbedMultipleConfs
+            RDKit Mol object
+
+   """
+   
+   AllChem.EmbedMolecule(mol, useRandomCoords=True)
+   AllChem.MMFFOptimizeMolecule(mol)
+     
+   m=Chem.Mol(mol)
+      
+   ps=AllChem.ETKDGv3()
+   ps.randomSeed=0xf00d
+   ps.RandomCoords=False
+     
+   cids=AllChem.EmbedMultipleConfs(m,int(num_conf),ps)
+   mp=AllChem.MMFFGetMoleculeProperties(m, mmffVariant='MMFF94s')
+   AllChem.MMFFOptimizeMoleculeConfs(m, numThreads=0,
+                                     mmffVariant='MMFF94s')
+
+   energies=[]
+   for cid in cids:
+      ff = AllChem.MMFFGetMoleculeForceField(m, mp, confId=cid)
+      energies.append(ff.CalcEnergy())
+
+   return m, cids, energies 
