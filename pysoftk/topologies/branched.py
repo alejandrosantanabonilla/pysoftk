@@ -111,10 +111,10 @@ class Bd:
        for _ in range(int(nm_ph)):
            res=self.merge_arms(res, arm, str(atom))
 
-       if swap_H == "True":
+       if swap_H:
          mol=swap_hyd(res, iter_ff, str(atom), FF)
 
-       else:
+       if not swap_H:
          mol=no_swap(res, iter_ff, FF)
             
        return mol
