@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9, 3.10.1]
+        python-version: [3.7, 3.8, 3.9, 3.10.1]
         os: [ubuntu-latest, macOS-latest]
  
     # Steps represent a sequence of tasks that will be executed as part of the job
