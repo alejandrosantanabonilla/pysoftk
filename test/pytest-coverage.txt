@@ -1,0 +1,49 @@
+============================= test session starts ==============================
+platform linux -- Python 3.9.16, pytest-7.4.0, pluggy-1.2.0
+rootdir: /home/runner/work/pysoftk/pysoftk
+plugins: cov-4.1.0
+collected 72 items
+
+test_calculator.py .                                                     [  1%]
+test_chains_func.py .....                                                [  8%]
+test_check_bonds.py .                                                    [  9%]
+test_folders_func.py ...                                                 [ 13%]
+test_format_print.py ........                                            [ 25%]
+test_htp_gfn.py .                                                        [ 26%]
+test_patterned.py ..............................                         [ 68%]
+test_single_monomers.py ...........                                      [ 83%]
+test_sm_func.py .....                                                    [ 90%]
+test_topologies.py .......                                               [100%]
+
+=============================== warnings summary ===============================
+test_single_monomers.py:108
+  /home/runner/work/pysoftk/pysoftk/test/test_single_monomers.py:108: DeprecationWarning: invalid escape sequence \C
+    a=Chem.MolFromSmiles("C(/C=C(\C)/CBr)Br")
+
+test/test_calculator.py::test_pyscf
+  /home/runner/.local/lib/python3.9/site-packages/pyscf/geomopt/berny_solver.py:21: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+---- generated xml file: /home/runner/work/pysoftk/pysoftk/test/pytest.xml -----
+
+---------- coverage: platform linux, python 3.9.16-final-0 -----------
+Name                                                                                       Stmts   Miss  Cover   Missing
+------------------------------------------------------------------------------------------------------------------------
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/folder_manager/folder_creator.py      51      4    92%   38, 135, 157-158
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/format_printers/format_mol.py         65     19    71%   59-60, 87-92, 116-121, 145-149, 156-157
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/htp_tools/calculator_htp.py           52     13    75%   144-169, 244-250
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/linear_polymer/super_monomer.py       51      7    86%   148-156
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/linear_polymer/utils.py               46     46     0%   1-185
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/tools/utils_rdkit.py                  60      9    85%   44, 90, 146-148, 172-180
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/topologies/branched.py                40      1    98%   120
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/topologies/diblock.py                 55      1    98%   186
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/topologies/ranpol.py                  75     10    87%   99, 106, 126, 184-188, 193, 199, 213, 223
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/topologies/utils.py                   51     51     0%   1-220
+/home/runner/.local/lib/python3.9/site-packages/pysoftk/torsional/torsional.py                88     10    89%   49-50, 226-237
+------------------------------------------------------------------------------------------------------------------------
+TOTAL                                                                                        877    171    81%
+
+14 files skipped due to complete coverage.
+
+================== 72 passed, 2 warnings in 820.67s (0:13:40) ==================
