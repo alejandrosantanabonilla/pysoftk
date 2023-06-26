@@ -5,8 +5,8 @@ from rdkit.Chem import rdDistGeom, rdMolTransforms
 from rdkit.Chem import rdDistGeom as molDG
 
 import numpy as np
-from .utils import *
-from pysoftk.linear_polymer.utils import *
+from pysoftk.tools.utils_func import *
+from pysoftk.tools.utils_rdkit import *
 
 class Bd:
     """
@@ -34,7 +34,8 @@ class Bd:
        self.atom = atom
 
     def merge_arms(self, core, arm, atom):
-       """ Function to attach user defined molecules to a provided molecular core using a placeholder.
+       """ Function to attach user defined molecules to a 
+           provided molecular core using a placeholder.
 
        Parameters
        ----------
@@ -43,28 +44,27 @@ class Bd:
             RDKit Mol object
 
        arm : rdkit.Chem.rdchem.Mol
-            RDKit Mol object
+            RDKit Mol object.
  
        atom : str
-            The placeholder atom to combine the molecules and form a new monomer
+            The placeholder atom to combine the molecules 
+            and form a new monomer.
 
        Return
        -------
 
        mol : rdkit.Chem.rdchem.Mol
-             RDKit Mol object
+             RDKit Mol object.
+
        """
        
        outmol=Chem.CombineMols(core, arm)
        AllChem.EmbedMolecule(outmol)
 
-       new_bond=seek_plhold(outmol, str(atom))
+       new_bond=atom_neigh(outmol, str(atom))
     
-       # New way to flatten a list using sum function
-       at=sum(new_bond, [])
-
-       br_1,c_1=tuple(at[0])
-       br_2,c_2=tuple(at[-1])
+       br_1,c_1=tuple(new_bond[0])
+       br_2,c_2=tuple(new_bond[-1])
 
        rwmol = Chem.RWMol(outmol)     
        rwmol.AddBond(c_1, c_2, Chem.BondType.SINGLE)
@@ -90,7 +90,9 @@ class Bd:
             Number of iterations used for relaxing a molecular object. 
 
         swap_H: bool
-             Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species.   
+             Indicates if the user defined atomic place holder 
+             is changed to a Hydrogen atom or remain as the 
+             used species.   
 
        Return
        -------

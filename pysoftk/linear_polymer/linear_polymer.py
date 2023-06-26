@@ -1,14 +1,21 @@
 from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Geometry import Point3D
-from rdkit.Chem import rdDistGeom, rdMolTransforms
+from rdkit.Chem import rdDistGeom
 from rdkit.Chem import rdDistGeom as molDG
-
-import numpy as np
-from .utils import *
-
+from rdkit.Chem.rdMolTransforms import *
 from rdkit import RDLogger
 RDLogger.DisableLog('rdApp.*')
+
+
+import numpy as np
+from pysoftk.tools.utils_func import *
+from pysoftk.tools.utils_ob   import *
+from pysoftk.tools.utils_rdkit   import *
+
+from openbabel import openbabel as ob
+from openbabel import pybel as pb
+
 
 class Lp:
     """
@@ -49,7 +56,7 @@ class Lp:
        self.mol = mol
        self.atom = atom
        self.n_copies = n_copies
-       self.shift = float(2.5) if shift is None else float(shift)
+       self.shift = float(1.25) if shift is None else float(shift)
 
     def max_dist_mol(self):
         """Returns the maximum distance between atoms from an RDKit Mol Object.
@@ -97,6 +104,8 @@ class Lp:
        """    
 
        mol=self.mol
+       CanonicalizeConformer(mol.GetConformer())
+       
        n_copies=self.n_copies
        
        fragments=[mol for _ in range(int(n_copies))]
@@ -128,10 +137,14 @@ class Lp:
             outmol = Chem.CombineMols(outmol,values,
                                       offset=Point3D(x_offset*(idx+1),0.0, 0.0))
             
+        order=Chem.CanonicalRankAtoms(outmol, includeChirality=True)
+        mol_ordered=Chem.RenumberAtoms(outmol, list(order))
+
         return outmol
 
     def _bond_conn(self, outmol):
-        """Function to peruse the bonds and connections of place-hold atom within a super_monomer object.
+        """Function to peruse the bonds and connections of place-hold 
+        atom within a super_monomer object.
  
         Parameters
         -----------
@@ -148,20 +161,18 @@ class Lp:
         
         """
         atom=self.atom
-        conn=[]; neigh=[]
-        
-        rwmol = Chem.RWMol(outmol)
 
-        for atoms in rwmol.GetAtoms():
-            if atoms.GetSymbol() == str(atom):
-               conn.append(atoms.GetIdx())
-               neigh.append([(atoms.GetIdx(),nbr.GetIdx())
-                             for nbr in atoms.GetNeighbors()])
+        bonds=atom_neigh(outmol, str(atom))
+        conn_bonds=[b for a,b in bonds][1:-1]
 
-        return conn[1:-1], neigh[1:-1]
-   
+        erase_br=[a for a,b in bonds]
+        all_conn=list(zip(conn_bonds[::2], conn_bonds[1::2]))
+
+        return all_conn, erase_br
+    
     def proto_polymer(self):
-       """Function to create a linear polymer from a given super_monomer object.
+       """Function to create a linear polymer from a given 
+          super_monomer object.
 
        Returns
        --------
@@ -176,38 +187,32 @@ class Lp:
        
        fragments=self._copy_mol()
        outmol=self._polimerisation(fragments)
-       new_conn,new_neigh=self._bond_conn(outmol)   
+       all_conn, erase_br=self._bond_conn(outmol)   
 
        rwmol = Chem.RWMol(outmol)
-       c_bonds=[]
-       
-       for idx, value in enumerate(new_neigh):
-           br,c=value[0]
-           c_bonds.append(c)
+       for ini, fin in all_conn:
+          rwmol.AddBond(ini, fin, Chem.BondType.SINGLE)
 
-       tuple_c_bonds=[(c_bonds[i],c_bonds[i+1])
-                      for i in range(0,len(c_bonds),2)]
-
-       for i in tuple_c_bonds:
-           a,b=i
-           rwmol.AddBond(a, b, Chem.BondType.SINGLE)
-
-       for i in sorted(new_conn, key=None, reverse=True):
-           rwmol.RemoveAtom(i)
+       for i in sorted(erase_br[1:-1], key=None, reverse=True):
+          rwmol.RemoveAtom(i)
 
        mol3=rwmol.GetMol()
        Chem.SanitizeMol(mol3)
        
-       return mol3
+       mol4=Chem.AddHs(mol3, addCoords=True)
+       
+       return mol4
 
-    def linear_polymer(self, FF="MMFF", iter_ff=100):
-       """Function to create a linear polymer from a given super_monomer object.
+    def linear_polymer(self, FF="MMFF94", iter_ff=350, rot_steps=125):
+       """Function to create a linear polymer from a 
+          given super_monomer object.
 
        Parameters
        -----------
 
        FF : str
-          Selected Force-Field from RDKit options, i.e, UFF or MMFF
+          Selected Force-Field from RDKit options, i.e, 
+          UFF or MMFF.
          
        iter_ff: int
           The maximum number of iterations used for the FF.
@@ -221,18 +226,16 @@ class Lp:
 
        """
 
-       mol3=self.proto_polymer()
-
+       mol=self.proto_polymer()
        atom=self.atom
 
-       if FF == "MMFF":
-           AllChem.MMFFOptimizeMolecule(mol3,maxIters=int(iter_ff))
-           newMol_H=swap_hyd(mol3, int(iter_ff), atom, "MMFF")
+       mol1=remove_plcholder(mol, atom)
 
-       else:
-           AllChem.UFFOptimizeMolecule(mol3,maxIters=int(iter_ff))
-           newMol_H=swap_hyd(mol3, int(iter_ff), atom, "UFF")
+       #Using PDB object to preserve bond information
+       last_rdkit=Chem.MolToPDBBlock(mol1)
+       mol_new=pb.readstring('pdb', last_rdkit)
 
-       return newMol_H 
+       last_mol=ff_ob_relaxation(mol_new, FF, int(iter_ff))
+       rot_mol=rotor_opt(last_mol, FF, int(rot_steps))
 
-
+       return rot_mol

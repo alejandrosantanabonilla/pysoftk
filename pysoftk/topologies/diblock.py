@@ -8,15 +8,16 @@ RDLogger.DisableLog('rdApp.*')
 
 import numpy as np
 import copy
-from .utils import *
 from collections import OrderedDict
 
 from pysoftk.linear_polymer import linear_polymer as lp
 from pysoftk.linear_polymer import super_monomer  as sm
-from pysoftk.linear_polymer.utils import *
+from pysoftk.tools.utils_rdkit import *
+from pysoftk.tools.utils_func import *
 
 class Db:
-    """A class for creating a diblock copolymers from given RDKit molecules.
+    """A class for creating a diblock copolymers from 
+       given RDKit molecules.
 
     Examples
     ---------
@@ -43,7 +44,8 @@ class Db:
             RDKit Mol object
  
        atom : str
-            The placeholder atom to combine the molecules and form a new monomer
+            The placeholder atom to combine the molecules 
+            and form a new monomer
        
           
        """
@@ -72,7 +74,8 @@ class Db:
             Selected FF between MMFF or UFF
 
         relax_iterations: int  
-            Number of iterations used for relaxing a molecular object.
+            Number of iterations used for relaxing a 
+            molecular object.
 
         Return
         -------
@@ -147,7 +150,8 @@ class Pt:
             Selected FF between MMFF or UFF
 
         swap_H: bool
-             Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species. 
+             Indicates if the user defined atomic place holder is changed to a 
+             Hydrogen atom or remain as the used species. 
 
         Return
         --------

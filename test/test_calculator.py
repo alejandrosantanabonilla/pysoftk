@@ -18,7 +18,7 @@ def test_pyscf():
     # Creating linear polymer
     a=Sm(mol_1,mol_2,"Br")
     k=a.mon_to_poly()
-    new=Lp(k,"Br",2,shift=1.25).linear_polymer("MMFF",250)
+    new=Lp(k,"Br",2,shift=1.25).linear_polymer("MMFF94",250)
     Fmt(new).xyz_print("test_1.xyz")
 
     # pyscf semiempirical

@@ -2,9 +2,8 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Chem import rdDistGeom as molDG
 from rdkit.Chem import TorsionFingerprints
-from .utils import *
 
-
+from pysoftk.tools.utils_rdkit import *
 import numpy as np
 
 class Mcon(object):

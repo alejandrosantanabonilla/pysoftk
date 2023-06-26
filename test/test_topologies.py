@@ -18,8 +18,17 @@ testdata=[
     ('c1(ccc(o1)Br)Br',1),
 ]
 
+@pytest.fixture
+def rootdir():
+    return os.path.dirname(os.path.abspath(__file__))
 
-def test_diblock():
+
+def test_diblock(rootdir):
+
+    est_file = os.path.join(rootdir, 'tmp_folder11')
+    os.mkdir(est_file)
+    os.chdir(est_file)
+
     mol_1=Chem.MolFromSmiles('BrCOCBr')
     mol_2=Chem.MolFromSmiles('[C@H](CBr)(OBr)C')
     
@@ -28,10 +37,15 @@ def test_diblock():
     
     b=Fld().seek_files("xyz")
     assert len(b) == 1
-    os.remove("diblock_monomer.xyz")
+
+    shutil.rmtree(est_file)
 
 @pytest.mark.parametrize("mol,expected", testdata)
-def test_ring(mol,expected):
+def test_ring(mol,expected, rootdir):
+
+  est_file = os.path.join(rootdir, 'tmp_folder12')
+  os.mkdir(est_file)
+  os.chdir(est_file)
     
   mol=Chem.MolFromSmiles(str(mol))
   AllChem.EmbedMolecule(mol)
@@ -41,9 +55,15 @@ def test_ring(mol,expected):
 
   b=Fld().seek_files("xyz")
   assert len(b) == expected
-  os.remove("ring.xyz")
 
-def test_branched_1():
+  shutil.rmtree(est_file)
+
+def test_branched_1(rootdir):
+
+    est_file = os.path.join(rootdir, 'tmp_folder12')
+    os.mkdir(est_file)
+    os.chdir(est_file)
+
     core=Chem.MolFromSmiles('BrN(Br)CCN(Br)Br')
     prob=Chem.MolFromSmiles('[C@H](CCl)(OBr)C')
 
@@ -54,13 +74,17 @@ def test_branched_1():
     final = Bd(core, arm, "Br").branched_polymer()
     Fmt(final).xyz_print("bran1.xyz")
 
-    os.remove("mol.mol")
     b=Fld().seek_files("xyz")
 
-    #assert len(b) == 1
-    os.remove("bran1.xyz")
+    assert len(b) == 1
+    
+    shutil.rmtree(est_file)
 
-def test_branched_2():
+def test_branched_2(rootdir):
+
+    est_file = os.path.join(rootdir, 'tmp_folder13')
+    os.mkdir(est_file)
+    os.chdir(est_file)
 
     core=Chem.MolFromSmiles('BrN(Br)CCN(Br)Br')
     arm=Chem.MolFromSmiles('BrOCCCl')
@@ -71,9 +95,15 @@ def test_branched_2():
     b=Fld().seek_files("xyz")
 
     assert len(b) == 1
-    os.remove("bran2.xyz")
 
-def test_ran_pol():
+    shutil.rmtree(est_file)
+
+def test_ran_pol(rootdir):
+
+    est_file = os.path.join(rootdir, 'tmp_folder13')
+    os.mkdir(est_file)
+    os.chdir(est_file)
+    
     mol_2=Chem.MolFromSmiles('BrCOCBr')
     mol_4=Chem.MolFromSmiles('c1(ccc(cc1)Br)Br')
     mol_5=Chem.MolFromSmiles('BrCCBr')
@@ -88,5 +118,4 @@ def test_ran_pol():
 
     assert len(b) == 2
     
-    os.remove("dia.xyz")
-    os.remove("tri.xyz")
+    shutil.rmtree(est_file)

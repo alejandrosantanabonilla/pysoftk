@@ -1,4 +1,6 @@
 import pytest
+import os
+
 from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Chem import rdDistGeom
@@ -26,22 +28,33 @@ testdata_2=[
     ('c1c([C@@H](CBr)Br)cccc1',1),
 ]
 
+@pytest.fixture
+def rootdir():
+    return os.path.dirname(os.path.abspath(__file__))
+
+
 @pytest.mark.parametrize("mol,expected", testdata)
-def test_single_monomer(mol,expected):
+def test_single_monomer(mol,expected, rootdir):
+    #Creating polymer 1
     
-    # Original Embedding
     a=Chem.MolFromSmiles(str(mol))
     AllChem.EmbedMolecule(a)
 
-    new=Lp(a,"Br",7,shift=1.25).linear_polymer("MMFF",350)
+    est_file = os.path.join(rootdir, 'tmp_folder15')
+    os.mkdir(est_file)
+    os.chdir(est_file)
+    
+    new=Lp(a,"Br",15,shift=1.0).linear_polymer("MMFF94")
     Fmt(new).xyz_print("mol_1.xyz")
 
     b=Fld().seek_files("xyz")
     assert len(b) == expected
-    os.remove("mol_1.xyz")
+
+    shutil.rmtree(est_file)
+    
 
 @pytest.mark.parametrize("mol,expected", testdata_2)
-def test_single_monomer_2(mol, expected):
+def test_single_monomer_2(mol, expected, rootdir):
     
     a=Chem.MolFromSmiles(str(mol))
 
@@ -49,15 +62,21 @@ def test_single_monomer_2(mol, expected):
     ps = rdDistGeom.ETKDGv3()
     AllChem.EmbedMolecule(a,ps)
 
-    new=Lp(a,"Br",7,shift=1.25).linear_polymer("MMFF",350)
+    est_file = os.path.join(rootdir, 'tmp_folder16')
+    os.mkdir(est_file)
+    os.chdir(est_file)
+    
+    new=Lp(a,"Br",5,shift=1.0).linear_polymer("MMFF94",350)
     Fmt(new).xyz_print("mol_1.xyz")
 
     b=Fld().seek_files("xyz")
     
     assert len(b) == expected
-    os.remove("mol_1.xyz")
 
-def test_problematic_1():
+    shutil.rmtree(est_file)
+
+
+def test_problematic_1(rootdir):
     # Procedure for molecules with a very complicated stereochemistry
     # One needs to read in SMILES, print into MOL and reload in SMILES
     # MOL-format enables the creation of bonds and cures this issue.
@@ -69,15 +88,21 @@ def test_problematic_1():
     ps = rdDistGeom.ETKDGv3()
     AllChem.EmbedMolecule(c,ps)
 
-    new=Lp(c,"Br",7,shift=1.25).linear_polymer("MMFF",350)
+    est_file = os.path.join(rootdir, 'tmp_folder17')
+    os.mkdir(est_file)
+    os.chdir(est_file)
+   
+    new=Lp(c,"Br",10,shift=1.0).linear_polymer("MMFF94",350)
     Fmt(new).xyz_print("mol_1.xyz")
 
     b=Fld().seek_files("xyz")
     
     assert len(b) == 1
-    os.remove("mol_1.xyz")
+
+    shutil.rmtree(est_file)
+
     
-def test_problematic_2():
+def test_problematic_2(rootdir):
     # Last example of a molecule withcomplicated definition.
     
     a=Chem.MolFromSmiles("C(/C=C(\C)/CBr)Br")
@@ -85,11 +110,16 @@ def test_problematic_2():
     ps = rdDistGeom.ETKDGv3()
     AllChem.EmbedMolecule(a,ps)
 
-    new=Lp(a,"Br",7,shift=1.25).linear_polymer("MMFF",350)
-    Fmt(new).xyz_print("mol_1.xyz")
+    est_file = os.path.join(rootdir, 'tmp_folder18')
+    os.mkdir(est_file)
+    os.chdir(est_file)
 
+    new=Lp(a,"Br",8,shift=1.0).linear_polymer("MMFF94",350)
+    Fmt(new).xyz_print("mol_1.xyz")
+    
     b=Fld().seek_files("xyz")
     
     assert len(b) == 1
-    os.remove("mol_1.xyz")
-    
+
+    shutil.rmtree(est_file)
+

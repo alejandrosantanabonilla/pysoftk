@@ -7,7 +7,8 @@ from tqdm import tqdm
 import time
 
 class Htp(object):
-    """Class enabling High-throughput calculations in different created folders for provided molecules.
+    """Class enabling High-throughput calculations in different 
+       created folders for provided molecules.
 
     Attributes 
     ----------

@@ -13,7 +13,7 @@ from pysoftk.format_printers.format_mol import *
 from pysoftk.folder_manager.folder_creator import *
 
 from itertools import permutations
-from pysoftk.linear_polymer.utils import *
+from pysoftk.tools.utils_rdkit import *
 
 # PYTESTS
 

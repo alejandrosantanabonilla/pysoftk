@@ -12,8 +12,8 @@ import copy
 from pysoftk.linear_polymer import linear_polymer as lp
 from pysoftk.linear_polymer import super_monomer  as sm
 
-from .utils import *
-from pysoftk.linear_polymer.utils import *
+from pysoftk.tools.utils_rdkit import *
+from pysoftk.tools.utils_func import *
 
 class Rnp():
     """A class for creating a random copolymer from given RDKit molecules.
@@ -54,7 +54,9 @@ class Rnp():
 
     def random_ab_copolymer(self, len_polymer, pA,
                             relax_iterations=100, FF="MMFF", swap_H=True):
-       """ Function to build a random copolymer using an user provided probability (pA) for merging the monomer ma and imposiing the condition pB=1-pA.
+       """ Function to build a random copolymer using an user provided 
+           probability (pA) for merging the monomer ma and imposing 
+           the condition pB=1-pA.
 
 
        Parameters
@@ -73,7 +75,9 @@ class Rnp():
            User selected FF between "MMFF" or "UFF".      
 
         swap_H: bool
-             Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species.   
+             Indicates if the user defined atomic place holder 
+             is changed to a Hydrogen atom or remain as the 
+             used species.   
  
        Return
        -------    
@@ -104,7 +108,6 @@ class Rnp():
        monomer = sm.Sm(m1, m2, str(atom))    
     
        for i in range(len_polymer-1):
-        
           rand = np.random.rand()
     
           if rand<pA:
@@ -127,7 +130,9 @@ class Rnp():
     def random_abc_copolymer(self, mc, len_polymer, pA,
                              pB, relax_iterations=100, FF="MMFF", swap_H=True):
         
-       """ Function to build a random copolymer based on an user defined probability (pA) of merging mA, pB for monomer mb, and the condition pC=1-pA-pB.
+       """ Function to build a random copolymer based on an user defined 
+           probability (pA) of merging mA, pB for monomer mb, and the 
+           condition pC=1-pA-pB.
 
        Parameters
        -----------
@@ -154,7 +159,9 @@ class Rnp():
            User selected FF.      
 
        swap_H: bool
-             Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species.   
+             Indicates if the user defined atomic place holder 
+             is changed to a Hydrogen atom or remain as the 
+             used species.   
  
        Return
        -------
