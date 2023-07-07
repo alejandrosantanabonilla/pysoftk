@@ -11,6 +11,8 @@
 .. _PySCF-semiempirical: https://github.com/pyscf/semiempirical
 .. _PySCF-install: https://pyscf.org/install.html
 .. _Acsnano: https://pubs.acs.org/doi/full/10.1021/acsnano.2c04794
+.. _OpenBabel: https://openbabel.org/docs/dev/UseTheLibrary/Python.html
+
 
 .. role:: python(code)
    :language: python

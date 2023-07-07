@@ -10,6 +10,8 @@
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/sphinx_highlight.js"></script>
@@ -82,15 +84,16 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 
 <span class="kn">from</span> <span class="nn">pysoftk.linear_polymer</span> <span class="kn">import</span> <span class="n">linear_polymer</span> <span class="k">as</span> <span class="n">lp</span>
 <span class="kn">from</span> <span class="nn">pysoftk.linear_polymer</span> <span class="kn">import</span> <span class="n">super_monomer</span>  <span class="k">as</span> <span class="n">sm</span>
-<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pysoftk.tools.utils_rdkit</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pysoftk.tools.utils_func</span> <span class="kn">import</span> <span class="o">*</span>
 
 <div class="viewcode-block" id="Db"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.diblock.Db">[docs]</a><span class="k">class</span> <span class="nc">Db</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for creating a diblock copolymers from given RDKit molecules.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for creating a diblock copolymers from </span>
+<span class="sd">       given RDKit molecules.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    ---------</span>
@@ -117,7 +120,8 @@
 <span class="sd">            RDKit Mol object</span>
 <span class="sd"> </span>
 <span class="sd">       atom : str</span>
-<span class="sd">            The placeholder atom to combine the molecules and form a new monomer</span>
+<span class="sd">            The placeholder atom to combine the molecules </span>
+<span class="sd">            and form a new monomer</span>
 <span class="sd">       </span>
 <span class="sd">          </span>
 <span class="sd">       &quot;&quot;&quot;</span>
@@ -146,7 +150,8 @@
 <span class="sd">            Selected FF between MMFF or UFF</span>
 
 <span class="sd">        relax_iterations: int  </span>
-<span class="sd">            Number of iterations used for relaxing a molecular object.</span>
+<span class="sd">            Number of iterations used for relaxing a </span>
+<span class="sd">            molecular object.</span>
 
 <span class="sd">        Return</span>
 <span class="sd">        -------</span>
@@ -160,11 +165,11 @@
         <span class="n">atom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span>
 
         <span class="n">string_1</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="o">*</span><span class="n">len_block_A</span>
-        <span class="n">monomer</span><span class="o">=</span><span class="n">Pt</span><span class="p">(</span><span class="n">string_1</span><span class="p">,</span> <span class="p">[</span><span class="n">ma</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span><span class="o">.</span><span class="n">pattern_block_poly</span><span class="p">()</span>
+        <span class="n">monomer</span><span class="o">=</span><span class="n">Pt</span><span class="p">(</span><span class="n">string_1</span><span class="p">,</span> <span class="p">[</span><span class="n">ma</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span><span class="o">.</span><span class="n">pattern_block_poly</span><span class="p">(</span><span class="n">swap_H</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 
         <span class="n">string_2</span><span class="o">=</span><span class="s1">&#39;B&#39;</span><span class="o">*</span><span class="n">len_block_B</span>
-        <span class="n">monomer2</span><span class="o">=</span><span class="n">Pt</span><span class="p">(</span><span class="n">string_2</span><span class="p">,</span> <span class="p">[</span><span class="n">mb</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span><span class="o">.</span><span class="n">pattern_block_poly</span><span class="p">()</span>
+        <span class="n">monomer2</span><span class="o">=</span><span class="n">Pt</span><span class="p">(</span><span class="n">string_2</span><span class="p">,</span> <span class="p">[</span><span class="n">mb</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span><span class="o">.</span><span class="n">pattern_block_poly</span><span class="p">(</span><span class="n">swap_H</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         
         <span class="n">diblock</span><span class="o">=</span><span class="n">sm</span><span class="o">.</span><span class="n">Sm</span><span class="p">(</span><span class="n">monomer</span><span class="p">,</span> <span class="n">monomer2</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span><span class="o">.</span><span class="n">monomer</span><span class="p">()</span>
             
@@ -221,7 +226,8 @@
 <span class="sd">            Selected FF between MMFF or UFF</span>
 
 <span class="sd">        swap_H: bool</span>
-<span class="sd">             Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species. </span>
+<span class="sd">             Indicates if the user defined atomic place holder is changed to a </span>
+<span class="sd">             Hydrogen atom or remain as the used species. </span>
 
 <span class="sd">        Return</span>
 <span class="sd">        --------</span>
@@ -234,7 +240,6 @@
         <span class="n">mols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mols</span>
         <span class="n">atom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span>
 
-        
         <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mol_</span><span class="si">{}</span><span class="s1">+&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">mols</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
         <span class="n">seq</span><span class="o">=</span><span class="n">pattern_mol_seq</span><span class="p">(</span><span class="n">names</span><span class="p">,</span><span class="n">pattern</span><span class="p">)</span>
    
@@ -252,11 +257,11 @@
         <span class="n">tpb</span><span class="o">=</span><span class="n">tuple_bonds</span><span class="p">(</span><span class="n">lst_ngh</span><span class="p">)</span>
 
         <span class="n">proto_pol</span><span class="o">=</span><span class="n">create_pol</span><span class="p">(</span><span class="n">outmol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">tpb</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">swap_H</span><span class="p">:</span>
+            <span class="n">newMol_H</span><span class="o">=</span><span class="n">swap_hyd</span><span class="p">(</span><span class="n">proto_pol</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">FF</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">swap_H</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
-          <span class="n">newMol_H</span><span class="o">=</span><span class="n">swap_hyd</span><span class="p">(</span><span class="n">proto_pol</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">FF</span><span class="p">)</span>
-
-        <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">swap_H</span><span class="p">:</span>
             <span class="n">newMol_H</span><span class="o">=</span><span class="n">no_swap</span><span class="p">(</span><span class="n">proto_pol</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">,</span> <span class="n">FF</span><span class="p">)</span>
             
         <span class="k">return</span> <span class="n">newMol_H</span></div></div>

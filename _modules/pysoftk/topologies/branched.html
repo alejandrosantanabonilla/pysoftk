@@ -10,6 +10,8 @@
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/sphinx_highlight.js"></script>
@@ -79,8 +81,8 @@
 <span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">rdDistGeom</span> <span class="k">as</span> <span class="n">molDG</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pysoftk.tools.utils_func</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pysoftk.tools.utils_rdkit</span> <span class="kn">import</span> <span class="o">*</span>
 
 <div class="viewcode-block" id="Bd"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.branched.Bd">[docs]</a><span class="k">class</span> <span class="nc">Bd</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -108,7 +110,8 @@
        <span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">atom</span>
 
 <div class="viewcode-block" id="Bd.merge_arms"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.branched.Bd.merge_arms">[docs]</a>    <span class="k">def</span> <span class="nf">merge_arms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core</span><span class="p">,</span> <span class="n">arm</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
-<span class="w">       </span><span class="sd">&quot;&quot;&quot; Function to attach user defined molecules to a provided molecular core using a placeholder.</span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot; Function to attach user defined molecules to a </span>
+<span class="sd">           provided molecular core using a placeholder.</span>
 
 <span class="sd">       Parameters</span>
 <span class="sd">       ----------</span>
@@ -117,28 +120,27 @@
 <span class="sd">            RDKit Mol object</span>
 
 <span class="sd">       arm : rdkit.Chem.rdchem.Mol</span>
-<span class="sd">            RDKit Mol object</span>
+<span class="sd">            RDKit Mol object.</span>
 <span class="sd"> </span>
 <span class="sd">       atom : str</span>
-<span class="sd">            The placeholder atom to combine the molecules and form a new monomer</span>
+<span class="sd">            The placeholder atom to combine the molecules </span>
+<span class="sd">            and form a new monomer.</span>
 
 <span class="sd">       Return</span>
 <span class="sd">       -------</span>
 
 <span class="sd">       mol : rdkit.Chem.rdchem.Mol</span>
-<span class="sd">             RDKit Mol object</span>
+<span class="sd">             RDKit Mol object.</span>
+
 <span class="sd">       &quot;&quot;&quot;</span>
        
        <span class="n">outmol</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">CombineMols</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">arm</span><span class="p">)</span>
        <span class="n">AllChem</span><span class="o">.</span><span class="n">EmbedMolecule</span><span class="p">(</span><span class="n">outmol</span><span class="p">)</span>
 
-       <span class="n">new_bond</span><span class="o">=</span><span class="n">seek_plhold</span><span class="p">(</span><span class="n">outmol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
+       <span class="n">new_bond</span><span class="o">=</span><span class="n">atom_neigh</span><span class="p">(</span><span class="n">outmol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
     
-       <span class="c1"># New way to flatten a list using sum function</span>
-       <span class="n">at</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">new_bond</span><span class="p">,</span> <span class="p">[])</span>
-
-       <span class="n">br_1</span><span class="p">,</span><span class="n">c_1</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-       <span class="n">br_2</span><span class="p">,</span><span class="n">c_2</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">at</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+       <span class="n">br_1</span><span class="p">,</span><span class="n">c_1</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">new_bond</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+       <span class="n">br_2</span><span class="p">,</span><span class="n">c_2</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">new_bond</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
        <span class="n">rwmol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">RWMol</span><span class="p">(</span><span class="n">outmol</span><span class="p">)</span>     
        <span class="n">rwmol</span><span class="o">.</span><span class="n">AddBond</span><span class="p">(</span><span class="n">c_1</span><span class="p">,</span> <span class="n">c_2</span><span class="p">,</span> <span class="n">Chem</span><span class="o">.</span><span class="n">BondType</span><span class="o">.</span><span class="n">SINGLE</span><span class="p">)</span>
@@ -164,7 +166,9 @@
 <span class="sd">            Number of iterations used for relaxing a molecular object. </span>
 
 <span class="sd">        swap_H: bool</span>
-<span class="sd">             Indicates if the user defined atomic place holder is changed to a Hydrogen atom or remain as the used species.   </span>
+<span class="sd">             Indicates if the user defined atomic place holder </span>
+<span class="sd">             is changed to a Hydrogen atom or remain as the </span>
+<span class="sd">             used species.   </span>
 
 <span class="sd">       Return</span>
 <span class="sd">       -------</span>
@@ -185,10 +189,10 @@
        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">nm_ph</span><span class="p">)):</span>
            <span class="n">res</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">merge_arms</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">arm</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
 
-       <span class="k">if</span> <span class="n">swap_H</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
+       <span class="k">if</span> <span class="n">swap_H</span><span class="p">:</span>
          <span class="n">mol</span><span class="o">=</span><span class="n">swap_hyd</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">FF</span><span class="p">)</span>
 
-       <span class="k">else</span><span class="p">:</span>
+       <span class="k">if</span> <span class="ow">not</span> <span class="n">swap_H</span><span class="p">:</span>
          <span class="n">mol</span><span class="o">=</span><span class="n">no_swap</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">,</span> <span class="n">FF</span><span class="p">)</span>
             
        <span class="k">return</span> <span class="n">mol</span></div></div>

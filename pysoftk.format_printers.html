@@ -11,6 +11,8 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
@@ -54,6 +56,7 @@
 <li class="toctree-l4 current"><a class="current reference internal" href="#">pysoftk.format_printers package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysoftk.htp_tools.html">pysoftk.htp_tools package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysoftk.linear_polymer.html">pysoftk.linear_polymer package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.tools.html">pysoftk.tools package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysoftk.topologies.html">pysoftk.topologies package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysoftk.torsional.html">pysoftk.torsional package</a></li>
 </ul>
@@ -99,6 +102,39 @@
 <section id="module-pysoftk.format_printers.format_mol">
 <span id="pysoftk-format-printers-format-mol-module"></span><h2>pysoftk.format_printers.format_mol module<a class="headerlink" href="#module-pysoftk.format_printers.format_mol" title="Permalink to this heading"></a></h2>
 <dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.format_printers.format_mol.Cnv">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.format_printers.format_mol.</span></span><span class="sig-name descname"><span class="pre">Cnv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/format_printers/format_mol.html#Cnv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.format_printers.format_mol.Cnv" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for converting files from X to Y format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> – A file with the provided molecule in a chosen format.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.format_printers.format_mol.Cnv.file_in_out">
+<span class="sig-name descname"><span class="pre">file_in_out</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mol2'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/format_printers/format_mol.html#Cnv.file_in_out"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.format_printers.format_mol.Cnv.file_in_out" title="Permalink to this definition"></a></dt>
+<dd><p>Function to convert an user-provided file
+with X format to an user-provided Y format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fmt</strong> (<em>class.str</em>) – Format requested to convert.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New file with the provided format.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="pysoftk.format_printers.format_mol.Fmt">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.format_printers.format_mol.</span></span><span class="sig-name descname"><span class="pre">Fmt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/format_printers/format_mol.html#Fmt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.format_printers.format_mol.Fmt" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -111,6 +147,22 @@
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.format_printers.format_mol.Fmt.format_print">
+<span class="sig-name descname"><span class="pre">format_print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/format_printers/format_mol.html#Fmt.format_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.format_printers.format_mol.Fmt.format_print" title="Permalink to this definition"></a></dt>
+<dd><p>Function to print a pysoftk.object into an user
+provided output_format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fmt</strong> (<em>class.str</em>) – An user-provided valid format in which the pysoftk.object
+can be printed. Default is MOL2 format.</p></li>
+<li><p><strong>output_name</strong> (<em>class.str</em>) – A provided name for a file. Default is molecule.mol2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.format_printers.format_mol.Fmt.mol_print">
 <span class="sig-name descname"><span class="pre">mol_print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/format_printers/format_mol.html#Fmt.mol_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.format_printers.format_mol.Fmt.mol_print" title="Permalink to this definition"></a></dt>

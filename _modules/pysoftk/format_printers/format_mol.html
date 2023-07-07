@@ -10,6 +10,8 @@
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/sphinx_highlight.js"></script>
@@ -72,9 +74,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pysoftk.format_printers.format_mol</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
+<span></span><span class="kn">from</span> <span class="nn">openbabel</span> <span class="kn">import</span> <span class="n">openbabel</span> <span class="k">as</span> <span class="n">ob</span>
+<span class="kn">from</span> <span class="nn">openbabel</span> <span class="kn">import</span> <span class="n">pybel</span> <span class="k">as</span> <span class="n">pb</span>
+
+<span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
 <span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
 <span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">rdDistGeom</span> <span class="k">as</span> <span class="n">molDG</span>
+
+<span class="kn">from</span> <span class="nn">pysoftk.tools.utils_func</span> <span class="kn">import</span> <span class="o">*</span>
 
 <div class="viewcode-block" id="Fmt"><a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt">[docs]</a><span class="k">class</span> <span class="nc">Fmt</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class printing RDkit Mol Object in different formats</span>
@@ -117,12 +124,19 @@
         <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
         
         <span class="k">try</span><span class="p">:</span>
-          <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">Mol</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-          <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> is an invalid molecule&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span>
+           <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
+               <span class="n">Chem</span><span class="o">.</span><span class="n">MolToXYZFile</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">))</span>
 
-        <span class="k">else</span><span class="p">:</span>
-          <span class="n">Chem</span><span class="o">.</span><span class="n">MolToXYZFile</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">))</span></div>
+           <span class="k">else</span><span class="p">:</span>
+               <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">PerceiveBondOrders</span><span class="p">()</span>
+               <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">AddHydrogens</span><span class="p">()</span>
+               <span class="n">mol</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;xyz&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">),</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+               
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+          <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> is an invalid molecule&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span></div>
+
+        
+          
 
 <div class="viewcode-block" id="Fmt.pdb_print"><a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt.pdb_print">[docs]</a>    <span class="k">def</span> <span class="nf">pdb_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to print in PDB format</span>
@@ -140,12 +154,18 @@
 <span class="sd">            If not an RDKit Mol Object raises TypeError as invalid molecule.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
+        
         <span class="k">try</span><span class="p">:</span>
-          <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">Mol</span><span class="p">)</span>
+           <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
+               <span class="n">Chem</span><span class="o">.</span><span class="n">MolToPDBFile</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">))</span>
+
+           <span class="k">else</span><span class="p">:</span>
+               <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">PerceiveBondOrders</span><span class="p">()</span>
+               <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">AddHydrogens</span><span class="p">()</span>
+               <span class="n">mol</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;pdb&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">),</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+               
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-          <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> is an invalid molecule&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-          <span class="n">Chem</span><span class="o">.</span><span class="n">MolToPDBFile</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">))</span></div>
+          <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> is an invalid molecule&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span></div>
             
           
 <div class="viewcode-block" id="Fmt.mol_print"><a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt.mol_print">[docs]</a>    <span class="k">def</span> <span class="nf">mol_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">):</span>
@@ -163,14 +183,105 @@
 <span class="sd">            If not an RDKit Mol Object raises TypeError as invalid molecule.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
+
         <span class="k">try</span><span class="p">:</span>
-          <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">Mol</span><span class="p">)</span>
+           <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
+               <span class="n">Chem</span><span class="o">.</span><span class="n">MolToMolFile</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">))</span>
+
+           <span class="k">else</span><span class="p">:</span>
+               <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">PerceiveBondOrders</span><span class="p">()</span>
+               <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">AddHydrogens</span><span class="p">()</span>
+               <span class="n">mol</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;mol&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">),</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+               
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-          <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> is an invalid molecule&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-          <span class="n">Chem</span><span class="o">.</span><span class="n">MolToMolFile</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">))</span></div></div>
+          <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> is an invalid molecule&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span></div>
 
 
+<div class="viewcode-block" id="Fmt.format_print"><a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt.format_print">[docs]</a>    <span class="k">def</span> <span class="nf">format_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to print a pysoftk.object into an user </span>
+<span class="sd">        provided output_format.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        fmt: class.str</span>
+<span class="sd">           An user-provided valid format in which the pysoftk.object</span>
+<span class="sd">           can be printed. Default is MOL2 format.</span>
+<span class="sd"> </span>
+<span class="sd">        output_name : class.str </span>
+<span class="sd">           A provided name for a file. Default is molecule.mol2 </span>
+<span class="sd"> </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
+        <span class="n">ext</span><span class="o">=</span><span class="n">output_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+           <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
+              <span class="n">last_rdkit</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToPDBBlock</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+              <span class="n">mol2</span><span class="o">=</span><span class="n">pb</span><span class="o">.</span><span class="n">readstring</span><span class="p">(</span><span class="s1">&#39;pdb&#39;</span><span class="p">,</span> <span class="n">last_rdkit</span><span class="p">)</span>
+              <span class="n">mol2</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">PerceiveBondOrders</span><span class="p">()</span>
+              <span class="n">mol2</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">AddHydrogens</span><span class="p">()</span>
+              <span class="n">mol2</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ext</span><span class="p">),</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">),</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+           <span class="k">else</span><span class="p">:</span>
+               <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">PerceiveBondOrders</span><span class="p">()</span>
+               <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">AddHydrogens</span><span class="p">()</span>
+               <span class="n">mol</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ext</span><span class="p">),</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">),</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+               
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+          <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> is an invalid molecule&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span></div></div>
+     
+
+<div class="viewcode-block" id="Cnv"><a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Cnv">[docs]</a><span class="k">class</span> <span class="nc">Cnv</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for converting files from X to Y format. </span>
+<span class="sd">          </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    file : str</span>
+<span class="sd">            A file with the provided molecule in a chosen format.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_mol</span><span class="p">):</span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot; Initialise the class Fmt</span>
+
+<span class="sd">       Parameters</span>
+<span class="sd">       ----------</span>
+
+<span class="sd">       file_mol : class.str</span>
+<span class="sd">          User-provided file name. </span>
+<span class="sd">       </span>
+<span class="sd">       &quot;&quot;&quot;</span>
+
+       <span class="bp">self</span><span class="o">.</span><span class="n">file_mol</span> <span class="o">=</span> <span class="n">file_mol</span>
+       
+<div class="viewcode-block" id="Cnv.file_in_out"><a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Cnv.file_in_out">[docs]</a>    <span class="k">def</span> <span class="nf">file_in_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;mol2&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to convert an user-provided file </span>
+<span class="sd">           with X format to an user-provided Y format.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ------------</span>
+
+<span class="sd">           fmt: class.str</span>
+<span class="sd">             Format requested to convert.</span>
+
+<span class="sd">           Return</span>
+<span class="sd">           -------</span>
+
+<span class="sd">           None:</span>
+<span class="sd">             New file with the provided format.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file_mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">file_mol</span> 
+        <span class="n">name</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="n">get_file_extension</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_mol</span><span class="p">))</span>
+        
+        <span class="n">obConversion</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">OBConversion</span><span class="p">()</span>
+        <span class="n">obConversion</span><span class="o">.</span><span class="n">SetInAndOutFormats</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">extension</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">fmt</span><span class="p">))</span>
+
+        <span class="n">mol</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">OBMol</span><span class="p">()</span>
+        <span class="n">obConversion</span><span class="o">.</span><span class="n">ReadFile</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">file_mol</span><span class="p">))</span> 
+        <span class="n">obConversion</span><span class="o">.</span><span class="n">WriteFile</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">name</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">fmt</span><span class="p">)]))</span></div></div>
 </pre></div>
 
            </div>

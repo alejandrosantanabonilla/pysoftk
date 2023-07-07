@@ -36,14 +36,6 @@ pysoftk.linear\_polymer.super\_monomer module
    :undoc-members:
    :show-inheritance:
 
-pysoftk.linear\_polymer.utils module
-------------------------------------
-
-.. automodule:: pysoftk.linear_polymer.utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Module contents
 ---------------
 

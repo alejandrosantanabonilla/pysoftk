@@ -11,6 +11,8 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
@@ -54,6 +56,7 @@
 <li class="toctree-l4"><a class="reference internal" href="pysoftk.format_printers.html">pysoftk.format_printers package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysoftk.htp_tools.html">pysoftk.htp_tools package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysoftk.linear_polymer.html">pysoftk.linear_polymer package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.tools.html">pysoftk.tools package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysoftk.topologies.html">pysoftk.topologies package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysoftk.torsional.html">pysoftk.torsional package</a></li>
 </ul>
@@ -115,7 +118,12 @@
 <li class="toctree-l1"><a class="reference internal" href="pysoftk.format_printers.html">pysoftk.format_printers package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pysoftk.format_printers.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pysoftk.format_printers.html#module-pysoftk.format_printers.format_mol">pysoftk.format_printers.format_mol module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Cnv"><code class="docutils literal notranslate"><span class="pre">Cnv</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Cnv.file_in_out"><code class="docutils literal notranslate"><span class="pre">Cnv.file_in_out()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt"><code class="docutils literal notranslate"><span class="pre">Fmt</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt.format_print"><code class="docutils literal notranslate"><span class="pre">Fmt.format_print()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt.mol_print"><code class="docutils literal notranslate"><span class="pre">Fmt.mol_print()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt.pdb_print"><code class="docutils literal notranslate"><span class="pre">Fmt.pdb_print()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt.xyz_print"><code class="docutils literal notranslate"><span class="pre">Fmt.xyz_print()</span></code></a></li>
@@ -177,13 +185,8 @@
 <li class="toctree-l2"><a class="reference internal" href="pysoftk.linear_polymer.html#module-pysoftk.linear_polymer.mol_conformer">pysoftk.linear_polymer.mol_conformer module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pysoftk.linear_polymer.html#pysoftk.linear_polymer.mol_conformer.Mcon"><code class="docutils literal notranslate"><span class="pre">Mcon</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pysoftk.linear_polymer.html#pysoftk.linear_polymer.mol_conformer.Mcon.conformer"><code class="docutils literal notranslate"><span class="pre">Mcon.conformer()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pysoftk.linear_polymer.html#pysoftk.linear_polymer.mol_conformer.Mcon.e_max"><code class="docutils literal notranslate"><span class="pre">Mcon.e_max</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysoftk.linear_polymer.html#pysoftk.linear_polymer.mol_conformer.Mcon.mol"><code class="docutils literal notranslate"><span class="pre">Mcon.mol</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysoftk.linear_polymer.html#pysoftk.linear_polymer.mol_conformer.Mcon.num_conf"><code class="docutils literal notranslate"><span class="pre">Mcon.num_conf</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="pysoftk.linear_polymer.html#pysoftk.linear_polymer.mol_conformer.Memb"><code class="docutils literal notranslate"><span class="pre">Memb</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pysoftk.linear_polymer.html#pysoftk.linear_polymer.mol_conformer.Memb.etkdgv3_energies"><code class="docutils literal notranslate"><span class="pre">Memb.etkdgv3_energies()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -204,14 +207,39 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pysoftk.linear_polymer.html#module-pysoftk.linear_polymer.utils">pysoftk.linear_polymer.utils module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pysoftk.linear_polymer.html#pysoftk.linear_polymer.utils.MMFF_rel"><code class="docutils literal notranslate"><span class="pre">MMFF_rel()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pysoftk.linear_polymer.html#pysoftk.linear_polymer.utils.UFF_rel"><code class="docutils literal notranslate"><span class="pre">UFF_rel()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pysoftk.linear_polymer.html#pysoftk.linear_polymer.utils.no_swap"><code class="docutils literal notranslate"><span class="pre">no_swap()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pysoftk.linear_polymer.html#pysoftk.linear_polymer.utils.swap_hyd"><code class="docutils literal notranslate"><span class="pre">swap_hyd()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pysoftk.linear_polymer.html#module-pysoftk.linear_polymer">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pysoftk.linear_polymer.html#module-pysoftk.linear_polymer">Module contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysoftk.tools.html">pysoftk.tools package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pysoftk.tools.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pysoftk.tools.html#module-pysoftk.tools.utils_func">pysoftk.tools.utils_func module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_func.atom_neigh"><code class="docutils literal notranslate"><span class="pre">atom_neigh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_func.count_plholder"><code class="docutils literal notranslate"><span class="pre">count_plholder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_func.create_pol"><code class="docutils literal notranslate"><span class="pre">create_pol()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_func.get_file_extension"><code class="docutils literal notranslate"><span class="pre">get_file_extension()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_func.pattern_mol_seq"><code class="docutils literal notranslate"><span class="pre">pattern_mol_seq()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_func.pattern_recon"><code class="docutils literal notranslate"><span class="pre">pattern_recon()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_func.pattern_repl"><code class="docutils literal notranslate"><span class="pre">pattern_repl()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_func.tuple_bonds"><code class="docutils literal notranslate"><span class="pre">tuple_bonds()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pysoftk.tools.html#module-pysoftk.tools.utils_ob">pysoftk.tools.utils_ob module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_ob.check_bond_order"><code class="docutils literal notranslate"><span class="pre">check_bond_order()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_ob.ff_ob_relaxation"><code class="docutils literal notranslate"><span class="pre">ff_ob_relaxation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_ob.rotor_opt"><code class="docutils literal notranslate"><span class="pre">rotor_opt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pysoftk.tools.html#module-pysoftk.tools.utils_rdkit">pysoftk.tools.utils_rdkit module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_rdkit.MMFF_rel"><code class="docutils literal notranslate"><span class="pre">MMFF_rel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_rdkit.UFF_rel"><code class="docutils literal notranslate"><span class="pre">UFF_rel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_rdkit.etkdgv3_energies"><code class="docutils literal notranslate"><span class="pre">etkdgv3_energies()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_rdkit.no_swap"><code class="docutils literal notranslate"><span class="pre">no_swap()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_rdkit.plc_holder"><code class="docutils literal notranslate"><span class="pre">plc_holder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_rdkit.remove_plcholder"><code class="docutils literal notranslate"><span class="pre">remove_plcholder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.tools.html#pysoftk.tools.utils_rdkit.swap_hyd"><code class="docutils literal notranslate"><span class="pre">swap_hyd()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pysoftk.tools.html#module-pysoftk.tools">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pysoftk.topologies.html">pysoftk.topologies package</a><ul>
@@ -264,17 +292,6 @@
 <li class="toctree-l4"><a class="reference internal" href="pysoftk.topologies.html#pysoftk.topologies.ring.Rn.pol_ring"><code class="docutils literal notranslate"><span class="pre">Rn.pol_ring()</span></code></a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pysoftk.topologies.html#module-pysoftk.topologies.utils">pysoftk.topologies.utils module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pysoftk.topologies.html#pysoftk.topologies.utils.atom_neigh"><code class="docutils literal notranslate"><span class="pre">atom_neigh()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pysoftk.topologies.html#pysoftk.topologies.utils.count_plholder"><code class="docutils literal notranslate"><span class="pre">count_plholder()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pysoftk.topologies.html#pysoftk.topologies.utils.create_pol"><code class="docutils literal notranslate"><span class="pre">create_pol()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pysoftk.topologies.html#pysoftk.topologies.utils.pattern_mol_seq"><code class="docutils literal notranslate"><span class="pre">pattern_mol_seq()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pysoftk.topologies.html#pysoftk.topologies.utils.pattern_recon"><code class="docutils literal notranslate"><span class="pre">pattern_recon()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pysoftk.topologies.html#pysoftk.topologies.utils.pattern_repl"><code class="docutils literal notranslate"><span class="pre">pattern_repl()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pysoftk.topologies.html#pysoftk.topologies.utils.seek_plhold"><code class="docutils literal notranslate"><span class="pre">seek_plhold()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pysoftk.topologies.html#pysoftk.topologies.utils.tuple_bonds"><code class="docutils literal notranslate"><span class="pre">tuple_bonds()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pysoftk.topologies.html#module-pysoftk.topologies">Module contents</a></li>

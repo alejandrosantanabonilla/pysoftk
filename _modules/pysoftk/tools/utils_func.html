@@ -3,13 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pysoftk.topologies.utils &mdash; PySoftK 0.0.1 documentation</title>
+  <title>pysoftk.tools.utils_func &mdash; PySoftK 0.0.1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/sphinx_highlight.js"></script>
@@ -62,7 +64,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">pysoftk.topologies.utils</li>
+      <li class="breadcrumb-item active">pysoftk.tools.utils_func</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -71,44 +73,33 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for pysoftk.topologies.utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">rdkit</span>
+  <h1>Source code for pysoftk.tools.utils_func</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">rdkit</span>
 <span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
 <span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
 
 <span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">RDLogger</span>
 <span class="n">RDLogger</span><span class="o">.</span><span class="n">DisableLog</span><span class="p">(</span><span class="s1">&#39;rdApp.*&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="seek_plhold"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.utils.seek_plhold">[docs]</a><span class="k">def</span> <span class="nf">seek_plhold</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function Seeking for a specific placeholder atom.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    -----------</span>
+<div class="viewcode-block" id="get_file_extension"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.get_file_extension">[docs]</a><span class="k">def</span> <span class="nf">get_file_extension</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets the extension of a file.</span>
 
-<span class="sd">    mol: rdkit.Chem.rdchem.Mol</span>
-<span class="sd">         RDKit Mol object</span>
+<span class="sd">    Args:</span>
+<span class="sd">        path (str): The path to the file.</span>
 
-<span class="sd">    atom : str</span>
-<span class="sd">         The placeholder atom</span>
-
-
-<span class="sd">    Returns</span>
-<span class="sd">    --------</span>
-
-<span class="sd">    return: list</span>
-<span class="sd">         List of neighbors from the place holder atom.</span>
-<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The extension of the file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">new_bond</span><span class="o">=</span><span class="p">[]</span>
+
+    <span class="n">file_name</span><span class="p">,</span> <span class="n">file_extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     
-    <span class="k">for</span> <span class="n">atoms</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">atoms</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">):</span>
-            <span class="n">new_bond</span><span class="o">.</span><span class="n">append</span><span class="p">([[</span> <span class="n">atoms</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">(),</span> <span class="n">nbr</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">()]</span>
-                             <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">atoms</span><span class="o">.</span><span class="n">GetNeighbors</span><span class="p">()])</span>
+    <span class="k">return</span> <span class="n">file_name</span><span class="p">,</span><span class="n">file_extension</span></div>
 
-    <span class="k">return</span> <span class="n">new_bond</span></div>
 
-<div class="viewcode-block" id="pattern_recon"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.utils.pattern_recon">[docs]</a><span class="k">def</span> <span class="nf">pattern_recon</span><span class="p">(</span><span class="n">pattern</span><span class="p">):</span>
+<div class="viewcode-block" id="pattern_recon"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.pattern_recon">[docs]</a><span class="k">def</span> <span class="nf">pattern_recon</span><span class="p">(</span><span class="n">pattern</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to find unique values from a string pattern.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -125,8 +116,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">pattern</span><span class="p">)),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span><span class="n">c</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="pattern_repl"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.utils.pattern_repl">[docs]</a><span class="k">def</span> <span class="nf">pattern_repl</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">tup_repl</span><span class="p">):</span>
-<span class="w">   </span><span class="sd">&quot;&quot;&quot;Function to perform a pattern replacement using tuples generated by pattern and molecular names.</span>
+<div class="viewcode-block" id="pattern_repl"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.pattern_repl">[docs]</a><span class="k">def</span> <span class="nf">pattern_repl</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">tup_repl</span><span class="p">):</span>
+<span class="w">   </span><span class="sd">&quot;&quot;&quot;Function to perform a pattern replacement using tuples generated </span>
+<span class="sd">      by pattern and molecular names.</span>
 <span class="sd">   </span>
 <span class="sd">   Parameters</span>
 <span class="sd">   ------------  </span>
@@ -139,7 +131,8 @@
 <span class="sd">   ---------</span>
 
 <span class="sd">   return: list    </span>
-<span class="sd">        Returns the names of the molecules as provided by the string pattern.</span>
+<span class="sd">        Returns the names of the molecules as provided </span>
+<span class="sd">        by the string pattern.</span>
 <span class="sd">   &quot;&quot;&quot;</span>
    
    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">tup_repl</span><span class="p">:</span>
@@ -149,23 +142,26 @@
    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">valid_seq</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="pattern_mol_seq"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.utils.pattern_mol_seq">[docs]</a><span class="k">def</span> <span class="nf">pattern_mol_seq</span><span class="p">(</span><span class="n">mols</span><span class="p">,</span> <span class="n">pattern</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to create a list of molecules based on a user provided pattern.</span>
+<div class="viewcode-block" id="pattern_mol_seq"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.pattern_mol_seq">[docs]</a><span class="k">def</span> <span class="nf">pattern_mol_seq</span><span class="p">(</span><span class="n">mols</span><span class="p">,</span> <span class="n">pattern</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to create a list of molecules based on a user </span>
+<span class="sd">       provided pattern.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ------------</span>
 <span class="sd">  </span>
-<span class="sd">    pattern: str</span>
+<span class="sd">    pattern: class.str</span>
 <span class="sd">         A string value containing the desired pattern.</span>
 
-<span class="sd">    mols: list</span>
-<span class="sd">        List containing the names of the molecules to form a polymer with a given pattern.</span>
+<span class="sd">    mols: class.list</span>
+<span class="sd">        List containing the names of the molecules to form a </span>
+<span class="sd">        polymer with a given pattern.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    ---------</span>
 
-<span class="sd">    return: list</span>
-<span class="sd">      List with the correct sequence of molecular fragments to be merged. </span>
+<span class="sd">    return: class.list</span>
+<span class="sd">      List with the correct sequence of molecular fragments </span>
+<span class="sd">      to be merged. </span>
 <span class="sd">  </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">unq_val</span><span class="o">=</span><span class="n">pattern_recon</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
@@ -173,8 +169,9 @@
 
     <span class="k">return</span> <span class="n">pattern_repl</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">tup_repl</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="count_plholder"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.utils.count_plholder">[docs]</a><span class="k">def</span> <span class="nf">count_plholder</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to count the number of user defined atomic placeholders.</span>
+<div class="viewcode-block" id="count_plholder"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.count_plholder">[docs]</a><span class="k">def</span> <span class="nf">count_plholder</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to count the number of user defined </span>
+<span class="sd">       atomic placeholders.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    -----------</span>
@@ -182,13 +179,13 @@
 <span class="sd">    mol: rdkit.Chem.rdchem.Mol</span>
 <span class="sd">          RDKit Mol object</span>
 
-<span class="sd">    atom: str</span>
+<span class="sd">    atom: class.str</span>
 <span class="sd">         The placeholder atom</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 
-<span class="sd">    num_br: int</span>
+<span class="sd">    num_br: class.int</span>
 <span class="sd">        Number of atomic place holders inside a molecule.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -200,7 +197,7 @@
 
     <span class="k">return</span> <span class="n">num_br</span></div>
 
-<div class="viewcode-block" id="atom_neigh"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.utils.atom_neigh">[docs]</a><span class="k">def</span> <span class="nf">atom_neigh</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+<div class="viewcode-block" id="atom_neigh"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.atom_neigh">[docs]</a><span class="k">def</span> <span class="nf">atom_neigh</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
 <span class="w">   </span><span class="sd">&quot;&quot;&quot;Find the neighbours from an atoms inside a molecule. </span>
 
 <span class="sd">   Parameters</span>
@@ -229,19 +226,19 @@
 
    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">neigh</span><span class="p">,</span> <span class="p">[])</span></div>
 
-<div class="viewcode-block" id="tuple_bonds"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.utils.tuple_bonds">[docs]</a><span class="k">def</span> <span class="nf">tuple_bonds</span><span class="p">(</span><span class="n">lst_atm_neigh</span><span class="p">):</span>
+<div class="viewcode-block" id="tuple_bonds"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.tuple_bonds">[docs]</a><span class="k">def</span> <span class="nf">tuple_bonds</span><span class="p">(</span><span class="n">lst_atm_neigh</span><span class="p">):</span>
 <span class="w">   </span><span class="sd">&quot;&quot;&quot;Function to seek atomic neighbours</span>
 
 <span class="sd">   Parameters</span>
 <span class="sd">   -----------</span>
 
-<span class="sd">   lst_atm_neigh: list</span>
+<span class="sd">   lst_atm_neigh: class.list</span>
 <span class="sd">                  List containing atoms for getting neighbors.</span>
 
 <span class="sd">   Return</span>
 <span class="sd">   -------</span>
 
-<span class="sd">   return: list</span>
+<span class="sd">   return: class.list</span>
 <span class="sd">           A list of tuples with the neighbors of the parsed atoms. </span>
 <span class="sd">   </span>
 <span class="sd">   &quot;&quot;&quot;</span>
@@ -254,7 +251,7 @@
    <span class="k">return</span> <span class="p">[(</span><span class="n">bond_idx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">bond_idx</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">bond_idx</span><span class="p">),</span><span class="mi">2</span><span class="p">)]</span></div>
 
-<div class="viewcode-block" id="create_pol"><a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.utils.create_pol">[docs]</a><span class="k">def</span> <span class="nf">create_pol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">tpb</span><span class="p">):</span>
+<div class="viewcode-block" id="create_pol"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.create_pol">[docs]</a><span class="k">def</span> <span class="nf">create_pol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">tpb</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to create polymers.</span>
 
 <span class="sd">    Parameters</span>
@@ -281,10 +278,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">rwmol1</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">RWMol</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tpb</span><span class="p">:</span>
-        <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="n">i</span>
-        <span class="n">rwmol1</span><span class="o">.</span><span class="n">AddBond</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">Chem</span><span class="o">.</span><span class="n">BondType</span><span class="o">.</span><span class="n">SINGLE</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ini</span><span class="p">,</span> <span class="n">fin</span> <span class="ow">in</span> <span class="n">tpb</span><span class="p">:</span>
+        <span class="n">rwmol1</span><span class="o">.</span><span class="n">AddBond</span><span class="p">(</span><span class="n">ini</span><span class="p">,</span> <span class="n">fin</span><span class="p">,</span> <span class="n">Chem</span><span class="o">.</span><span class="n">BondType</span><span class="o">.</span><span class="n">SINGLE</span><span class="p">)</span>
 
+    <span class="c1">#Reading Place holder as SMILES</span>
     <span class="n">plc</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
     <span class="n">new_conn</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">rwmol1</span><span class="o">.</span><span class="n">GetSubstructMatches</span><span class="p">(</span><span class="n">plc</span><span class="p">),())</span>
 
