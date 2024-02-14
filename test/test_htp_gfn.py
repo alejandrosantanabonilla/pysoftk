@@ -14,7 +14,7 @@ def rootdir():
 
 def test_htp_gfn_creation(rootdir):
   # Creating a tmp folder
-  est_file = os.path.join(rootdir, 'tmp_folder4')
+  est_file = os.path.join(rootdir, 'tmp_folder14')
   os.mkdir(est_file)
   os.chdir(est_file)
 

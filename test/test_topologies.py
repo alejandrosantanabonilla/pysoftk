@@ -12,19 +12,18 @@ from pysoftk.format_printers.format_mol import *
 from pysoftk.folder_manager.folder_creator import *
 
 # SMILES topologies polymers testdata
-testdata=[
-    ('C[Si](OBr)(C)Br',1),
+testdata=[('C[Si](OBr)(C)Br',1),
     ('c1cc(ccc1Br)Br',1),
-    ('c1(ccc(o1)Br)Br',1),
-]
+    ('c1(ccc(o1)Br)Br',1)]
 
+testdata2=[('c1cc(ccc1Br)Br','c1cc2ccc1-c1ccc(cc1)-c1ccc(cc1)-c1ccc(cc1)-c1ccc(cc1)-c1ccc(cc1)-c1ccc(cc1)-c1ccc(cc1)-c1ccc(cc1)-c1ccc-2cc1'),
+           ('c1(ccc(o1)Br)Br','c1cc2oc1-c1ccc(o1)-c1ccc(o1)-c1ccc(o1)-c1ccc(o1)-c1ccc(o1)-c1ccc(o1)-c1ccc(o1)-c1ccc(o1)-c1ccc-2o1')]
+    
 @pytest.fixture
 def rootdir():
     return os.path.dirname(os.path.abspath(__file__))
 
-
 def test_diblock(rootdir):
-
     est_file = os.path.join(rootdir, 'tmp_folder11')
     os.mkdir(est_file)
     os.chdir(est_file)
@@ -40,23 +39,16 @@ def test_diblock(rootdir):
 
     shutil.rmtree(est_file)
 
-@pytest.mark.parametrize("mol,expected", testdata)
-def test_ring(mol,expected, rootdir):
-
-  est_file = os.path.join(rootdir, 'tmp_folder12')
-  os.mkdir(est_file)
-  os.chdir(est_file)
-    
+@pytest.mark.parametrize("mol,expected", testdata2)
+def test_ring(mol, expected, rootdir):
+          
   mol=Chem.MolFromSmiles(str(mol))
   AllChem.EmbedMolecule(mol)
+  hom=Rn(mol,'Br').pol_ring(10,"MMFF",250)
+  new=Chem.MolFromSmiles(str(hom))
   
-  hom=Rn(mol,'Br').pol_ring(10)
-  Fmt(hom).xyz_print("ring.xyz")
+  assert Chem.MolToSmiles(new) == expected
 
-  b=Fld().seek_files("xyz")
-  assert len(b) == expected
-
-  shutil.rmtree(est_file)
 
 def test_branched_1(rootdir):
 
