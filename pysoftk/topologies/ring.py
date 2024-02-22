@@ -49,7 +49,7 @@ class Rn:
       mol: rdkit.Chem.rdchem.Mol
             RDKit Mol object
       
-      FF:  str
+      force_field:  str
            Selected FF to perform a relaxation
  
       iter: int
@@ -154,12 +154,28 @@ class Rn:
       
      
 def apply_force_field(molecule: Chem.Mol, force_field: str, iter_ff: int) -> None:
-    """Applies the specified force field to the molecule."""
+  """Applies the specified force field to the molecule.
 
-    if force_field == "MMFF":
-        MMFF_rel(molecule, iter_ff)
+  This function takes a RDKit molecule object (`molecule`), a string specifying the force field to use (`force_field`),
+  and an integer representing the number of iterations (`iter_ff`). It then applies the chosen force field to the molecule
+  using either the MMFF or UFF approach, depending on the `force_field` value.
 
-    else:
-        UFF_rel(molecule, iter_ff)
+  Args:
+    molecule: A RDKit molecule object representing the molecule for force field application.
+    force_field: A string specifying the force field to use, either "MMFF" or "UFF".
+    iter_ff: An integer representing the number of iterations to perform during force field minimization.
+
+  Raises:
+    ValueError: If an invalid force field name is provided.
+
+  Returns:
+    None. The function modifies the input molecule object `molecule` in-place.
+
+  """
+  if force_field == "MMFF":
+     MMFF_rel(molecule, iter_ff)
+
+  else:
+     UFF_rel(molecule, iter_ff)
 
 

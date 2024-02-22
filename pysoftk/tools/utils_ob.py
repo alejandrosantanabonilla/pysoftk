@@ -25,7 +25,7 @@ def ff_ob_relaxation(mol, FF="MMFF94", iter_ff=100, ff_thr=1.0e-6):
     ========
 
     mol_new: Mol.OBabel.Mol
-      Open Babel Molecule with optimised Geometry.
+      Open Babel Molecule with optmised Geometry.
 
     """
 
