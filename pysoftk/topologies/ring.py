@@ -14,6 +14,9 @@ from pysoftk.linear_polymer.linear_polymer import *
 from pysoftk.tools.utils_func import *
 from pysoftk.tools.utils_rdkit import *
 
+from openbabel import openbabel as ob
+from openbabel import pybel as pb
+
 class Rn:
     """A class for creating a circular (ring-shaped) polymer 
        from given RDKit molecules.
@@ -36,91 +39,7 @@ class Rn:
        self.mol=mol
        self.atom=atom 
 
-
-    def pol_ring(self, len_polymer=2, FF="MMFF",
-                 iter_ff=100, shift=1.25): 
-      """ Function to create a polymer with ring structure (circular)
-
-      Parameters
-      -----------
-
-      mol : rdkit.Chem.rdchem.Mol
-            RDKit Mol object
- 
-      atom : str
-            The placeholder atom to combine the molecules and 
-            form a new monomer
-
-      len_polymer: int
-         Extension of the polymer
-
-      FF: str
-         Selected FF to perform a relaxation
- 
-      iter_ff: int
-         Number of iterations to perform a FF geometry optimisation.
-
-      shift: float
-         User defined shift for spacing the monomers using the LP function.
-
-      Return
-      -------
-
-      pol_ring : rdkit.Chem.rdchem.Mol
-           RDKit Mol object
-     
-      """
-      mol=self.mol
-      atom=self.atom
-   
-      #new=Lp(mol,str(atom),int(len_polymer), float(shift)).proto_polymer()
-      patt=Lp(mol,str(atom),int(len_polymer),float(shift)).proto_polymer()
-      
-      newMol=self.create_ring(patt, str(atom))
-      pol_ring=self.check_proto(newMol, str(FF), int(iter_ff))
-
-      return pol_ring
-       
-    def create_ring(self, mol, atom):
-      """Function to create a circular polymer based on a RDKit 
-         molecular object.
-
-      Parameters
-      ----------
-
-      mol : rdkit.Chem.rdchem.Mol
-            RDKit Mol object
- 
-      atom : str
-            The placeholder atom to combine the molecules and 
-            form a new monomer
-    
-      Return
-      -------
-
-      final : rdkit.Chem.rdchem.Mol
-           RDKit Mol object
-
-      """
-     
-      atoms=atom_neigh(mol, str(atom))
-    
-      rwmol = Chem.RWMol(mol)
-      rwmol.AddBond(atoms[0][1], atoms[1][1],
-                     rdkit.Chem.rdchem.BondType.SINGLE)
-
-      rwmol.RemoveAtom(atoms[1][0])
-      rwmol.RemoveAtom(atoms[0][0])
-
-      final=rwmol.GetMol()
-      Chem.SanitizeMol(final)
-
-      newMol_H = Chem.AddHs(final, addCoords=True)  
-
-      return AllChem.AssignBondOrdersFromTemplate(newMol_H, newMol_H)
-   
-
-    def check_proto(self, mol, FF="MMFF", iter_ff=100):
+    def check_proto(self, mol, force_field="MMFF", iter_ff=100):
       """Function to check the proto polymer creation.
 
 
@@ -147,13 +66,100 @@ class Rn:
 
       mol_new=pb.readstring('pdb', last_rdkit)
 
-      # Relaxation functions from utils in linear_polymer
-      opt_mol=ff_ob_relaxation(mol_new, iter_ff=100, ff_thr=1.0e-6)
+      if force_field == "MMFF":
+         ff = pb._forcefields["mmff94"]
+         # Relaxation functions from utils in linear_polymer
+         opt_mol=ff_ob_relaxation(mol_new, iter_ff=int(iter_ff), ff_thr=1.0e-6)
 
-
+      else:
+         ff = pb._forcefields["uff"]
+         # Relaxation functions from utils in linear_polymer
+         opt_mol=ff_ob_relaxation(mol_new, iter_ff=int(iter_ff), ff_thr=1.0e-6)
+          
       return opt_mol
+       
 
+    def pol_ring(self, len_polymer=2, force_field="MMFF",
+                 iter_ff=100, shift=1.25, more_iter=10): 
+      """ Function to create a polymer with ring structure (circular)
+
+      Parameters
+      -----------
+
+      mol : rdkit.Chem.rdchem.Mol
+            RDKit Mol object
+ 
+      atom : str
+            The placeholder atom to combine the molecules and 
+            form a new monomer
+
+      len_polymer: int
+         Extension of the polymer
+
+      FF: str
+         Selected FF to perform a relaxation
+ 
+      iter_ff: int
+         Number of iterations to perform a FF geometry optimisation.
+
+      shift: float
+         User defined shift for spacing the monomers using the LP function.
+
+      more_iter: int
+         User defined variable to perform more iterations using the selected FF.
+
+      Return
+      -------
+
+      pol_ring : rdkit.Chem.rdchem.Mol
+           RDKit Mol object
+     
+      """
+      mol=self.mol
+      atom=self.atom
+
+
+      if force_field not in ("MMFF", "UFF"):
+            raise ValueError(f"Invalid force field: {force_field}")
       
+      patt=Lp(mol,str(atom),int(len_polymer),float(shift)).linear_polymer(iter_ff=int(iter_ff),no_att=False)
+      proto_ring=patt.write("pdb")
 
+      ring_rdkit=Chem.MolFromPDBBlock(proto_ring)   
+      atoms=atom_neigh(ring_rdkit, str(atom))
+      
+      rwmol=Chem.RWMol(ring_rdkit)
+
+      rwmol.AddBond(atoms[0][1], atoms[1][1],
+                    Chem.BondType.SINGLE)
+      
+      rwmol.RemoveAtom(atoms[1][0])
+      rwmol.RemoveAtom(atoms[0][0])
+
+      final=rwmol.GetMol()
+      Chem.SanitizeMol(final)
+
+      newMol_H = Chem.AddHs(final, addCoords=True)  
+      AllChem.AssignBondOrdersFromTemplate(newMol_H, newMol_H)
+
+      if force_field == "MMFF":
+         apply_force_field(newMol_H, "MMFF", iter_ff*int(more_iter))
+
+      else:
+         apply_force_field(newMol_H, "UFF", iter_ff*int(more_iter)) 
+
+      pol_ring=self.check_proto(newMol_H, str(force_field), int(iter_ff))
+         
+      return pol_ring
+      
+     
+def apply_force_field(molecule: Chem.Mol, force_field: str, iter_ff: int) -> None:
+    """Applies the specified force field to the molecule."""
+
+    if force_field == "MMFF":
+        MMFF_rel(molecule, iter_ff)
+
+    else:
+        UFF_rel(molecule, iter_ff)
 
 

@@ -87,7 +87,7 @@ class Lp:
         
         return shift_final
 
-    def _copy_mol(self):
+    def copy_mol(self):
        """Function to replicate super_monomers.
 
        Parameters
@@ -113,7 +113,7 @@ class Lp:
        return fragments
 
 
-    def _polimerisation(self, fragments):
+    def polimerisation(self, fragments):
         """Function to produce a polymer in a recursive manner. 
 
         Parameters
@@ -142,7 +142,7 @@ class Lp:
 
         return outmol
 
-    def _bond_conn(self, outmol):
+    def bond_conn(self, outmol):
         """Function to peruse the bonds and connections of place-hold 
         atom within a super_monomer object.
  
@@ -185,9 +185,9 @@ class Lp:
        mol=self.mol
        n_copies=self.n_copies
        
-       fragments=self._copy_mol()
-       outmol=self._polimerisation(fragments)
-       all_conn, erase_br=self._bond_conn(outmol)   
+       fragments=self.copy_mol()
+       outmol=self.polimerisation(fragments)
+       all_conn, erase_br=self.bond_conn(outmol)   
 
        rwmol = Chem.RWMol(outmol)
        for ini, fin in all_conn:
@@ -203,7 +203,7 @@ class Lp:
        
        return mol4
 
-    def linear_polymer(self, FF="MMFF94", iter_ff=350, rot_steps=125):
+    def linear_polymer(self, FF="MMFF94", iter_ff=350, rot_steps=125, no_att=True):
        """Function to create a linear polymer from a 
           given super_monomer object.
 
@@ -229,7 +229,12 @@ class Lp:
        mol=self.proto_polymer()
        atom=self.atom
 
-       mol1=remove_plcholder(mol, atom)
+       if no_att:
+          mol1 = remove_plcholder(mol, atom)
+          
+       else:
+          mol1 = mol  # Use the original mol if mol1 is not provided
+
 
        #Using PDB object to preserve bond information
        last_rdkit=Chem.MolToPDBBlock(mol1)
@@ -238,4 +243,4 @@ class Lp:
        last_mol=ff_ob_relaxation(mol_new, FF, int(iter_ff))
        rot_mol=rotor_opt(last_mol, FF, int(rot_steps))
 
-       return rot_mol
+       return mol_new

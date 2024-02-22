@@ -180,23 +180,21 @@ def plc_holder(mol, atom):
     return new_bond
 
 def remove_plcholder(mol, atom):
-    """Function that seeks for a place holder atom 
-       and replace it with a Hydrogen atom.
+    """Function that seeks for a place holder atom and replace it with a Hydrogen atom.
 
-      Parameters
-      ----------
+       Parameters
+       ----------
        
-      mol: rdkit.Chem.Mol
-          RDKit Mol object
+       mol: rdkit.Chem.Mol
+            RDKit Mol object
 
 
-     Return
-     --------
+       Return
+       --------
 
-     None:
-          RDKit Mol object
+       None:
+            RDKit Mol object
     
-
     """
     for atoms in mol.GetAtoms():
         if atoms.GetSymbol() == str(atom):
