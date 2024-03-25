@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pysoftk',
-    version='0.5.0',
+    version='0.8.0',
     author='A. Santana-Bonilla',
     author_email='k2031560@kcl.ac.uk',
     packages= find_packages(exclude=["test", "test.*", "test2", "test.*"]),
@@ -22,5 +22,11 @@ setup(
         'pyscf-semiempirical @ git+https://github.com/pyscf/semiempirical',
         'pyberny',
         'openbabel-wheel',
+        'numba < 0.59.0',
+	'umap-learn',
+	'hdbscan',
+	'pandas',
+	'pyarrow',
+	'MDAnalysis',
     ],
 )

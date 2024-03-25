@@ -6,7 +6,7 @@ RDLogger.DisableLog('rdApp.*')
 from openbabel import openbabel as ob
 from openbabel import pybel as pb
 
-def no_swap(mol, iter_ff, FF="MMFF"):
+def no_swap(mol, iter_ff, force_field="MMFF"):
        """Function to sanitize a molecule with Hydrogens 
           and the user defined atomic place holder.
 
@@ -37,7 +37,7 @@ def no_swap(mol, iter_ff, FF="MMFF"):
        Chem.SanitizeMol(newMol_H)
        AllChem.EmbedMolecule(newMol_H, useRandomCoords=True)
 
-       if FF == "MMFF":
+       if force_field == "MMFF":
            MMFF_rel(newMol_H,iter_ff)
 
        else:
@@ -47,7 +47,7 @@ def no_swap(mol, iter_ff, FF="MMFF"):
        return newMol_H       
 
 
-def swap_hyd(mol, iter_ff, atom, FF="MMFF"):
+def swap_hyd(mol, iter_ff, atom, force_field="MMFF"):
        """Function to swap atomic place holders to Hydrogen atoms.
 
        Parameters
@@ -62,7 +62,7 @@ def swap_hyd(mol, iter_ff, atom, FF="MMFF"):
        atom : str
           The placeholder atom to combine the molecules and form a new monomer.
 
-       FF: str
+       force_field: str
           Selected FF to perform a geometry optimization.
  
        Returns
@@ -83,7 +83,7 @@ def swap_hyd(mol, iter_ff, atom, FF="MMFF"):
        Chem.SanitizeMol(newMol_H)
        AllChem.EmbedMolecule(newMol_H, useRandomCoords=True)
 
-       if FF == "MMFF":
+       if force_field == "MMFF":
            MMFF_rel(newMol_H,iter_ff)
 
        else:
@@ -180,21 +180,23 @@ def plc_holder(mol, atom):
     return new_bond
 
 def remove_plcholder(mol, atom):
-    """Function that seeks for a place holder atom and replace it with a Hydrogen atom.
+    """Function that seeks for a place holder atom 
+       and replace it with a Hydrogen atom.
 
-       Parameters
-       ----------
+      Parameters
+      ----------
        
-       mol: rdkit.Chem.Mol
-            RDKit Mol object
+      mol: rdkit.Chem.Mol
+          RDKit Mol object
 
 
-       Return
-       --------
+     Return
+     --------
 
-       None:
-            RDKit Mol object
+     None:
+          RDKit Mol object
     
+
     """
     for atoms in mol.GetAtoms():
         if atoms.GetSymbol() == str(atom):
