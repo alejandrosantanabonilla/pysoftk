@@ -13,6 +13,7 @@ setup(
     #long_description=open('README.txt').read(),
     install_requires=[
         'pytest >= 2.7.2',
+	'Cython',
         'networkx >= 2.7; python_version>="3.8"',
         'networkx < 2.7; python_version<"3.8"',
         'rdkit-pypi >= 2021.3.1.2',
