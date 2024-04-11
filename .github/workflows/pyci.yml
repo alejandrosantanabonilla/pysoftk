@@ -35,6 +35,10 @@ jobs:
       - name: Installation xtb
         run: |
            conda install xtb
+
+      - name: Installation MDAnalysis
+        run: |
+              conda install mdanalysis
       
       - name: Installing PySoftK
         shell: bash
