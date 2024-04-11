@@ -83,15 +83,15 @@ These are instructions to
 ```console
    conda install -c conda-forge xtb
 ```
-5. Install MDAnalysis using conda
+5. Install [MDAnalysis][3] using conda
 
+```console
    conda install -c conda-forge mdanalysis
 ```
 
 6. Install [PySoftK][1] and its dependencies as required
 
 ```console
-
    (pysoftk_env) cd pysoftk
    (pysoftk_env) pip install .
 ```
@@ -118,6 +118,7 @@ Replacing **PATH_TO_FOLDER** by the actual path where xtb is stored in your comp
 
 [1]: https://alejandrosantanabonilla.github.io/pysoftk/
 [2]: https://github.com/grimme-lab/xtb
+[3]: https://www.mdanalysis.org/pages/installation_quick_start/
 
 # Contributors:
 
