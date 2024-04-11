@@ -118,7 +118,7 @@ Replacing **PATH_TO_FOLDER** by the actual path where xtb is stored in your comp
 
 # Contributors:
 
--> Chris Lorenz (Polymer topologies and documentation)
--> Rob Zioelek (Analysis tools and pysoftwhere developer utils)
--> Raquel Lopez-Rios de Castro (Analysis tools main contributor, documentation)
--> Alejandro Santana-Bonilla (Polymer topologies, utilities and mantaining)
+- Chris Lorenz (Polymer topologies and documentation)
+- Rob Zioelek (Analysis tools and pysoftwhere developer utils)
+- Raquel Lopez-Rios de Castro (Analysis tools main contributor, documentation)
+- Alejandro Santana-Bonilla (Polymer topologies, utilities and mantaining)
