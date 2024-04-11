@@ -15,7 +15,6 @@
 **PySoftK** is a set of Python tools and programs for modelling and simulating polymers with different topologies. The program is still under active 
 development and contributions are welcome. A complete introduction into the program can be found in this link [Documentation][1]. 
 
-
 # Pip installation
 
 To quickly install **PySoftk**, we encourage to do it inside a virtual environment, which can be achieved in the following way:
@@ -117,3 +116,9 @@ Replacing **PATH_TO_FOLDER** by the actual path where xtb is stored in your comp
 [1]: https://alejandrosantanabonilla.github.io/pysoftk/
 [2]: https://github.com/grimme-lab/xtb
 
+# Contributors:
+
+Chris Lorenz (Polymer topologies and documentation)
+Rob Zioelek (Analysis tools and pysoftwhere developer utils)
+Raquel Lopez-Rios de Castro (Analysis tools main contributor, documentation)
+Alejandro Santana-Bonilla (Polymer topologies, utilities and mantaining)
