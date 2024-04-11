@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='pysoftk',
     version='1.0.0',
-    author='A. Santana-Bonilla',
+    author='A. Santana-Bonilla, R. Lopez-Castro, R. Ziolek, C. Lorenz',
     author_email='k2031560@kcl.ac.uk',
     packages= find_packages(exclude=["test", "test.*", "test2", "test.*"]),
     #scripts=['bin/stowe-towels.py','bin/wash-towels.py'],
