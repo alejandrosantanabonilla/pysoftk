@@ -78,8 +78,17 @@ These are instructions to
 ```console
    (pysoftk_env) git clone https://github.com/alejandrosantanabonilla/pysoftk.git
 ```
+4. Install [xtb][2] using conda
 
-4. Install [PySoftK][1] and its dependencies as required
+```console
+   conda install -c conda-forge xtb
+```
+5. Install MDAnalysis using conda
+
+   conda install -c conda-forge mdanalysis
+```
+
+6. Install [PySoftK][1] and its dependencies as required
 
 ```console
 
@@ -87,13 +96,7 @@ These are instructions to
    (pysoftk_env) pip install .
 ```
 
-5. Install [xtb][2] using conda
-
-```console
-   conda install -c conda-forge xtb
-```
-
-6. You may need to add the [PySoftK][1] installation directory to your .bashrc or .zshrc file
+7. You may need to add the [PySoftK][1] installation directory to your .bashrc or .zshrc file
 
 ```console 
     PATH=$PATH:/<path to>/pysoftk_dir	
