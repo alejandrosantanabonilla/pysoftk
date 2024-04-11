@@ -109,10 +109,11 @@ Replacing **PATH_TO_FOLDER** by the actual path where xtb is stored in your comp
   
 # Testing your installation:
   
-5. For testing PySoftK, you need to go to the folder **test** and then type:
-
+5. To test PySoftK, navigate to the folders **test_pysoftk** and **test_pol** inside the **test** folder.
+   Then, run the following command:
+   
 ```bash 
-  pytest
+  pytest -v
 ```
 
 
