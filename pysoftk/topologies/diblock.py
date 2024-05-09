@@ -56,7 +56,8 @@ class Db:
 
        
     def diblock_copolymer(self, len_block_A, len_block_B,
-                             force_field="MMFF", iter_ff=100):
+                             FF="MMFF", relax_iterations=100):
+
         """Function to create a diblock copolymer 
 
 
@@ -69,10 +70,10 @@ class Db:
         len_block_B: int
             Length of the molecular block B
 
-        force_field: str
+        FF: str
             Selected FF between MMFF or UFF
 
-        iter_ff: int  
+        relax_iterations: int  
             Number of iterations used for relaxing a 
             molecular object.
 
@@ -88,11 +89,11 @@ class Db:
         atom=self.atom
 
         string_1='A'*len_block_A
-        monomer=Pt(string_1, [ma], str(atom)).pattern_block_poly(iter_ff=int(iter_ff),force_field=str(force_field),swap_H=False)
+        monomer=Pt(string_1, [ma], str(atom)).pattern_block_poly(swap_H=False)
 
 
         string_2='B'*len_block_B
-        monomer2=Pt(string_2, [mb], str(atom)).pattern_block_poly(iter_ff=int(iter_ff),force_field=str(force_field),swap_H=False)
+        monomer2=Pt(string_2, [mb], str(atom)).pattern_block_poly(swap_H=False)
         
         diblock=sm.Sm(monomer, monomer2, str(atom)).monomer()
             
@@ -135,7 +136,7 @@ class Pt:
        self.mols = mols 
        self.atom = atom
        
-    def pattern_block_poly(self, force_field="MMFF", iter_ff=100, swap_H=True):
+    def pattern_block_poly(self, relax_iterations=100, FF="MMFF",swap_H=True):
         """
         Function to create a polymer based on an alphabetic ordered pattern.
     
@@ -180,19 +181,11 @@ class Pt:
         tpb=tuple_bonds(lst_ngh)
 
         proto_pol=create_pol(outmol, str(atom), tpb)
-
-        valid_force_fields = ("MMFF", "UFF", "MMFF94")
-        if force_field not in valid_force_fields:
-            raise ValueError(f"Invalid force field: {force_field}. Valid options are: {valid_force_fields}")
-
-        # Automatically change ff if necessary:
-        if force_field == "MMFF94":
-            force_field = "MMFF"  # Change to default MMFF94 for MMFF
         
         if swap_H:
-            newMol_H=swap_hyd(proto_pol, iter_ff, str(atom), force_field)
+            newMol_H=swap_hyd(proto_pol, relax_iterations, str(atom), FF)
 
         if not swap_H:
-            newMol_H=no_swap(proto_pol, iter_ff, force_field)
+            newMol_H=no_swap(proto_pol, relax_iterations, FF)
             
         return newMol_H
