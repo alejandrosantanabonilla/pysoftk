@@ -6,21 +6,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  example-2-linux:
-    # prevent cronjobs from running on forks
-    if:
-      (github.event_name == 'schedule' && github.repository ==
-      'conda-incubator/setup-miniconda') || (github.event_name != 'schedule')
-    name: Ex2 Linux
-    runs-on: "ubuntu-latest"
-    timeout-minutes: 30
+  build:
+    runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./
-        with:
-          miniconda-version: "latest"
-          activate-environment: foo
-      - name: Bash
-        run: |
-          conda info
-          conda list
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Conda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        activate-environment: myenv
+        mamba-version: "*"
+        channels: conda-forge, defaults
