@@ -1,14 +1,10 @@
 name: "Example 1: Basic usage"
 
+# Controls when the workflow will run
 on:
-  pull_request:
-    branches:
-      - "*"
-  push:
-    branches:
-      - "develop"
-      - "main"
-      - "master"
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
 jobs:
   example-1:
     # prevent cronjobs from running on forks
