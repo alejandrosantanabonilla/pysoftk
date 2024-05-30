@@ -12,8 +12,14 @@ from collections import OrderedDict
 
 from pysoftk.linear_polymer import linear_polymer as lp
 from pysoftk.linear_polymer import super_monomer  as sm
+
 from pysoftk.tools.utils_rdkit import *
 from pysoftk.tools.utils_func import *
+
+from pysoftk.topologies.ring import *
+
+from openbabel import openbabel as ob
+from openbabel import pybel as pb
 
 class Db:
     """A class for creating a diblock copolymers from 
@@ -56,7 +62,7 @@ class Db:
 
        
     def diblock_copolymer(self, len_block_A, len_block_B,
-                             FF="MMFF", relax_iterations=100):
+                             force_field="MMFF", relax_iterations=100, rot_steps=1):
 
         """Function to create a diblock copolymer 
 
@@ -70,12 +76,15 @@ class Db:
         len_block_B: int
             Length of the molecular block B
 
-        FF: str
-            Selected FF between MMFF or UFF
+        force_field: str
+            Selected force field between MMFF or UFF
 
         relax_iterations: int  
             Number of iterations used for relaxing a 
             molecular object.
+
+        rot_steps: int
+             Number of rotational steps for finding conformations.
 
         Return
         -------
@@ -89,15 +98,23 @@ class Db:
         atom=self.atom
 
         string_1='A'*len_block_A
-        monomer=Pt(string_1, [ma], str(atom)).pattern_block_poly(swap_H=False)
-
+        monomer=Pt(string_1, [ma], str(atom)).pattern_block_poly(relax_iterations, force_field=str(force_field), swap_H=False)
+        
 
         string_2='B'*len_block_B
-        monomer2=Pt(string_2, [mb], str(atom)).pattern_block_poly(swap_H=False)
+        monomer2=Pt(string_2, [mb], str(atom)).pattern_block_poly(relax_iterations, force_field=str(force_field), swap_H=False)
+
+        mon_temp=monomer.write("mol")
+        mon2_temp=monomer2.write("mol")
+
+        mon=Chem.MolFromMolBlock(mon_temp)
+        mon2=Chem.MolFromMolBlock(mon2_temp)
         
-        diblock=sm.Sm(monomer, monomer2, str(atom)).monomer()
+        diblock=sm.Sm(mon, mon2, str(atom)).monomer()
+
+        last_mol=check_proto(diblock, force_field, relax_iterations, rot_steps)
             
-        return diblock
+        return last_mol
 
 
 class Pt:
@@ -136,7 +153,7 @@ class Pt:
        self.mols = mols 
        self.atom = atom
        
-    def pattern_block_poly(self, relax_iterations=100, FF="MMFF",swap_H=True):
+    def pattern_block_poly(self, relax_iterations=100, force_field="MMFF", swap_H=True, rot_steps=1, more_iter=10):
         """
         Function to create a polymer based on an alphabetic ordered pattern.
     
@@ -146,12 +163,19 @@ class Pt:
         relax_iterations: int  
             Number of iterations used for relaxing a molecular object.
 
-        FF: str
+        force_field: str
             Selected FF between MMFF or UFF
 
         swap_H: bool
              Indicates if the user defined atomic place holder is changed to a 
              Hydrogen atom or remain as the used species. 
+
+        rot_steps: int
+             Number of rotational steps for finding conformations.
+
+        more_iter: int
+             Number of extra iterations for further optimising the molecular 
+             object.
 
         Return
         --------
@@ -171,7 +195,6 @@ class Pt:
         od_mols=OrderedDict(list(zip(numbers,mols)))
  
         list_mol=[od_mols[i] for i in seq]
-
         outmol=Chem.CombineMols(list_mol[0],list_mol[1])
 
         for i in range(2,len(list_mol)):
@@ -179,13 +202,15 @@ class Pt:
 
         lst_ngh=atom_neigh(outmol, str(atom))
         tpb=tuple_bonds(lst_ngh)
-
         proto_pol=create_pol(outmol, str(atom), tpb)
         
         if swap_H:
-            newMol_H=swap_hyd(proto_pol, relax_iterations, str(atom), FF)
+            newMol_H=swap_hyd(proto_pol, relax_iterations, str(atom), force_field)
 
         if not swap_H:
-            newMol_H=no_swap(proto_pol, relax_iterations, FF)
+            newMol_H=no_swap(proto_pol, relax_iterations, force_field)
+
+
+        last_mol=check_proto(newMol_H, force_field, relax_iterations*more_iter, rot_steps)
             
-        return newMol_H
+        return last_mol

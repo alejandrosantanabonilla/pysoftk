@@ -149,9 +149,9 @@ class Fmt(object):
               mol2.write(str(ext),str(output_name), overwrite=True)
 
            else:
-               mol.OBMol.PerceiveBondOrders()
-               mol.OBMol.AddHydrogens()
-               mol.write(str(ext),str(output_name), overwrite=True)
+              mol.OBMol.PerceiveBondOrders()
+              mol.OBMol.AddHydrogens()
+              mol.write(str(ext),str(output_name), overwrite=True)
                
         except ValueError:
           raise TypeError("{0} is an invalid molecule".format(mol))

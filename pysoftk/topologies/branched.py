@@ -77,14 +77,14 @@ class Bd:
        return mol
 
     
-    def branched_polymer(self, iter_ff=100, FF="MMFF", swap_H=True):
+    def branched_polymer(self, relax_iterations=100, force_field="MMFF", swap_H=True):
        """Function to create branched polymers
 
        Parameters
        -----------
 
-       FF: str
-            Selected FF between MMFF or UFF
+       force_field: str
+            Selected force field between MMFF or UFF
 
        relax_iterations: int  
             Number of iterations used for relaxing a molecular object. 
@@ -114,10 +114,10 @@ class Bd:
            res=self.merge_arms(res, arm, str(atom))
 
        if swap_H:
-         mol=swap_hyd(res, iter_ff, str(atom), FF)
+         mol=swap_hyd(res, relax_iterations, str(atom), force_field)
 
        if not swap_H:
-         mol=no_swap(res, iter_ff, FF)
+         mol=no_swap(res, relax_iterations, force_field)
             
        return mol
 

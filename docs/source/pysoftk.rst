@@ -11,7 +11,6 @@ Subpackages
    pysoftk.format_printers
    pysoftk.htp_tools
    pysoftk.linear_polymer
-   pysoftk.tools
    pysoftk.topologies
    pysoftk.torsional
 

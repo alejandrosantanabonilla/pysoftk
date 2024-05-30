@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='pysoftk',
-    version='0.5.0',
-    author='A. Santana-Bonilla',
-    author_email='k2031560@kcl.ac.uk',
+    name='pysoftk', 
+    version='1.0.0', 
+    author='A. Santana-Bonilla, R. Lopez-Castro, R. Ziolek, C. Lorenz', 
+    author_email='k2031560@kcl.ac.uk', 
     packages= find_packages(exclude=["test", "test.*", "test2", "test.*"]),
     #scripts=['bin/stowe-towels.py','bin/wash-towels.py'],
     #url='http://pypi.python.org/pypi/TowelStuff/',
@@ -13,14 +13,21 @@ setup(
     #long_description=open('README.txt').read(),
     install_requires=[
         'pytest >= 2.7.2',
+        'Cython',
         'networkx >= 2.7; python_version>="3.8"',
         'networkx < 2.7; python_version<"3.8"',
-        'rdkit-pypi >= 2021.3.1.2',
+        'rdkit >= 2021.3.1.2',
         'wheel',
         'tqdm >= 4.64.0',
         'pathos >= 0.2.8',
         'pyscf-semiempirical @ git+https://github.com/pyscf/semiempirical',
         'pyberny',
         'openbabel-wheel',
+        'numba',
+	'umap-learn',
+	'hdbscan',
+	'pandas',
+	'pyarrow',
+	'MDAnalysis',
     ],
 )

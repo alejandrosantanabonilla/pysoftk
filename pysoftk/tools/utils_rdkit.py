@@ -6,7 +6,7 @@ RDLogger.DisableLog('rdApp.*')
 from openbabel import openbabel as ob
 from openbabel import pybel as pb
 
-def no_swap(mol, iter_ff, FF="MMFF"):
+def no_swap(mol, relax_iterations, force_field="MMFF"):
        """Function to sanitize a molecule with Hydrogens 
           and the user defined atomic place holder.
 
@@ -16,10 +16,10 @@ def no_swap(mol, iter_ff, FF="MMFF"):
        mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
 
-       FF: str
+       force_field: str
          Selected FF to perform a relaxation
  
-       iter_ff: int
+       relax_iterations: int
          Number of iterations to perform a FF geometry optimization.
 
        Returns
@@ -37,17 +37,17 @@ def no_swap(mol, iter_ff, FF="MMFF"):
        Chem.SanitizeMol(newMol_H)
        AllChem.EmbedMolecule(newMol_H, useRandomCoords=True)
 
-       if FF == "MMFF":
-           MMFF_rel(newMol_H,iter_ff)
+       if force_field == "MMFF":
+           MMFF_rel(newMol_H,int(relax_iterations))
 
        else:
-           UFF_rel(newMol_H, iter_ff)
+           UFF_rel(newMol_H, int(relax_iterations))
            
 
        return newMol_H       
 
 
-def swap_hyd(mol, iter_ff, atom, FF="MMFF"):
+def swap_hyd(mol, relax_iterations, atom, force_field="MMFF"):
        """Function to swap atomic place holders to Hydrogen atoms.
 
        Parameters
@@ -56,13 +56,13 @@ def swap_hyd(mol, iter_ff, atom, FF="MMFF"):
        mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
 
-       iter_ff: int
+       relax_iterations: int
           Number of iterations to perform a FF geometry optimization.
 
        atom : str
           The placeholder atom to combine the molecules and form a new monomer.
 
-       FF: str
+       force_field: str
           Selected FF to perform a geometry optimization.
  
        Returns
@@ -83,18 +83,18 @@ def swap_hyd(mol, iter_ff, atom, FF="MMFF"):
        Chem.SanitizeMol(newMol_H)
        AllChem.EmbedMolecule(newMol_H, useRandomCoords=True)
 
-       if FF == "MMFF":
-           MMFF_rel(newMol_H,iter_ff)
+       if force_field == "MMFF":
+           MMFF_rel(newMol_H,int(relax_iterations))
 
        else:
-           UFF_rel(newMol_H, iter_ff)
+           UFF_rel(newMol_H,int(relax_iterations))
            
 
        return newMol_H
        
        
        
-def MMFF_rel(mol, iter_ff, vdw_par=0.001):
+def MMFF_rel(mol, relax_iterations, vdw_par=0.001):
     """Function to employ a MMFF molecular mechanics FF.
     
 
@@ -104,7 +104,7 @@ def MMFF_rel(mol, iter_ff, vdw_par=0.001):
     mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
 
-    iter_ff: int
+    relax_iterations: int
           Number of iterations to perform a FF geometry optimization.
           
     vdw_par: float
@@ -117,11 +117,11 @@ def MMFF_rel(mol, iter_ff, vdw_par=0.001):
           RDKit Mol object
     """
 
-    AllChem.MMFFOptimizeMolecule(mol, nonBondedThresh=float(vdw_par), maxIters=int(iter_ff))
+    AllChem.MMFFOptimizeMolecule(mol, nonBondedThresh=float(vdw_par), maxIters=int(relax_iterations))
 
     return mol
 
-def UFF_rel(mol, iter_ff, vdw_par=0.001):
+def UFF_rel(mol, relax_iterations, vdw_par=0.001):
     """Function to employ an UFF molecular mechanics FF.
 
     Parameters
@@ -130,7 +130,7 @@ def UFF_rel(mol, iter_ff, vdw_par=0.001):
     mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
 
-    iter_ff: int
+    relax_iterations: int
           Number of iterations to perform a FF geometry optimization.
           
     vdw_par: float
@@ -143,7 +143,7 @@ def UFF_rel(mol, iter_ff, vdw_par=0.001):
     mol : rdkit.Chem.rdchem.Mol
           RDKit Mol object
     """
-    AllChem.UFFOptimizeMolecule(mol, vdwThresh=float(vdw_par), maxIters=int(iter_ff))
+    AllChem.UFFOptimizeMolecule(mol, vdwThresh=float(vdw_par), maxIters=int(relax_iterations))
 
     return mol
 
@@ -180,21 +180,23 @@ def plc_holder(mol, atom):
     return new_bond
 
 def remove_plcholder(mol, atom):
-    """Function that seeks for a place holder atom and replace it with a Hydrogen atom.
+    """Function that seeks for a place holder atom 
+       and replace it with a Hydrogen atom.
 
-       Parameters
-       ----------
+      Parameters
+      ----------
        
-       mol: rdkit.Chem.Mol
-            RDKit Mol object
+      mol: rdkit.Chem.Mol
+          RDKit Mol object
 
 
-       Return
-       --------
+     Return
+     --------
 
-       None:
-            RDKit Mol object
+     None:
+          RDKit Mol object
     
+
     """
     for atoms in mol.GetAtoms():
         if atoms.GetSymbol() == str(atom):

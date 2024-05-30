@@ -1,9 +1,11 @@
 from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Geometry import Point3D
+
 from rdkit.Chem import rdDistGeom
 from rdkit.Chem import rdDistGeom as molDG
 from rdkit.Chem.rdMolTransforms import *
+
 from rdkit import RDLogger
 RDLogger.DisableLog('rdApp.*')
 
@@ -203,44 +205,66 @@ class Lp:
        
        return mol4
 
-    def linear_polymer(self, FF="MMFF94", iter_ff=350, rot_steps=125, no_att=True):
-       """Function to create a linear polymer from a 
-          given super_monomer object.
-
-       Parameters
-       -----------
-
-       FF : str
-          Selected Force-Field from RDKit options, i.e, 
-          UFF or MMFF.
-         
-       iter_ff: int
-          The maximum number of iterations used for the FF.
+    def linear_polymer(self, force_field="MMFF", relax_iterations=350, rot_steps=125, no_att=True):
+        """Function to create a linear polymer from a 
+        given super_monomer object.
 
 
-       Return
-       --------
+        Parameters
+        -----------
 
-       newMol_H : rdkit.Chem.rdchem.Mol
-            RDKit Mol object
+        force_field : str
+           Selected Force-Field from RDKit options, i.e., 
+           UFF, MMFF, or MMFF94.
 
-       """
+        relax_iterations: int
+           The maximum number of iterations used for the FF.
 
-       mol=self.proto_polymer()
-       atom=self.atom
+        rot_steps: int
+           Number of steps for rotor optimization.
 
-       if no_att:
-          mol1 = remove_plcholder(mol, atom)
-          
-       else:
-          mol1 = mol  # Use the original mol if mol1 is not provided
+        no_att: bool, optional
+           If True, remove placeholder atoms. Defaults to True.
 
+        Return
+        --------
 
-       #Using PDB object to preserve bond information
-       last_rdkit=Chem.MolToPDBBlock(mol1)
-       mol_new=pb.readstring('pdb', last_rdkit)
+        newMol_H : rdkit.Chem.rdchem.Mol
+           RDKit Mol object
 
-       last_mol=ff_ob_relaxation(mol_new, FF, int(iter_ff))
-       rot_mol=rotor_opt(last_mol, FF, int(rot_steps))
+        """
 
-       return mol_new
+        mol = self.proto_polymer()
+        atom = self.atom
+
+        if no_att:
+            mol1 = remove_plcholder(mol, atom)
+        else:
+            mol1 = mol  # Use the original mol if mol1 is not provided
+
+        # Using PDB object to preserve bond information
+        last_rdkit = Chem.MolToPDBBlock(mol1)
+        mol_new = pb.readstring('pdb', last_rdkit)
+
+        # Validate force field:
+        valid_force_fields = ("MMFF", "UFF", "MMFF94")
+        if force_field not in valid_force_fields:
+            raise ValueError(f"Invalid force field: {force_field}. Valid options are: {valid_force_fields}")
+
+        # Automatically change ff if necessary:
+        if force_field == "MMFF":
+            force_field = "MMFF94"  # Change to default MMFF94 for MMFF
+
+        # Validate and convert iterations and steps to integers:
+        try:
+            relax_iterations = int(relax_iterations)
+            rot_steps = int(rot_steps)
+        except ValueError:
+            raise ValueError("relax_iterations and rot_steps must be integers.")
+
+        # Relaxation and optimization:
+        last_mol = ff_ob_relaxation(mol_new, force_field, relax_iterations)
+        rot_mol = rotor_opt(last_mol, force_field, rot_steps)
+
+        return mol_new
+

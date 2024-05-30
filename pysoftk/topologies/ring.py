@@ -34,53 +34,12 @@ class Rn:
 
     def __init__(self, mol, atom):
        """Initialize this class.
-       """
-       
+       """       
        self.mol=mol
        self.atom=atom 
-
-    def check_proto(self, mol, force_field="MMFF", iter_ff=100):
-      """Function to check the proto polymer creation.
-
-
-      Parameters
-      -----------
-      
-      mol: rdkit.Chem.rdchem.Mol
-            RDKit Mol object
-      
-      FF:  str
-           Selected FF to perform a relaxation
- 
-      iter: int
-           Number of iterations to perform a FF geometry optimisation.
-
-      Return
-      -------
-
-      newMol_H : rdkit.Chem.rdchem.Mol
-            RDKit Mol object
-
-      """
-      last_rdkit=Chem.MolToPDBBlock(mol)
-
-      mol_new=pb.readstring('pdb', last_rdkit)
-
-      if force_field == "MMFF":
-         ff = pb._forcefields["mmff94"]
-         # Relaxation functions from utils in linear_polymer
-         opt_mol=ff_ob_relaxation(mol_new, iter_ff=int(iter_ff), ff_thr=1.0e-6)
-
-      else:
-         ff = pb._forcefields["uff"]
-         # Relaxation functions from utils in linear_polymer
-         opt_mol=ff_ob_relaxation(mol_new, iter_ff=int(iter_ff), ff_thr=1.0e-6)
-          
-      return opt_mol
-       
-
+     
     def pol_ring(self, len_polymer=2, force_field="MMFF",
-                 iter_ff=100, shift=1.25, more_iter=10): 
+                 relax_iterations=100, shift=1.25, more_iter=10): 
       """ Function to create a polymer with ring structure (circular)
 
       Parameters
@@ -96,10 +55,10 @@ class Rn:
       len_polymer: int
          Extension of the polymer
 
-      FF: str
+      force_field: str
          Selected FF to perform a relaxation
  
-      iter_ff: int
+      relax_iterations: int
          Number of iterations to perform a FF geometry optimisation.
 
       shift: float
@@ -122,7 +81,8 @@ class Rn:
       if force_field not in ("MMFF", "UFF"):
             raise ValueError(f"Invalid force field: {force_field}")
       
-      patt=Lp(mol,str(atom),int(len_polymer),float(shift)).linear_polymer(iter_ff=int(iter_ff),no_att=False)
+      patt=Lp(mol,str(atom),int(len_polymer),float(shift)).linear_polymer(relax_iterations=int(relax_iterations),
+                                                                          no_att=False)
       proto_ring=patt.write("pdb")
 
       ring_rdkit=Chem.MolFromPDBBlock(proto_ring)   
@@ -143,23 +103,69 @@ class Rn:
       AllChem.AssignBondOrdersFromTemplate(newMol_H, newMol_H)
 
       if force_field == "MMFF":
-         apply_force_field(newMol_H, "MMFF", iter_ff*int(more_iter))
+         apply_force_field(newMol_H, "MMFF", relax_iterations*int(more_iter))
 
       else:
-         apply_force_field(newMol_H, "UFF", iter_ff*int(more_iter)) 
+         apply_force_field(newMol_H, "UFF", relax_iterations*int(more_iter)) 
 
-      pol_ring=self.check_proto(newMol_H, str(force_field), int(iter_ff))
+      pol_ring=check_proto(newMol_H, str(force_field), int(relax_iterations))
          
       return pol_ring
       
      
-def apply_force_field(molecule: Chem.Mol, force_field: str, iter_ff: int) -> None:
+def apply_force_field(molecule: Chem.Mol, force_field: str, relax_iterations: int) -> None:
     """Applies the specified force field to the molecule."""
 
     if force_field == "MMFF":
-        MMFF_rel(molecule, iter_ff)
+        MMFF_rel(molecule, relax_iterations)
 
     else:
-        UFF_rel(molecule, iter_ff)
+        UFF_rel(molecule, relax_iterations)
 
 
+def check_proto(mol, force_field="MMFF", relax_iterations=100, rot_steps=1, ff_thr=1.0e-6):
+   """Function to check the proto polymer creation.
+
+
+   Parameters
+   -----------
+      
+   mol: rdkit.Chem.rdchem.Mol
+        RDKit Mol object
+      
+   force_field:  str
+        Selected FF to perform a relaxation
+ 
+   relax_iterations: int
+        Number of iterations to perform a FF geometry optimisation.
+
+   rot_steps: int 
+        Number of possible confomers to search after optimisation.
+
+   ff_thr: force field convergence threshold
+        Force convergence criteria.
+
+   Return
+   -------
+
+   newMol_H : rdkit.Chem.rdchem.Mol
+        RDKit Mol object
+
+   """
+   last_rdkit=Chem.MolToPDBBlock(mol)
+
+   mol_new=pb.readstring('pdb', last_rdkit)
+
+   if force_field == "MMFF":
+      ff = pb._forcefields["mmff94"]
+      # Relaxation functions from utils in linear_polymer
+      #opt_mol=ff_ob_relaxation(mol_new, relax_iterations=int(relax_iterations), ff_thr=1.0e-6)
+      opt_mol=global_opt(mol_new, relax_iterations=int(relax_iterations), rot_steps=int(rot_steps),ff_thr=float(ff_thr))
+
+   else:
+      ff = pb._forcefields["uff"]
+      # Relaxation functions from utils in linear_polymer
+      #opt_mol=ff_ob_relaxation(mol_new, relax_iterations=int(relax_iterations), ff_thr=1.0e-6)
+      opt_mol=global_opt(mol_new, relax_iterations=int(relax_iterations), rot_steps=int(rot_steps),ff_thr=float(ff_thr))
+          
+   return opt_mol

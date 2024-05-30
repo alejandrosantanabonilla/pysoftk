@@ -5,7 +5,7 @@ from openbabel import pybel as pb
 import numpy as np
 import os
 
-def ff_ob_relaxation(mol, FF="MMFF94", iter_ff=100, ff_thr=1.0e-6):
+def ff_ob_relaxation(mol, FF="MMFF94", relax_iterations=100, ff_thr=1.0e-6):
     """Setting up an openbabel FF for 
        geometry optimization.
       
@@ -25,13 +25,13 @@ def ff_ob_relaxation(mol, FF="MMFF94", iter_ff=100, ff_thr=1.0e-6):
     ========
 
     mol_new: Mol.OBabel.Mol
-      Open Babel Molecule with optimised Geometry.
+      Open Babel Molecule with optmised Geometry.
 
     """
 
     ff = ob.OBForceField.FindForceField(str(FF))
     ff.Setup(mol.OBMol)
-    ff.ConjugateGradients(int(iter_ff), float(ff_thr))
+    ff.ConjugateGradients(int(relax_iterations), float(ff_thr))
 
     ff.GetCoordinates(mol.OBMol)
 
@@ -72,6 +72,42 @@ def rotor_opt(mol, FF="MMFF94", rot_steps=125):
 
     return mol 
 
+def global_opt(mol, FF="MMFF94", relax_iterations=150, rot_steps=125, ff_thr=1.0e-6):
+    """Setting up an openbabel FF for rotor 
+    optimization.
+      
+    Parameters
+    ===========
+
+    mol: OBabel.Mol
+      An user-provided OpenBabel moelcule.
+
+    FF: class.str
+      Selected Force Field. Options are MMFF94, UFF, GAFF.
+
+    rot_steps: class.int
+      Number of iterations to be used for the rotational 
+      optimization.
+
+    Returns
+    ========
+
+    mol_new: Mol.OBabel.Mol
+      Open Babel Molecule with optmised Geometry.
+
+    """
+    ff = ob.OBForceField.FindForceField(str(FF))
+    ff.Setup(mol.OBMol)
+    ff.ConjugateGradients(int(relax_iterations),ff_thr*100)
+    ff.WeightedRotorSearch(int(rot_steps), int(np.ceil(rot_steps/2.0)))
+    ff.ConjugateGradients(relax_iterations*100, ff_thr)
+
+    # update the coordinates
+    ff.GetCoordinates(mol.OBMol)
+
+    return mol
+
+
 def check_bond_order(file_name):
     """Function to check and correct the bonds
        of a given file. 
@@ -108,3 +144,4 @@ def check_bond_order(file_name):
                          overwrite=True)
     output.write(mol)
     output.close()
+

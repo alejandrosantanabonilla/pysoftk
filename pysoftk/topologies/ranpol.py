@@ -53,7 +53,7 @@ class Rnp():
        self.atom = atom
 
     def random_ab_copolymer(self, len_polymer, pA,
-                            relax_iterations=100, FF="MMFF", swap_H=True):
+                            relax_iterations=100, force_field="MMFF", swap_H=True):
        """ Function to build a random copolymer using an user provided 
            probability (pA) for merging the monomer ma and imposing 
            the condition pB=1-pA.
@@ -68,16 +68,16 @@ class Rnp():
        pA: float
           User defined attaching probability of ma.
 
-       iter_ff: int
+       relax_iterations: int
            User defined iterations for a FF.
 
-       FF: str
-           User selected FF between "MMFF" or "UFF".      
+       force_field: str
+           User selected force field between "MMFF" or "UFF".      
 
-        swap_H: bool
-             Indicates if the user defined atomic place holder 
-             is changed to a Hydrogen atom or remain as the 
-             used species.   
+       swap_H: bool
+           Indicates if the user defined atomic place holder 
+           is changed to a Hydrogen atom or remain as the 
+           used species.   
  
        Return
        -------    
@@ -120,15 +120,15 @@ class Rnp():
        mol=monomer.mon_to_poly()
 
        if swap_H:
-            newMol_H=swap_hyd(mol, relax_iterations, str(atom), FF)
+            newMol_H=swap_hyd(mol, relax_iterations, str(atom), force_field)
 
        if not swap_H:
-            newMol_H=no_swap(mol, relax_iterations, FF)
+            newMol_H=no_swap(mol, relax_iterations, force_field)
 
        return newMol_H
     
     def random_abc_copolymer(self, mc, len_polymer, pA,
-                             pB, relax_iterations=100, FF="MMFF", swap_H=True):
+                             pB, relax_iterations=100, force_field="MMFF", swap_H=True):
         
        """ Function to build a random copolymer based on an user defined 
            probability (pA) of merging mA, pB for monomer mb, and the 
@@ -152,16 +152,16 @@ class Rnp():
        atom: str
            User defined atom used as place-holder.
 
-       iter_ff: int
+       relax_iterations: int
            User defined iterations for a FF.
 
-       FF: str
+       force_field: str
            User selected FF.      
 
        swap_H: bool
-             Indicates if the user defined atomic place holder 
-             is changed to a Hydrogen atom or remain as the 
-             used species.   
+           Indicates if the user defined atomic place holder 
+           is changed to a Hydrogen atom or remain as the 
+           used species.   
  
        Return
        -------
@@ -217,9 +217,9 @@ class Rnp():
        mol = monomer.mon_to_poly()
 
        if swap_H:
-           newMol_H=swap_hyd(mol, relax_iterations, str(atom), FF)
+           newMol_H=swap_hyd(mol, relax_iterations, str(atom), force_field)
 
        if not swap_H:
-           newMol_H=no_swap(mol, relax_iterations, FF)
+           newMol_H=no_swap(mol, relax_iterations, force_field)
 
        return newMol_H

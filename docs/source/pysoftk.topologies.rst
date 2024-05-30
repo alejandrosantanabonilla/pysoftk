@@ -36,6 +36,14 @@ pysoftk.topologies.ring module
    :undoc-members:
    :show-inheritance:
 
+pysoftk.topologies.utils module
+-------------------------------
+
+.. automodule:: pysoftk.topologies.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
