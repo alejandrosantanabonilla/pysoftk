@@ -19,3 +19,11 @@ jobs:
         activate-environment: myenv
         mamba-version: "*"
         channels: conda-forge, defaults
+
+    - name: Installation xtb
+      run: |
+        conda install xtb
+
+    - name: Installation MDAnalysis
+      run: |
+        conda install mdanalysis
