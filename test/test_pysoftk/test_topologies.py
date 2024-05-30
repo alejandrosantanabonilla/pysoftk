@@ -36,6 +36,7 @@ testdata5=[('BrN(Br)CCN(Br)Br',
 def rootdir():
     return os.path.dirname(os.path.abspath(__file__))
 
+<<<<<<< HEAD:test/test_pysoftk/test_topologies.py
 @pytest.mark.parametrize("comb,expected", testdata3)
 def test_diblock_1(comb, expected):
     mol_1=Chem.MolFromSmiles('BrCOCBr')
@@ -51,19 +52,46 @@ def test_diblock_2(rootdir):
     Testing relax_iterations new flag
     """
     est_file = os.path.join(rootdir, 'tmp_folder29')
+=======
+def test_diblock_1(rootdir):
+    est_file = os.path.join(rootdir, 'tmp_folder11')
+>>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5:test/test_topologies.py
     os.mkdir(est_file)
     os.chdir(est_file)
 
     mol_1=Chem.MolFromSmiles('BrCOCBr')
     mol_2=Chem.MolFromSmiles('[C@H](CBr)(OBr)C')
     
+<<<<<<< HEAD:test/test_pysoftk/test_topologies.py
     a=Db(mol_1, mol_2, 'Br').diblock_copolymer(6, 3, "UFF", relax_iterations=10)
+=======
+    a=Db(mol_1, mol_2, 'Br').diblock_copolymer(5, 2, "MMFF94", 10)
+>>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5:test/test_topologies.py
     Fmt(a).xyz_print("diblock_monomer.xyz")
     
     b=Fld().seek_files("xyz")
     assert len(b) == 1
 
     shutil.rmtree(est_file)
+<<<<<<< HEAD:test/test_pysoftk/test_topologies.py
+=======
+
+def test_diblock_2(rootdir):
+    est_file = os.path.join(rootdir, 'tmp_folder29')
+    os.mkdir(est_file)
+    os.chdir(est_file)
+
+    mol_1=Chem.MolFromSmiles('BrCOCBr')
+    mol_2=Chem.MolFromSmiles('[C@H](CBr)(OBr)C')
+    
+    a=Db(mol_1, mol_2, 'Br').diblock_copolymer(6, 3, "UFF", 10)
+    Fmt(a).xyz_print("diblock_monomer.xyz")
+    
+    b=Fld().seek_files("xyz")
+    assert len(b) == 1
+
+    shutil.rmtree(est_file)
+>>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5:test/test_topologies.py
     
 @pytest.mark.parametrize("mol,expected", testdata2)
 def test_ring(mol, expected, rootdir):
@@ -131,10 +159,17 @@ def test_ran_pol(rootdir):
     mol_4=Chem.MolFromSmiles('c1(ccc(cc1)Br)Br')
     mol_5=Chem.MolFromSmiles('BrCCBr')
 
+<<<<<<< HEAD:test/test_pysoftk/test_topologies.py
     dia = Rnp(mol_2, mol_4,"Br").random_ab_copolymer(10, 0.4,force_field="MMFF94",relax_iterations=10)
     Fmt(dia).xyz_print("dia.xyz")
   
     tri = Rnp(mol_2, mol_4,"Br").random_abc_copolymer(mol_2, 15, 0.4, 0.6, force_field="MMFF94",relax_iterations=10)
+=======
+    dia = Rnp(mol_2, mol_4,"Br").random_ab_copolymer(10, 0.4,force_field="MMFF94",iter_ff=10)
+    Fmt(dia).xyz_print("dia.xyz")
+  
+    tri = Rnp(mol_2, mol_4,"Br").random_abc_copolymer(mol_2, 15, 0.4, 0.6, force_field="MMFF94",iter_ff=10)
+>>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5:test/test_topologies.py
     Fmt(tri).xyz_print("tri.xyz")
 
     b=Fld().seek_files("xyz")

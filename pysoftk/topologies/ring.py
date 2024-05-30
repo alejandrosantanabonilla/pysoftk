@@ -37,7 +37,51 @@ class Rn:
        """       
        self.mol=mol
        self.atom=atom 
+<<<<<<< HEAD
      
+=======
+
+    def check_proto(self, mol, force_field="MMFF", iter_ff=100):
+      """Function to check the proto polymer creation.
+
+
+      Parameters
+      -----------
+      
+      mol: rdkit.Chem.rdchem.Mol
+            RDKit Mol object
+      
+      force_field:  str
+           Selected FF to perform a relaxation
+ 
+      iter: int
+           Number of iterations to perform a FF geometry optimisation.
+
+      Return
+      -------
+
+      newMol_H : rdkit.Chem.rdchem.Mol
+            RDKit Mol object
+
+      """
+      last_rdkit=Chem.MolToPDBBlock(mol)
+
+      mol_new=pb.readstring('pdb', last_rdkit)
+
+      if force_field == "MMFF":
+         ff = pb._forcefields["mmff94"]
+         # Relaxation functions from utils in linear_polymer
+         opt_mol=ff_ob_relaxation(mol_new, iter_ff=int(iter_ff), ff_thr=1.0e-6)
+
+      else:
+         ff = pb._forcefields["uff"]
+         # Relaxation functions from utils in linear_polymer
+         opt_mol=ff_ob_relaxation(mol_new, iter_ff=int(iter_ff), ff_thr=1.0e-6)
+          
+      return opt_mol
+       
+
+>>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
     def pol_ring(self, len_polymer=2, force_field="MMFF",
                  relax_iterations=100, shift=1.25, more_iter=10): 
       """ Function to create a polymer with ring structure (circular)
@@ -113,6 +157,7 @@ class Rn:
       return pol_ring
       
      
+<<<<<<< HEAD
 def apply_force_field(molecule: Chem.Mol, force_field: str, relax_iterations: int) -> None:
     """Applies the specified force field to the molecule."""
 
@@ -121,6 +166,32 @@ def apply_force_field(molecule: Chem.Mol, force_field: str, relax_iterations: in
 
     else:
         UFF_rel(molecule, relax_iterations)
+=======
+def apply_force_field(molecule: Chem.Mol, force_field: str, iter_ff: int) -> None:
+  """Applies the specified force field to the molecule.
+
+  This function takes a RDKit molecule object (`molecule`), a string specifying the force field to use (`force_field`),
+  and an integer representing the number of iterations (`iter_ff`). It then applies the chosen force field to the molecule
+  using either the MMFF or UFF approach, depending on the `force_field` value.
+
+  Args:
+    molecule: A RDKit molecule object representing the molecule for force field application.
+    force_field: A string specifying the force field to use, either "MMFF" or "UFF".
+    iter_ff: An integer representing the number of iterations to perform during force field minimization.
+
+  Raises:
+    ValueError: If an invalid force field name is provided.
+
+  Returns:
+    None. The function modifies the input molecule object `molecule` in-place.
+
+  """
+  if force_field == "MMFF":
+     MMFF_rel(molecule, iter_ff)
+
+  else:
+     UFF_rel(molecule, iter_ff)
+>>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
 
 
 def check_proto(mol, force_field="MMFF", relax_iterations=100, rot_steps=1, ff_thr=1.0e-6):

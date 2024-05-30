@@ -15,7 +15,6 @@
 **PySoftK** is a set of Python tools and programs for modelling and simulating polymers with different topologies. The program is still under active 
 development and contributions are welcome. A complete introduction into the program can be found in this link [Documentation][1]. 
 
-
 # Pip installation
 
 To quickly install **PySoftk**, we encourage to do it inside a virtual environment, which can be achieved in the following way:
@@ -79,22 +78,25 @@ These are instructions to
 ```console
    (pysoftk_env) git clone https://github.com/alejandrosantanabonilla/pysoftk.git
 ```
-
-4. Install [PySoftK][1] and its dependencies as required
-
-```console
-
-   (pysoftk_env) cd pysoftk
-   (pysoftk_env) pip install .
-```
-
-5. Install [xtb][2] using conda
+4. Install [xtb][2] using conda
 
 ```console
    conda install -c conda-forge xtb
 ```
+5. Install [MDAnalysis][3] using conda
 
-6. You may need to add the [PySoftK][1] installation directory to your .bashrc or .zshrc file
+```console
+   conda install -c conda-forge mdanalysis
+```
+
+6. Install [PySoftK][1] and its dependencies as required
+
+```console
+   (pysoftk_env) cd pysoftk
+   (pysoftk_env) pip install .
+```
+
+7. You may need to add the [PySoftK][1] installation directory to your .bashrc or .zshrc file
 
 ```console 
     PATH=$PATH:/<path to>/pysoftk_dir	
@@ -107,13 +109,21 @@ Replacing **PATH_TO_FOLDER** by the actual path where xtb is stored in your comp
   
 # Testing your installation:
   
-5. For testing PySoftK, you need to go to the folder **test** and then type:
-
+5. To test PySoftK, navigate to the folders **test_pysoftk** and **test_pol** inside the **test** folder.
+   Then, run the following command:
+   
 ```bash 
-  pytest
+  pytest -v
 ```
 
 
 [1]: https://alejandrosantanabonilla.github.io/pysoftk/
 [2]: https://github.com/grimme-lab/xtb
+[3]: https://www.mdanalysis.org/pages/installation_quick_start/
 
+# Contributors:
+
+- Chris Lorenz (Polymer topologies and documentation)
+- Rob Zioelek (Analysis tools and pysoftwhere developer utils)
+- Raquel Lopez-Rios de Castro (Analysis tools main contributor, documentation)
+- Alejandro Santana-Bonilla (Polymer topologies, utilities and mantaining)

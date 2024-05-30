@@ -15,48 +15,42 @@ from pysoftk.folder_manager.folder_creator import *
 from itertools import permutations
 from pysoftk.tools.utils_rdkit import *
 
-from openbabel import openbabel as ob
-from openbabel import pybel as pb
-
-import os
-
 # PYTESTS
-testdata1=[('ABC', 'c1(ccccc1)c1ccc(o1)c1cccs1'),
-           ('ACB', 'c1(ccccc1)c1ccc(s1)c1ccco1'),
-           ('BAC', 'c1cc(oc1)c1ccc(cc1)c1cccs1'),
-           ('BCA', 'c1cc(oc1)c1ccc(s1)c1ccccc1'),
-           ('CAB', 'c1cc(sc1)c1ccc(cc1)c1ccco1'),
-           ('CBA', 'c1cc(sc1)c1ccc(o1)c1ccccc1')]
 
 
-testdata2=[('ABCD', 'c1cc(oc1)c1ccc(s1)c1ccc(cc1)CC'),
-            ('ABDC', 'c1cc(oc1)c1ccc(s1)CCc1ccccc1'),
-            ('ACBD', 'c1cc(oc1)c1ccc(cc1)c1ccc(s1)CC'),
-            ('ACDB', 'c1cc(oc1)c1ccc(cc1)CCc1cccs1'),
-            ('ADBC', 'c1cc(oc1)CCc1ccc(s1)c1ccccc1'),
-            ('ADCB', 'c1cc(oc1)CCc1ccc(cc1)c1cccs1'),
-            ('BACD', 'c1cc(sc1)c1ccc(o1)c1ccc(cc1)CC'),
-            ('BADC', 'c1cc(sc1)c1ccc(o1)CCc1ccccc1'),
-            ('BCAD', 'c1cc(sc1)c1ccc(cc1)c1ccc(o1)CC'),
-            ('BCDA', 'c1cc(sc1)c1ccc(cc1)CCc1ccco1'),
-            ('BDAC', 'c1cc(sc1)CCc1ccc(o1)c1ccccc1'),
-            ('BDCA', 'c1cc(sc1)CCc1ccc(cc1)c1ccco1'),
-            ('CABD', 'c1(ccccc1)c1ccc(o1)c1ccc(s1)CC'),
-            ('CADB', 'c1(ccccc1)c1ccc(o1)CCc1cccs1'),
-            ('CBAD', 'c1(ccccc1)c1ccc(s1)c1ccc(o1)CC'),
-            ('CBDA', 'c1(ccccc1)c1ccc(s1)CCc1ccco1'),
-            ('CDAB', 'c1(ccccc1)CCc1ccc(o1)c1cccs1'),
-            ('CDBA', 'c1(ccccc1)CCc1ccc(s1)c1ccco1'),
-            ('DABC', 'CCc1ccc(o1)c1ccc(s1)c1ccccc1'),
-            ('DACB', 'CCc1ccc(o1)c1ccc(cc1)c1cccs1'),
-            ('DBAC', 'CCc1ccc(s1)c1ccc(o1)c1ccccc1'),
-            ('DBCA', 'CCc1ccc(s1)c1ccc(cc1)c1ccco1'),
-            ('DCAB', 'CCc1ccc(cc1)c1ccc(o1)c1cccs1'),
-            ('DCBA', 'CCc1ccc(cc1)c1ccc(s1)c1ccco1')]
+testdata1=[('ABC', '[H]c1c(-c2sc(Br)c([H])c2[H])oc(-c2c([H])c([H])c(Br)c([H])c2[H])c1[H]'),
+           ('ACB', '[H]c1c(Br)oc(-c2sc(-c3c([H])c([H])c(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
+           ('BAC', '[H]c1c(Br)oc(-c2c([H])c([H])c(-c3sc(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
+           ('BCA', '[H]c1c(Br)oc(-c2sc(-c3c([H])c([H])c(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
+           ('CAB', '[H]c1c(Br)oc(-c2c([H])c([H])c(-c3sc(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
+           ('CBA', '[H]c1c(-c2sc(Br)c([H])c2[H])oc(-c2c([H])c([H])c(Br)c([H])c2[H])c1[H]')]
 
-@pytest.fixture
-def rootdir():
-    return os.path.dirname(os.path.abspath(__file__))
+
+testdata2=[('ABCD', '[H]c1c(Br)oc(-c2sc(-c3c([H])c([H])c(C([H])([H])C([H])([H])Br)c([H])c3[H])c([H])c2[H])c1[H]'),
+           ('ABDC', '[H]c1c(Br)oc(-c2sc(C([H])([H])C([H])([H])c3c([H])c([H])c(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
+           ('ACBD', '[H]c1c(Br)oc(-c2c([H])c([H])c(-c3sc(C([H])([H])C([H])([H])Br)c([H])c3[H])c([H])c2[H])c1[H]'),
+           ('ACDB', '[H]c1c(Br)oc(-c2c([H])c([H])c(C([H])([H])C([H])([H])c3sc(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
+           ('ADBC', '[H]c1c(Br)oc(C([H])([H])C([H])([H])c2sc(-c3c([H])c([H])c(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
+           ('ADCB', '[H]c1c(Br)oc(C([H])([H])C([H])([H])c2c([H])c([H])c(-c3sc(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
+           ('BACD', '[H]c1c(-c2sc(Br)c([H])c2[H])oc(-c2c([H])c([H])c(C([H])([H])C([H])([H])Br)c([H])c2[H])c1[H]'),
+           ('BADC', '[H]c1c(-c2sc(Br)c([H])c2[H])oc(C([H])([H])C([H])([H])c2c([H])c([H])c(Br)c([H])c2[H])c1[H]'),
+           ('BCAD', '[H]c1c(-c2c([H])c([H])c(-c3sc(Br)c([H])c3[H])c([H])c2[H])oc(C([H])([H])C([H])([H])Br)c1[H]'),
+           ('BCDA', '[H]c1c(Br)oc(C([H])([H])C([H])([H])c2c([H])c([H])c(-c3sc(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
+           ('BDAC', '[H]c1c(-c2c([H])c([H])c(Br)c([H])c2[H])oc(C([H])([H])C([H])([H])c2sc(Br)c([H])c2[H])c1[H]'),
+           ('BDCA', '[H]c1c(Br)oc(-c2c([H])c([H])c(C([H])([H])C([H])([H])c3sc(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
+           ('CABD', '[H]c1c(-c2sc(C([H])([H])C([H])([H])Br)c([H])c2[H])oc(-c2c([H])c([H])c(Br)c([H])c2[H])c1[H]'),
+           ('CADB', '[H]c1c(-c2c([H])c([H])c(Br)c([H])c2[H])oc(C([H])([H])C([H])([H])c2sc(Br)c([H])c2[H])c1[H]'),
+           ('CBAD', '[H]c1c(-c2sc(-c3c([H])c([H])c(Br)c([H])c3[H])c([H])c2[H])oc(C([H])([H])C([H])([H])Br)c1[H]'),
+           ('CBDA', '[H]c1c(Br)oc(C([H])([H])C([H])([H])c2sc(-c3c([H])c([H])c(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
+           ('CDAB', '[H]c1c(-c2sc(Br)c([H])c2[H])oc(C([H])([H])C([H])([H])c2c([H])c([H])c(Br)c([H])c2[H])c1[H]'),
+           ('CDBA', '[H]c1c(Br)oc(-c2sc(C([H])([H])C([H])([H])c3c([H])c([H])c(Br)c([H])c3[H])c([H])c2[H])c1[H]'),
+           ('DABC', '[H]c1c(-c2sc(-c3c([H])c([H])c(Br)c([H])c3[H])c([H])c2[H])oc(C([H])([H])C([H])([H])Br)c1[H]'),
+           ('DACB', '[H]c1c(-c2c([H])c([H])c(-c3sc(Br)c([H])c3[H])c([H])c2[H])oc(C([H])([H])C([H])([H])Br)c1[H]'),
+           ('DBAC', '[H]c1c(-c2sc(C([H])([H])C([H])([H])Br)c([H])c2[H])oc(-c2c([H])c([H])c(Br)c([H])c2[H])c1[H]'),
+           ('DBCA', '[H]c1c(Br)oc(-c2c([H])c([H])c(-c3sc(C([H])([H])C([H])([H])Br)c([H])c3[H])c([H])c2[H])c1[H]'),
+           ('DCAB', '[H]c1c(-c2sc(Br)c([H])c2[H])oc(-c2c([H])c([H])c(C([H])([H])C([H])([H])Br)c([H])c2[H])c1[H]'),
+           ('DCBA', '[H]c1c(Br)oc(-c2sc(-c3c([H])c([H])c(C([H])([H])C([H])([H])Br)c([H])c3[H])c([H])c2[H])c1[H]')]
+
 
 @pytest.mark.parametrize("comb,expected", testdata1)
 def test_threemols(comb, expected):
@@ -67,11 +61,10 @@ def test_threemols(comb, expected):
    mols=[Chem.MolFromSmiles('c1(ccc(cc1)Br)Br'),
          Chem.MolFromSmiles('c1cc(oc1Br)Br'),
          Chem.MolFromSmiles('c1cc(sc1Br)Br')]
-   
-   b=Pt(comb, mols, "Br").pattern_block_poly(swap_H=True)
-   res=Chem.MolFromSmiles(b.write("smi"))
 
-   assert Chem.MolToSmiles(res) == Chem.MolToSmiles(Chem.MolFromSmiles(expected))
+   b=Pt(comb, mols, "Br").pattern_block_poly(swap_H=False)
+   assert Chem.MolToSmiles(b) == expected
+
 
 @pytest.mark.parametrize("comb,expected", testdata2)
 def test_fourmols(comb, expected):
@@ -83,38 +76,13 @@ def test_fourmols(comb, expected):
          Chem.MolFromSmiles('c1(ccc(cc1)Br)Br'),
          Chem.MolFromSmiles('BrCCBr')]
 
-   a=Pt(comb, mols, "Br").pattern_block_poly(swap_H=True)
-   res=Chem.MolFromSmiles(a.write("smi"))
-   assert Chem.MolToSmiles(res) == Chem.MolToSmiles(Chem.MolFromSmiles(expected))
 
-def test_bigamino(rootdir):
-   """
-   Third test, long polypeptide
-   """
-   #Loading precursors
-   mol1tmp=os.path.join(rootdir, 'data/peg.mol')
-   mol1=Chem.MolFromMolFile(mol1tmp, removeHs=False)
+   a=Pt(str(comb), mols, "Br").pattern_block_poly(swap_H=False)
+   assert Chem.MolToSmiles(a) == expected
 
-   mol2tmp=os.path.join(rootdir, 'data/pgla2.mol')
-   mol2=Chem.MolFromMolFile(mol2tmp, removeHs=False)
 
-   mols=[mol1, mol2]
 
-   l1 = ["".join(["A" for i in range(45)])]
-   l2 = ["".join(["B" for i in range(15)])]
 
-   # Combine the lists and flatten the resulting list of lists
-   pattern = "".join([item for sublist in [l1, l2] for item in sublist])
-
-   model=Pt(str(pattern), mols, "Br").pattern_block_poly(relax_iterations=1500, force_field="MMFF", swap_H=True, rot_steps=1)
-   res=Chem.MolFromSmiles(model.write("smi"))
-   
-   #Loading correct config
-   #test_file = os.path.join(rootdir, 'data/test_lon_pp.mol')
-   #final=Chem.MolFromMolFile(test_file)
-   
-   total_num=res.GetNumAtoms()
-   assert int(total_num) == 285 
 
    
 
