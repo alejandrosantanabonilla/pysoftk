@@ -22,6 +22,7 @@ jobs:
       uses: conda-incubator/setup-miniconda@v2
       with:
         activate-environment: myenv
+        python-version: ${{ matrix.python-version }}
         channels: conda-forge, anaconda
         miniconda-version: "latest"
 
