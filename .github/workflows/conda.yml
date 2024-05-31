@@ -27,11 +27,13 @@ jobs:
 
     - name: Installation xtb
       run: |
+        conda init
         conda activate test
         conda install conda-forge::xtb
 
     - name: Installation pip
       run: |
+        conda init
         conda activate test
         conda install pip 
         
