@@ -84,24 +84,11 @@ class Bd:
 
        return mol
 
-    
-<<<<<<< HEAD
     def branched_polymer(self, relax_iterations=100, force_field="MMFF", swap_H=True):
-       """Function to create branched polymers
-=======
-    def branched_polymer(self, force_field="MMFF94", iter_ff=100, swap_H=True):
-       """
-        Creates a branched polymer.
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
+       """Function to create branched polymers 
 
         Parameters
         ------------
-
-<<<<<<< HEAD
-       force_field: str
-            Selected force field between MMFF or UFF
-=======
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
 
         force_field: str, optional (default="MMFF94")
                     The force field to use (MMFF or UFF).
@@ -152,17 +139,10 @@ class Bd:
            raise ValueError("iter_ff must be an integer.")
 
        if swap_H:
-<<<<<<< HEAD
          mol=swap_hyd(res, relax_iterations, str(atom), force_field)
 
        if not swap_H:
          mol=no_swap(res, relax_iterations, force_field)
-=======
-         mol=swap_hyd(res, iter_ff, str(atom), force_field)
-
-       if not swap_H:
-         mol=no_swap(res, iter_ff, force_field)
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
             
        return mol
 
