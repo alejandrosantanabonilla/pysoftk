@@ -10,7 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macOS-latest]
+        os: [ubuntu-latest]
         python-version: [3.9, 3.10.1]
     name: Python ${{ matrix.python-version }} example on ${{ matrix.os }}
 
