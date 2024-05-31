@@ -24,6 +24,7 @@ jobs:
         activate-environment: myenv
         mamba-version: "*"
         channels: conda-forge, anaconda
+        miniconda-version: "latest"
 
     - name: Installation xtb
       run: |
