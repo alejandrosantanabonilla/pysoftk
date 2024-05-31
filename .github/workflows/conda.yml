@@ -13,15 +13,13 @@ jobs:
         os: [ubuntu-latest]
         python-version: [3.9, 3.10.1]
     name: Python ${{ matrix.python-version }} example on ${{ matrix.os }}
-
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
-    - name: Set up Conda
+    - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v2
       with:
-        activate-environment: myenv
         python-version: ${{ matrix.python-version }}
         channels: conda-forge, anaconda
         miniconda-version: "latest"
@@ -33,6 +31,7 @@ jobs:
     - name: Installation pip
       run: |
         conda install pip 
+        
     - name: Installing PySoftK
       shell: bash
       run: |
