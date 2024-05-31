@@ -27,7 +27,7 @@ jobs:
 
     - name: Installation xtb
       run: |
-        conda install xtb
+        conda install conda-forge::xtb
 
     - name: Installing PySoftK
       shell: bash
