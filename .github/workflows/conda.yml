@@ -1,4 +1,4 @@
-name: "Example 1: Basic usage"
+name: "PySoftK-testing"
 
 # Controls when the workflow will run
 on:
@@ -7,7 +7,12 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+        python-version: [3.9, 3.10.1]
+    name: Python ${{ matrix.python-version }} example on ${{ matrix.os }}
 
     steps:
     - name: Checkout code
@@ -18,7 +23,7 @@ jobs:
       with:
         activate-environment: myenv
         mamba-version: "*"
-        channels: conda-forge, defaults
+        channels: conda-forge, anaconda
 
     - name: Installation xtb
       run: |
