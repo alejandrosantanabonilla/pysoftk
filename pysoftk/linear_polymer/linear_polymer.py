@@ -205,11 +205,7 @@ class Lp:
        
        return mol4
 
-<<<<<<< HEAD
     def linear_polymer(self, force_field="MMFF", relax_iterations=350, rot_steps=125, no_att=True):
-=======
-    def linear_polymer(self, force_field="MMFF", iter_ff=350, rot_steps=125, no_att=True):
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
         """Function to create a linear polymer from a 
         given super_monomer object.
 
@@ -221,11 +217,7 @@ class Lp:
            Selected Force-Field from RDKit options, i.e., 
            UFF, MMFF, or MMFF94.
 
-<<<<<<< HEAD
         relax_iterations: int
-=======
-        iter_ff: int
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
            The maximum number of iterations used for the FF.
 
         rot_steps: int
@@ -262,7 +254,6 @@ class Lp:
         # Automatically change ff if necessary:
         if force_field == "MMFF":
             force_field = "MMFF94"  # Change to default MMFF94 for MMFF
-<<<<<<< HEAD
 
         # Validate and convert iterations and steps to integers:
         try:
@@ -273,22 +264,6 @@ class Lp:
 
         # Relaxation and optimization:
         last_mol = ff_ob_relaxation(mol_new, force_field, relax_iterations)
-=======
-
-        #elif force_field == "UFF" and ff_ob_relaxation is not None:
-        #    print("Warning: UFF force field not implemented. Using MMFF94 instead.")
-        #    force_field = "MMFF94"
-
-        # Validate and convert iterations and steps to integers:
-        try:
-            iter_ff = int(iter_ff)
-            rot_steps = int(rot_steps)
-        except ValueError:
-            raise ValueError("iter_ff and rot_steps must be integers.")
-
-        # Relaxation and optimization:
-        last_mol = ff_ob_relaxation(mol_new, force_field, iter_ff)
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
         rot_mol = rotor_opt(last_mol, force_field, rot_steps)
 
         return mol_new

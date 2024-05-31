@@ -10,32 +10,23 @@ from pysoftk.tools.utils_rdkit import *
 
 class Bd:
     """
-    A class for creating branched polymers from RDKit molecules.
+    A class for creating a branched polymer from given RDKit molecules.
+     
+    Examples
+    ---------
 
-    **Examples**
+    Note
+    -----
 
-    **Note**
-
-    - Requires the RDKit package.
-    - Functions `atom_neigh`, `count_plholder`, `swap_hyd`, and `no_swap` are imported from the `pysoftk.tools.utils_rdkit` module.
-
+    RDKit package must be installed.
     """
     
     __slots__ = ['core', 'arm', 'atom']
 
     def __init__(self, core, arm, atom):
        """
-       Initializes the Bd class.
-
-       **Parameters**
-
-       core: rdkit.Chem.rdchem.Mol
-             The core molecule.
-       arm: rdkit.Chem.rdchem.Mol
-             The arm molecule.
-       atom: str
-             The placeholder atom for merging.
-
+       Initialize this class.
+          
        """
        
        self.core = core
@@ -43,31 +34,32 @@ class Bd:
        self.atom = atom
 
     def merge_arms(self, core, arm, atom):
-       """
-        Attaches user-defined molecules to a core molecule using a placeholder.
+       """ Function to attach user defined molecules to a 
+           provided molecular core using a placeholder.
 
        Parameters
-       ------------
+       ----------
 
-        core: rdkit.Chem.rdchem.Mol
-             The core molecule.
+       core : rdkit.Chem.rdchem.Mol
+            RDKit Mol object
 
-        arm: rdkit.Chem.rdchem.Mol
-             The arm molecule.
-        atom: str
+       arm : rdkit.Chem.rdchem.Mol
+            RDKit Mol object.
+ 
+       atom : str
+            The placeholder atom to combine the molecules 
+            and form a new monomer.
 
-             The placeholder atom.
+       Return
+       -------
 
-
-        Returns
-        --------
-
-        mol: rdkit.Chem.rdchem.Mol
-            The combined molecule.
+       mol : rdkit.Chem.rdchem.Mol
+             RDKit Mol object.
 
        """
+       
        outmol=Chem.CombineMols(core, arm)
-       AllChem.EmbedMolecule(outmol, useRandomCoords=True)
+       AllChem.EmbedMolecule(outmol)
 
        new_bond=atom_neigh(outmol, str(atom))
     
@@ -85,84 +77,47 @@ class Bd:
        return mol
 
     
-<<<<<<< HEAD
     def branched_polymer(self, relax_iterations=100, force_field="MMFF", swap_H=True):
        """Function to create branched polymers
-=======
-    def branched_polymer(self, force_field="MMFF94", iter_ff=100, swap_H=True):
-       """
-        Creates a branched polymer.
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
 
-        Parameters
-        ------------
+       Parameters
+       -----------
 
-<<<<<<< HEAD
        force_field: str
             Selected force field between MMFF or UFF
-=======
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
 
-        force_field: str, optional (default="MMFF94")
-                    The force field to use (MMFF or UFF).
-        
-        iter_ff: int, optional (default=100)
-                 The number of iterations for force field optimization.
+       relax_iterations: int  
+            Number of iterations used for relaxing a molecular object. 
 
-        swap_H: bool, optional (default=True)
-                Specifies whether to swap the placeholder atom with hydrogen.
+        swap_H: bool
+             Indicates if the user defined atomic place holder 
+             is changed to a Hydrogen atom or remain as the 
+             used species.   
 
+       Return
+       -------
 
-        Returns
-        --------
-
-        newMol_H: rdkit.Chem.rdchem.Mol
-                 The generated branched polymer.
-
-        Raises
-        -------
-
-        ValueError: If an invalid force field is specified.
-
+       newMol_H : rdkit.Chem.rdchem.Mol
+             RDKit Mol object
        """
+
        core=self.core
        arm=self.arm
        atom=self.atom
        
        res=self.merge_arms(core, arm, str(atom))
-       AllChem.EmbedMolecule(res, useRandomCoords=True)
+       AllChem.EmbedMolecule(res)
     
        nm_ph=count_plholder(res, str(atom))
     
        for _ in range(int(nm_ph)):
            res=self.merge_arms(res, arm, str(atom))
 
-       valid_force_fields = ("MMFF", "UFF", "MMFF94")
-       if force_field not in valid_force_fields:
-            raise ValueError(f"Invalid force field: {force_field}. Valid options are: {valid_force_fields}")
-
-       # Automatically change ff if necessary:
-       if force_field == "MMFF94":
-           force_field = "MMFF"  # Change to default MMFF94 for MMFF
-
-       # Validate and convert iterations and steps to integers:
-       try:
-           iter_ff = int(iter_ff)
-       except ValueError:
-           raise ValueError("iter_ff must be an integer.")
-
        if swap_H:
-<<<<<<< HEAD
          mol=swap_hyd(res, relax_iterations, str(atom), force_field)
 
        if not swap_H:
          mol=no_swap(res, relax_iterations, force_field)
-=======
-         mol=swap_hyd(res, iter_ff, str(atom), force_field)
-
-       if not swap_H:
-         mol=no_swap(res, iter_ff, force_field)
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
             
        return mol
 

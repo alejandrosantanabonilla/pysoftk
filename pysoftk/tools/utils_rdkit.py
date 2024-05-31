@@ -6,11 +6,7 @@ RDLogger.DisableLog('rdApp.*')
 from openbabel import openbabel as ob
 from openbabel import pybel as pb
 
-<<<<<<< HEAD
 def no_swap(mol, relax_iterations, force_field="MMFF"):
-=======
-def no_swap(mol, iter_ff, force_field="MMFF"):
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
        """Function to sanitize a molecule with Hydrogens 
           and the user defined atomic place holder.
 
@@ -42,11 +38,7 @@ def no_swap(mol, iter_ff, force_field="MMFF"):
        AllChem.EmbedMolecule(newMol_H, useRandomCoords=True)
 
        if force_field == "MMFF":
-<<<<<<< HEAD
            MMFF_rel(newMol_H,int(relax_iterations))
-=======
-           MMFF_rel(newMol_H,iter_ff)
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
 
        else:
            UFF_rel(newMol_H, int(relax_iterations))
@@ -55,11 +47,7 @@ def no_swap(mol, iter_ff, force_field="MMFF"):
        return newMol_H       
 
 
-<<<<<<< HEAD
 def swap_hyd(mol, relax_iterations, atom, force_field="MMFF"):
-=======
-def swap_hyd(mol, iter_ff, atom, force_field="MMFF"):
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
        """Function to swap atomic place holders to Hydrogen atoms.
 
        Parameters
@@ -96,11 +84,7 @@ def swap_hyd(mol, iter_ff, atom, force_field="MMFF"):
        AllChem.EmbedMolecule(newMol_H, useRandomCoords=True)
 
        if force_field == "MMFF":
-<<<<<<< HEAD
            MMFF_rel(newMol_H,int(relax_iterations))
-=======
-           MMFF_rel(newMol_H,iter_ff)
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
 
        else:
            UFF_rel(newMol_H,int(relax_iterations))
