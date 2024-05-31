@@ -26,27 +26,25 @@ jobs:
         miniconda-version: "latest"
 
     - name: Installation xtb
+      shell: bash
       run: |
-        conda init
-        conda activate test
         conda install conda-forge::xtb
 
     - name: Installation pip
+      shell: bash
       run: |
-        conda init
-        conda activate test
         conda install pip 
         
     - name: Installing PySoftK
       shell: bash
       run: |
-        conda activate test
         python -m pip install wheel --user
         python -m pip install setuptools --upgrade --user
         python -m pip install . --user  
       
     - name: Run PySoftK test
       working-directory: ./test/test_pysoftk
+      shell: bash
       run: |
        python -m pip install pytest pytest-cov --user
        python -m pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage.txt 
