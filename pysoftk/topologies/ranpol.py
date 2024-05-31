@@ -53,11 +53,7 @@ class Rnp():
        self.atom = atom
 
     def random_ab_copolymer(self, len_polymer, pA,
-<<<<<<< HEAD
                             relax_iterations=100, force_field="MMFF", swap_H=True):
-=======
-                            force_field="MMFF", iter_ff=100, swap_H=True):
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
        """ Function to build a random copolymer using an user provided 
            probability (pA) for merging the monomer ma and imposing 
            the condition pB=1-pA.
@@ -72,7 +68,6 @@ class Rnp():
        pA: float
           User defined attaching probability of ma.
 
-<<<<<<< HEAD
        relax_iterations: int
            User defined iterations for a FF.
 
@@ -83,18 +78,6 @@ class Rnp():
            Indicates if the user defined atomic place holder 
            is changed to a Hydrogen atom or remain as the 
            used species.   
-=======
-       force_field: str
-           User selected FF between "MMFF" or "UFF".   
-
-       iter_ff: int
-           User defined iterations for a FF.
-  
-        swap_H: bool
-             Indicates if the user defined atomic place holder 
-             is changed to a Hydrogen atom or remain as the 
-             used species.   
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
  
        Return
        -------    
@@ -154,27 +137,15 @@ class Rnp():
            raise ValueError("iter_ff must be an integer.")
        
        if swap_H:
-<<<<<<< HEAD
             newMol_H=swap_hyd(mol, relax_iterations, str(atom), force_field)
 
        if not swap_H:
             newMol_H=no_swap(mol, relax_iterations, force_field)
-=======
-            newMol_H=swap_hyd(mol, iter_ff, str(atom), force_field)
-
-       if not swap_H:
-            newMol_H=no_swap(mol, iter_ff, force_field)
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
 
        return newMol_H
     
     def random_abc_copolymer(self, mc, len_polymer, pA,
-<<<<<<< HEAD
-                             pB, relax_iterations=100, force_field="MMFF", swap_H=True):
-=======
-                             pB, force_field="MMFF", iter_ff=100, swap_H=True):
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
-        
+                             pB, relax_iterations=100, force_field="MMFF", swap_H=True):        
        """ Function to build a random copolymer based on an user defined 
            probability (pA) of merging mA, pB for monomer mb, and the 
            condition pC=1-pA-pB.
@@ -199,14 +170,7 @@ class Rnp():
 
        relax_iterations: int
            User defined iterations for a FF.
-<<<<<<< HEAD
-
-       force_field: str
-           User selected FF.      
-
-=======
-     
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
+           
        swap_H: bool
            Indicates if the user defined atomic place holder 
            is changed to a Hydrogen atom or remain as the 
@@ -281,12 +245,7 @@ class Rnp():
            raise ValueError("iter_ff must be an integer.")
 
        if swap_H:
-<<<<<<< HEAD
            newMol_H=swap_hyd(mol, relax_iterations, str(atom), force_field)
-=======
-           newMol_H=swap_hyd(mol, iter_ff, str(atom), force_field)
->>>>>>> 88f2163339a8017b72d141956fc54ab10ba533f5
-
        if not swap_H:
            newMol_H=no_swap(mol, relax_iterations, force_field)
 
