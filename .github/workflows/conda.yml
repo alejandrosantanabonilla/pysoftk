@@ -29,6 +29,9 @@ jobs:
       run: |
         conda install conda-forge::xtb
 
+    - name: Installation pip
+      run: |
+        conda install pip 
     - name: Installing PySoftK
       shell: bash
       run: |
