@@ -75,7 +75,6 @@ class Bd:
        mol=rwmol.GetMol()
 
        return mol
-
     
     def branched_polymer(self, relax_iterations=100, force_field="MMFF", swap_H=True):
        """Function to create branched polymers

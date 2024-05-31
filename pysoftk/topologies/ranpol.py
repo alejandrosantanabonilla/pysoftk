@@ -129,7 +129,6 @@ class Rnp():
     
     def random_abc_copolymer(self, mc, len_polymer, pA,
                              pB, relax_iterations=100, force_field="MMFF", swap_H=True):
-        
        """ Function to build a random copolymer based on an user defined 
            probability (pA) of merging mA, pB for monomer mb, and the 
            condition pC=1-pA-pB.
@@ -218,7 +217,6 @@ class Rnp():
 
        if swap_H:
            newMol_H=swap_hyd(mol, relax_iterations, str(atom), force_field)
-
        if not swap_H:
            newMol_H=no_swap(mol, relax_iterations, force_field)
 

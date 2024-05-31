@@ -1,0 +1,42 @@
+name: "Example 1: Basic usage"
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Conda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        activate-environment: myenv
+        mamba-version: "*"
+        channels: conda-forge, defaults
+
+    - name: Installation xtb
+      run: |
+        conda install xtb
+
+    - name: Installation MDAnalysis
+      run: |
+        conda install mdanalysis
+
+    - name: Installing PySoftK
+      shell: bash
+      run: |
+        python -m pip install wheel --user
+        python -m pip install setuptools --upgrade --user
+        python -m pip install . --user  
+      
+    - name: Run PySoftK test
+      working-directory: ./test/test_pysoftk
+      run: |
+       python -m pip install pytest pytest-cov --user
+       python -m pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage.txt 
