@@ -1,4 +1,4 @@
-name: "Example 1: Basic usage"
+name: "PySoftK-testing"
 
 # Controls when the workflow will run
 on:
@@ -7,27 +7,35 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.9, 3.10.1]
+    name: Python ${{ matrix.python-version }} example on ${{ matrix.os }}
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
-    - name: Set up Conda
+    - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v2
       with:
-        activate-environment: myenv
-        mamba-version: "*"
-        channels: conda-forge, defaults
+        auto-activate-base: true
+        activate-environment: true
+        python-version: ${{ matrix.python-version }}
+        channels: conda-forge, anaconda
+        miniconda-version: "latest"
 
     - name: Installation xtb
+      shell: bash
       run: |
-        conda install xtb
+        conda install conda-forge::xtb
 
-    - name: Installation MDAnalysis
+    - name: Installation pip
+      shell: bash
       run: |
-        conda install mdanalysis
-
+        conda install pip 
+        
     - name: Installing PySoftK
       shell: bash
       run: |
@@ -37,6 +45,7 @@ jobs:
       
     - name: Run PySoftK test
       working-directory: ./test/test_pysoftk
+      shell: bash
       run: |
        python -m pip install pytest pytest-cov --user
        python -m pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage.txt 
