@@ -310,18 +310,20 @@ def pair(array):
 def get_atom_name_list(atom_sel):
         """Function to obtain the residues combination based on user-provided atom selection.
 
-        Parameter
-        ----------
+        Parameters
+        ------------
 
         atom_sel: class.str
           User Provided name/tag of the molecules inside the box.
 
-        Return
-        -------
+
+
+        Returns
+        ---------
+
 
         final: class.list
           List containing all names of atoms.
-
         """
         import itertools
         

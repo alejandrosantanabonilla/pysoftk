@@ -92,6 +92,7 @@ class micelle_whole(MDA_input):
 
          bins_step : class.int
             Step between bins to evaluate broken pbc
+
             
          Returns
          --------
@@ -353,11 +354,14 @@ class micelle_whole(MDA_input):
    def get_atom_name_list(self, atom_sel):
       """Function to obtain the residues based on user-provided atom selection.
 
-        Parameter
+
+        Parameters
         -----------
 
         atom_sel: class.str
           User Provided name/tag of the molecules inside the box.
+
+
 
         Returns
         ---------

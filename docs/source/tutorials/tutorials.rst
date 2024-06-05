@@ -20,7 +20,19 @@ of a ring polymer using pre-existing functions of PySoftK_ introduces the user i
    polymer_cyclic
    polymer_branched
    polymer_pattern
+   bigamino
    combined_modules
    create_folders
    calculator
    torsional
+   contacts_tutorial
+   ecc_tutorial
+   intrinsic_density_tutorial
+   micelle_whole_tutorial
+   rgyr_tutorial
+   rgyr_mdanalysis_vs_pysoftk
+   RSA_tutorial
+   RSA_protein_tutorial
+   SCP_tutorial
+   solvation_tutorial
+   spherical_density_tutorial

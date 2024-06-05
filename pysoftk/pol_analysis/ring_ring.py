@@ -193,13 +193,14 @@ class RSA(MDA_input):
            Array containing the coordinates upon which svd is going 
            to be calculated.
     
-        Return
-        -------
+
+
+        Returns
+        ---------
     
-        None:
+        vh: numpy.ndarray 
             A numpy.ndarray with the right unitary singular vector, orthogonal to 
             the given set of coordinates.
-
         """
 
         import numpy as np
@@ -210,41 +211,39 @@ class RSA(MDA_input):
     
     def rings_stacking_dist(self, u, ring_comb, polymer_pos_1,
                             polymer_pos_2, pol_indices, cut_off_stack=5, par_scheme='OpenMP'):
-        """Function to find if two rings are stacked. This is done by checking if 
-           the distance of geometry between two rings is smaller than an 
-           user-defined cut off distance.
+        """Function to find if two rings are stacked. This is done by checking if the distance of geometry between two rings is smaller than an user-defined cut off distance.
  
 
-            Parameters
-            -----------
+        Parameters
+        ------------
 
-            ring_comb: numpy.ndarray
-               Numpy array with all possible ring combinations
+        ring_comb: numpy.ndarray
+            Numpy array with all possible ring combinations
 
-            polymer_pos_1: numpy.ndarray
-               Numpy array with the correct positions of all atoms 
-               of the polymer.
+        polymer_pos_1: numpy.ndarray
+            Numpy array with the correct positions of all atoms 
+            of the polymer.
 
-            polymer_pos_2: numpy.ndarray
-                Numpy array with the correct positions of all atoms 
-                of the polymer.
+        polymer_pos_2: numpy.ndarray
+            Numpy array with the correct positions of all atoms 
+            of the polymer.
 
-            pol_indices: numpy.ndarray
-                Numpy array with the first atom index of each polymer. The 
-                first one needs to be the one corresponding to polymer_pos_1
-                and the second one to polymer_pos_2
+        pol_indices: numpy.ndarray
+            Numpy array with the first atom index of each polymer. The 
+            first one needs to be the one corresponding to polymer_pos_1
+            and the second one to polymer_pos_2
 
-            cut_off_stack : class.float
-                Cut off distance for ring stackings
-
-
-           Return
-           --------
- 
-           vector_angle: class.float or class.boolean
-                Angle between the two planes of atoms
+        cut_off_stack: class.float
+            Cut off distance for ring stackings
 
 
+
+        Returns
+        ---------
+
+
+        vector_angle: class.float or class.boolean
+               Angle between the two planes of atoms
         """
         import numpy as np
         import MDAnalysis as mda
@@ -278,6 +277,8 @@ class RSA(MDA_input):
 
            Parameters
            -----------
+
+
            u_frame: int
                time step of the calculation
 
@@ -291,15 +292,16 @@ class RSA(MDA_input):
               Cut off angle for ring stackings
 
 
-        Returns
-        --------
+
+           Returns
+           --------
+
  
            ring_contact_atoms: class.list
               A list of arrays with the mda atom indices of the rings of the polymers
 
            pol_idx: class.list
                A list of the resids of the molecules with ring stacking
-
         """
 
         import MDAnalysis as mda
@@ -356,19 +358,23 @@ class RSA(MDA_input):
         """Function to find several rings stacked using a provided
            pandas DataFrame from previous calculations.
 
+
         Parameters
         -----------
 
+
         rings_df_name: pandas.DataFrame
-           Pandas dataframe containing the results from the ring_ring 
-           analysis.
+             Pandas dataframe containing the results from the ring_ring 
+             analysis.
 
 
-        Results
+
+        Returns
         --------
 
+
         connected_components: class.list
-           List of connected polymers along the trajectory.
+              List of connected polymers along the trajectory.
 
         """
         import networkx as nx

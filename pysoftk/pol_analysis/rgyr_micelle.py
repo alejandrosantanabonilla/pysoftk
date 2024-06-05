@@ -73,11 +73,10 @@ class rgyr(MDA_input):
 
     def running_rgyr(self, atom_names, micelle_positions,
                      start, stop, skip, subgroup=[]):
-        """Function to calculate the radius of gyration of the 
-           chosen atoms over time.
+        """Function to calculate the radius of gyration of the chosen atoms.
 
         Parameters
-        -----------
+        ------------
 
         u: MDAnalysis.Universe
             An user-provided MDAnalysis universe.
@@ -103,13 +102,14 @@ class rgyr(MDA_input):
         Skip : class.int
             Skipping every that many frames of the trajectory.
 
-       Returns
-       --------
- 
-       rgyr: np.array
-           Radius of gyration of the selected atoms over time
 
-       """
+
+        Returns
+        --------
+ 
+        rgyr_f: np.array
+            Radius of gyration of the selected atoms over time
+        """
 
         import MDAnalysis as mda
         from tqdm.auto import tqdm

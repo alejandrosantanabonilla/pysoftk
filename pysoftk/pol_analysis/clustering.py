@@ -32,7 +32,7 @@ class SCP(MDA_input):
     def contact_matrix(self, u, name_list, cluster_cutoff):
         """ Function to compute the contact matrix.
 
-        Parameters:
+        Parameters
         ------------
 
         u: MDAnalaysis.Universe
@@ -46,8 +46,10 @@ class SCP(MDA_input):
            A user-defined number for a radius cutoff.
 
 
-        Returns:
+
+        Returns
         ----------
+
 
         pairs: class.list
            A list of tuples containing the indexes of the selected 

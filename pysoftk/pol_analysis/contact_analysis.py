@@ -35,6 +35,7 @@ class contacts(MDA_input):
 
     def contacts_calc(self, u, micelle_selection, micelle_positions, group1, group2, contact_distance):
         """Function to get atom pairs
+
  
            Parameters
            -----------
