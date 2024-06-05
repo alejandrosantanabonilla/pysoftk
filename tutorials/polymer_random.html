@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Creating random Polymers &mdash; PySoftK 0.0.1 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>Creating random Polymers &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=292eb321"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
@@ -49,7 +51,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="prepare_molecules.html">Preparing monomers for PySoftK</a></li>
-<li class="toctree-l2"><a class="reference internal" href="check_bonds.html">Checking Bonds in Molecular files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="monomer_polymers.html">From single molecules to polymers using PySoftK</a></li>
 <li class="toctree-l2"><a class="reference internal" href="super_monomer.html">Creating a Polymer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_chains.html">Creating chains of Polymers</a></li>
@@ -58,14 +59,26 @@
 <li class="toctree-l2"><a class="reference internal" href="polymer_cyclic.html">Creating cyclic Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bigamino.html">Modelling soft-matter long chain polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="combined_modules.html">Creating new polymers from different modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="calculator.html">Computing using <strong>ab-initio</strong> calculators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="torsional.html">Automatic torsional angle detection for planar polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts_tutorial.html">Tutorial on the usage of contacts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ecc_tutorial.html">Tutorial on the usage of ecc_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intrinsic_density_tutorial.html">Tutorial on the usage of intrinsic_density_micelle tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="micelle_whole_tutorial.html">Tutorial on the usage of micelle_whole tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_tutorial.html">Tutorial on the usage of rgyr_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_mdanalysis_vs_pysoftk.html">Case example of MDAnalysis vs Pysoftk’s rgyr_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RSA_tutorial.html">Tutorial on the usage of RSA tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RSA_protein_tutorial.html">Tutorial on the usage of RSA tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SCP_tutorial.html">Tutorial on the usage of SCP tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvation_tutorial.html">Tutorial on the usage of hydration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spherical_density_tutorial.html">Tutorial on the usage of spherical_density tool</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modules.html">PySoftK Modular structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">pysoftk</a></li>
 </ul>
 
         </div>
@@ -94,7 +107,7 @@
            <div itemprop="articleBody">
              
   <section id="creating-random-polymers">
-<span id="polymer-random"></span><h1>Creating random Polymers<a class="headerlink" href="#creating-random-polymers" title="Permalink to this heading"></a></h1>
+<span id="polymer-random"></span><h1>Creating random Polymers<a class="headerlink" href="#creating-random-polymers" title="Link to this heading"></a></h1>
 <p><a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> supports the construction of random linear copolymers which consist of two or three different monomers. Our approach uses the command <strong>Rnp(mol_1,mol_2,atom).random_ab_copolymer(len,pA,iter_ff,FF)</strong> to build a random copolymer of length len that contains two monomers, <strong>mol_1</strong> and <strong>mol_2</strong>. The number of <strong>mol_1</strong> and <strong>mol_2</strong> monomers in the resulting polymer are determined from <strong>pA len</strong> and <strong>(1-pA)len</strong>, respectively.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
 <span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
@@ -119,7 +132,7 @@
 <figure class="align-center" id="id1">
 <img alt="../_images/random2.png" src="../_images/random2.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure</strong> Random diblock polymer with 5 units.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure</strong> Random diblock polymer with 5 units.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>Similarly <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> can be used to generate random linear copolymers consisting of three different monomers via the command <strong>Rnp(mol_1,mol_2,atom).random_abc_copolymer(mol_3, len, pA, pB, iter_ff, FF)</strong>. In this case, the resulting polymer will contain len monomers, such that the number of <strong>mol_1</strong>, <strong>mol_2</strong> and <strong>mol_3</strong> monomer is <strong>pA len</strong>, <strong>pB len</strong> and <strong>(1-pA-pB) len</strong>, respectively</p>
@@ -134,7 +147,7 @@
 <figure class="align-center" id="id2">
 <img alt="../_images/random3.png" src="../_images/random3.png" />
 <figcaption>
-<p><span class="caption-text"><strong>Figure</strong> Random triblock 5-unit repetition polymer</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+<p><span class="caption-text"><strong>Figure</strong> Random triblock 5-unit repetition polymer</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -150,7 +163,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, Alejandro Santana-Bonilla, Chris Lorenz.</p>
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, and Chris Lorenz.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

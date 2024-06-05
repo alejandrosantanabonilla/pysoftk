@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial on the usage of ecc_micelle &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=292eb321"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorial on the usage of intrinsic_density_micelle tool" href="intrinsic_density_tutorial.html" />
+    <link rel="prev" title="Tutorial on the usage of contacts" href="contacts_tutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PySoftK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="prepare_molecules.html">Preparing monomers for PySoftK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monomer_polymers.html">From single molecules to polymers using PySoftK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="super_monomer.html">Creating a Polymer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_chains.html">Creating chains of Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_diblock.html">Creating diblock Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_random.html">Creating random Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_cyclic.html">Creating cyclic Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bigamino.html">Modelling soft-matter long chain polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combined_modules.html">Creating new polymers from different modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calculator.html">Computing using <strong>ab-initio</strong> calculators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="torsional.html">Automatic torsional angle detection for planar polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts_tutorial.html">Tutorial on the usage of contacts</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial on the usage of ecc_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intrinsic_density_tutorial.html">Tutorial on the usage of intrinsic_density_micelle tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="micelle_whole_tutorial.html">Tutorial on the usage of micelle_whole tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_tutorial.html">Tutorial on the usage of rgyr_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_mdanalysis_vs_pysoftk.html">Case example of MDAnalysis vs Pysoftk’s rgyr_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RSA_tutorial.html">Tutorial on the usage of RSA tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RSA_protein_tutorial.html">Tutorial on the usage of RSA tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SCP_tutorial.html">Tutorial on the usage of SCP tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvation_tutorial.html">Tutorial on the usage of hydration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spherical_density_tutorial.html">Tutorial on the usage of spherical_density tool</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">pysoftk</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PySoftK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="tutorials.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Tutorial on the usage of ecc_micelle</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/ecc_tutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial-on-the-usage-of-ecc-micelle">
+<h1>Tutorial on the usage of ecc_micelle<a class="headerlink" href="#tutorial-on-the-usage-of-ecc-micelle" title="Link to this heading"></a></h1>
+<p>This tutorial shows how to use the ecc_micelle class to compute the
+eccentricity of a micelle that is broken across the periodic boundary
+conditions (PBC) at some time steps. Please note that this class can be
+used in the same way for aggregates that are not broken across the PBC.</p>
+<p>Before starting any analysis, load the neccesary modules for this class.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from  utils_mda import MDA_input
+#from pysoftk.pol_analysis.tools.utils_mda import MDA_input
+from utils_tools import *
+#from pysoftk.pol_analysis.tools.utils_tools import *
+from clustering import SCP
+#from pysoftk.pol_analysis.clustering import SCP
+from make_micelle_whole import micelle_whole
+#from pysoftk.pol_analysis.make_micelle_whole import micelle_whole
+from ecc_micelle import ecc
+#from pysoftk.pol_analysis.ecc_micelle import ecc
+
+import numpy as np
+import pandas as pd
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>First load the trajectory, we are going to use the cyclic topology
+used in previous tutorials.</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>topology=&#39;data/short_movie_cyclic.tpr&#39;
+trajectory=&#39;data/short_movie_cyclic.xtc&#39;
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Import the clustering data from SCP function</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>resids_total=&#39;data/pictures_tutorial/cyclic_scp_result.parquet&#39;
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Obtain the largest micelle from the clustering pandas dataframe</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>largest_micelle_resids = micelle_whole(topology, trajectory).obtain_largest_micelle_resids(resids_total)
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Now, obtain the positions of the whole micelle</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#select the resname of the polymers
+resname=[&#39;LIG&#39;]
+
+#run to obtain the whole positions
+start=0
+stop=10001
+step=1
+
+#run micelle_whole
+atom_pos = micelle_whole(topology, trajectory).running_make_cluster_whole(resname, largest_micelle_resids, start, stop, step)
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  0%|                                                                                                                                                    | 0/3 [00:00&lt;?, ?it/s]/home/raquellrdc/Desktop/PhD/pysoftk/alejandro_newest_releast_check/pysoftk_analysis_code/test_final/make_micelle_whole.py:347: FutureWarning: arrays to stack must be passed as a &quot;sequence&quot; type such as list or tuple. Support for non-sequence iterables such as generators is deprecated as of NumPy 1.16 and will raise an error in the future.
+  atom_positions_over_trajectory = list(tqdm(map(self.make_cluster_whole, frames, resname, cluster_resids_f[0],
+100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3/3 [00:00&lt;00:00,  6.86it/s]
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Elapsed</span> <span class="n">time</span> <span class="k">for</span> <span class="n">matrix</span> <span class="n">calculation</span><span class="p">:</span> <span class="mf">0.5386</span> <span class="n">seconds</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>We have all the neccesary inputs to run the eccentricity calculation</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ecc_micelle_whole = ecc(topology, trajectory).running_ecc(largest_micelle_resids, atom_pos, start, stop, step)
+ecc_micelle_whole
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3/3 [00:00&lt;00:00, 1241.41it/s]
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mf">0.31216114645263193</span><span class="p">,</span> <span class="mf">0.09429518042597795</span><span class="p">,</span> <span class="mf">0.0661655070142777</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>That is it! ecc_micelle_whole contains the eccentricity of the micelle
+for the selected timesteps</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="contacts_tutorial.html" class="btn btn-neutral float-left" title="Tutorial on the usage of contacts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="intrinsic_density_tutorial.html" class="btn btn-neutral float-right" title="Tutorial on the usage of intrinsic_density_micelle tool" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, and Chris Lorenz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

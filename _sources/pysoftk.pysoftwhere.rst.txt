@@ -1,0 +1,21 @@
+pysoftk.pysoftwhere package
+===========================
+
+Submodules
+----------
+
+pysoftk.pysoftwhere.icsi module
+-------------------------------
+
+.. automodule:: pysoftk.pysoftwhere.icsi
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: pysoftk.pysoftwhere
+   :members:
+   :undoc-members:
+   :show-inheritance:

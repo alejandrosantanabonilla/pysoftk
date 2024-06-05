@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pysoftk.tools.utils_ob &mdash; PySoftK 0.0.1 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>pysoftk.tools.utils_ob &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -46,7 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">PySoftK Modular structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pysoftk</a></li>
 </ul>
 
         </div>
@@ -81,7 +83,9 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
-<div class="viewcode-block" id="ff_ob_relaxation"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_ob.ff_ob_relaxation">[docs]</a><span class="k">def</span> <span class="nf">ff_ob_relaxation</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF94&quot;</span><span class="p">,</span> <span class="n">iter_ff</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">ff_thr</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">):</span>
+<div class="viewcode-block" id="ff_ob_relaxation">
+<a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_ob.ff_ob_relaxation">[docs]</a>
+<span class="k">def</span> <span class="nf">ff_ob_relaxation</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF94&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">ff_thr</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Setting up an openbabel FF for </span>
 <span class="sd">       geometry optimization.</span>
 <span class="sd">      </span>
@@ -107,13 +111,16 @@
 
     <span class="n">ff</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">OBForceField</span><span class="o">.</span><span class="n">FindForceField</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">FF</span><span class="p">))</span>
     <span class="n">ff</span><span class="o">.</span><span class="n">Setup</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="p">)</span>
-    <span class="n">ff</span><span class="o">.</span><span class="n">ConjugateGradients</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">iter_ff</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">ff_thr</span><span class="p">))</span>
+    <span class="n">ff</span><span class="o">.</span><span class="n">ConjugateGradients</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">relax_iterations</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">ff_thr</span><span class="p">))</span>
 
     <span class="n">ff</span><span class="o">.</span><span class="n">GetCoordinates</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">mol</span></div>
 
-<div class="viewcode-block" id="rotor_opt"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_ob.rotor_opt">[docs]</a><span class="k">def</span> <span class="nf">rotor_opt</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF94&quot;</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">125</span><span class="p">):</span>
+
+<div class="viewcode-block" id="rotor_opt">
+<a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_ob.rotor_opt">[docs]</a>
+<span class="k">def</span> <span class="nf">rotor_opt</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF94&quot;</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">125</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Setting up an openbabel FF for rotor </span>
 <span class="sd">    optimization.</span>
 <span class="sd">      </span>
@@ -148,7 +155,49 @@
 
     <span class="k">return</span> <span class="n">mol</span> </div>
 
-<div class="viewcode-block" id="check_bond_order"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_ob.check_bond_order">[docs]</a><span class="k">def</span> <span class="nf">check_bond_order</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
+
+<div class="viewcode-block" id="global_opt">
+<a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_ob.global_opt">[docs]</a>
+<span class="k">def</span> <span class="nf">global_opt</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF94&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">125</span><span class="p">,</span> <span class="n">ff_thr</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Setting up an openbabel FF for rotor </span>
+<span class="sd">    optimization.</span>
+<span class="sd">      </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ===========</span>
+
+<span class="sd">    mol: OBabel.Mol</span>
+<span class="sd">      An user-provided OpenBabel moelcule.</span>
+
+<span class="sd">    FF: class.str</span>
+<span class="sd">      Selected Force Field. Options are MMFF94, UFF, GAFF.</span>
+
+<span class="sd">    rot_steps: class.int</span>
+<span class="sd">      Number of iterations to be used for the rotational </span>
+<span class="sd">      optimization.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ========</span>
+
+<span class="sd">    mol_new: Mol.OBabel.Mol</span>
+<span class="sd">      Open Babel Molecule with optmised Geometry.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ff</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">OBForceField</span><span class="o">.</span><span class="n">FindForceField</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">FF</span><span class="p">))</span>
+    <span class="n">ff</span><span class="o">.</span><span class="n">Setup</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="p">)</span>
+    <span class="n">ff</span><span class="o">.</span><span class="n">ConjugateGradients</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">relax_iterations</span><span class="p">),</span><span class="n">ff_thr</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">ff</span><span class="o">.</span><span class="n">WeightedRotorSearch</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">rot_steps</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">rot_steps</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)))</span>
+    <span class="n">ff</span><span class="o">.</span><span class="n">ConjugateGradients</span><span class="p">(</span><span class="n">relax_iterations</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">ff_thr</span><span class="p">)</span>
+
+    <span class="c1"># update the coordinates</span>
+    <span class="n">ff</span><span class="o">.</span><span class="n">GetCoordinates</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mol</span></div>
+
+
+
+<div class="viewcode-block" id="check_bond_order">
+<a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_ob.check_bond_order">[docs]</a>
+<span class="k">def</span> <span class="nf">check_bond_order</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to check and correct the bonds</span>
 <span class="sd">       of a given file. </span>
 
@@ -184,6 +233,8 @@
                          <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
     <span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
 </pre></div>
 
            </div>
@@ -193,7 +244,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, Alejandro Santana-Bonilla, Chris Lorenz.</p>
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, and Chris Lorenz.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

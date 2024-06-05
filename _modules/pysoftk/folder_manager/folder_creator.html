@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pysoftk.folder_manager.folder_creator &mdash; PySoftK 0.0.1 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>pysoftk.folder_manager.folder_creator &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -46,7 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">PySoftK Modular structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pysoftk</a></li>
 </ul>
 
         </div>
@@ -85,7 +87,9 @@
 <span class="kn">import</span> <span class="nn">uuid</span>
 
 
-<div class="viewcode-block" id="Fld"><a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld">[docs]</a><span class="k">class</span> <span class="nc">Fld</span><span class="p">:</span>
+<div class="viewcode-block" id="Fld">
+<a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld">[docs]</a>
+<span class="k">class</span> <span class="nc">Fld</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create folders automatically to be used as stand-alone application or along PySoftK.</span>
 
 <span class="sd">    Examples</span>
@@ -96,7 +100,9 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
             
-<div class="viewcode-block" id="Fld.fxd_name"><a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.fxd_name">[docs]</a>    <span class="k">def</span> <span class="nf">fxd_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">testname</span><span class="p">):</span>
+<div class="viewcode-block" id="Fld.fxd_name">
+<a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.fxd_name">[docs]</a>
+    <span class="k">def</span> <span class="nf">fxd_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">testname</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an array of fixed names for folders.</span>
 
 <span class="sd">        Parameters</span>
@@ -113,6 +119,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">testname</span><span class="p">)</span><span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span>
                          <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">)])</span></div>
+
 
 
     <span class="k">def</span> <span class="nf">_make_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dir_names</span><span class="p">):</span>
@@ -134,7 +141,9 @@
         <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">dir_cwd</span><span class="p">),</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">dir_names</span><span class="p">)))</span>
 
         
-<div class="viewcode-block" id="Fld.create"><a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Fld.create">
+<a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.create">[docs]</a>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to create a folder in the current working directory.</span>
 
 <span class="sd">        Parameters</span>
@@ -158,6 +167,7 @@
         <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_make_dir</span><span class="p">,</span><span class="n">dir_names</span><span class="p">))</span> 
         
         <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Succesfully created: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dir_names</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; folders&quot;</span><span class="p">)</span></div>
+
         
 
     <span class="k">def</span> <span class="nf">_unique_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -173,7 +183,9 @@
         <span class="k">return</span> <span class="n">name</span>
 
 
-<div class="viewcode-block" id="Fld.seek_files"><a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.seek_files">[docs]</a>    <span class="k">def</span> <span class="nf">seek_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_extension</span><span class="p">):</span>
+<div class="viewcode-block" id="Fld.seek_files">
+<a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.seek_files">[docs]</a>
+    <span class="k">def</span> <span class="nf">seek_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_extension</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to seek files in the current working directory.</span>
 <span class="sd">       </span>
 <span class="sd">        Parameters</span>
@@ -191,6 +203,7 @@
         <span class="n">query</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s2">&quot;*&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">format_extension</span><span class="p">)))</span>
         <span class="n">inp_name</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">inp_name</span></div>
+
 
 
     <span class="k">def</span> <span class="nf">_seek_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -212,7 +225,9 @@
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">folder_dir</span><span class="p">)</span>
 
     
-<div class="viewcode-block" id="Fld.copy_dir"><a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.copy_dir">[docs]</a>    <span class="k">def</span> <span class="nf">copy_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
+<div class="viewcode-block" id="Fld.copy_dir">
+<a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.copy_dir">[docs]</a>
+    <span class="k">def</span> <span class="nf">copy_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to copy files to directories.</span>
 
 <span class="sd">        Parameters</span>
@@ -233,8 +248,11 @@
         <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
         <span class="n">Path</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span></div>
 
+
         
-<div class="viewcode-block" id="Fld.file_to_dir"><a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.file_to_dir">[docs]</a>    <span class="k">def</span> <span class="nf">file_to_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_extension</span><span class="p">,</span> <span class="n">num_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Fld.file_to_dir">
+<a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.file_to_dir">[docs]</a>
+    <span class="k">def</span> <span class="nf">file_to_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_extension</span><span class="p">,</span> <span class="n">num_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to move files to directories in parallel</span>
 <span class="sd">  </span>
 <span class="sd">        Parameters</span>
@@ -277,7 +295,9 @@
         <span class="k">with</span> <span class="n">ProcessPool</span><span class="p">(</span><span class="n">nodes</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">num_cores</span><span class="p">))</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
            <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">copy_dir</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">destinations</span><span class="p">)</span>
            <span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-           <span class="n">pool</span><span class="o">.</span><span class="n">join</span><span class="p">()</span></div></div>
+           <span class="n">pool</span><span class="o">.</span><span class="n">join</span><span class="p">()</span></div>
+</div>
+
                 
 </pre></div>
 
@@ -288,7 +308,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, Alejandro Santana-Bonilla, Chris Lorenz.</p>
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, and Chris Lorenz.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

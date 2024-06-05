@@ -1,27 +1,29 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Creating new polymers from different modules &mdash; PySoftK 0.0.1 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>Creating new polymers from different modules &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=292eb321"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Automatic Folder Creation" href="create_folders.html" />
-    <link rel="prev" title="Creating patterned Polymers" href="polymer_pattern.html" /> 
+    <link rel="prev" title="Modelling soft-matter long chain polymers" href="bigamino.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,7 +51,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="prepare_molecules.html">Preparing monomers for PySoftK</a></li>
-<li class="toctree-l2"><a class="reference internal" href="check_bonds.html">Checking Bonds in Molecular files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="monomer_polymers.html">From single molecules to polymers using PySoftK</a></li>
 <li class="toctree-l2"><a class="reference internal" href="super_monomer.html">Creating a Polymer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_chains.html">Creating chains of Polymers</a></li>
@@ -58,14 +59,26 @@
 <li class="toctree-l2"><a class="reference internal" href="polymer_cyclic.html">Creating cyclic Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bigamino.html">Modelling soft-matter long chain polymers</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Creating new polymers from different modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="calculator.html">Computing using <strong>ab-initio</strong> calculators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="torsional.html">Automatic torsional angle detection for planar polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts_tutorial.html">Tutorial on the usage of contacts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ecc_tutorial.html">Tutorial on the usage of ecc_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intrinsic_density_tutorial.html">Tutorial on the usage of intrinsic_density_micelle tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="micelle_whole_tutorial.html">Tutorial on the usage of micelle_whole tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_tutorial.html">Tutorial on the usage of rgyr_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_mdanalysis_vs_pysoftk.html">Case example of MDAnalysis vs Pysoftk’s rgyr_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RSA_tutorial.html">Tutorial on the usage of RSA tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RSA_protein_tutorial.html">Tutorial on the usage of RSA tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SCP_tutorial.html">Tutorial on the usage of SCP tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvation_tutorial.html">Tutorial on the usage of hydration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spherical_density_tutorial.html">Tutorial on the usage of spherical_density tool</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modules.html">PySoftK Modular structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">pysoftk</a></li>
 </ul>
 
         </div>
@@ -94,7 +107,7 @@
            <div itemprop="articleBody">
              
   <section id="creating-new-polymers-from-different-modules">
-<span id="combined-modules"></span><h1>Creating new polymers from different modules<a class="headerlink" href="#creating-new-polymers-from-different-modules" title="Permalink to this heading"></a></h1>
+<span id="combined-modules"></span><h1>Creating new polymers from different modules<a class="headerlink" href="#creating-new-polymers-from-different-modules" title="Link to this heading"></a></h1>
 <p>Another important functionality of <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> is the possibility to create different polymer architectures by combining different modules.</p>
 <p>Let’s create a patterned polymer by permuting four monomers using the <a class="reference internal" href="../pysoftk.topologies.html#module-pysoftk.topologies.diblock" title="pysoftk.topologies.diblock"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pysoftk.topologies.diblock</span></code></a> function.</p>
 <p>First, we need to import the corresponding modules from <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> to allow us to read and join the monomers
@@ -177,14 +190,14 @@ of two-unit repetition.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="polymer_pattern.html" class="btn btn-neutral float-left" title="Creating patterned Polymers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bigamino.html" class="btn btn-neutral float-left" title="Modelling soft-matter long chain polymers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="create_folders.html" class="btn btn-neutral float-right" title="Automatic Folder Creation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, Alejandro Santana-Bonilla, Chris Lorenz.</p>
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, and Chris Lorenz.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

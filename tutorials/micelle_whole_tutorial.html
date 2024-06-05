@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial on the usage of micelle_whole tool &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=292eb321"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorial on the usage of rgyr_micelle" href="rgyr_tutorial.html" />
+    <link rel="prev" title="Tutorial on the usage of intrinsic_density_micelle tool" href="intrinsic_density_tutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PySoftK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="prepare_molecules.html">Preparing monomers for PySoftK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monomer_polymers.html">From single molecules to polymers using PySoftK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="super_monomer.html">Creating a Polymer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_chains.html">Creating chains of Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_diblock.html">Creating diblock Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_random.html">Creating random Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_cyclic.html">Creating cyclic Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bigamino.html">Modelling soft-matter long chain polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combined_modules.html">Creating new polymers from different modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calculator.html">Computing using <strong>ab-initio</strong> calculators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="torsional.html">Automatic torsional angle detection for planar polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts_tutorial.html">Tutorial on the usage of contacts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ecc_tutorial.html">Tutorial on the usage of ecc_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intrinsic_density_tutorial.html">Tutorial on the usage of intrinsic_density_micelle tool</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial on the usage of micelle_whole tool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#obtain-largest-micelle">Obtain largest micelle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#obtain-the-whole-coordinates-of-a-molecular-structure">Obtain the whole coordinates of a molecular structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#obtain-pdb-file-of-the-structure-made-whole">Obtain pdb file of the structure made whole</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_tutorial.html">Tutorial on the usage of rgyr_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_mdanalysis_vs_pysoftk.html">Case example of MDAnalysis vs Pysoftk’s rgyr_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RSA_tutorial.html">Tutorial on the usage of RSA tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RSA_protein_tutorial.html">Tutorial on the usage of RSA tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SCP_tutorial.html">Tutorial on the usage of SCP tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvation_tutorial.html">Tutorial on the usage of hydration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spherical_density_tutorial.html">Tutorial on the usage of spherical_density tool</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">pysoftk</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PySoftK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="tutorials.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Tutorial on the usage of micelle_whole tool</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/micelle_whole_tutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial-on-the-usage-of-micelle-whole-tool">
+<h1>Tutorial on the usage of micelle_whole tool<a class="headerlink" href="#tutorial-on-the-usage-of-micelle-whole-tool" title="Link to this heading"></a></h1>
+<p>Here two examples on how to use the make_micelle_whole tool for
+different polymers will be illustrated.</p>
+<p>Before starting any analysis, load the neccesary modules for this class.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from  utils_mda import MDA_input
+#from pysoftk.pol_analysis.tools.utils_mda import MDA_input
+from utils_tools import *
+#from pysoftk.pol_analysis.tools.utils_tools import *
+from clustering import SCP
+#from pysoftk.pol_analysis.clustering import SCP
+from make_micelle_whole import micelle_whole
+#from pysoftk.pol_analysis.make_micelle_whole import micelle_whole
+
+import numpy as np
+import pandas as pd
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">raquellrdc</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">PhD</span><span class="o">/</span><span class="n">mda_umap</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">tqdm</span><span class="o">/</span><span class="n">auto</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">21</span><span class="p">:</span> <span class="n">TqdmWarning</span><span class="p">:</span> <span class="n">IProgress</span> <span class="ow">not</span> <span class="n">found</span><span class="o">.</span> <span class="n">Please</span> <span class="n">update</span> <span class="n">jupyter</span> <span class="ow">and</span> <span class="n">ipywidgets</span><span class="o">.</span> <span class="n">See</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">ipywidgets</span><span class="o">.</span><span class="n">readthedocs</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">en</span><span class="o">/</span><span class="n">stable</span><span class="o">/</span><span class="n">user_install</span><span class="o">.</span><span class="n">html</span>
+  <span class="kn">from</span> <span class="nn">.autonotebook</span> <span class="kn">import</span> <span class="n">tqdm</span> <span class="k">as</span> <span class="n">notebook_tqdm</span>
+</pre></div>
+</div>
+<section id="obtain-largest-micelle">
+<h2>Obtain largest micelle<a class="headerlink" href="#obtain-largest-micelle" title="Link to this heading"></a></h2>
+<p>Here we will show how to obtain the largest micelle from the resutls
+obtained from the SCP class. This is convenient if you want to perform
+the analysis in the largest aggregate of the simulation</p>
+<ol class="arabic simple">
+<li><p>Select your trajectory files, it is recommended to use a tpr file for
+the topology and xtc file for the trajectory. Note that any
+MDAnalysis supported file can be used here.</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>topology=&#39;data/short_movie_cyclic.tpr&#39;
+trajectory=&#39;data/short_movie_cyclic.xtc&#39;
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Import the clustering data from SCP function</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>resids_total=&#39;data/pictures_tutorial/cyclic_scp_result.parquet&#39;
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Obtain the largest micelle from the clustering pandas dataframe</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>largest_micelle_resids = micelle_whole(topology, trajectory).obtain_largest_micelle_resids(resids_total)
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>‘largest_micelle_resids’ is a np.array with the resids of the
+molecules that belong to the same cluster of the steps of the
+trajectory where SCP was ran.</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>largest_micelle_resids
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">array</span><span class="p">([</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">]),</span>
+ <span class="n">array</span><span class="p">([</span> <span class="mi">2</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]),</span>
+ <span class="n">array</span><span class="p">([</span> <span class="mi">2</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">])]</span>
+</pre></div>
+</div>
+<p>Note that you you do not neccesarily need to only work with the largest
+micelle. The SCP tool ouputs all micelles of the system in a pandas
+dataframe so that you can select at each time step which ever ones you
+prefer. For example if you want to to take the two smalles micelles of
+the system you could do it in the following way</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#load the dataframe
+df_results = &#39;data/pictures_tutorial/cyclic_scp_result.parquet&#39;
+df = pd.read_parquet(df_results)
+
+# Define a function to find the two smallest micelles (so more than 1 polymer)
+
+def find_two_smallest_lists(lst):
+
+    sorted_lists = sorted(lst, key=len)
+
+
+    return sorted_lists[:2]
+
+
+# Apply the function to each row in the DataFrame
+df[&#39;smallest_lists&#39;] = df[&#39;micelle_resids&#39;].apply(find_two_smallest_lists)
+
+#the following column contains the resids of the two smallest aggregates at each time step!
+df[&#39;smallest_lists&#39;]
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span>    <span class="p">[[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span><span class="o">...</span>
+<span class="mi">1</span>                      <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">16</span><span class="p">]]</span>
+<span class="mi">2</span>    <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mf">14.</span><span class="o">..</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">smallest_lists</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="nb">object</span>
+</pre></div>
+</div>
+</section>
+<section id="obtain-the-whole-coordinates-of-a-molecular-structure">
+<h2>Obtain the whole coordinates of a molecular structure<a class="headerlink" href="#obtain-the-whole-coordinates-of-a-molecular-structure" title="Link to this heading"></a></h2>
+<p>Now, let’s obtain the coordinates of the largest micelle made whole
+across the pbc</p>
+<ol class="arabic simple">
+<li><p>Let’s define the resname of the molecules that we want to make whole.
+More than one resname can be inputted. Note that it should be the
+resname of the molecules of the largest_micelle array.</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>resname=[&#39;LIG&#39;]
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Also, define the start, step and step of frames that you want to run
+the analysis on. Note that they need to be the same as the ones you
+ran the SCP clustering on.</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>start=0
+stop=10001
+step=1
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Now, we are ready to obtain the whole coordinates of the micelle!</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>atom_pos = micelle_whole(topology, trajectory).running_make_cluster_whole(resname, largest_micelle_resids, start, stop, step)
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  0%|                                                                                                                                                    | 0/3 [00:00&lt;?, ?it/s]/home/raquellrdc/Desktop/PhD/pysoftk/alejandro_newest_releast_check/pysoftk_analysis_code/test_final/make_micelle_whole.py:347: FutureWarning: arrays to stack must be passed as a &quot;sequence&quot; type such as list or tuple. Support for non-sequence iterables such as generators is deprecated as of NumPy 1.16 and will raise an error in the future.
+  atom_positions_over_trajectory = list(tqdm(map(self.make_cluster_whole, frames, resname, cluster_resids_f[0],
+100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3/3 [00:00&lt;00:00, 13.98it/s]
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Elapsed</span> <span class="n">time</span> <span class="k">for</span> <span class="n">matrix</span> <span class="n">calculation</span><span class="p">:</span> <span class="mf">0.3085</span> <span class="n">seconds</span>
+</pre></div>
+</div>
+<p>Now, atom_pos contains the coordinates of all the atoms of the micelle
+made whole at each time step selected. In each array, the first element
+is the time frame of the analysis, and the second the positions array</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>atom_pos
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span>
+  <span class="n">array</span><span class="p">([[</span><span class="mf">73.69</span>    <span class="p">,</span> <span class="mf">81.16</span>    <span class="p">,</span> <span class="mf">77.950005</span><span class="p">],</span>
+         <span class="p">[</span><span class="mf">73.450005</span><span class="p">,</span> <span class="mf">81.69</span>    <span class="p">,</span> <span class="mf">77.04001</span> <span class="p">],</span>
+         <span class="p">[</span><span class="mf">74.51</span>    <span class="p">,</span> <span class="mf">81.770004</span><span class="p">,</span> <span class="mf">78.340004</span><span class="p">],</span>
+         <span class="o">...</span><span class="p">,</span>
+         <span class="p">[</span><span class="mf">75.19</span>    <span class="p">,</span> <span class="mf">47.36</span>    <span class="p">,</span> <span class="mf">76.54</span>    <span class="p">],</span>
+         <span class="p">[</span><span class="mf">73.490005</span><span class="p">,</span> <span class="mf">47.280003</span><span class="p">,</span> <span class="mf">76.600006</span><span class="p">],</span>
+         <span class="p">[</span><span class="mf">72.19</span>    <span class="p">,</span> <span class="mf">46.860004</span><span class="p">,</span> <span class="mf">74.130005</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)),</span>
+ <span class="p">(</span><span class="mi">1</span><span class="p">,</span>
+  <span class="n">array</span><span class="p">([[</span> <span class="mf">16.060001</span> <span class="p">,</span> <span class="mf">116.100006</span> <span class="p">,</span>   <span class="mf">3.3600001</span><span class="p">],</span>
+         <span class="p">[</span> <span class="mf">17.04</span>     <span class="p">,</span> <span class="mf">116.14</span>     <span class="p">,</span>   <span class="mf">3.8300002</span><span class="p">],</span>
+         <span class="p">[</span> <span class="mf">15.860001</span> <span class="p">,</span> <span class="mf">117.17001</span>  <span class="p">,</span>   <span class="mf">3.3000002</span><span class="p">],</span>
+         <span class="o">...</span><span class="p">,</span>
+         <span class="p">[</span> <span class="mf">22.560001</span> <span class="p">,</span>  <span class="mf">98.76</span>     <span class="p">,</span>  <span class="o">-</span><span class="mf">1.7771301</span><span class="p">],</span>
+         <span class="p">[</span> <span class="mf">22.380001</span> <span class="p">,</span>  <span class="mf">97.03</span>     <span class="p">,</span>  <span class="o">-</span><span class="mf">1.407135</span> <span class="p">],</span>
+         <span class="p">[</span> <span class="mf">22.480001</span> <span class="p">,</span>  <span class="mf">98.73</span>     <span class="p">,</span>   <span class="mf">1.0200001</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)),</span>
+ <span class="p">(</span><span class="mi">2</span><span class="p">,</span>
+  <span class="n">array</span><span class="p">([[</span> <span class="o">-</span><span class="mf">7.5497437</span><span class="p">,</span> <span class="o">-</span><span class="mf">37.959747</span> <span class="p">,</span> <span class="mf">111.810005</span> <span class="p">],</span>
+         <span class="p">[</span> <span class="o">-</span><span class="mf">6.5297394</span><span class="p">,</span> <span class="o">-</span><span class="mf">37.979744</span> <span class="p">,</span> <span class="mf">112.200005</span> <span class="p">],</span>
+         <span class="p">[</span> <span class="o">-</span><span class="mf">7.419739</span> <span class="p">,</span> <span class="o">-</span><span class="mf">37.42974</span>  <span class="p">,</span> <span class="mf">110.87001</span>  <span class="p">],</span>
+         <span class="o">...</span><span class="p">,</span>
+         <span class="p">[</span> <span class="o">-</span><span class="mf">2.0497437</span><span class="p">,</span> <span class="o">-</span><span class="mf">28.63974</span>  <span class="p">,</span> <span class="mf">115.00001</span>  <span class="p">],</span>
+         <span class="p">[</span> <span class="o">-</span><span class="mf">1.9997406</span><span class="p">,</span> <span class="o">-</span><span class="mf">27.959747</span> <span class="p">,</span> <span class="mf">116.520004</span> <span class="p">],</span>
+         <span class="p">[</span> <span class="o">-</span><span class="mf">3.739746</span> <span class="p">,</span> <span class="o">-</span><span class="mf">25.669746</span> <span class="p">,</span> <span class="mf">116.490005</span> <span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">))]</span>
+</pre></div>
+</div>
+</section>
+<section id="obtain-pdb-file-of-the-structure-made-whole">
+<h2>Obtain pdb file of the structure made whole<a class="headerlink" href="#obtain-pdb-file-of-the-structure-made-whole" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Using the ouputs from above, we can select the inputs that we need to
+obtain the whole snapshot. First, we need to define are the name of
+the output pdb and the frame at which you want to obtain the pdb.
+Note that the frame you selected will depend on which frames you ran
+the analysis. For example, if you ran the analysis on 3 frames, and
+you want to obtain the snapshot of the last frame, you will need to
+select frame at position 2, since this one will be the last one.</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>snapshot_frame=2
+
+snapshot_name=&#39;data/pictures_tutorial/cyclic_micelle_whole.pdb&#39;
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Then, we also need to input the whole positions of the atoms, and
+their respective resids that we want in the snapshot. Since we want
+the whole micelle and frame 2, it is as easy as selecting item 2 from
+atom_pos (whole positions) and largest_micelle_resids (resids of
+polymers in the same cluster)</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>atom_pos_frame=atom_pos[2]
+
+largest_micelle_resids_frame=largest_micelle_resids[2]
+</pre></div>
+</div>
+<p>Now, we can obtain the snapshot</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>snapshot = micelle_whole(topology, trajectory).obtain_snapshot(snapshot_name, atom_pos_frame,
+                                                               largest_micelle_resids_frame, resname, snapshot_frame)
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">3971</span>
+<span class="mi">3971</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">raquellrdc</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">PhD</span><span class="o">/</span><span class="n">mda_umap</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">MDAnalysis</span><span class="o">/</span><span class="n">coordinates</span><span class="o">/</span><span class="n">PDB</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">1151</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Found</span> <span class="n">no</span> <span class="n">information</span> <span class="k">for</span> <span class="n">attr</span><span class="p">:</span> <span class="s1">&#39;altLocs&#39;</span> <span class="n">Using</span> <span class="n">default</span> <span class="n">value</span> <span class="n">of</span> <span class="s1">&#39; &#39;</span>
+  <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Found no information for attr: &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span>
+<span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">raquellrdc</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">PhD</span><span class="o">/</span><span class="n">mda_umap</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">MDAnalysis</span><span class="o">/</span><span class="n">coordinates</span><span class="o">/</span><span class="n">PDB</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">1151</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Found</span> <span class="n">no</span> <span class="n">information</span> <span class="k">for</span> <span class="n">attr</span><span class="p">:</span> <span class="s1">&#39;icodes&#39;</span> <span class="n">Using</span> <span class="n">default</span> <span class="n">value</span> <span class="n">of</span> <span class="s1">&#39; &#39;</span>
+  <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Found no information for attr: &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span>
+<span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">raquellrdc</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">PhD</span><span class="o">/</span><span class="n">mda_umap</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">MDAnalysis</span><span class="o">/</span><span class="n">coordinates</span><span class="o">/</span><span class="n">PDB</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">1151</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Found</span> <span class="n">no</span> <span class="n">information</span> <span class="k">for</span> <span class="n">attr</span><span class="p">:</span> <span class="s1">&#39;chainIDs&#39;</span> <span class="n">Using</span> <span class="n">default</span> <span class="n">value</span> <span class="n">of</span> <span class="s1">&#39;&#39;</span>
+  <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Found no information for attr: &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span>
+<span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">raquellrdc</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">PhD</span><span class="o">/</span><span class="n">mda_umap</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">MDAnalysis</span><span class="o">/</span><span class="n">coordinates</span><span class="o">/</span><span class="n">PDB</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">1151</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Found</span> <span class="n">no</span> <span class="n">information</span> <span class="k">for</span> <span class="n">attr</span><span class="p">:</span> <span class="s1">&#39;occupancies&#39;</span> <span class="n">Using</span> <span class="n">default</span> <span class="n">value</span> <span class="n">of</span> <span class="s1">&#39;1.0&#39;</span>
+  <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Found no information for attr: &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span>
+<span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">raquellrdc</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">PhD</span><span class="o">/</span><span class="n">mda_umap</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">MDAnalysis</span><span class="o">/</span><span class="n">coordinates</span><span class="o">/</span><span class="n">PDB</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">1151</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Found</span> <span class="n">no</span> <span class="n">information</span> <span class="k">for</span> <span class="n">attr</span><span class="p">:</span> <span class="s1">&#39;tempfactors&#39;</span> <span class="n">Using</span> <span class="n">default</span> <span class="n">value</span> <span class="n">of</span> <span class="s1">&#39;0.0&#39;</span>
+  <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Found no information for attr: &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span>
+<span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">raquellrdc</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">PhD</span><span class="o">/</span><span class="n">mda_umap</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">MDAnalysis</span><span class="o">/</span><span class="n">coordinates</span><span class="o">/</span><span class="n">PDB</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">1151</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Found</span> <span class="n">no</span> <span class="n">information</span> <span class="k">for</span> <span class="n">attr</span><span class="p">:</span> <span class="s1">&#39;elements&#39;</span> <span class="n">Using</span> <span class="n">default</span> <span class="n">value</span> <span class="n">of</span> <span class="s1">&#39; &#39;</span>
+  <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Found no information for attr: &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span>
+<span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">raquellrdc</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">PhD</span><span class="o">/</span><span class="n">mda_umap</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">MDAnalysis</span><span class="o">/</span><span class="n">coordinates</span><span class="o">/</span><span class="n">PDB</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">1151</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Found</span> <span class="n">no</span> <span class="n">information</span> <span class="k">for</span> <span class="n">attr</span><span class="p">:</span> <span class="s1">&#39;record_types&#39;</span> <span class="n">Using</span> <span class="n">default</span> <span class="n">value</span> <span class="n">of</span> <span class="s1">&#39;ATOM&#39;</span>
+  <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Found no information for attr: &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span>
+<span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">raquellrdc</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">PhD</span><span class="o">/</span><span class="n">mda_umap</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">MDAnalysis</span><span class="o">/</span><span class="n">coordinates</span><span class="o">/</span><span class="n">PDB</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">1151</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Found</span> <span class="n">no</span> <span class="n">information</span> <span class="k">for</span> <span class="n">attr</span><span class="p">:</span> <span class="s1">&#39;formalcharges&#39;</span> <span class="n">Using</span> <span class="n">default</span> <span class="n">value</span> <span class="n">of</span> <span class="s1">&#39;0&#39;</span>
+  <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Found no information for attr: &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span>
+<span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">raquellrdc</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">PhD</span><span class="o">/</span><span class="n">mda_umap</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">MDAnalysis</span><span class="o">/</span><span class="n">coordinates</span><span class="o">/</span><span class="n">PDB</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">1198</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Found</span> <span class="n">missing</span> <span class="n">chainIDs</span><span class="o">.</span> <span class="n">Corresponding</span> <span class="n">atoms</span> <span class="n">will</span> <span class="n">use</span> <span class="n">value</span> <span class="n">of</span> <span class="s1">&#39;X&#39;</span>
+  <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Found missing chainIDs.&quot;</span>
+<span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">raquellrdc</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">PhD</span><span class="o">/</span><span class="n">mda_umap</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">MDAnalysis</span><span class="o">/</span><span class="n">topology</span><span class="o">/</span><span class="n">PDBParser</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">331</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Element</span> <span class="n">information</span> <span class="ow">is</span> <span class="n">missing</span><span class="p">,</span> <span class="n">elements</span> <span class="n">attribute</span> <span class="n">will</span> <span class="ow">not</span> <span class="n">be</span> <span class="n">populated</span><span class="o">.</span> <span class="n">If</span> <span class="n">needed</span> <span class="n">these</span> <span class="n">can</span> <span class="n">be</span> <span class="n">guessed</span> <span class="n">using</span> <span class="n">MDAnalysis</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">guessers</span><span class="o">.</span>
+  <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Element information is missing, elements attribute &quot;</span>
+</pre></div>
+</div>
+<p>The visualization on VMD of this step of the trajectory before applying
+make_micelle_whole is:</p>
+<figure class="align-center">
+<img alt="../_images/cyclic_screenshot_not_whole.png" src="../_images/cyclic_screenshot_not_whole.png" />
+</figure>
+<p>This is the visualizaiton on VMD of the pdb file produced with
+make_micelle_whole. It has made it perfectly whole !</p>
+<figure class="align-center">
+<img alt="../_images/cyclic_micelle_screenshot.png" src="../_images/cyclic_micelle_screenshot.png" />
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="intrinsic_density_tutorial.html" class="btn btn-neutral float-left" title="Tutorial on the usage of intrinsic_density_micelle tool" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rgyr_tutorial.html" class="btn btn-neutral float-right" title="Tutorial on the usage of rgyr_micelle" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, and Chris Lorenz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

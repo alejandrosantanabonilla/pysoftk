@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pysoftk.tools.utils_rdkit &mdash; PySoftK 0.0.1 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>pysoftk.tools.utils_rdkit &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -46,7 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">PySoftK Modular structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pysoftk</a></li>
 </ul>
 
         </div>
@@ -82,7 +84,9 @@
 <span class="kn">from</span> <span class="nn">openbabel</span> <span class="kn">import</span> <span class="n">openbabel</span> <span class="k">as</span> <span class="n">ob</span>
 <span class="kn">from</span> <span class="nn">openbabel</span> <span class="kn">import</span> <span class="n">pybel</span> <span class="k">as</span> <span class="n">pb</span>
 
-<div class="viewcode-block" id="no_swap"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_rdkit.no_swap">[docs]</a><span class="k">def</span> <span class="nf">no_swap</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="no_swap">
+<a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_rdkit.no_swap">[docs]</a>
+<span class="k">def</span> <span class="nf">no_swap</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">):</span>
 <span class="w">       </span><span class="sd">&quot;&quot;&quot;Function to sanitize a molecule with Hydrogens </span>
 <span class="sd">          and the user defined atomic place holder.</span>
 
@@ -92,10 +96,10 @@
 <span class="sd">       mol : rdkit.Chem.rdchem.Mol</span>
 <span class="sd">          RDKit Mol object</span>
 
-<span class="sd">       FF: str</span>
+<span class="sd">       force_field: str</span>
 <span class="sd">         Selected FF to perform a relaxation</span>
 <span class="sd"> </span>
-<span class="sd">       iter_ff: int</span>
+<span class="sd">       relax_iterations: int</span>
 <span class="sd">         Number of iterations to perform a FF geometry optimization.</span>
 
 <span class="sd">       Returns</span>
@@ -113,17 +117,20 @@
        <span class="n">Chem</span><span class="o">.</span><span class="n">SanitizeMol</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">)</span>
        <span class="n">AllChem</span><span class="o">.</span><span class="n">EmbedMolecule</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">,</span> <span class="n">useRandomCoords</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-       <span class="k">if</span> <span class="n">FF</span> <span class="o">==</span> <span class="s2">&quot;MMFF&quot;</span><span class="p">:</span>
-           <span class="n">MMFF_rel</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">,</span><span class="n">iter_ff</span><span class="p">)</span>
+       <span class="k">if</span> <span class="n">force_field</span> <span class="o">==</span> <span class="s2">&quot;MMFF&quot;</span><span class="p">:</span>
+           <span class="n">MMFF_rel</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">relax_iterations</span><span class="p">))</span>
 
        <span class="k">else</span><span class="p">:</span>
-           <span class="n">UFF_rel</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">)</span>
+           <span class="n">UFF_rel</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">relax_iterations</span><span class="p">))</span>
            
 
        <span class="k">return</span> <span class="n">newMol_H</span>       </div>
 
 
-<div class="viewcode-block" id="swap_hyd"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_rdkit.swap_hyd">[docs]</a><span class="k">def</span> <span class="nf">swap_hyd</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">):</span>
+
+<div class="viewcode-block" id="swap_hyd">
+<a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_rdkit.swap_hyd">[docs]</a>
+<span class="k">def</span> <span class="nf">swap_hyd</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">):</span>
 <span class="w">       </span><span class="sd">&quot;&quot;&quot;Function to swap atomic place holders to Hydrogen atoms.</span>
 
 <span class="sd">       Parameters</span>
@@ -132,13 +139,13 @@
 <span class="sd">       mol : rdkit.Chem.rdchem.Mol</span>
 <span class="sd">          RDKit Mol object</span>
 
-<span class="sd">       iter_ff: int</span>
+<span class="sd">       relax_iterations: int</span>
 <span class="sd">          Number of iterations to perform a FF geometry optimization.</span>
 
 <span class="sd">       atom : str</span>
 <span class="sd">          The placeholder atom to combine the molecules and form a new monomer.</span>
 
-<span class="sd">       FF: str</span>
+<span class="sd">       force_field: str</span>
 <span class="sd">          Selected FF to perform a geometry optimization.</span>
 <span class="sd"> </span>
 <span class="sd">       Returns</span>
@@ -159,18 +166,21 @@
        <span class="n">Chem</span><span class="o">.</span><span class="n">SanitizeMol</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">)</span>
        <span class="n">AllChem</span><span class="o">.</span><span class="n">EmbedMolecule</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">,</span> <span class="n">useRandomCoords</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-       <span class="k">if</span> <span class="n">FF</span> <span class="o">==</span> <span class="s2">&quot;MMFF&quot;</span><span class="p">:</span>
-           <span class="n">MMFF_rel</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">,</span><span class="n">iter_ff</span><span class="p">)</span>
+       <span class="k">if</span> <span class="n">force_field</span> <span class="o">==</span> <span class="s2">&quot;MMFF&quot;</span><span class="p">:</span>
+           <span class="n">MMFF_rel</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">relax_iterations</span><span class="p">))</span>
 
        <span class="k">else</span><span class="p">:</span>
-           <span class="n">UFF_rel</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">)</span>
+           <span class="n">UFF_rel</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">relax_iterations</span><span class="p">))</span>
            
 
        <span class="k">return</span> <span class="n">newMol_H</span></div>
+
        
        
        
-<div class="viewcode-block" id="MMFF_rel"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_rdkit.MMFF_rel">[docs]</a><span class="k">def</span> <span class="nf">MMFF_rel</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">,</span> <span class="n">vdw_par</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
+<div class="viewcode-block" id="MMFF_rel">
+<a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_rdkit.MMFF_rel">[docs]</a>
+<span class="k">def</span> <span class="nf">MMFF_rel</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">,</span> <span class="n">vdw_par</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to employ a MMFF molecular mechanics FF.</span>
 <span class="sd">    </span>
 
@@ -180,7 +190,7 @@
 <span class="sd">    mol : rdkit.Chem.rdchem.Mol</span>
 <span class="sd">          RDKit Mol object</span>
 
-<span class="sd">    iter_ff: int</span>
+<span class="sd">    relax_iterations: int</span>
 <span class="sd">          Number of iterations to perform a FF geometry optimization.</span>
 <span class="sd">          </span>
 <span class="sd">    vdw_par: float</span>
@@ -193,11 +203,14 @@
 <span class="sd">          RDKit Mol object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">AllChem</span><span class="o">.</span><span class="n">MMFFOptimizeMolecule</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">nonBondedThresh</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">vdw_par</span><span class="p">),</span> <span class="n">maxIters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">iter_ff</span><span class="p">))</span>
+    <span class="n">AllChem</span><span class="o">.</span><span class="n">MMFFOptimizeMolecule</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">nonBondedThresh</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">vdw_par</span><span class="p">),</span> <span class="n">maxIters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">relax_iterations</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">mol</span></div>
 
-<div class="viewcode-block" id="UFF_rel"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_rdkit.UFF_rel">[docs]</a><span class="k">def</span> <span class="nf">UFF_rel</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">iter_ff</span><span class="p">,</span> <span class="n">vdw_par</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
+
+<div class="viewcode-block" id="UFF_rel">
+<a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_rdkit.UFF_rel">[docs]</a>
+<span class="k">def</span> <span class="nf">UFF_rel</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">,</span> <span class="n">vdw_par</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to employ an UFF molecular mechanics FF.</span>
 
 <span class="sd">    Parameters</span>
@@ -206,7 +219,7 @@
 <span class="sd">    mol : rdkit.Chem.rdchem.Mol</span>
 <span class="sd">          RDKit Mol object</span>
 
-<span class="sd">    iter_ff: int</span>
+<span class="sd">    relax_iterations: int</span>
 <span class="sd">          Number of iterations to perform a FF geometry optimization.</span>
 <span class="sd">          </span>
 <span class="sd">    vdw_par: float</span>
@@ -219,12 +232,15 @@
 <span class="sd">    mol : rdkit.Chem.rdchem.Mol</span>
 <span class="sd">          RDKit Mol object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">AllChem</span><span class="o">.</span><span class="n">UFFOptimizeMolecule</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">vdwThresh</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">vdw_par</span><span class="p">),</span> <span class="n">maxIters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">iter_ff</span><span class="p">))</span>
+    <span class="n">AllChem</span><span class="o">.</span><span class="n">UFFOptimizeMolecule</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">vdwThresh</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">vdw_par</span><span class="p">),</span> <span class="n">maxIters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">relax_iterations</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">mol</span></div>
 
 
-<div class="viewcode-block" id="plc_holder"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_rdkit.plc_holder">[docs]</a><span class="k">def</span> <span class="nf">plc_holder</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+
+<div class="viewcode-block" id="plc_holder">
+<a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_rdkit.plc_holder">[docs]</a>
+<span class="k">def</span> <span class="nf">plc_holder</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function Seeking for a specific placeholder atom.</span>
 
 <span class="sd">    Parameters</span>
@@ -255,23 +271,29 @@
 
     <span class="k">return</span> <span class="n">new_bond</span></div>
 
-<div class="viewcode-block" id="remove_plcholder"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_rdkit.remove_plcholder">[docs]</a><span class="k">def</span> <span class="nf">remove_plcholder</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function that seeks for a place holder atom and replace it with a Hydrogen atom.</span>
 
-<span class="sd">       Parameters</span>
-<span class="sd">       ----------</span>
-<span class="sd">       </span>
-<span class="sd">       mol: rdkit.Chem.Mol</span>
-<span class="sd">            RDKit Mol object</span>
+<div class="viewcode-block" id="remove_plcholder">
+<a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_rdkit.remove_plcholder">[docs]</a>
+<span class="k">def</span> <span class="nf">remove_plcholder</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to remove atom placeholder.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+
+<span class="sd">    mol: rdkit.Chem.rdchem.Mol</span>
+<span class="sd">         RDKit Mol object</span>
+
+<span class="sd">    atom : str</span>
+<span class="sd">         The placeholder atom</span>
 
 
-<span class="sd">       Return</span>
-<span class="sd">       --------</span>
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
 
-<span class="sd">       None:</span>
-<span class="sd">            RDKit Mol object</span>
-<span class="sd">    </span>
+<span class="sd">    return: RDKit.object</span>
+<span class="sd">         RDKit mol object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="k">for</span> <span class="n">atoms</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">atoms</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">):</span>
               <span class="n">mol</span><span class="o">.</span><span class="n">GetAtomWithIdx</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">())</span><span class="o">.</span><span class="n">SetAtomicNum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -280,7 +302,10 @@
 
     <span class="k">return</span> <span class="n">mol</span></div>
 
-<div class="viewcode-block" id="etkdgv3_energies"><a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_rdkit.etkdgv3_energies">[docs]</a><span class="k">def</span> <span class="nf">etkdgv3_energies</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">num_conf</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+
+<div class="viewcode-block" id="etkdgv3_energies">
+<a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_rdkit.etkdgv3_energies">[docs]</a>
+<span class="k">def</span> <span class="nf">etkdgv3_energies</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">num_conf</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">   </span><span class="sd">&quot;&quot;&quot;Calculate molecular configurations using the RDKit-ETKDG3 method.</span>
 <span class="sd">      </span>
 <span class="sd">      Parameters</span>
@@ -321,6 +346,7 @@
       <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ff</span><span class="o">.</span><span class="n">CalcEnergy</span><span class="p">())</span>
 
    <span class="k">return</span> <span class="n">m</span><span class="p">,</span> <span class="n">cids</span><span class="p">,</span> <span class="n">energies</span> </div>
+
 </pre></div>
 
            </div>
@@ -330,7 +356,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, Alejandro Santana-Bonilla, Chris Lorenz.</p>
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, and Chris Lorenz.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

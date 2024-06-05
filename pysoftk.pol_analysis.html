@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pysoftk.pol_analysis package &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=292eb321"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pysoftk.pol_analysis.tools package" href="pysoftk.pol_analysis.tools.html" />
+    <link rel="prev" title="pysoftk.linear_polymer package" href="pysoftk.linear_polymer.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PySoftK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">pysoftk</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pysoftk.html">pysoftk package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pysoftk.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.folder_manager.html">pysoftk.folder_manager package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.format_printers.html">pysoftk.format_printers package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.htp_tools.html">pysoftk.htp_tools package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.linear_polymer.html">pysoftk.linear_polymer package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pysoftk.pol_analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.pysoftwhere.html">pysoftk.pysoftwhere package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.tools.html">pysoftk.tools package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.topologies.html">pysoftk.topologies package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.torsional.html">pysoftk.torsional package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.html#module-pysoftk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PySoftK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">pysoftk</a></li>
+          <li class="breadcrumb-item"><a href="pysoftk.html">pysoftk package</a></li>
+      <li class="breadcrumb-item active">pysoftk.pol_analysis package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/pysoftk.pol_analysis.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pysoftk-pol-analysis-package">
+<h1>pysoftk.pol_analysis package<a class="headerlink" href="#pysoftk-pol-analysis-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pysoftk.pol_analysis.tools.html">pysoftk.pol_analysis.tools package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#module-pysoftk.pol_analysis.tools.clustering_prob_distribution_plot">pysoftk.pol_analysis.tools.clustering_prob_distribution_plot module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.clustering_prob_distribution_plot.total_number_clusters"><code class="docutils literal notranslate"><span class="pre">total_number_clusters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#module-pysoftk.pol_analysis.tools.utils_mda">pysoftk.pol_analysis.tools.utils_mda module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_mda.MDA_input"><code class="docutils literal notranslate"><span class="pre">MDA_input</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_mda.MDA_input.xtc"><code class="docutils literal notranslate"><span class="pre">MDA_input.xtc</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_mda.MDA_input.tpr"><code class="docutils literal notranslate"><span class="pre">MDA_input.tpr</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_mda.MDA_input.get_mda_universe"><code class="docutils literal notranslate"><span class="pre">MDA_input.get_mda_universe()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#module-pysoftk.pol_analysis.tools.utils_tools">pysoftk.pol_analysis.tools.utils_tools module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools.coord_matrix_calc"><code class="docutils literal notranslate"><span class="pre">coord_matrix_calc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools.create_binned_space"><code class="docutils literal notranslate"><span class="pre">create_binned_space()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools.create_network"><code class="docutils literal notranslate"><span class="pre">create_network()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools.distance_matrix_calc"><code class="docutils literal notranslate"><span class="pre">distance_matrix_calc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools.find_values"><code class="docutils literal notranslate"><span class="pre">find_values()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools.get_atom_name_list"><code class="docutils literal notranslate"><span class="pre">get_atom_name_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools.get_frames"><code class="docutils literal notranslate"><span class="pre">get_frames()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools.get_frames_hydr"><code class="docutils literal notranslate"><span class="pre">get_frames_hydr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools.get_index_pairs"><code class="docutils literal notranslate"><span class="pre">get_index_pairs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools.get_universe_per_frame"><code class="docutils literal notranslate"><span class="pre">get_universe_per_frame()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools.pair"><code class="docutils literal notranslate"><span class="pre">pair()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools.selecting_atoms"><code class="docutils literal notranslate"><span class="pre">selecting_atoms()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools.selecting_atoms_density"><code class="docutils literal notranslate"><span class="pre">selecting_atoms_density()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#module-pysoftk.pol_analysis.tools.utils_tools_old">pysoftk.pol_analysis.tools.utils_tools_old module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools_old.coord_matrix_calc"><code class="docutils literal notranslate"><span class="pre">coord_matrix_calc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools_old.create_network"><code class="docutils literal notranslate"><span class="pre">create_network()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools_old.distance_matrix_calc"><code class="docutils literal notranslate"><span class="pre">distance_matrix_calc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools_old.find_values"><code class="docutils literal notranslate"><span class="pre">find_values()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools_old.get_atom_name_list"><code class="docutils literal notranslate"><span class="pre">get_atom_name_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools_old.get_frames"><code class="docutils literal notranslate"><span class="pre">get_frames()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools_old.get_frames_hydr"><code class="docutils literal notranslate"><span class="pre">get_frames_hydr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools_old.get_index_pairs"><code class="docutils literal notranslate"><span class="pre">get_index_pairs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools_old.get_universe_per_frame"><code class="docutils literal notranslate"><span class="pre">get_universe_per_frame()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools_old.pair"><code class="docutils literal notranslate"><span class="pre">pair()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_tools_old.selecting_atoms"><code class="docutils literal notranslate"><span class="pre">selecting_atoms()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pysoftk.pol_analysis.tools.html#module-pysoftk.pol_analysis.tools">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-pysoftk.pol_analysis.clustering">
+<span id="pysoftk-pol-analysis-clustering-module"></span><h2>pysoftk.pol_analysis.clustering module<a class="headerlink" href="#module-pysoftk.pol_analysis.clustering" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.clustering.SCP">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.clustering.</span></span><span class="sig-name descname"><span class="pre">SCP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tpr_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtc_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/clustering.html#SCP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.clustering.SCP" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_mda.MDA_input" title="pysoftk.pol_analysis.tools.utils_mda.MDA_input"><code class="xref py py-class docutils literal notranslate"><span class="pre">MDA_input</span></code></a></p>
+<p>A class used to compute a spatial cluster for polymers (SCP)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.clustering.SCP.contact_matrix">
+<span class="sig-name descname"><span class="pre">contact_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_cutoff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/clustering.html#SCP.contact_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.clustering.SCP.contact_matrix" title="Link to this definition"></a></dt>
+<dd><p>Function to compute the contact matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>MDAnalaysis.Universe</em>) – An user-provided MDAnalysis universe.</p></li>
+<li><p><strong>name_list</strong> (<em>class.list</em>) – A list containing the names used for the contact
+matrix analysis.</p></li>
+<li><p><strong>cluster_cutoff</strong> (<em>class.float</em>) – A user-defined number for a radius cutoff.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pairs</strong> – A list of tuples containing the indexes of the selected
+molecules.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class.list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.clustering.SCP.spatial_clustering">
+<span class="sig-name descname"><span class="pre">spatial_clustering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_sel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_cutoff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/clustering.html#SCP.spatial_clustering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.clustering.SCP.spatial_clustering" title="Link to this definition"></a></dt>
+<dd><p>Function that gives you the resids and sized of each
+polymer aggregate per frame in a trajectory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame</strong> (<em>MDanalysis.Object</em>) – An MDAnalysis object that contains one frame of a trajectory.</p></li>
+<li><p><strong>atom_sel</strong> (<em>class.str</em>) – User-provided string containing the ResID/tag of the molecule in the trajectory.</p></li>
+<li><p><strong>cluster_cutoff</strong> (<em>class.int</em>) – User defined cutoff to select as neighbour.</p></li>
+<li><p><strong>max_workers</strong> (<em>class.int</em>) – Number of threads to be used in the calculation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>tuple containing clusters and cluster_sizes.</em></p></li>
+<li><p><strong>clusters</strong> (<em>class.list</em>) – A tuple containing the ResIDs.</p></li>
+<li><p><strong>cluster_sizes</strong> (<em>class.list</em>) – Length of the computed clusters.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.clustering.SCP.spatial_clustering_run">
+<span class="sig-name descname"><span class="pre">spatial_clustering_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_cutoff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/clustering.html#SCP.spatial_clustering_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.clustering.SCP.spatial_clustering_run" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Function to compute the spatial clustering function over an MDAnalysis</dt><dd><p>trajectory.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> (<em>class.int</em>) – Frame to start calculation.</p></li>
+<li><p><strong>stop</strong> (<em>class.int</em>) – Frame to stop calculation.</p></li>
+<li><p><strong>step</strong> (<em>class.int</em>) – Number of frames to skip.</p></li>
+<li><p><strong>atom_names</strong> (<em>class.str</em>) – Atomic names used to procure the search.</p></li>
+<li><p><strong>cluster_cutoff</strong> (<em>class.float</em>) – User-provided value to define the cluster length.</p></li>
+<li><p><strong>name_file</strong> (<em>class.str</em>) – Name of the User-supplied file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas.DataFrame.parquet file with the results stored.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.clustering.timeit">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.clustering.</span></span><span class="sig-name descname"><span class="pre">timeit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/clustering.html#timeit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.clustering.timeit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pysoftk.pol_analysis.contact_analysis">
+<span id="pysoftk-pol-analysis-contact-analysis-module"></span><h2>pysoftk.pol_analysis.contact_analysis module<a class="headerlink" href="#module-pysoftk.pol_analysis.contact_analysis" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.contact_analysis.contacts">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.contact_analysis.</span></span><span class="sig-name descname"><span class="pre">contacts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tpr_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtc_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/contact_analysis.html#contacts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.contact_analysis.contacts" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_mda.MDA_input" title="pysoftk.pol_analysis.tools.utils_mda.MDA_input"><code class="xref py py-class docutils literal notranslate"><span class="pre">MDA_input</span></code></a></p>
+<p>A class used to compute the contacts between the polymers
+of a micelle.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.contact_analysis.contacts.contacts_calc">
+<span class="sig-name descname"><span class="pre">contacts_calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_selection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contact_distance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/contact_analysis.html#contacts.contacts_calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.contact_analysis.contacts.contacts_calc" title="Link to this definition"></a></dt>
+<dd><p>Function to get atom pairs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>MDAnalysis.Universe</em>) – An user-provided MDanalysis trajectory.</p></li>
+<li><p><strong>micelle_selection</strong> (<em>MDAnalysis.Object</em>) – MDAnalysis atom group of atoms belonging to the micelle</p></li>
+<li><p><strong>micelle_positions</strong> (<em>np.array</em>) – positions of all atoms from micelle selection</p></li>
+<li><p><strong>group1</strong> (<em>class.str</em>) – atom  names of the atoms for group1 of the contacts calculation</p></li>
+<li><p><strong>group2</strong> (<em>class.str</em>) – atom names of the atoms for group2 of the contacts calculation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>contacts_mat</strong> – Array with the contacts between polymers</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.contact_analysis.contacts.run_contacts_calc">
+<span class="sig-name descname"><span class="pre">run_contacts_calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">micelle_selection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contacts_distance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/contact_analysis.html#contacts.run_contacts_calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.contact_analysis.contacts.run_contacts_calc" title="Link to this definition"></a></dt>
+<dd><p>Function to run contacts_calc function over timme</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>micelle_selection</strong> (<em>class.list</em>) – List with resids of the polymers belonging to the micelle</p></li>
+<li><p><strong>micelle_positions</strong> (<em>np.array</em>) – Array with the positions of all atoms of the micelle</p></li>
+<li><p><strong>group1</strong> (<em>class.str</em>) – Atom  names of the atoms for group1 of the contacts calculation</p></li>
+<li><p><strong>group2</strong> (<em>class.str</em>) – Atom names of the atoms for group2 of the contacts calculation</p></li>
+<li><p><strong>contacts_distance</strong> (<em>class.int</em>) – Cut off distance for contacts</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>contacts_over time</strong> – Array with the contacts between polymers in each timestep</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.contact_analysis.timeit">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.contact_analysis.</span></span><span class="sig-name descname"><span class="pre">timeit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/contact_analysis.html#timeit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.contact_analysis.timeit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pysoftk.pol_analysis.ecc_micelle">
+<span id="pysoftk-pol-analysis-ecc-micelle-module"></span><h2>pysoftk.pol_analysis.ecc_micelle module<a class="headerlink" href="#module-pysoftk.pol_analysis.ecc_micelle" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ecc_micelle.ecc">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.ecc_micelle.</span></span><span class="sig-name descname"><span class="pre">ecc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tpr_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtc_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ecc_micelle.html#ecc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ecc_micelle.ecc" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_mda.MDA_input" title="pysoftk.pol_analysis.tools.utils_mda.MDA_input"><code class="xref py py-class docutils literal notranslate"><span class="pre">MDA_input</span></code></a></p>
+<p>A class used to compute the eccentricity of micelles</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ecc_micelle.ecc.ecc_calc">
+<span class="sig-name descname"><span class="pre">ecc_calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_sel_micelle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_positions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ecc_micelle.html#ecc.ecc_calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ecc_micelle.ecc.ecc_calc" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the eccentricity of the chosen atoms</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>atom_sel_micelle</strong> (<em>MDAnalysis.Object</em>) – MDAnalysis.atom_selection function</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>micelle_positions<span class="classifier">np.array</span></dt><dd><p>np.array with the positions of the micelle atoms</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ecc</strong> – Eccentricity of the selected atoms</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>class.float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ecc_micelle.ecc.running_ecc">
+<span class="sig-name descname"><span class="pre">running_ecc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ecc_micelle.html#ecc.running_ecc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ecc_micelle.ecc.running_ecc" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the eccentricity of the chosen atoms over time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atom_sel_type</strong> (<em>class.str</em>) – Type of atom selection</p></li>
+<li><p><strong>atom_names</strong> (<em>class.list</em>) – List with the names of atoms</p></li>
+<li><p><strong>micelle_positions</strong> (<em>np.array</em>) – np.array with the positions of the micelle atoms</p></li>
+<li><p><strong>Start</strong> (<em>class.int</em>) – Starting frame of the trajectory</p></li>
+<li><p><strong>Stop</strong> (<em>class.int</em>) – Ending rame of the trajectory</p></li>
+<li><p><strong>Skip</strong> (<em>class.int</em>) – Skipping every that many framesof the trajectory</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ecc</strong> – Eccentricity of the selected atoms over time</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pysoftk.pol_analysis.intrinsic_density_micelle">
+<span id="pysoftk-pol-analysis-intrinsic-density-micelle-module"></span><h2>pysoftk.pol_analysis.intrinsic_density_micelle module<a class="headerlink" href="#module-pysoftk.pol_analysis.intrinsic_density_micelle" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.intrinsic_density_micelle.intrinsic_density">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.intrinsic_density_micelle.</span></span><span class="sig-name descname"><span class="pre">intrinsic_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tpr_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtc_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/intrinsic_density_micelle.html#intrinsic_density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.intrinsic_density_micelle.intrinsic_density" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_mda.MDA_input" title="pysoftk.pol_analysis.tools.utils_mda.MDA_input"><code class="xref py py-class docutils literal notranslate"><span class="pre">MDA_input</span></code></a></p>
+<p>A class used to compute the contacts between the polymers
+of a micelle.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.intrinsic_density_micelle.intrinsic_density.box_volume">
+<span class="sig-name descname"><span class="pre">box_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/intrinsic_density_micelle.html#intrinsic_density.box_volume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.intrinsic_density_micelle.intrinsic_density.box_volume" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the volume of the system box at a specific frame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>MDAnalysis.Universe</em>) – An user-provided MDanalysis trajectory.</p></li>
+<li><p><strong>frame</strong> (<em>int</em>) – frame selected for volume calculation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>vol</strong> – volume of system box</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.intrinsic_density_micelle.intrinsic_density.intrinsic_density_not_normalized">
+<span class="sig-name descname"><span class="pre">intrinsic_density_not_normalized</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whole_micelle_largest_cluster_resids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_selection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell_group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_rand_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_step</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/intrinsic_density_micelle.html#intrinsic_density.intrinsic_density_not_normalized"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.intrinsic_density_micelle.intrinsic_density.intrinsic_density_not_normalized" title="Link to this definition"></a></dt>
+<dd><p>Function to run the intrinsic density in a specific frame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>MDAnalysis.Universe</em>) – An user-provided MDanalysis trajectory.</p></li>
+<li><p><strong>whole_micelle_largest_cluster_resids</strong> (<em>list</em>) – list with resids of polymers forming the desired micelle</p></li>
+<li><p><strong>micelle_selection</strong> (<em>MDAnalysis.Object</em>) – MDAnalysis atom group of atoms belonging to the micelle</p></li>
+<li><p><strong>micelle_positions</strong> (<em>np.array</em>) – <p>positions of all atoms from micelle selection</p>
+<dl class="simple">
+<dt>core_group<span class="classifier">class.str</span></dt><dd><p>atom  names of the atoms of the core for density calculation</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>shell_group</strong> (<em>class.str</em>) – <p>atom names of the atoms of the shell for density calculation</p>
+<dl class="simple">
+<dt>n_rand_points<span class="classifier">int</span></dt><dd><p>number of water molecules</p>
+</dd>
+<dt>n_bins<span class="classifier">int</span></dt><dd><p>nnumber of bins for the density calculation</p>
+</dd>
+<dt>n_min<span class="classifier">int</span></dt><dd><p>min bin value for density calculation</p>
+</dd>
+<dt>n_max<span class="classifier">int</span></dt><dd><p>max bins value for density calculation</p>
+</dd>
+<dt>n_step<span class="classifier">int</span></dt><dd><p>size of bin</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>intrinsic_r_total</strong> (<em>np.array</em>) – not normalized intrinsic density</p></li>
+<li><p><strong>intrinsic_r_total_norm</strong> (<em>np.array</em>) – normalized intrinsic density</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.intrinsic_density_micelle.intrinsic_density.run_intrinsic_density">
+<span class="sig-name descname"><span class="pre">run_intrinsic_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">micelle_selection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">water_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">31</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-40.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">150</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/intrinsic_density_micelle.html#intrinsic_density.run_intrinsic_density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.intrinsic_density_micelle.intrinsic_density.run_intrinsic_density" title="Link to this definition"></a></dt>
+<dd><p>Function to run the intrinsic density over time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>MDAnalysis.Universe</em>) – An user-provided MDanalysis trajectory.</p></li>
+<li><p><strong>micelle_selection</strong> (<em>MDAnalysis.Object</em>) – MDAnalysis atom group of atoms belonging to the micelle</p></li>
+<li><p><strong>micelle_positions</strong> (<em>np.array</em>) – <p>positions of all atoms from micelle selection</p>
+<dl class="simple">
+<dt>core<span class="classifier">class.str</span></dt><dd><p>atom  names of the atoms of the core for density calculation</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>shell</strong> (<em>class.str</em>) – <p>atom names of the atoms of the shell for density calculation</p>
+<dl class="simple">
+<dt>water_name<span class="classifier">class.str</span></dt><dd><p>name of water atoms</p>
+</dd>
+<dt>start<span class="classifier">int</span></dt><dd><p>starting frame to perform calculation</p>
+</dd>
+<dt>stop<span class="classifier">int</span></dt><dd><p>last frame to perform calculation</p>
+</dd>
+<dt>step<span class="classifier">int</span></dt><dd><p>frames skipped in calculation</p>
+</dd>
+<dt>n_bins<span class="classifier">int</span></dt><dd><p>nnumber of bins for the density calculation</p>
+</dd>
+<dt>n_min<span class="classifier">int</span></dt><dd><p>min bin value for density calculation</p>
+</dd>
+<dt>n_max<span class="classifier">int</span></dt><dd><p>max bins value for density calculation</p>
+</dd>
+<dt>n_step<span class="classifier">int</span></dt><dd><p>size of bin</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>final_density</strong> –     intrinsic density</p>
+<p>binned_space : np.array
+array with the values of the binned radial distance, this allows easier plotting of the density</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.intrinsic_density_micelle.timeit">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.intrinsic_density_micelle.</span></span><span class="sig-name descname"><span class="pre">timeit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/intrinsic_density_micelle.html#timeit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.intrinsic_density_micelle.timeit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pysoftk.pol_analysis.intrinsic_density_water_micelle">
+<span id="pysoftk-pol-analysis-intrinsic-density-water-micelle-module"></span><h2>pysoftk.pol_analysis.intrinsic_density_water_micelle module<a class="headerlink" href="#module-pysoftk.pol_analysis.intrinsic_density_water_micelle" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.intrinsic_density_water_micelle.intrinsic_density_water">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.intrinsic_density_water_micelle.</span></span><span class="sig-name descname"><span class="pre">intrinsic_density_water</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tpr_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtc_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/intrinsic_density_water_micelle.html#intrinsic_density_water"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.intrinsic_density_water_micelle.intrinsic_density_water" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_mda.MDA_input" title="pysoftk.pol_analysis.tools.utils_mda.MDA_input"><code class="xref py py-class docutils literal notranslate"><span class="pre">MDA_input</span></code></a></p>
+<p>A class used to compute the contacts between the polymers
+of a micelle.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.intrinsic_density_water_micelle.intrinsic_density_water.box_volume">
+<span class="sig-name descname"><span class="pre">box_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/intrinsic_density_water_micelle.html#intrinsic_density_water.box_volume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.intrinsic_density_water_micelle.intrinsic_density_water.box_volume" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the volume of the system box at a specific frame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>MDAnalysis.Universe</em>) – An user-provided MDanalysis trajectory.</p></li>
+<li><p><strong>frame</strong> (<em>int</em>) – frame selected for volume calculation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>vol</strong> – volume of system box</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.intrinsic_density_water_micelle.intrinsic_density_water.intrinsic_density_not_normalized">
+<span class="sig-name descname"><span class="pre">intrinsic_density_not_normalized</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whole_micelle_largest_cluster_resids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">water_selection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_rand_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_step</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/intrinsic_density_water_micelle.html#intrinsic_density_water.intrinsic_density_not_normalized"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.intrinsic_density_water_micelle.intrinsic_density_water.intrinsic_density_not_normalized" title="Link to this definition"></a></dt>
+<dd><p>Function to run the intrinsic density in a specific frame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>MDAnalysis.Universe</em>) – An user-provided MDanalysis trajectory.</p></li>
+<li><p><strong>frame</strong> (<em>int</em>) – trajectory frame</p></li>
+<li><p><strong>whole_micelle_largest_cluster_resids</strong> (<em>list</em>) – list with resids of polymers forming the desired micelle</p></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>micelle_positions<span class="classifier">np.array</span></dt><dd><p>positions of all atoms from micelle selection</p>
+</dd>
+<dt>water_selection: list</dt><dd><blockquote>
+<div><p>list of solvent atoms to calculate the density</p>
+</div></blockquote>
+<dl class="simple">
+<dt>core_group<span class="classifier">class.str</span></dt><dd><p>atom  names of the atoms of the core for density calculation</p>
+</dd>
+<dt>n_rand_points<span class="classifier">int</span></dt><dd><p>number of water molecules</p>
+</dd>
+<dt>n_bins<span class="classifier">int</span></dt><dd><p>nnumber of bins for the density calculation</p>
+</dd>
+<dt>n_min<span class="classifier">int</span></dt><dd><p>min bin value for density calculation</p>
+</dd>
+<dt>n_max<span class="classifier">int</span></dt><dd><p>max bins value for density calculation</p>
+</dd>
+<dt>n_step<span class="classifier">int</span></dt><dd><p>size of bin</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>intrinsic_r_total</strong> (<em>np.array</em>) – not normalized intrinsic density</p></li>
+<li><p><strong>intrinsic_r_total_norm</strong> (<em>np.array</em>) – normalized intrinsic density</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.intrinsic_density_water_micelle.intrinsic_density_water.run_intrinsic_density">
+<span class="sig-name descname"><span class="pre">run_intrinsic_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">micelle_selection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">water_selection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heavy_atom_water_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">31</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-40.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">150</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/intrinsic_density_water_micelle.html#intrinsic_density_water.run_intrinsic_density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.intrinsic_density_water_micelle.intrinsic_density_water.run_intrinsic_density" title="Link to this definition"></a></dt>
+<dd><p>Function to run the intrinsic density over time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>micelle_selection</strong> (<em>list</em>) – list of atoms belonging to the micelle</p></li>
+<li><p><strong>micelle_positions</strong> (<em>np.array</em>) – <p>positions of all atoms from micelle selection</p>
+<dl class="simple">
+<dt>water_selection<span class="classifier">list</span></dt><dd><p>solvent atom selection</p>
+</dd>
+<dt>core<span class="classifier">class.str</span></dt><dd><p>atom  names of the atoms of the core for density calculation</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>shell</strong> (<em>class.str</em>) – <p>atom names of the atoms of the shell for density calculation</p>
+<dl class="simple">
+<dt>heavy_atom_water_name<span class="classifier">class.str</span></dt><dd><p>name of heavy water atoms</p>
+</dd>
+<dt>start<span class="classifier">int</span></dt><dd><p>starting frame to perform calculation</p>
+</dd>
+<dt>stop<span class="classifier">int</span></dt><dd><p>last frame to perform calculation</p>
+</dd>
+<dt>step<span class="classifier">int</span></dt><dd><p>frames skipped in calculation</p>
+</dd>
+<dt>n_bins<span class="classifier">int</span></dt><dd><p>nnumber of bins for the density calculation</p>
+</dd>
+<dt>n_min<span class="classifier">int</span></dt><dd><p>min bin value for density calculation</p>
+</dd>
+<dt>n_max<span class="classifier">int</span></dt><dd><p>max bins value for density calculation</p>
+</dd>
+<dt>n_step<span class="classifier">int</span></dt><dd><p>size of bin</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>final_density</strong> –     intrinsic density</p>
+<p>binned_space : np.array
+array with the values of the binned radial distance, this allows easier plotting of the density</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.intrinsic_density_water_micelle.intrinsic_density_water.select_water_atoms">
+<span class="sig-name descname"><span class="pre">select_water_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/intrinsic_density_water_micelle.html#intrinsic_density_water.select_water_atoms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.intrinsic_density_water_micelle.intrinsic_density_water.select_water_atoms" title="Link to this definition"></a></dt>
+<dd><p>Function to select the solvent atoms</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>MDAnalysis.Universe</em>) – An user-provided MDanalysis trajectory</p></li>
+<li><p><strong>name</strong> (<em>list</em>) – List with the atom names of the solvent</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.intrinsic_density_water_micelle.timeit">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.intrinsic_density_water_micelle.</span></span><span class="sig-name descname"><span class="pre">timeit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/intrinsic_density_water_micelle.html#timeit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.intrinsic_density_water_micelle.timeit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pysoftk.pol_analysis.make_micelle_whole">
+<span id="pysoftk-pol-analysis-make-micelle-whole-module"></span><h2>pysoftk.pol_analysis.make_micelle_whole module<a class="headerlink" href="#module-pysoftk.pol_analysis.make_micelle_whole" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.make_micelle_whole.micelle_whole">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.make_micelle_whole.</span></span><span class="sig-name descname"><span class="pre">micelle_whole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tpr_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtc_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/make_micelle_whole.html#micelle_whole"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.make_micelle_whole.micelle_whole" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_mda.MDA_input" title="pysoftk.pol_analysis.tools.utils_mda.MDA_input"><code class="xref py py-class docutils literal notranslate"><span class="pre">MDA_input</span></code></a></p>
+<p>A class used to make the largest micelle whole across
+the pbc for better analysis.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.make_micelle_whole.micelle_whole.count_dimensions">
+<span class="sig-name descname"><span class="pre">count_dimensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_atoms_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimensions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/make_micelle_whole.html#micelle_whole.count_dimensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.make_micelle_whole.micelle_whole.count_dimensions" title="Link to this definition"></a></dt>
+<dd><p>Function to get the dimensions of a system, the box size and
+cluster_atom_positions in the form to use in make_cluster_whole</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>box</strong> (<em>np.array</em>) – u.dimensions</p></li>
+<li><p><strong>cluster_atom_positions</strong> (<em>np.array</em>) – Array with the atom positions of the polymers belonging to the cluster</p></li>
+<li><p><strong>dimensions</strong> (<em>class.int</em>) – Number of dimensions</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>box</strong> (<em>np.array</em>) – Array with the u.dimensions to feed in into make_cluster_whole</p></li>
+<li><p><strong>cluster_atom_positions</strong> (<em>np.array</em>) – Array with the atom positions of the micelle/cluster in the correct shape
+to feed it into make_cluster_whole</p></li>
+<li><p><strong>dimensions</strong> (<em>class.list</em>) – List with the number of dimensions. E.g. 3D=[0, 1, 2]</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.make_micelle_whole.micelle_whole.get_atom_name_list">
+<span class="sig-name descname"><span class="pre">get_atom_name_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_sel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/make_micelle_whole.html#micelle_whole.get_atom_name_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.make_micelle_whole.micelle_whole.get_atom_name_list" title="Link to this definition"></a></dt>
+<dd><p>Function to obtain the residues based on user-provided atom selection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>atom_sel</strong> (<em>class.str</em>) – User Provided name/tag of the molecules inside the box.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>final</strong> – List containing all names of atoms.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class.list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.make_micelle_whole.micelle_whole.get_polymer_positions">
+<span class="sig-name descname"><span class="pre">get_polymer_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_resids</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/make_micelle_whole.html#micelle_whole.get_polymer_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.make_micelle_whole.micelle_whole.get_polymer_positions" title="Link to this definition"></a></dt>
+<dd><p>Function to find the polymer positions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>MDAnalysis.Universe</em>) – An user-provided MDAnalysis universe.</p></li>
+<li><p><strong>frame</strong> (<em>class.int</em>) – Time frame for calculation to be done.</p></li>
+<li><p><strong>resname</strong> (<em>class.list</em>) – List of strings with the resname of the polymers.</p></li>
+<li><p><strong>cluster_resids</strong> (<em>class.str</em><em> or </em><em>class.int</em>) – List with the polymer resids.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>box</strong> (<em>np.array</em>) – Array with the u.dimensions</p></li>
+<li><p><strong>cluster_atom_positions</strong> (<em>np.array</em>) – Array with the atom positions of the micelle/cluster.</p></li>
+<li><p><strong>cluster_sel</strong> (<em>np.array</em>) – Array with the atoms that belong to the micelle/cluster.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.make_micelle_whole.micelle_whole.make_cluster_whole">
+<span class="sig-name descname"><span class="pre">make_cluster_whole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_resids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimensions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/make_micelle_whole.html#micelle_whole.make_cluster_whole"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.make_micelle_whole.micelle_whole.make_cluster_whole" title="Link to this definition"></a></dt>
+<dd><p>Function to make a polymer cluster whole across the pbc</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame</strong> (<em>class.int</em>) – Time frame that wants to be made whole</p></li>
+<li><p><strong>resname</strong> (<em>class.list</em>) – List with the resname of the molecules of the cluster</p></li>
+<li><p><strong>cluster_resids</strong> (<em>class.list</em>) – List with resids of the polymers that want to be made whole</p></li>
+<li><p><strong>bins_min</strong> (<em>class.int</em>) – Smallest distance to evaluate if the pbc are broken (smallest x-y distance position)</p></li>
+<li><p><strong>bins_max</strong> (<em>class.int</em>) – Biggest distance to evaluate if the pbc are broken (largest x-y distance position)</p></li>
+<li><p><strong>bins_step</strong> (<em>class.int</em>) – Step between bins to evaluate broken pbc</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>frame</strong> (<em>class.int</em>) – Time frame where the micelle has been made whole</p></li>
+<li><p><strong>atom_positions_whole</strong> (<em>np.array</em>) – Array with the atom positions of the micelle made whole across the pbc</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.make_micelle_whole.micelle_whole.obtain_largest_micelle_resids">
+<span class="sig-name descname"><span class="pre">obtain_largest_micelle_resids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spatial_clustering_results</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/make_micelle_whole.html#micelle_whole.obtain_largest_micelle_resids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.make_micelle_whole.micelle_whole.obtain_largest_micelle_resids" title="Link to this definition"></a></dt>
+<dd><p>Function to obtain the largest micelle resids Bare in mind this may give two
+different clusters if they have the same size - should check that you only select
+one when using the results from here</p>
+<p>Note-need to check if it actually gives two different clusters if they have
+the same size.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spatial_clustering_results</strong> (<em>pandas.DataFrame</em>) – Results from clustering analysis class.
+Pandas dataframe with three columns: time (ps),
+micelle_resids and micelle_size</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>longest_lists</strong> – list with the number resids (of MDanalysis) of the largets micelle at the timesteps
+that want to be evaluated.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.make_micelle_whole.micelle_whole.obtain_snapshot">
+<span class="sig-name descname"><span class="pre">obtain_snapshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_positions_at_specific_frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_resids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polymer_resname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">water_resname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['SOL']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">water_atom_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['OW']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solvant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/make_micelle_whole.html#micelle_whole.obtain_snapshot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.make_micelle_whole.micelle_whole.obtain_snapshot" title="Link to this definition"></a></dt>
+<dd><p>Function to obtain an snapshot of the micelle (pdb) file of a specific
+frame and returns the new universe to analyse.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_name</strong> (<em>class.str</em>) – Name of output file</p></li>
+<li><p><strong>atom_positions_at_specific_frame</strong> (<em>np.array</em>) – Position of atoms at a specific frame</p></li>
+<li><p><strong>cluster_resids</strong> (<em>class.list</em>) – List of polymers resids for the snapshot</p></li>
+<li><p><strong>frame</strong> (<em>class.int</em>) – Time frame for snapshot</p></li>
+<li><p><strong>water_resname</strong> (<em>class.list</em>) – List with name of solvants</p></li>
+<li><p><strong>water_atom_name</strong> (<em>class.list</em>) – List of solvant atom names that want to be outputed in the sanpshot. E.g. with water
+you may only be interested in outputing the oxygen water atom for further calculations</p></li>
+<li><p><strong>solvant</strong> (<em>class.boolean</em>) – Set to True if interested in obtainig an output snapshot with the solvant too.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>u3</strong> (<em>MDAnalysis.Universe</em>) – An MDAnalysis universe containing the resulting frames</p></li>
+<li><p><strong>output</strong> (<em>MDAnalysis.Write</em>) – A PDB file containing the selected molecules.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.make_micelle_whole.micelle_whole.pbc_per_dimension">
+<span class="sig-name descname"><span class="pre">pbc_per_dimension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cluster_sel_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins_step</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/make_micelle_whole.html#micelle_whole.pbc_per_dimension"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.make_micelle_whole.micelle_whole.pbc_per_dimension" title="Link to this definition"></a></dt>
+<dd><p>Function to find the broken parts of the micelle across the pbc and make it whole</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spatial_clustering_results</strong> (<em>np.array</em>) – Numpy array with the positions of the resids
+of interest. It needs to have the shape of n_molec x 3</p></li>
+<li><p><strong>box</strong> (<em>np.array</em>) – Numpy array with the MDanalysis strat u.dimensions. Array with the x y and z dimensions
+follow by the angles of the box.</p></li>
+<li><p><strong>dimension</strong> (<em>class.int</em>) – Dimension number that wants to be evaluated</p></li>
+<li><p><strong>bins_min</strong> (<em>class.int</em>) – Smallest distance to evaluate if the pbc are broken (smallest x-y distance position)</p></li>
+<li><p><strong>bins_max</strong> (<em>class.int</em>) – Biggest distance to evaluate if the pbc are broken (largest x-y distance position)</p></li>
+<li><p><strong>bins_step</strong> (<em>class.int</em>) – Step between bins to evaluate broken pbc</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>cluster_sel_positions_return</strong> – Array with the atom positions of the micelle made whole across the pbc</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.make_micelle_whole.micelle_whole.running_make_cluster_whole">
+<span class="sig-name descname"><span class="pre">running_make_cluster_whole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_resids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/make_micelle_whole.html#micelle_whole.running_make_cluster_whole"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.make_micelle_whole.micelle_whole.running_make_cluster_whole" title="Link to this definition"></a></dt>
+<dd><p>Function to run the make_cluster_whole function over several frames</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resname</strong> (<em>class.list</em>) – List with the resname of the molecules of the cluster in each time step.</p></li>
+<li><p><strong>cluster_resids</strong> (<em>class.list</em>) – List with resids of the polymers that want to be made whole in each time step.</p></li>
+<li><p><strong>start</strong> (<em>class.int</em>) – Starting frame to perfomr the calculation.</p></li>
+<li><p><strong>stop</strong> (<em>class.int</em>) – Last frame to perform the calculation.</p></li>
+<li><p><strong>skip</strong> (<em>class.int</em>) – Length of step to perform the calculation every number
+of frames.</p></li>
+<li><p><strong>bins_min</strong> (<em>class.int</em>) – Smallest distance to evaluate if the pbc are broken (smallest x-y distance position).</p></li>
+<li><p><strong>bins_max</strong> (<em>class.int</em>) – Biggest distance to evaluate if the pbc are broken (largest x-y distance position).</p></li>
+<li><p><strong>bins_step</strong> (<em>class.int</em>) – Step between bins to evaluate broken pbc.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>atom_positions_over_trajectory</strong> – List of np.arrays where each entry of the list is the position of atoms that are
+made whole across the pbc at a specific time step.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class.list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.make_micelle_whole.timeit">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.make_micelle_whole.</span></span><span class="sig-name descname"><span class="pre">timeit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/make_micelle_whole.html#timeit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.make_micelle_whole.timeit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pysoftk.pol_analysis.rgyr_micelle">
+<span id="pysoftk-pol-analysis-rgyr-micelle-module"></span><h2>pysoftk.pol_analysis.rgyr_micelle module<a class="headerlink" href="#module-pysoftk.pol_analysis.rgyr_micelle" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.rgyr_micelle.rgyr">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.rgyr_micelle.</span></span><span class="sig-name descname"><span class="pre">rgyr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tpr_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtc_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/rgyr_micelle.html#rgyr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.rgyr_micelle.rgyr" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_mda.MDA_input" title="pysoftk.pol_analysis.tools.utils_mda.MDA_input"><code class="xref py py-class docutils literal notranslate"><span class="pre">MDA_input</span></code></a></p>
+<p>A class used to compute the radius of gyration of micelles</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.rgyr_micelle.rgyr.rgyr_calc">
+<span class="sig-name descname"><span class="pre">rgyr_calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_sel_micelle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subgroup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/rgyr_micelle.html#rgyr.rgyr_calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.rgyr_micelle.rgyr.rgyr_calc" title="Link to this definition"></a></dt>
+<dd><p>Funcion to calculate the radius of gyration of the chosen atoms</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atom_sel_micelle</strong> (<em>MDAnalysis.atom_selection</em>) – MDAnalysis atom_selection function.</p></li>
+<li><p><strong>subgroup</strong> (<em>MDAnalysis.atom_group</em>) – MDAnalysis atom group to calculate the rgyr</p></li>
+<li><p><strong>micelle_positions</strong> (<em>np.array</em>) – np.array with the positions of the micelle atoms</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>radius_of_gyration</strong> – Radius of gyration of the selected atoms</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class.float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.rgyr_micelle.rgyr.running_rgyr">
+<span class="sig-name descname"><span class="pre">running_rgyr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subgroup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/rgyr_micelle.html#rgyr.running_rgyr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.rgyr_micelle.rgyr.running_rgyr" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the radius of gyration of the chosen atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>MDAnalysis.Universe</em>) – An user-provided MDAnalysis universe.</p></li>
+<li><p><strong>atom_sel_type</strong> (<em>class.str</em>) – Type of atom selection.</p></li>
+<li><p><strong>atom_names</strong> (<em>class.list</em>) – List with the names of atoms.</p></li>
+<li><p><strong>micelle_positions</strong> (<em>np.array</em>) – An array with the positions of the micelle atoms.</p></li>
+<li><p><strong>subgroup</strong> (<em>class.str</em>) – A list of atom names to calculate the rgyr.</p></li>
+<li><p><strong>Start</strong> (<em>class.int</em>) – Starting frame of the trajectory.</p></li>
+<li><p><strong>Stop</strong> (<em>class.int</em>) – Ending rame of the trajectory.</p></li>
+<li><p><strong>Skip</strong> (<em>class.int</em>) – Skipping every that many frames of the trajectory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>rgyr_f</strong> – Radius of gyration of the selected atoms over time</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.rgyr_micelle.timeit">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.rgyr_micelle.</span></span><span class="sig-name descname"><span class="pre">timeit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/rgyr_micelle.html#timeit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.rgyr_micelle.timeit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pysoftk.pol_analysis.ring_ring">
+<span id="pysoftk-pol-analysis-ring-ring-module"></span><h2>pysoftk.pol_analysis.ring_ring module<a class="headerlink" href="#module-pysoftk.pol_analysis.ring_ring" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.ring_ring.</span></span><span class="sig-name descname"><span class="pre">RSA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tpr_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtc_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_mda.MDA_input" title="pysoftk.pol_analysis.tools.utils_mda.MDA_input"><code class="xref py py-class docutils literal notranslate"><span class="pre">MDA_input</span></code></a></p>
+<p>A class used to compute a Ring Stacking Analysis (RSA).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.GetRingSystems">
+<span class="sig-name descname"><span class="pre">GetRingSystems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">includeSpiro</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.GetRingSystems"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.GetRingSystems" title="Link to this definition"></a></dt>
+<dd><p>Function to detect the atomic indexes  that  belong to a ring structure for a provided
+molecular complex (single, dimer, timer and so on molecules).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>min_1</strong> (<em>int</em>) – smallest atom index of molecule 1</p></li>
+<li><p><strong>max_1</strong> (<em>int</em>) – largest atom index of molecule 1</p></li>
+<li><p><strong>min_2</strong> (<em>int</em>) – smallest atom index of molecule 2</p></li>
+<li><p><strong>max_2</strong> (<em>int</em>) – largest atom index of molecule 2</p></li>
+<li><p><strong>includeSpiro</strong> (<em>class.bool</em>) – To check for spiro sites</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ring_contact_indices</strong> – A list of arrays with the mda atom indices of the
+rings of the polymers.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class.list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.calc_angle">
+<span class="sig-name descname"><span class="pre">calc_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u_norm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_norm2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.calc_angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.calc_angle" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Function to compute the dot product between two normal</dt><dd><p>vectors.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u_norm</strong> (<em>numpy.ndarray</em>) – An user-provided normal vector.</p></li>
+<li><p><strong>u_norm2</strong> (<em>numpy.ndarray</em>) – An user-provided normal vector.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result of a dot product between two vectors.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.find_several_rings_stacked">
+<span class="sig-name descname"><span class="pre">find_several_rings_stacked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rings_df_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.find_several_rings_stacked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.find_several_rings_stacked" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Function to find several rings stacked using a provided</dt><dd><p>pandas DataFrame from previous calculations.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rings_df_name</strong> (<em>pandas.DataFrame</em>) – Pandas dataframe containing the results from the ring_ring
+analysis.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>connected_components</strong> – List of connected polymers along the trajectory.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class.list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.get_polymer_resids">
+<span class="sig-name descname"><span class="pre">get_polymer_resids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pol_indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.get_polymer_resids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.get_polymer_resids" title="Link to this definition"></a></dt>
+<dd><p>Function to get the possible ring combinations between two polymers to
+calculate the distances between them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pol_indices</strong> (<em>np.array</em>) – Numpy array with the atom indices of the dimer.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ring_comb</strong> – A list of arrays with the combination of mda molecule resids of the
+two molecules involved</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class.list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.nearest_neighbours">
+<span class="sig-name descname"><span class="pre">nearest_neighbours</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lab1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lab2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.nearest_neighbours"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.nearest_neighbours" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Function to filter different molecules</dt><dd><p>by closest interatomic distance.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>MDAnalysis.object</em>) – Universe containing the trajectory</p></li>
+<li><p><strong>lab1</strong> (<em>str</em>) – User provided label of one molecule</p></li>
+<li><p><strong>lab2</strong> (<em>str</em>) – User provided label for second molecule</p></li>
+<li><p><strong>frame</strong> (<em>int</em>) – Frame for calculation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>float</strong> – Minimum distance between the atoms belonging to the polymer pair
+and all the atompositions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.number_pol">
+<span class="sig-name descname"><span class="pre">number_pol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.number_pol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.number_pol" title="Link to this definition"></a></dt>
+<dd><p>Number of polymers inside an user-provided box.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>u</strong> (<em>MDAnalysis.Universe</em>) – An user-provided MDAnalysis universe.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of polymers within a box.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.pol_cutoff">
+<span class="sig-name descname"><span class="pre">pol_cutoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.pol_cutoff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.pol_cutoff" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Function to count the number of polymers within an</dt><dd><p>user-provided cutoff.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>MDAnalysis.universe</em>) – An user-provided universe of MDAnalysis</p></li>
+<li><p><strong>cutoff</strong> (<em>float</em>) – An user provided cutoff defining closest distances.</p></li>
+<li><p><strong>frames</strong> (<em>list</em>) – User provided frames where calculation will be carried out</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt><strong>index_cutoff</strong> –   List of intergers with the indexes of the selected</dt><dd><p>molecules.</p>
+</dd>
+<dt>b: list</dt><dd><p>List of possible combinations of the selected molecules</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.rings_stacking_dist">
+<span class="sig-name descname"><span class="pre">rings_stacking_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ring_comb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polymer_pos_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polymer_pos_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pol_indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_off_stack</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">par_scheme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'OpenMP'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.rings_stacking_dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.rings_stacking_dist" title="Link to this definition"></a></dt>
+<dd><p>Function to find if two rings are stacked. This is done by checking if the distance of geometry between two rings is smaller than an user-defined cut off distance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ring_comb</strong> (<em>numpy.ndarray</em>) – Numpy array with all possible ring combinations</p></li>
+<li><p><strong>polymer_pos_1</strong> (<em>numpy.ndarray</em>) – Numpy array with the correct positions of all atoms
+of the polymer.</p></li>
+<li><p><strong>polymer_pos_2</strong> (<em>numpy.ndarray</em>) – Numpy array with the correct positions of all atoms
+of the polymer.</p></li>
+<li><p><strong>pol_indices</strong> (<em>numpy.ndarray</em>) – Numpy array with the first atom index of each polymer. The
+first one needs to be the one corresponding to polymer_pos_1
+and the second one to polymer_pos_2</p></li>
+<li><p><strong>cut_off_stack</strong> (<em>class.float</em>) – Cut off distance for ring stackings</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>vector_angle</strong> – Angle between the two planes of atoms</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class.float or class.boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.run_rings_stacking_dist">
+<span class="sig-name descname"><span class="pre">run_rings_stacking_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u_frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ring_comb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_off</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ang_cutoff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.run_rings_stacking_dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.run_rings_stacking_dist" title="Link to this definition"></a></dt>
+<dd><p>Function to find if two rings are stacked. This is done by checking
+if the distance of geometry between two rings is smaller than a
+user-defined cut off distance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u_frame</strong> (<em>int</em>) – time step of the calculation</p></li>
+<li><p><strong>ring_comb</strong> (<em>numpy.ndarray</em>) – Numpy array with all possible ring combinations</p></li>
+<li><p><strong>cutoff</strong> (<em>class.float</em>) – Cut off distance for ring stackings</p></li>
+<li><p><strong>ang_cut_off</strong> (<em>class.float</em>) – Cut off angle for ring stackings</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>ring_contact_atoms</strong> (<em>class.list</em>) – A list of arrays with the mda atom indices of the rings of the polymers</p></li>
+<li><p><strong>pol_idx</strong> (<em>class.list</em>) – A list of the resids of the molecules with ring stacking</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.separate_rings">
+<span class="sig-name descname"><span class="pre">separate_rings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring_contact_indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pol2_min</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.separate_rings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.separate_rings" title="Link to this definition"></a></dt>
+<dd><p>Function to get the possible ring combinations between two polymers to
+calculate the distances between them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ring_contact_indices</strong> (<em>class.list</em>) – A list of arrays with the mda atom indices of the
+rings of the polymers.</p></li>
+<li><p><strong>pol2_min</strong> (<em>int</em>) – smallest atom index of the molecule with largest atom index</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ring_comb</strong> – A list of arrays with the mda atom indices of the
+rings of the polymers in contact.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class.list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.stacking_analysis">
+<span class="sig-name descname"><span class="pre">stacking_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cut_off</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ang_cut</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output.parquet'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.stacking_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.stacking_analysis" title="Link to this definition"></a></dt>
+<dd><p>Function to perform a stacking analysis over several frames
+:param u: An user-provided universe of MDAnalysis
+:type u: MDAnalysis.universe
+:param cutoff: An user provided cutoff defining closest distances.
+:type cutoff: float
+:param ang_cut: An user provided cutoff defining the valid ring stacking angle range.
+:type ang_cut: float
+:param start: starting frame to perform the ring analysis.
+:type start: int
+:param stop: stopping frame of the ring analysis.
+:type stop: int
+:param step: number of frames to skip during the ring analysis.
+:type step: int
+:param output_name: name of output parquet file with  the ring analysis.
+:type output_name: nstr</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas dataframe with atom indexes of rings where there is ring stacking at each time frame.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.svd">
+<span class="sig-name descname"><span class="pre">svd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.svd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.svd" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Function to obtain the Single Value Decomposition (SVD)</dt><dd><p>of coordinates.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>coordinates</strong> (<em>numpy.ndarray</em>) – Array containing the coordinates upon which svd is going
+to be calculated.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>vh</strong> – A numpy.ndarray with the right unitary singular vector, orthogonal to
+the given set of coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.timeit">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.ring_ring.</span></span><span class="sig-name descname"><span class="pre">timeit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#timeit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.timeit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pysoftk.pol_analysis.solvation">
+<span id="pysoftk-pol-analysis-solvation-module"></span><h2>pysoftk.pol_analysis.solvation module<a class="headerlink" href="#module-pysoftk.pol_analysis.solvation" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.solvation.solvation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.solvation.</span></span><span class="sig-name descname"><span class="pre">solvation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tpr_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtc_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/solvation.html#solvation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.solvation.solvation" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_mda.MDA_input" title="pysoftk.pol_analysis.tools.utils_mda.MDA_input"><code class="xref py py-class docutils literal notranslate"><span class="pre">MDA_input</span></code></a></p>
+<p>A class used to compute the contacts between the polymers of a micelle</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.solvation.solvation.hydration_calc">
+<span class="sig-name descname"><span class="pre">hydration_calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">largest_cluster_resids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">water_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polymer_oxygen_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_off</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/solvation.html#solvation.hydration_calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.solvation.solvation.hydration_calc" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the solvation of selected polymer atoms</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame</strong> (<em>class.int</em>) – Time frame of step for calculation.</p></li>
+<li><p><strong>largest_cluster_resids</strong> (<em>class.list</em>) – List with resids of polymers forming the micelle at a
+specific time step.</p></li>
+<li><p><strong>micelle_pos</strong> (<em>np.array</em>) – 3D np.array with the positions of the atoms that conform
+the micelle whole (not broken across the pbc boundaries).</p></li>
+<li><p><strong>water_name</strong> (<em>class.str</em>) – Water atom names for hydration calculation.</p></li>
+<li><p><strong>polymer_oxygen_names</strong> (<em>class.list</em>) – List of atom names of the polymer for hydration calculation.</p></li>
+<li><p><strong>cut_off</strong> (<em>class.float</em>) – Number cut off of the distance between the polymer beads
+and the water for hydration calculation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>coord_number</strong> – Coordination number of the polymer atoms.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.solvation.solvation.solvation_calc_run">
+<span class="sig-name descname"><span class="pre">solvation_calc_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">largest_cluster_resids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">water_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polymer_oxygen_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_off</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/solvation.html#solvation.solvation_calc_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.solvation.solvation.solvation_calc_run" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the solvation calculation over the selected frames</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_frame</strong> (<em>class.int</em>) – frame to start calculation</p></li>
+<li><p><strong>stop_frame</strong> (<em>class.int</em>) – frame to stop calculation</p></li>
+<li><p><strong>step_frame</strong> (<em>class.int</em>) – number of frames to skip</p></li>
+<li><p><strong>largest_cluster_resids</strong> (<em>class.list</em>) – list with resids of polymers forming the micelle at a specific time step</p></li>
+<li><p><strong>micelle_pos</strong> (<em>np.array</em>) – 3D np.array with the positions of the atoms that conform the micelle whole
+(not broken across the pbc boundaries)</p></li>
+<li><p><strong>water_name</strong> (<em>class.str</em>) – warer atom names for hydration calculation</p></li>
+<li><p><strong>polymer_oxygen_names</strong> (<em>class.list</em>) – list of atom names of the polymer for hydration calculation</p></li>
+<li><p><strong>cut_off</strong> (<em>class.float</em>) – number cut off of the distance between the polymer beads and the water for
+hydration calculation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>coord_number</strong> – coordination number of the polymer atoms at a specific frame</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class.list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.solvation.timeit">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.solvation.</span></span><span class="sig-name descname"><span class="pre">timeit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/solvation.html#timeit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.solvation.timeit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pysoftk.pol_analysis.spherical_density">
+<span id="pysoftk-pol-analysis-spherical-density-module"></span><h2>pysoftk.pol_analysis.spherical_density module<a class="headerlink" href="#module-pysoftk.pol_analysis.spherical_density" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.spherical_density.spherical_density">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.spherical_density.</span></span><span class="sig-name descname"><span class="pre">spherical_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tpr_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtc_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/spherical_density.html#spherical_density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.spherical_density.spherical_density" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_mda.MDA_input" title="pysoftk.pol_analysis.tools.utils_mda.MDA_input"><code class="xref py py-class docutils literal notranslate"><span class="pre">MDA_input</span></code></a></p>
+<p>A class used to compute the contacts between the polymers
+of a micelle.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.spherical_density.spherical_density.density_calc">
+<span class="sig-name descname"><span class="pre">density_calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">binned_space</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_histograms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/spherical_density.html#spherical_density.density_calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.spherical_density.spherical_density.density_calc" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the density</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>binned_space</strong> (<em>np.array</em>) – bins</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>all_histograms<span class="classifier">np.array</span></dt><dd><p>distances histograms</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>density</strong> – array with density</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.spherical_density.spherical_density.dist_com">
+<span class="sig-name descname"><span class="pre">dist_com</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_sel_micelle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_selection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/spherical_density.html#spherical_density.dist_com"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.spherical_density.spherical_density.dist_com" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the distance between atoms and the center of mass of the micelle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>mda.Universe</em>) – mda.Universe</p></li>
+<li><p><strong>atom_sel_micelle</strong> – <p>atom group selection of the micelle</p>
+<dl class="simple">
+<dt>micelle_positions<span class="classifier">np.array</span></dt><dd><p>array with the positions of the micelle whole</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>distance_com</strong> – array with the distances of the aotms to the COM of the micelle</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.spherical_density.spherical_density.run_density_calc">
+<span class="sig-name descname"><span class="pre">run_density_calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">micelle_sel_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whole_micelle_selection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_atom_selection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxbin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minbin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/spherical_density.html#spherical_density.run_density_calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.spherical_density.spherical_density.run_density_calc" title="Link to this definition"></a></dt>
+<dd><p>Function to get the mean  density calculation over time as a funciton wrt the micelle COM</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>micelle_sel_type</strong> (<em>str</em>) – string type for the selection of the micelle atoms</p></li>
+<li><p><strong>whole_micelle_selection</strong> (<em>np.array</em>) – elements to select the micelle atoms</p></li>
+<li><p><strong>micelle_positions</strong> (<em>np.array</em>) – array with the positions of the micelle atoms whole</p></li>
+<li><p><strong>group_atom_selection</strong> (<em>str</em>) – list with the names of the polymer species chosen for the density calculation</p></li>
+<li><p><strong>maxbin</strong> (<em>int</em>) – largest bin value</p></li>
+<li><p><strong>minbin</strong> (<em>int</em>) – smalles bin value</p></li>
+<li><p><strong>step</strong> (<em>int</em>) – bin size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>density</strong> –     array with the density values as a function of the distance to the COM of the micelle</p>
+<dl class="simple">
+<dt>binned_space<span class="classifier">np.array</span></dt><dd><p>array with the values of the binned radial distance, this allows easier plotting of the density</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.spherical_density.spherical_density.sph_histogram">
+<span class="sig-name descname"><span class="pre">sph_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxbin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minbin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/spherical_density.html#spherical_density.sph_histogram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.spherical_density.spherical_density.sph_histogram" title="Link to this definition"></a></dt>
+<dd><p>Function to create a histogram of the distances</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>distance</strong> (<em>np.array</em>) – distances to be binned</p></li>
+<li><p><strong>maxbin</strong> (<em>int</em>) – largest bin value</p></li>
+<li><p><strong>minbin</strong> (<em>int</em>) – smalles bin value</p></li>
+<li><p><strong>step</strong> (<em>int</em>) – bin size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>all_histograms</strong> – array with the distances values binned</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.spherical_density.timeit">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.spherical_density.</span></span><span class="sig-name descname"><span class="pre">timeit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/spherical_density.html#timeit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.spherical_density.timeit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pysoftk.pol_analysis.spherical_density_water">
+<span id="pysoftk-pol-analysis-spherical-density-water-module"></span><h2>pysoftk.pol_analysis.spherical_density_water module<a class="headerlink" href="#module-pysoftk.pol_analysis.spherical_density_water" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.spherical_density_water.spherical_density_water">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.spherical_density_water.</span></span><span class="sig-name descname"><span class="pre">spherical_density_water</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tpr_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtc_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/spherical_density_water.html#spherical_density_water"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.spherical_density_water.spherical_density_water" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_mda.MDA_input" title="pysoftk.pol_analysis.tools.utils_mda.MDA_input"><code class="xref py py-class docutils literal notranslate"><span class="pre">MDA_input</span></code></a></p>
+<p>A class used to compute the contacts between the polymers
+of a micelle.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.spherical_density_water.spherical_density_water.density_calc">
+<span class="sig-name descname"><span class="pre">density_calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">binned_space</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_histograms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/spherical_density_water.html#spherical_density_water.density_calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.spherical_density_water.spherical_density_water.density_calc" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the density</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>binned_space</strong> (<em>np.array</em>) – bins</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>all_histograms<span class="classifier">np.array</span></dt><dd><p>distances histograms</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>density</strong> – array with density</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.spherical_density_water.spherical_density_water.dist_com">
+<span class="sig-name descname"><span class="pre">dist_com</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_sel_micelle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">water_selection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/spherical_density_water.html#spherical_density_water.dist_com"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.spherical_density_water.spherical_density_water.dist_com" title="Link to this definition"></a></dt>
+<dd><p>Function to calculate the distance between atoms and the center of mass of the micelle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>mda.Universe</em>) – mda.Universe</p></li>
+<li><p><strong>atom_sel_micelle</strong> – <p>atom group selection of the micelle</p>
+<dl class="simple">
+<dt>micelle_positions<span class="classifier">np.array</span></dt><dd><p>array with the positions of the micelle whole</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>distance_com</strong> – array with the distances of the aotms to the COM of the micelle</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.spherical_density_water.spherical_density_water.run_density_calc">
+<span class="sig-name descname"><span class="pre">run_density_calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">micelle_sel_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whole_micelle_selection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">micelle_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">water_sel_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">water_atom_selection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxbin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minbin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/spherical_density_water.html#spherical_density_water.run_density_calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.spherical_density_water.spherical_density_water.run_density_calc" title="Link to this definition"></a></dt>
+<dd><p>Function to get the mean  density calculation over time as a funciton wrt the micelle COM</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>micelle_sel_type</strong> (<em>str</em>) – string type for the selection of the micelle atoms</p></li>
+<li><p><strong>whole_micelle_selection</strong> (<em>np.array</em>) – elements to select the micelle atoms</p></li>
+<li><p><strong>micelle_positions</strong> (<em>np.array</em>) – array with the positions of the micelle atoms whole</p></li>
+<li><p><strong>water_sel_type</strong> (<em>str</em>) – string type for the selection of the solvent atoms</p></li>
+<li><p><strong>water_atom_selection</strong> (<em>list</em>) – list with the names of the solvent  chosen for the density calculation</p></li>
+<li><p><strong>maxbin</strong> (<em>int</em>) – largest bin value</p></li>
+<li><p><strong>minbin</strong> (<em>int</em>) – smalles bin value</p></li>
+<li><p><strong>step</strong> (<em>int</em>) – bin size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>density</strong> –     array with the density values as a function of the distance to the COM of the micelle</p>
+<dl class="simple">
+<dt>binned_space<span class="classifier">np.array</span></dt><dd><p>array with the values of the binned radial distance, this allows easier plotting of the density</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.spherical_density_water.spherical_density_water.sph_histogram">
+<span class="sig-name descname"><span class="pre">sph_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxbin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minbin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/spherical_density_water.html#spherical_density_water.sph_histogram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.spherical_density_water.spherical_density_water.sph_histogram" title="Link to this definition"></a></dt>
+<dd><p>Function to create a histogram of the distances</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>distance</strong> (<em>np.array</em>) – distances to be binned</p></li>
+<li><p><strong>maxbin</strong> (<em>int</em>) – largest bin value</p></li>
+<li><p><strong>minbin</strong> (<em>int</em>) – smalles bin value</p></li>
+<li><p><strong>step</strong> (<em>int</em>) – bin size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>all_histograms</strong> – array with the distances values binned</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.spherical_density_water.timeit">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.spherical_density_water.</span></span><span class="sig-name descname"><span class="pre">timeit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/spherical_density_water.html#timeit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.spherical_density_water.timeit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pysoftk.pol_analysis.umap_analysis">
+<span id="pysoftk-pol-analysis-umap-analysis-module"></span><h2>pysoftk.pol_analysis.umap_analysis module<a class="headerlink" href="#module-pysoftk.pol_analysis.umap_analysis" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.umap_analysis.timeit">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.umap_analysis.</span></span><span class="sig-name descname"><span class="pre">timeit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/umap_analysis.html#timeit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.umap_analysis.timeit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.umap_analysis.umap_analysis">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.umap_analysis.</span></span><span class="sig-name descname"><span class="pre">umap_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/umap_analysis.html#umap_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.umap_analysis.umap_analysis" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class used to compute to do umap cluster identification
+of polymer conformations within an spatial configuration
+of moieties.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.umap_analysis.umap_analysis.cluster_order_appearance">
+<span class="sig-name descname"><span class="pre">cluster_order_appearance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_embedded</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/umap_analysis.html#umap_analysis.cluster_order_appearance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.umap_analysis.umap_analysis.cluster_order_appearance" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Function to ouput hdbscan with the groups labeled ordered</dt><dd><p>with their order of appearance in the trajectory.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_embedded</strong> (<em>np.array</em>) – umap clustered data</p></li>
+<li><p><strong>y_pred</strong> (<em>np.array</em>) – cluster label assignment for each data point in the
+umap cluster data.</p></li>
+<li><p><strong>cwd</strong> (<em>class.str</em>) – path to save output file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A plot with the results of the calculation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.umap_analysis.umap_analysis.find_closest_point">
+<span class="sig-name descname"><span class="pre">find_closest_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/umap_analysis.html#umap_analysis.find_closest_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.umap_analysis.umap_analysis.find_closest_point" title="Link to this definition"></a></dt>
+<dd><p>Function to find the closest point from an array to a given target point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>array</strong> (<em>np.array</em>) – array of numbers from which the value will be found</p></li>
+<li><p><strong>target_point</strong> (<em>class.float</em>) – target number</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>closest_point</strong> – numpy array with the closest number from array to the target point.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.umap_analysis.umap_analysis.get_array">
+<span class="sig-name descname"><span class="pre">get_array</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/umap_analysis.html#umap_analysis.get_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.umap_analysis.umap_analysis.get_array" title="Link to this definition"></a></dt>
+<dd><p>Function to load the all pos distances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>all_pos</strong> – np.array to load</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.umap_analysis.umap_analysis.get_average_rep_cluster">
+<span class="sig-name descname"><span class="pre">get_average_rep_cluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_embedded</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/umap_analysis.html#umap_analysis.get_average_rep_cluster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.umap_analysis.umap_analysis.get_average_rep_cluster" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Function to get the X_embedded point that represents the</dt><dd><p>mean of each umap cluster.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_embedded</strong> (<em>np.array</em>) – umap clustered data</p></li>
+<li><p><strong>y_pred</strong> (<em>np.array</em>) – cluster label assignment for each data point in
+the umap cluster data.</p></li>
+<li><p><strong>cwd</strong> (<em>class.str</em>) – path to save output file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>cluster_points</strong> – np.array with the X_embedded values that represent
+the mean of each cluster.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.umap_analysis.umap_analysis.hdbscan_cluster">
+<span class="sig-name descname"><span class="pre">hdbscan_cluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_embedded</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_cs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'leaf'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/umap_analysis.html#umap_analysis.hdbscan_cluster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.umap_analysis.umap_analysis.hdbscan_cluster" title="Link to this definition"></a></dt>
+<dd><p>Function to hdbscan on umap clustered data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_embedded</strong> (<em>np.array</em>) – umap clustered data</p></li>
+<li><p><strong>min_cs</strong> (<em>class.int</em>) – minimum number of points for a group to be considered
+a cluster.</p></li>
+<li><p><strong>epsilon</strong> (<em>class.int</em>) – clusters closer than this distance apart will be merged.</p></li>
+<li><p><strong>cwd</strong> (<em>class.str</em>) – path to save output file.</p></li>
+<li><p><strong>method</strong> (<em>class.str</em>) – cluster_method_selection from hdbscan to determine how it
+selects flat clusters from the cluster tree hierarchy.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>y_pred</strong> – cluster label assignment for each data point in the umap
+cluster data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.umap_analysis.umap_analysis.umap_run">
+<span class="sig-name descname"><span class="pre">umap_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_neigh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_comp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/umap_analysis.html#umap_analysis.umap_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.umap_analysis.umap_analysis.umap_run" title="Link to this definition"></a></dt>
+<dd><p>Function to run umap on all_pos array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_neigh</strong> (<em>class.int</em>) – larger numbers forcus more on global properties
+(and increase computational effort required)</p></li>
+<li><p><strong>cwd</strong> (<em>class.str</em>) – path to save output file</p></li>
+<li><p><strong>n_comp</strong> (<em>class.int</em>) – set the number of dimensions to reduce to</p></li>
+<li><p><strong>min_d</strong> (<em>class.int</em>) – must be 0.0 if points are to be clustered
+later with HDBSCAN.</p></li>
+<li><p><strong>verb</strong> (<em>class.boolean</em>) – To show the progress bar</p></li>
+<li><p><strong>rs</strong> (<em>class.int</em>) – random seed. Must be set to the same number
+for reproducibility.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_embedded</strong> – Clustered data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pysoftk.pol_analysis">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pysoftk.pol_analysis" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pysoftk.linear_polymer.html" class="btn btn-neutral float-left" title="pysoftk.linear_polymer package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pysoftk.pol_analysis.tools.html" class="btn btn-neutral float-right" title="pysoftk.pol_analysis.tools package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, and Chris Lorenz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

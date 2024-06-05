@@ -1,0 +1,45 @@
+pysoftk.pol\_analysis.tools package
+===================================
+
+Submodules
+----------
+
+pysoftk.pol\_analysis.tools.clustering\_prob\_distribution\_plot module
+-----------------------------------------------------------------------
+
+.. automodule:: pysoftk.pol_analysis.tools.clustering_prob_distribution_plot
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysoftk.pol\_analysis.tools.utils\_mda module
+---------------------------------------------
+
+.. automodule:: pysoftk.pol_analysis.tools.utils_mda
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysoftk.pol\_analysis.tools.utils\_tools module
+-----------------------------------------------
+
+.. automodule:: pysoftk.pol_analysis.tools.utils_tools
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysoftk.pol\_analysis.tools.utils\_tools\_old module
+----------------------------------------------------
+
+.. automodule:: pysoftk.pol_analysis.tools.utils_tools_old
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: pysoftk.pol_analysis.tools
+   :members:
+   :undoc-members:
+   :show-inheritance:

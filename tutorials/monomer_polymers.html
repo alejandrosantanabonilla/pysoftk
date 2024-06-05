@@ -1,27 +1,29 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>From single molecules to polymers using PySoftK &mdash; PySoftK 0.0.1 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>From single molecules to polymers using PySoftK &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=292eb321"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Creating a Polymer" href="super_monomer.html" />
-    <link rel="prev" title="Checking Bonds in Molecular files" href="check_bonds.html" /> 
+    <link rel="prev" title="Preparing monomers for PySoftK" href="prepare_molecules.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,7 +51,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="prepare_molecules.html">Preparing monomers for PySoftK</a></li>
-<li class="toctree-l2"><a class="reference internal" href="check_bonds.html">Checking Bonds in Molecular files</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">From single molecules to polymers using PySoftK</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#stereochemistry-issues">Stereochemistry issues</a></li>
 </ul>
@@ -61,14 +62,26 @@
 <li class="toctree-l2"><a class="reference internal" href="polymer_cyclic.html">Creating cyclic Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bigamino.html">Modelling soft-matter long chain polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="combined_modules.html">Creating new polymers from different modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="calculator.html">Computing using <strong>ab-initio</strong> calculators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="torsional.html">Automatic torsional angle detection for planar polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts_tutorial.html">Tutorial on the usage of contacts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ecc_tutorial.html">Tutorial on the usage of ecc_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intrinsic_density_tutorial.html">Tutorial on the usage of intrinsic_density_micelle tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="micelle_whole_tutorial.html">Tutorial on the usage of micelle_whole tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_tutorial.html">Tutorial on the usage of rgyr_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_mdanalysis_vs_pysoftk.html">Case example of MDAnalysis vs Pysoftk’s rgyr_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RSA_tutorial.html">Tutorial on the usage of RSA tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RSA_protein_tutorial.html">Tutorial on the usage of RSA tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SCP_tutorial.html">Tutorial on the usage of SCP tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvation_tutorial.html">Tutorial on the usage of hydration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spherical_density_tutorial.html">Tutorial on the usage of spherical_density tool</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modules.html">PySoftK Modular structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">pysoftk</a></li>
 </ul>
 
         </div>
@@ -97,7 +110,7 @@
            <div itemprop="articleBody">
              
   <section id="from-single-molecules-to-polymers-using-pysoftk">
-<span id="monomer-polymers"></span><h1>From single molecules to polymers using PySoftK<a class="headerlink" href="#from-single-molecules-to-polymers-using-pysoftk" title="Permalink to this heading"></a></h1>
+<span id="monomer-polymers"></span><h1>From single molecules to polymers using PySoftK<a class="headerlink" href="#from-single-molecules-to-polymers-using-pysoftk" title="Link to this heading"></a></h1>
 <p><a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> enables to create Polymers from a single monomer. To do so, the user needs to highligthing the positions where the merging process will take
 place, using a place-holder atom.</p>
 <p>An example is in this section presented using a Styrene molecule. By using a common visualization program (such as <a class="reference external" href="https://www.ks.uiuc.edu/Research/vmd/">VMD</a>), the functionalized molecule is
@@ -126,7 +139,7 @@ polymer formed with a 3-unit repetition.</p>
 <p>The Styrene molecule (<strong>a</strong>) is initially declared using SMILES format. The molecule has been embedded using one the methods available in <a class="reference external" href="https://www.rdkit.org/">RDKit</a> and then
 parsed to <code class="xref py py-mod docutils literal notranslate"><span class="pre">pysoftk.linear_polymer.super_linear_polymer</span></code> to create an initial polymer structure.</p>
 <section id="stereochemistry-issues">
-<h2>Stereochemistry issues<a class="headerlink" href="#stereochemistry-issues" title="Permalink to this heading"></a></h2>
+<h2>Stereochemistry issues<a class="headerlink" href="#stereochemistry-issues" title="Link to this heading"></a></h2>
 <p>In some cases, the used monomer exhibits complicated three-dimensional structures which are sometimes not well described using SMILES format. As an
 example, the following molecule:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s1">&#39;[C@H](CBr)(OBr)C&#39;</span><span class="p">)</span>
@@ -164,14 +177,14 @@ dimensional coordinates in the following way:</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="check_bonds.html" class="btn btn-neutral float-left" title="Checking Bonds in Molecular files" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="prepare_molecules.html" class="btn btn-neutral float-left" title="Preparing monomers for PySoftK" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="super_monomer.html" class="btn btn-neutral float-right" title="Creating a Polymer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, Alejandro Santana-Bonilla, Chris Lorenz.</p>
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, and Chris Lorenz.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial on the usage of spherical_density tool &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=292eb321"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Frequently Asked Questions" href="../faq.html" />
+    <link rel="prev" title="Tutorial on the usage of hydration" href="solvation_tutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PySoftK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="prepare_molecules.html">Preparing monomers for PySoftK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monomer_polymers.html">From single molecules to polymers using PySoftK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="super_monomer.html">Creating a Polymer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_chains.html">Creating chains of Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_diblock.html">Creating diblock Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_random.html">Creating random Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_cyclic.html">Creating cyclic Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bigamino.html">Modelling soft-matter long chain polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combined_modules.html">Creating new polymers from different modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calculator.html">Computing using <strong>ab-initio</strong> calculators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="torsional.html">Automatic torsional angle detection for planar polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts_tutorial.html">Tutorial on the usage of contacts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ecc_tutorial.html">Tutorial on the usage of ecc_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intrinsic_density_tutorial.html">Tutorial on the usage of intrinsic_density_micelle tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="micelle_whole_tutorial.html">Tutorial on the usage of micelle_whole tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_tutorial.html">Tutorial on the usage of rgyr_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_mdanalysis_vs_pysoftk.html">Case example of MDAnalysis vs Pysoftk’s rgyr_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RSA_tutorial.html">Tutorial on the usage of RSA tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RSA_protein_tutorial.html">Tutorial on the usage of RSA tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SCP_tutorial.html">Tutorial on the usage of SCP tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvation_tutorial.html">Tutorial on the usage of hydration</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial on the usage of spherical_density tool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#spherical-density-tool">spherical_density tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spherical-density-water-tool">spherical_density_water tool</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">pysoftk</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PySoftK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="tutorials.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Tutorial on the usage of spherical_density tool</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/spherical_density_tutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial-on-the-usage-of-spherical-density-tool">
+<h1>Tutorial on the usage of spherical_density tool<a class="headerlink" href="#tutorial-on-the-usage-of-spherical-density-tool" title="Link to this heading"></a></h1>
+<p>Here, two examples on how to use the spherical_density tool for the
+calculation of the distribution of components of a micelle. First we
+will show how to use spherical_density to calculate the density of the
+hydrophobic block of the polymer. Then we will show how to use
+spherical_density_water to calculate the spherical density of the water
+in the simulation</p>
+<section id="spherical-density-tool">
+<h2>spherical_density tool<a class="headerlink" href="#spherical-density-tool" title="Link to this heading"></a></h2>
+<p>Before starting any analysis, load the neccesary modules for this class.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from  utils_mda import MDA_input
+#from pysoftk.pol_analysis.tools.utils_mda import MDA_input
+from utils_tools import *
+#from pysoftk.pol_analysis.tools.utils_tools import *
+from clustering import SCP
+#from pysoftk.pol_analysis.clustering import SCP
+from make_micelle_whole import micelle_whole
+#from pysoftk.pol_analysis.make_micelle_whole import micelle_whole
+from spherical_density import spherical_density
+#from pysoftk.pol_analysis.spherical_density import spherical_density
+
+import numpy as np
+import pandas as pd
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">raquellrdc</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">PhD</span><span class="o">/</span><span class="n">mda_umap</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">tqdm</span><span class="o">/</span><span class="n">auto</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">21</span><span class="p">:</span> <span class="n">TqdmWarning</span><span class="p">:</span> <span class="n">IProgress</span> <span class="ow">not</span> <span class="n">found</span><span class="o">.</span> <span class="n">Please</span> <span class="n">update</span> <span class="n">jupyter</span> <span class="ow">and</span> <span class="n">ipywidgets</span><span class="o">.</span> <span class="n">See</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">ipywidgets</span><span class="o">.</span><span class="n">readthedocs</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">en</span><span class="o">/</span><span class="n">stable</span><span class="o">/</span><span class="n">user_install</span><span class="o">.</span><span class="n">html</span>
+  <span class="kn">from</span> <span class="nn">.autonotebook</span> <span class="kn">import</span> <span class="n">tqdm</span> <span class="k">as</span> <span class="n">notebook_tqdm</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>Select your simulation files, it is recommended to use a tpr file for
+the topology and xtc file for the trajectory.</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>topology=&#39;data/spherical_density.tpr&#39;
+trajectory=&#39;data/spherical_density.xtc&#39;
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Import the clustering data from SCP function</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>resids_total=&#39;data/spherical.parquet&#39;
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Obtain the largest micelle from the clustering pandas dataframe</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>largest_micelle_resids = micelle_whole(topology, trajectory).obtain_largest_micelle_resids(resids_total)
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>‘largest_micelle_resids’ is a np.array with the resids of the
+molecules that belong to the same cluster of the steps of the
+trajectory where SCP was ran.</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>largest_micelle_resids
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">array</span><span class="p">([</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span>
+        <span class="mi">18</span><span class="p">,</span> <span class="mi">20</span><span class="p">]),</span>
+ <span class="n">array</span><span class="p">([</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span>
+        <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]),</span>
+ <span class="n">array</span><span class="p">([</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span>
+        <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]),</span>
+ <span class="n">array</span><span class="p">([</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span>
+        <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]),</span>
+ <span class="n">array</span><span class="p">([</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span>
+        <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]),</span>
+ <span class="n">array</span><span class="p">([</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span>
+        <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]),</span>
+ <span class="n">array</span><span class="p">([</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span>
+        <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]),</span>
+ <span class="n">array</span><span class="p">([</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span>
+        <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]),</span>
+ <span class="n">array</span><span class="p">([</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span>
+        <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]),</span>
+ <span class="n">array</span><span class="p">([</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span>
+        <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]),</span>
+ <span class="n">array</span><span class="p">([</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span>
+        <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">])]</span>
+</pre></div>
+</div>
+<p>Now, let’s obtain the coordinates of the largest micelle made whole
+across the pbc</p>
+<ol class="arabic simple" start="5">
+<li><p>Let’s define the resname of the molecules that we want to make whole.
+More than one resname can be inputted. Note that it should be the
+resname of the molecules of the largest_micelle array.</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>resname=[&#39;LIG&#39;]
+</pre></div>
+</div>
+<ol class="arabic simple" start="6">
+<li><p>Also, define the start, step and end point of the trajectory frames
+that you want to run the analysis on. Note that they need to be the
+same as the ones you ran the SCP clustering on.</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>start=0
+stop=1000
+step=2
+</pre></div>
+</div>
+<ol class="arabic simple" start="7">
+<li><p>Obtain the whole coordinates of the micelle. This is key to perform
+the densitity calculation taking properly into account the PBC</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>atom_pos = micelle_whole(topology, trajectory).running_make_cluster_whole(resname, largest_micelle_resids, start, stop, step)
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  0%|                                                                                                                                                   | 0/11 [00:00&lt;?, ?it/s]/home/raquellrdc/Desktop/PhD/pysoftk/alejandro_newest_releast_check/pysoftk_analysis_code/test_final/make_micelle_whole.py:347: FutureWarning: arrays to stack must be passed as a &quot;sequence&quot; type such as list or tuple. Support for non-sequence iterables such as generators is deprecated as of NumPy 1.16 and will raise an error in the future.
+  atom_positions_over_trajectory = list(tqdm(map(self.make_cluster_whole, frames, resname, cluster_resids_f[0],
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 11/11 [00:16&lt;00:00,  1.53s/it]
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Elapsed</span> <span class="n">time</span> <span class="k">for</span> <span class="n">matrix</span> <span class="n">calculation</span><span class="p">:</span> <span class="mf">18.3857</span> <span class="n">seconds</span>
+</pre></div>
+</div>
+<p>Now, atom_pos contains the coordinates of all the atoms of the connected
+micelle at each time step selected. In each array, the first element is
+the time frame of the analysis, and the second the positions array</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>atom_pos
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span>
+  <span class="n">array</span><span class="p">([[</span><span class="mf">60.480003</span><span class="p">,</span> <span class="mf">66.19</span>    <span class="p">,</span> <span class="mf">66.72</span>    <span class="p">],</span>
+         <span class="p">[</span><span class="mf">60.25</span>    <span class="p">,</span> <span class="mf">67.75</span>    <span class="p">,</span> <span class="mf">66.810005</span><span class="p">],</span>
+         <span class="p">[</span><span class="mf">59.27</span>    <span class="p">,</span> <span class="mf">67.920006</span><span class="p">,</span> <span class="mf">66.380005</span><span class="p">],</span>
+         <span class="o">...</span><span class="p">,</span>
+         <span class="p">[</span><span class="mf">64.94</span>    <span class="p">,</span> <span class="mf">78.240005</span><span class="p">,</span> <span class="mf">70.75</span>    <span class="p">],</span>
+         <span class="p">[</span><span class="mf">65.840004</span><span class="p">,</span> <span class="mf">79.5</span>     <span class="p">,</span> <span class="mf">69.91</span>    <span class="p">],</span>
+         <span class="p">[</span><span class="mf">64.170006</span><span class="p">,</span> <span class="mf">79.47</span>    <span class="p">,</span> <span class="mf">69.840004</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)),</span>
+ <span class="p">(</span><span class="mi">2</span><span class="p">,</span>
+  <span class="n">array</span><span class="p">([[</span> <span class="mf">64.560005</span> <span class="p">,</span> <span class="o">-</span><span class="mf">32.676575</span> <span class="p">,</span>  <span class="o">-</span><span class="mf">2.266571</span> <span class="p">],</span>
+         <span class="p">[</span> <span class="mf">64.64</span>     <span class="p">,</span> <span class="o">-</span><span class="mf">34.04657</span>  <span class="p">,</span>  <span class="o">-</span><span class="mf">3.0565643</span><span class="p">],</span>
+         <span class="p">[</span> <span class="mf">65.47</span>     <span class="p">,</span> <span class="o">-</span><span class="mf">34.066574</span> <span class="p">,</span>  <span class="o">-</span><span class="mf">3.7565765</span><span class="p">],</span>
+         <span class="o">...</span><span class="p">,</span>
+         <span class="p">[</span> <span class="mf">64.5</span>      <span class="p">,</span> <span class="o">-</span><span class="mf">32.426567</span> <span class="p">,</span>  <span class="mf">10.710001</span> <span class="p">],</span>
+         <span class="p">[</span> <span class="mf">65.04</span>     <span class="p">,</span> <span class="o">-</span><span class="mf">33.666573</span> <span class="p">,</span>   <span class="mf">9.540001</span> <span class="p">],</span>
+         <span class="p">[</span> <span class="mf">63.730003</span> <span class="p">,</span> <span class="o">-</span><span class="mf">33.976578</span> <span class="p">,</span>  <span class="mf">10.780001</span> <span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)),</span>
+ <span class="p">(</span><span class="mi">4</span><span class="p">,</span>
+  <span class="n">array</span><span class="p">([[</span> <span class="mf">27.390001</span><span class="p">,</span> <span class="o">-</span><span class="mf">42.42649</span> <span class="p">,</span>  <span class="mf">12.390001</span><span class="p">],</span>
+         <span class="p">[</span> <span class="mf">27.95</span>    <span class="p">,</span> <span class="o">-</span><span class="mf">43.74649</span> <span class="p">,</span>  <span class="mf">11.700001</span><span class="p">],</span>
+         <span class="p">[</span> <span class="mf">28.77</span>    <span class="p">,</span> <span class="o">-</span><span class="mf">44.206497</span><span class="p">,</span>  <span class="mf">12.25</span>    <span class="p">],</span>
+         <span class="o">...</span><span class="p">,</span>
+         <span class="p">[</span>  <span class="mf">9.2</span>     <span class="p">,</span> <span class="o">-</span><span class="mf">42.8665</span>  <span class="p">,</span>  <span class="mf">11.170001</span><span class="p">],</span>
+         <span class="p">[</span> <span class="mf">10.200001</span><span class="p">,</span> <span class="o">-</span><span class="mf">42.9265</span>  <span class="p">,</span>   <span class="mf">9.700001</span><span class="p">],</span>
+         <span class="p">[</span> <span class="mf">10.26</span>    <span class="p">,</span> <span class="o">-</span><span class="mf">41.586494</span><span class="p">,</span>  <span class="mf">10.760001</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)),</span>
+ <span class="p">(</span><span class="mi">6</span><span class="p">,</span>
+  <span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">8.724823</span>  <span class="p">,</span> <span class="mf">15.52</span>      <span class="p">,</span> <span class="mf">41.070004</span>  <span class="p">],</span>
+         <span class="p">[</span><span class="o">-</span><span class="mf">7.244812</span>  <span class="p">,</span> <span class="mf">15.040001</span>  <span class="p">,</span> <span class="mf">41.140003</span>  <span class="p">],</span>
+         <span class="p">[</span><span class="o">-</span><span class="mf">7.294815</span>  <span class="p">,</span> <span class="mf">14.06</span>      <span class="p">,</span> <span class="mf">40.670006</span>  <span class="p">],</span>
+         <span class="o">...</span><span class="p">,</span>
+         <span class="p">[</span><span class="o">-</span><span class="mf">2.1848145</span> <span class="p">,</span> <span class="mf">32.33</span>      <span class="p">,</span> <span class="mf">46.160004</span>  <span class="p">],</span>
+         <span class="p">[</span><span class="o">-</span><span class="mf">0.57481384</span><span class="p">,</span> <span class="mf">32.960003</span>  <span class="p">,</span> <span class="mf">46.010002</span>  <span class="p">],</span>
+         <span class="p">[</span><span class="o">-</span><span class="mf">1.2748108</span> <span class="p">,</span> <span class="mf">32.570004</span>  <span class="p">,</span> <span class="mf">47.530003</span>  <span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)),</span>
+ <span class="p">(</span><span class="mi">8</span><span class="p">,</span>
+  <span class="n">array</span><span class="p">([[</span><span class="mf">52.93</span>      <span class="p">,</span>  <span class="mf">0.44000003</span><span class="p">,</span> <span class="mf">67.42</span>      <span class="p">],</span>
+         <span class="p">[</span><span class="mf">54.11</span>      <span class="p">,</span>  <span class="mf">1.34</span>      <span class="p">,</span> <span class="mf">67.82001</span>   <span class="p">],</span>
+         <span class="p">[</span><span class="mf">55.06</span>      <span class="p">,</span>  <span class="mf">0.82000005</span><span class="p">,</span> <span class="mf">67.73</span>      <span class="p">],</span>
+         <span class="o">...</span><span class="p">,</span>
+         <span class="p">[</span><span class="mf">55.97</span>      <span class="p">,</span> <span class="mf">15.47</span>      <span class="p">,</span> <span class="mf">79.53001</span>   <span class="p">],</span>
+         <span class="p">[</span><span class="mf">56.030003</span>  <span class="p">,</span> <span class="mf">14.35</span>      <span class="p">,</span> <span class="mf">80.91</span>      <span class="p">],</span>
+         <span class="p">[</span><span class="mf">54.920002</span>  <span class="p">,</span> <span class="mf">15.68</span>      <span class="p">,</span> <span class="mf">80.91</span>      <span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)),</span>
+ <span class="p">(</span><span class="mi">10</span><span class="p">,</span>
+  <span class="n">array</span><span class="p">([[</span><span class="mf">77.01</span>    <span class="p">,</span>  <span class="mf">9.700001</span><span class="p">,</span> <span class="mf">87.68001</span> <span class="p">],</span>
+         <span class="p">[</span><span class="mf">77.04001</span> <span class="p">,</span> <span class="mf">11.15</span>    <span class="p">,</span> <span class="mf">87.1</span>     <span class="p">],</span>
+         <span class="p">[</span><span class="mf">76.170006</span><span class="p">,</span> <span class="mf">11.420001</span><span class="p">,</span> <span class="mf">86.51</span>    <span class="p">],</span>
+         <span class="o">...</span><span class="p">,</span>
+         <span class="p">[</span><span class="mf">76.64001</span> <span class="p">,</span> <span class="mf">37.010002</span><span class="p">,</span> <span class="mf">97.770004</span><span class="p">],</span>
+         <span class="p">[</span><span class="mf">78.22</span>    <span class="p">,</span> <span class="mf">36.410004</span><span class="p">,</span> <span class="mf">97.420006</span><span class="p">],</span>
+         <span class="p">[</span><span class="mf">78.170006</span><span class="p">,</span> <span class="mf">38.08</span>    <span class="p">,</span> <span class="mf">97.69</span>    <span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)),</span>
+ <span class="p">(</span><span class="mi">12</span><span class="p">,</span>
+  <span class="n">array</span><span class="p">([[</span> <span class="mf">59.290005</span> <span class="p">,</span>  <span class="mf">19.1</span>      <span class="p">,</span> <span class="o">-</span><span class="mf">53.210068</span> <span class="p">],</span>
+         <span class="p">[</span> <span class="mf">60.270004</span> <span class="p">,</span>  <span class="mf">18.76</span>     <span class="p">,</span> <span class="o">-</span><span class="mf">52.12007</span>  <span class="p">],</span>
+         <span class="p">[</span> <span class="mf">60.97</span>     <span class="p">,</span>  <span class="mf">19.59</span>     <span class="p">,</span> <span class="o">-</span><span class="mf">51.950066</span> <span class="p">],</span>
+         <span class="o">...</span><span class="p">,</span>
+         <span class="p">[</span> <span class="mf">51.9</span>      <span class="p">,</span>   <span class="mf">5.27</span>     <span class="p">,</span> <span class="o">-</span><span class="mf">42.230064</span> <span class="p">],</span>
+         <span class="p">[</span> <span class="mf">53.61</span>     <span class="p">,</span>   <span class="mf">5.2400007</span><span class="p">,</span> <span class="o">-</span><span class="mf">42.710068</span> <span class="p">],</span>
+         <span class="p">[</span> <span class="mf">52.350002</span> <span class="p">,</span>   <span class="mf">5.51</span>     <span class="p">,</span> <span class="o">-</span><span class="mf">43.890068</span> <span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)),</span>
+ <span class="p">(</span><span class="mi">14</span><span class="p">,</span>
+  <span class="n">array</span><span class="p">([[</span> <span class="mf">45.870003</span>  <span class="p">,</span>   <span class="mf">1.2</span>       <span class="p">,</span> <span class="o">-</span><span class="mf">18.743729</span>  <span class="p">],</span>
+         <span class="p">[</span> <span class="mf">47.04</span>      <span class="p">,</span>   <span class="mf">0.58000004</span><span class="p">,</span> <span class="o">-</span><span class="mf">17.963715</span>  <span class="p">],</span>
+         <span class="p">[</span> <span class="mf">46.56</span>      <span class="p">,</span>   <span class="mf">0.27</span>      <span class="p">,</span> <span class="o">-</span><span class="mf">17.033722</span>  <span class="p">],</span>
+         <span class="o">...</span><span class="p">,</span>
+         <span class="p">[</span> <span class="mf">59.</span>        <span class="p">,</span> <span class="o">-</span><span class="mf">11.773727</span>  <span class="p">,</span> <span class="o">-</span><span class="mf">10.863724</span>  <span class="p">],</span>
+         <span class="p">[</span> <span class="mf">59.46</span>      <span class="p">,</span> <span class="o">-</span><span class="mf">10.793716</span>  <span class="p">,</span> <span class="o">-</span><span class="mf">12.173721</span>  <span class="p">],</span>
+         <span class="p">[</span> <span class="mf">57.770004</span>  <span class="p">,</span> <span class="o">-</span><span class="mf">11.46373</span>   <span class="p">,</span> <span class="o">-</span><span class="mf">12.063736</span>  <span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)),</span>
+ <span class="p">(</span><span class="mi">16</span><span class="p">,</span>
+  <span class="n">array</span><span class="p">([[</span><span class="mf">79.43</span>     <span class="p">,</span> <span class="mf">59.630005</span> <span class="p">,</span>  <span class="mf">6.88</span>     <span class="p">],</span>
+         <span class="p">[</span><span class="mf">77.96001</span>  <span class="p">,</span> <span class="mf">59.470005</span> <span class="p">,</span>  <span class="mf">7.21</span>     <span class="p">],</span>
+         <span class="p">[</span><span class="mf">77.58</span>     <span class="p">,</span> <span class="mf">60.480003</span> <span class="p">,</span>  <span class="mf">7.3</span>      <span class="p">],</span>
+         <span class="o">...</span><span class="p">,</span>
+         <span class="p">[</span><span class="mf">77.68001</span>  <span class="p">,</span> <span class="mf">42.260002</span> <span class="p">,</span>  <span class="mf">3.9900002</span><span class="p">],</span>
+         <span class="p">[</span><span class="mf">77.68001</span>  <span class="p">,</span> <span class="mf">41.38</span>     <span class="p">,</span>  <span class="mf">5.5200005</span><span class="p">],</span>
+         <span class="p">[</span><span class="mf">79.22</span>     <span class="p">,</span> <span class="mf">41.600002</span> <span class="p">,</span>  <span class="mf">4.62</span>     <span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)),</span>
+ <span class="p">(</span><span class="mi">18</span><span class="p">,</span>
+  <span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">22.434372</span><span class="p">,</span>  <span class="mf">41.05</span>    <span class="p">,</span>  <span class="mf">87.700005</span><span class="p">],</span>
+         <span class="p">[</span><span class="o">-</span><span class="mf">23.334366</span><span class="p">,</span>  <span class="mf">40.020004</span><span class="p">,</span>  <span class="mf">86.89</span>    <span class="p">],</span>
+         <span class="p">[</span><span class="o">-</span><span class="mf">23.194366</span><span class="p">,</span>  <span class="mf">39.08</span>    <span class="p">,</span>  <span class="mf">87.44</span>    <span class="p">],</span>
+         <span class="o">...</span><span class="p">,</span>
+         <span class="p">[</span><span class="o">-</span><span class="mf">12.434372</span><span class="p">,</span>  <span class="mf">53.93</span>    <span class="p">,</span>  <span class="mf">89.65</span>    <span class="p">],</span>
+         <span class="p">[</span><span class="o">-</span><span class="mf">12.824371</span><span class="p">,</span>  <span class="mf">53.180004</span><span class="p">,</span>  <span class="mf">88.020004</span><span class="p">],</span>
+         <span class="p">[</span><span class="o">-</span><span class="mf">13.894363</span><span class="p">,</span>  <span class="mf">54.300003</span><span class="p">,</span>  <span class="mf">89.00001</span> <span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)),</span>
+ <span class="p">(</span><span class="mi">20</span><span class="p">,</span>
+  <span class="n">array</span><span class="p">([[</span> <span class="mf">82.060005</span><span class="p">,</span>  <span class="mf">67.98</span>    <span class="p">,</span> <span class="o">-</span><span class="mf">27.114868</span><span class="p">],</span>
+         <span class="p">[</span> <span class="mf">82.91</span>    <span class="p">,</span>  <span class="mf">69.200005</span><span class="p">,</span> <span class="o">-</span><span class="mf">26.854874</span><span class="p">],</span>
+         <span class="p">[</span> <span class="mf">83.68</span>    <span class="p">,</span>  <span class="mf">68.96001</span> <span class="p">,</span> <span class="o">-</span><span class="mf">27.594864</span><span class="p">],</span>
+         <span class="o">...</span><span class="p">,</span>
+         <span class="p">[</span> <span class="mf">99.6</span>     <span class="p">,</span>  <span class="mf">86.880005</span><span class="p">,</span> <span class="o">-</span><span class="mf">28.344872</span><span class="p">],</span>
+         <span class="p">[</span> <span class="mf">99.560005</span><span class="p">,</span>  <span class="mf">85.62</span>    <span class="p">,</span> <span class="o">-</span><span class="mf">29.564873</span><span class="p">],</span>
+         <span class="p">[</span><span class="mf">100.060005</span><span class="p">,</span>  <span class="mf">87.340004</span><span class="p">,</span> <span class="o">-</span><span class="mf">29.954865</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">))]</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="8">
+<li><p>We are almost ready for the density calculation. But first, we need
+to define the atoms for which you want to calculate the density. In
+this case, we are going to calculate the density of the hydrophobic
+block of the polymer, so we are going to select the main backbone
+atoms of the hydrophobic block.</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>MA_names_total =[&#39;C00A&#39;, &#39;C009&#39;, &#39;C008&#39;, &#39;C007&#39;, &#39;C006&#39;, &#39;C005&#39;, &#39;C004&#39;, &#39;C003&#39;, &#39;C002&#39;, &#39;C001&#39;, &#39;C000&#39;, &#39;C00L&#39;,
+                 &#39;C00O&#39;, &#39;C00P&#39;, &#39;C00Q&#39;, &#39;C00R&#39;, &#39;C00S&#39;, &#39;C00T&#39;, &#39;C00W&#39;, &#39;C00X&#39;, &#39;C010&#39;, &#39;C011&#39;, &#39;C014&#39;, &#39;C015&#39;,
+                 &#39;O001&#39;, &#39;O002&#39;, &#39;O005&#39;, &#39;O007&#39;, &#39;O008&#39;, &#39;O00A&#39;, &#39;O00O&#39;, &#39;O00L&#39;, &#39;O00C&#39;, &#39;O00F&#39;, &#39;O00G&#39;, &#39;O00J&#39;,
+                 &#39;O00K&#39;, &#39;C01F&#39;, &#39;C017&#39;, &#39;C013&#39;, &#39;O00H&#39;, &#39;C012&#39;, &#39;C00V&#39;, &#39;O00D&#39;, &#39;C00U&#39;, &#39;C00Z&#39;, &#39;O00E&#39;, &#39;C00Y&#39;,
+                 &#39;C019&#39;, &#39;O00M&#39;, &#39;C018&#39;,  &#39;C01B&#39;, &#39;O00N&#39;, &#39;C01A&#39;, &#39;C00N&#39;, &#39;O00B&#39;, &#39;C00M&#39;, &#39;C00J&#39;, &#39;O009&#39;, &#39;C00K&#39;,
+                 &#39;C00H&#39;, &#39;O006&#39;, &#39;C00I&#39;, &#39;C00G&#39;, &#39;O004&#39;, &#39;C00F&#39;, &#39;C00E&#39;, &#39;O003&#39;, &#39;C00D&#39;, &#39;C00C&#39;, &#39;O000&#39;, &#39;C00B&#39;]
+</pre></div>
+</div>
+<ol class="arabic simple" start="9">
+<li><p>That’s it! We have all the neccesary input files for the spherical
+density calculation of the hydrophobic component. This function
+outputs two arrays, in the first one the density values are stored.
+The second one contains the binned space values. This function
+outputs these two arrays for easier plotting.</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>spherical_density_whole, binned_space = spherical_density(topology, trajectory).run_density_calc(&#39;resid &#39;, largest_micelle_resids, atom_pos, MA_names_total)
+</pre></div>
+</div>
+<p>Note that we have included the word ‘resid’ in the function. This is for
+the user be able to define any other selection motif, such as resname.
+It is important to keep in mind, that the molecules selected must be
+wihtin the coordinates that are stored in ‘atom_pos’.</p>
+<p>Now, let’s plot the density to see how it looks.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import matplotlib.pyplot as plt
+
+plt.plot(binned_space, spherical_density_whole)
+
+plt.xlabel(&#39;r($\AA$)&#39;)
+plt.ylabel(&#39;$\widetilde{\u03C1}(r)$($\AA^{-3}$)&#39;)
+plt.title(&#39;Spherical density of MA&#39;)
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;Spherical density of MA&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/spherical_density_tutorial_28_1.png" src="../_images/spherical_density_tutorial_28_1.png" />
+<p>For a different atom selection (for example for the calculation of the
+density hydrophilic polymer block), it would be as simple as changing
+the atom selection.</p>
+</section>
+<section id="spherical-density-water-tool">
+<h2>spherical_density_water tool<a class="headerlink" href="#spherical-density-water-tool" title="Link to this heading"></a></h2>
+<p>Now, let’s calculate the density of the water in the same simulation.
+For this we need a different tool, spherical_density_water. We are going
+to use the same trajectory, so no need to load it again. We just need to
+start by importing the spherical_density_water class</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#from pysoftk.pol_analysis.spherical_density_water import spherical_density_water
+from spherical_density_water import spherical_density_water
+</pre></div>
+</div>
+<p>We have already obtained the resids of the polymer belonging to the
+largest micelle as well as the atom positions of the micelle made whole
+across the PBC. So the only inputs needed for this function are the name
+of the solvant atoms that we want to calculate the density of. In this
+case the solvent is water, so we will pick the oxygen atoms.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>water_atoms=[&#39;OW&#39;]
+</pre></div>
+</div>
+<p>We are ready to run the density of the water!</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>spherical_density_whole_water, binned_space_water = spherical_density_water(topology, trajectory).run_density_calc(&#39;resid &#39;, largest_micelle_resids, atom_pos, &#39;name &#39;, water_atoms, start, stop, step)
+</pre></div>
+</div>
+<p>Now let’s plot it to see how it looks</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.plot(binned_space_water, spherical_density_whole_water)
+
+plt.xlabel(&#39;r($\AA$)&#39;)
+plt.ylabel(&#39;$\widetilde{\u03C1}(r)$($\AA^{-3}$)&#39;)
+plt.title(&#39;Spherical density of Water&#39;)
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;Spherical density of Water&#39;</span>
+</pre></div>
+</div>
+<img alt="../_images/spherical_density_tutorial_38_1.png" src="../_images/spherical_density_tutorial_38_1.png" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="solvation_tutorial.html" class="btn btn-neutral float-left" title="Tutorial on the usage of hydration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../faq.html" class="btn btn-neutral float-right" title="Frequently Asked Questions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, and Chris Lorenz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

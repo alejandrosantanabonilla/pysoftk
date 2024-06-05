@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial on the usage of SCP tool &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=292eb321"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorial on the usage of hydration" href="solvation_tutorial.html" />
+    <link rel="prev" title="Tutorial on the usage of RSA tool" href="RSA_protein_tutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PySoftK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="prepare_molecules.html">Preparing monomers for PySoftK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monomer_polymers.html">From single molecules to polymers using PySoftK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="super_monomer.html">Creating a Polymer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_chains.html">Creating chains of Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_diblock.html">Creating diblock Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_random.html">Creating random Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_cyclic.html">Creating cyclic Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bigamino.html">Modelling soft-matter long chain polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combined_modules.html">Creating new polymers from different modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calculator.html">Computing using <strong>ab-initio</strong> calculators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="torsional.html">Automatic torsional angle detection for planar polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts_tutorial.html">Tutorial on the usage of contacts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ecc_tutorial.html">Tutorial on the usage of ecc_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intrinsic_density_tutorial.html">Tutorial on the usage of intrinsic_density_micelle tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="micelle_whole_tutorial.html">Tutorial on the usage of micelle_whole tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_tutorial.html">Tutorial on the usage of rgyr_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_mdanalysis_vs_pysoftk.html">Case example of MDAnalysis vs Pysoftk’s rgyr_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RSA_tutorial.html">Tutorial on the usage of RSA tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RSA_protein_tutorial.html">Tutorial on the usage of RSA tool</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial on the usage of SCP tool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#branched-topology-example">Branched topology example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cyclic-topology-example">Cyclic topology example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="solvation_tutorial.html">Tutorial on the usage of hydration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spherical_density_tutorial.html">Tutorial on the usage of spherical_density tool</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">pysoftk</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PySoftK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="tutorials.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Tutorial on the usage of SCP tool</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/SCP_tutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial-on-the-usage-of-scp-tool">
+<h1>Tutorial on the usage of SCP tool<a class="headerlink" href="#tutorial-on-the-usage-of-scp-tool" title="Link to this heading"></a></h1>
+<p>Here two examples on how to use the SCP class for different polymers
+will be illustrated.</p>
+<p>Before starting any analysis, load the neccesary modules for this class.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from  utils_mda import MDA_input
+#from pysoftk.pol_analysis.tools.utils_mda import MDA_input
+from utils_tools import *
+#from pysoftk.pol_analysis.tools.utils_tools import *
+from clustering import SCP
+#from pysoftk.pol_analysis.clustering import SCP
+
+
+import numpy as np
+import pandas as pd
+</pre></div>
+</div>
+<section id="branched-topology-example">
+<h2>Branched topology example<a class="headerlink" href="#branched-topology-example" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Select your trajectory files, it is recommended to use a tpr file for
+the topology and xtc file for the trajectory. Note that any
+MDAnalysis supported file can be used here.</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>topology=&#39;data/short_movie_branched.tpr&#39;
+trajectory=&#39;data/short_movie_branched.xtc&#39;
+</pre></div>
+</div>
+<p>This is how the branched polymer looks:</p>
+<figure class="align-default">
+<img alt="Image Alt Text" src="../_images/branched_screenshot.png" />
+</figure>
+<ol class="arabic simple" start="2">
+<li><p>We need to select the atoms on which the clustering will be applied.
+In this case this branched polymer has the hydrophobic block at the
+end of each arm. Since this polymer is amphiphilic and it is
+simulated in a box with water, it will form micelles. This micelle
+will be driving by the hydrophobic effect, meaning that polymers will
+be interacting via their hydrophobic blocks (to form the micelle).
+Therefore, the atoms that we decide to choose are the atoms in the
+middle of each hydrophobic block (so 3 atoms, 1 per arm).</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>atom_names = [&#39;C02B&#39;, &#39;C01K&#39;, &#39;C02N&#39;]
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>We need to define the cluster cutoff. This will be the value use to
+determine if two polymers are part of the same micelle. Selecting
+this value may be an iterative process, but we suggest to use values
+ranging from 10 to 12 Å. But again, this will depend on the system
+being simulated.</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>cluster_cutoff = 12
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Finally, before running the SCP tool, we need define the output path.
+Also, we need to define the start frame, stop frame and step between
+frames that we want to run the analysis on.</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>results_name=&#39;data/pictures_tutorial/branched_scp_result&#39;
+start=0
+stop=10001
+step=1
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>Now we are ready to run the SCP tool!</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>c = SCP(topology, trajectory).spatial_clustering_run(start, stop, step, atom_names, cluster_cutoff, results_name)
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3/3 [00:00&lt;00:00,  9.86it/s]
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="n">file</span> <span class="n">data</span><span class="o">/</span><span class="n">pictures_tutorial</span><span class="o">/</span><span class="n">branched_scp_result</span><span class="o">.</span><span class="n">parquet</span> <span class="n">has</span> <span class="n">been</span> <span class="n">successfully</span> <span class="n">created</span><span class="o">.</span>
+<span class="n">Function</span> <span class="n">spatial_clustering_run</span> <span class="n">Took</span> <span class="mf">1.5952</span> <span class="n">seconds</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="6">
+<li><p>To visualize the result we can load the parquet file in this way:</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>df_results = &#39;data/pictures_tutorial/branched_scp_result.parquet&#39;
+df = pd.read_parquet(df_results)
+df
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>micelle_resids</th>
+      <th>micelle_size</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1...</td>
+      <td>[20]</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>500000.0</td>
+      <td>[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1...</td>
+      <td>[20]</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1000000.0</td>
+      <td>[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 17, 1...</td>
+      <td>[16, 1, 1, 1, 1]</td>
+    </tr>
+  </tbody>
+</table>
+</div></section>
+<section id="cyclic-topology-example">
+<h2>Cyclic topology example<a class="headerlink" href="#cyclic-topology-example" title="Link to this heading"></a></h2>
+<p>This is how the cyclic polymer looks:</p>
+<figure class="align-default">
+<img alt="Image Alt Text" src="../_images/cyclic_screenshot.png" />
+</figure>
+<p>We can follow the same steps applied on the branched example</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>topology=&#39;data/short_movie_cyclic.tpr&#39;
+trajectory=&#39;data/short_movie_cyclic.xtc&#39;
+
+results_name=&#39;data/pictures_tutorial/cyclic_scp_result&#39;
+
+cluster_cutoff = 12
+
+start=0
+stop=10001
+step=1
+</pre></div>
+</div>
+<p>However, since the topology is different, the atom selection will be
+different to the branched example, even though they are made from the
+same atoms. Since the polymer has a ring structure, we can just select
+the central atom of the hydrophobic block, as this is the only part of
+the polymer that will be interacting closely with the other hydrphobic
+blocks.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>atom_names=[&#39;C02T&#39;]
+</pre></div>
+</div>
+<p>Now, we can run the SCP tool</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>c = SCP(topology, trajectory).spatial_clustering_run(start, stop, step, atom_names, cluster_cutoff, results_name)
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3/3 [00:00&lt;00:00, 141.75it/s]
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="n">file</span> <span class="n">data</span><span class="o">/</span><span class="n">pictures_tutorial</span><span class="o">/</span><span class="n">cyclic_scp_result</span><span class="o">.</span><span class="n">parquet</span> <span class="n">has</span> <span class="n">been</span> <span class="n">successfully</span> <span class="n">created</span><span class="o">.</span>
+<span class="n">Function</span> <span class="n">spatial_clustering_run</span> <span class="n">Took</span> <span class="mf">0.1356</span> <span class="n">seconds</span>
+</pre></div>
+</div>
+<p>To visualize the output</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>df_results = &#39;data/pictures_tutorial/cyclic_scp_result.parquet&#39;
+df = pd.read_parquet(df_results)
+df
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>micelle_resids</th>
+      <th>micelle_size</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>[[1, 2, 3, 4, 6, 7, 8, 11, 12, 13, 14, 15, 17,...</td>
+      <td>[15, 4, 1]</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>500000.0</td>
+      <td>[[1, 3, 12], [2, 4, 6, 7, 13, 14, 15, 17, 18, ...</td>
+      <td>[3, 11, 5, 1]</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1000000.0</td>
+      <td>[[1, 3, 5, 8, 10, 12, 16], [2, 4, 6, 7, 13, 14...</td>
+      <td>[7, 11, 1, 1]</td>
+    </tr>
+  </tbody>
+</table>
+</div></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="RSA_protein_tutorial.html" class="btn btn-neutral float-left" title="Tutorial on the usage of RSA tool" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="solvation_tutorial.html" class="btn btn-neutral float-right" title="Tutorial on the usage of hydration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, and Chris Lorenz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

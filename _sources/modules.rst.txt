@@ -1,9 +1,7 @@
-PySoftK Modular structure
-============================
-
-In this section, the modular structure of PySoftK is displayed. 
+pysoftk
+=======
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 4
 
    pysoftk

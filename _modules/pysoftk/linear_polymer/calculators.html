@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pysoftk.linear_polymer.calculators &mdash; PySoftK 0.0.1 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>pysoftk.linear_polymer.calculators &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -46,7 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">PySoftK Modular structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pysoftk</a></li>
 </ul>
 
         </div>
@@ -81,7 +83,9 @@
 <span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
 <span class="kn">import</span> <span class="nn">shutil</span><span class="o">,</span> <span class="nn">errno</span>
 
-<div class="viewcode-block" id="Opt"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Opt">[docs]</a><span class="k">class</span> <span class="nc">Opt</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Opt">
+<a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Opt">[docs]</a>
+<span class="k">class</span> <span class="nc">Opt</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Geometrical optimization tools using GFN-XTB2 and PySCF as engines.</span>
 
 
@@ -103,7 +107,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xyz_file</span> <span class="o">=</span> <span class="n">xyz_file</span>
 
-<div class="viewcode-block" id="Opt.pyscf_semi"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Opt.pyscf_semi">[docs]</a>    <span class="k">def</span> <span class="nf">pyscf_semi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
+<div class="viewcode-block" id="Opt.pyscf_semi">
+<a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Opt.pyscf_semi">[docs]</a>
+    <span class="k">def</span> <span class="nf">pyscf_semi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function invoking PYSCF semiempirical implementation for geometry optimization.</span>
 
 <span class="sd">        Parameters</span>
@@ -128,14 +134,20 @@
         <span class="n">mol</span><span class="o">=</span><span class="n">gto</span><span class="o">.</span><span class="n">M</span><span class="p">(</span><span class="n">atom</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz_file</span><span class="p">))</span>
         <span class="n">mf</span><span class="o">=</span><span class="n">semiempirical</span><span class="o">.</span><span class="n">RMINDO3</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
         <span class="n">mol_eq</span><span class="o">=</span><span class="n">optimize</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span><span class="n">maxsteps</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">steps</span><span class="p">))</span>
-        <span class="n">Pyscf_print</span><span class="p">()</span><span class="o">.</span><span class="n">xyz</span><span class="p">(</span><span class="n">mol_eq</span><span class="p">)</span></div></div>
+        <span class="n">Pyscf_print</span><span class="p">()</span><span class="o">.</span><span class="n">xyz</span><span class="p">(</span><span class="n">mol_eq</span><span class="p">)</span></div>
+</div>
 
-<div class="viewcode-block" id="Pyscf_print"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Pyscf_print">[docs]</a><span class="k">class</span> <span class="nc">Pyscf_print</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Pyscf_print">
+<a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Pyscf_print">[docs]</a>
+<span class="k">class</span> <span class="nc">Pyscf_print</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Print a PYSCF object into cartesian </span>
 <span class="sd">        coordinates.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Pyscf_print.xyz"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Pyscf_print.xyz">[docs]</a>    <span class="k">def</span> <span class="nf">xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
+<div class="viewcode-block" id="Pyscf_print.xyz">
+<a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Pyscf_print.xyz">[docs]</a>
+    <span class="k">def</span> <span class="nf">xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to print a file with Cartesian coordinates from a PYSCF geometry optimization calculation.</span>
 
 <span class="sd">        Parameters</span>
@@ -162,7 +174,9 @@
                                                                  <span class="nb">float</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
                                                                  <span class="nb">float</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">])))</span>
              <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;File pyscf_final.xyz has been created.&quot;</span><span class="p">)</span></div></div>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;File pyscf_final.xyz has been created.&quot;</span><span class="p">)</span></div>
+</div>
+
 
 
 
@@ -175,7 +189,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, Alejandro Santana-Bonilla, Chris Lorenz.</p>
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, and Chris Lorenz.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

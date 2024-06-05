@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pysoftk.linear_polymer.super_monomer &mdash; PySoftK 0.0.1 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>pysoftk.linear_polymer.super_monomer &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -46,7 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">PySoftK Modular structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pysoftk</a></li>
 </ul>
 
         </div>
@@ -82,7 +84,9 @@
 <span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">RDLogger</span>
 <span class="n">RDLogger</span><span class="o">.</span><span class="n">DisableLog</span><span class="p">(</span><span class="s1">&#39;rdApp.*&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Sm"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Sm">[docs]</a><span class="k">class</span> <span class="nc">Sm</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Sm">
+<a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Sm">[docs]</a>
+<span class="k">class</span> <span class="nc">Sm</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Class to create a new combined molecule from two provided RDKit Mol objects.</span>
 
 <span class="sd">    Example</span>
@@ -115,7 +119,9 @@
        <span class="bp">self</span><span class="o">.</span><span class="n">mol_2</span> <span class="o">=</span> <span class="n">mol_2</span>
        <span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">atom</span>
        
-<div class="viewcode-block" id="Sm.constructor"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Sm.constructor">[docs]</a>    <span class="k">def</span> <span class="nf">constructor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Sm.constructor">
+<a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Sm.constructor">[docs]</a>
+    <span class="k">def</span> <span class="nf">constructor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to combine two molecules using an atom placeholder.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
@@ -142,6 +148,7 @@
 
         <span class="k">return</span> <span class="n">mol4</span></div>
 
+
     <span class="k">def</span> <span class="nf">_bond_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
 <span class="w">       </span><span class="sd">&quot;&quot;&quot;Function to create bond template for Hydrogen atoms addition.</span>
 
@@ -164,7 +171,9 @@
        
        <span class="k">return</span> <span class="n">newMol_H</span>
        
-<div class="viewcode-block" id="Sm.mon_to_poly"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Sm.mon_to_poly">[docs]</a>    <span class="k">def</span> <span class="nf">mon_to_poly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Sm.mon_to_poly">
+<a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Sm.mon_to_poly">[docs]</a>
+    <span class="k">def</span> <span class="nf">mon_to_poly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">       </span><span class="sd">&quot;&quot;&quot; Function to create a RDKit Mol object to prepare for x-axis translation.</span>
 
 <span class="sd">       Returns</span>
@@ -179,7 +188,10 @@
        <span class="c1">#Emb().etkdgv3(newMol_H)</span>
        <span class="k">return</span> <span class="n">newMol_H</span></div>
 
-<div class="viewcode-block" id="Sm.monomer"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Sm.monomer">[docs]</a>    <span class="k">def</span> <span class="nf">monomer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Sm.monomer">
+<a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Sm.monomer">[docs]</a>
+    <span class="k">def</span> <span class="nf">monomer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Function to produce a single polymer unit as an RDKit Mol Object.</span>
 <span class="sd">        </span>
 <span class="sd">       Returns</span>
@@ -200,13 +212,19 @@
         <span class="n">AllChem</span><span class="o">.</span><span class="n">EmbedMolecule</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">)</span>
         <span class="c1">#Emb().etkdgv3(newMol_H)</span>
 
-        <span class="k">return</span> <span class="n">newMol_H</span></div></div>
+        <span class="k">return</span> <span class="n">newMol_H</span></div>
+</div>
+
 
    
-<div class="viewcode-block" id="Emb"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Emb">[docs]</a><span class="k">class</span> <span class="nc">Emb</span><span class="p">:</span>
+<div class="viewcode-block" id="Emb">
+<a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Emb">[docs]</a>
+<span class="k">class</span> <span class="nc">Emb</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Class created to use the ETKDGV3 method provided in RDKit for 3D Geometry embedding.  </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="Emb.etkdgv3"><a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Emb.etkdgv3">[docs]</a>    <span class="k">def</span> <span class="nf">etkdgv3</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
+<div class="viewcode-block" id="Emb.etkdgv3">
+<a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Emb.etkdgv3">[docs]</a>
+    <span class="k">def</span> <span class="nf">etkdgv3</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;Function to perform Geometry embedding.</span>
 
 <span class="sd">      Parameters</span>
@@ -229,7 +247,9 @@
       
       <span class="n">molDG</span><span class="o">.</span><span class="n">EmbedMolecule</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">ps</span><span class="p">)</span>
 
-      <span class="k">return</span> <span class="n">mol</span> </div></div>
+      <span class="k">return</span> <span class="n">mol</span> </div>
+</div>
+
 
 </pre></div>
 
@@ -240,7 +260,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, Alejandro Santana-Bonilla, Chris Lorenz.</p>
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, and Chris Lorenz.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

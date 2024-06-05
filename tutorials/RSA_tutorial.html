@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial on the usage of RSA tool &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=292eb321"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorial on the usage of RSA tool" href="RSA_protein_tutorial.html" />
+    <link rel="prev" title="Case example of MDAnalysis vs Pysoftk’s rgyr_micelle" href="rgyr_mdanalysis_vs_pysoftk.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PySoftK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="prepare_molecules.html">Preparing monomers for PySoftK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monomer_polymers.html">From single molecules to polymers using PySoftK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="super_monomer.html">Creating a Polymer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_chains.html">Creating chains of Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_diblock.html">Creating diblock Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_random.html">Creating random Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_cyclic.html">Creating cyclic Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bigamino.html">Modelling soft-matter long chain polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combined_modules.html">Creating new polymers from different modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calculator.html">Computing using <strong>ab-initio</strong> calculators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="torsional.html">Automatic torsional angle detection for planar polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contacts_tutorial.html">Tutorial on the usage of contacts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ecc_tutorial.html">Tutorial on the usage of ecc_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intrinsic_density_tutorial.html">Tutorial on the usage of intrinsic_density_micelle tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="micelle_whole_tutorial.html">Tutorial on the usage of micelle_whole tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_tutorial.html">Tutorial on the usage of rgyr_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_mdanalysis_vs_pysoftk.html">Case example of MDAnalysis vs Pysoftk’s rgyr_micelle</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial on the usage of RSA tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RSA_protein_tutorial.html">Tutorial on the usage of RSA tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SCP_tutorial.html">Tutorial on the usage of SCP tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvation_tutorial.html">Tutorial on the usage of hydration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spherical_density_tutorial.html">Tutorial on the usage of spherical_density tool</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">pysoftk</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PySoftK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="tutorials.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Tutorial on the usage of RSA tool</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/RSA_tutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial-on-the-usage-of-rsa-tool">
+<h1>Tutorial on the usage of RSA tool<a class="headerlink" href="#tutorial-on-the-usage-of-rsa-tool" title="Link to this heading"></a></h1>
+<p>This tutorial illsutrates how to use the RSA tool.</p>
+<p>Before starting any analysis, load the neccesary modules for this class.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from pysoftk.pol_analysis.tools.utils_mda import MDA_input
+from pysoftk.pol_analysis.tools.utils_tools import *
+from pysoftk.pol_analysis.make_micelle_whole import micelle_whole
+from pysoftk.pol_analysis.ring_ring import RSA
+
+import numpy as np
+import pandas as pd
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">raquellrdc</span><span class="o">/.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">tqdm</span><span class="o">/</span><span class="n">auto</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">21</span><span class="p">:</span> <span class="n">TqdmWarning</span><span class="p">:</span> <span class="n">IProgress</span> <span class="ow">not</span> <span class="n">found</span><span class="o">.</span> <span class="n">Please</span> <span class="n">update</span> <span class="n">jupyter</span> <span class="ow">and</span> <span class="n">ipywidgets</span><span class="o">.</span> <span class="n">See</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">ipywidgets</span><span class="o">.</span><span class="n">readthedocs</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">en</span><span class="o">/</span><span class="n">stable</span><span class="o">/</span><span class="n">user_install</span><span class="o">.</span><span class="n">html</span>
+  <span class="kn">from</span> <span class="nn">.autonotebook</span> <span class="kn">import</span> <span class="n">tqdm</span> <span class="k">as</span> <span class="n">notebook_tqdm</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>Select your trajectory files, it is recommended to use a tpr file for
+the topology and xtc file for the trajectory. Note that any
+MDAnalysis supported file can be used here.</p></li>
+</ol>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>topology=&#39;data/f8bt_slab_quench.tpr&#39;
+trajectory=&#39;data/1_frame_traj.xtc&#39;
+</pre></div>
+</div>
+<p>The simulation where we are going to perform the analysis is on this
+very big system. Since the system is very big, we will only perform the
+analysis on one frame.</p>
+<figure class="align-default">
+<img alt="Image Alt Text" src="../_images/ring_system.png" />
+</figure>
+<p>Which is a simulation box filled with this polymer:</p>
+<figure class="align-default">
+<img alt="Image Alt Text" src="../_images/ring_1_polymer.png" />
+</figure>
+<p>This class requires minimal user input. Only the angle, distance cutoff,
+start, stop and step frames are needed, as well as the name of the
+output file.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#name output file
+results=&#39;data/rsa.parquet&#39;
+
+#angle cutoff - angle range (val &lt; ang_c or val&gt; 180-ang_c).
+ang_c=30
+
+#distance cutoff - distance between two rings to be considered stacked
+dist_c=5
+
+#start frame
+start=0
+
+#stop frame
+stop=1
+
+#step frame
+step=1
+</pre></div>
+</div>
+<p>Now, let’s run the RSA stacking analysis!-This run will take a bit of
+time, it is mainly because our system is very large!</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>rsa=RSA(topology, trajectory).stacking_analysis(dist_c, ang_c, start, stop, step, results)
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Ring</span> <span class="n">Stacking</span> <span class="n">analysis</span> <span class="n">has</span> <span class="n">started</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>0%|                                                                                                                                                                                  | 0/300700 [00:00&lt;?, ?it/s][A
+0%|                                                                                                                                                                        | 15/300700 [00:00&lt;34:59, 143.20it/s][A
+0%|                                                                                                                                                                        | 30/300700 [00:00&lt;35:02, 143.00it/s][A
+0%|                                                                                                                                                                        | 45/300700 [00:00&lt;35:03, 142.94it/s][A
+
+.
+.
+.
+
+7%|███████████▎                                                                                                                                                         | 20597/300700 [02:15&lt;34:43, 134.44it/s][A
+7%|███████████▎                                                                                                                                                         | 20612/300700 [02:15&lt;33:46, 138.20it/s][A
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>df_results = &#39;data/rsa.parquet&#39;
+df = pd.read_parquet(df_results)
+print(df)
+</pre></div>
+</div>
+<p>You will see that a lot of pdb files have been printed in the directory.
+These are just some results from the output where you can see visually
+the ring stacking!</p>
+<img alt="../_images/ring_stacking_snapshot_1.png" src="../_images/ring_stacking_snapshot_1.png" />
+<img alt="../_images/ring_stacking_snapshot_2.png" src="../_images/ring_stacking_snapshot_2.png" />
+<img alt="../_images/ring_stacking_snapshot_3.png" src="../_images/ring_stacking_snapshot_3.png" />
+<p>We can make use of another function in the RSA class that output the
+network of polymers that have their rings stacked. All we need is the
+pandas dataframe outputed by the ring stacking calculation</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sev_ring=RSA(topology, trajectory).find_several_rings_stacked(df_results)
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#print the resids of the network of polymers connected by their stacked rings
+print(sev_ring)
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#print the resids of the network of polymers connected by their stacked rings
+print(sev_ring)
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">322</span><span class="p">,</span> <span class="mi">642</span><span class="p">,</span> <span class="mi">262</span><span class="p">,</span> <span class="mi">620</span><span class="p">,</span> <span class="mi">216</span><span class="p">,</span> <span class="mi">239</span><span class="p">,</span> <span class="mi">212</span><span class="p">,</span> <span class="mi">276</span><span class="p">,</span> <span class="mi">182</span><span class="p">,</span> <span class="mi">728</span><span class="p">,</span> <span class="mi">348</span><span class="p">,</span> <span class="mi">223</span><span class="p">},</span> <span class="p">{</span><span class="mi">480</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">607</span><span class="p">},</span> <span class="p">{</span><span class="mi">96</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">558</span><span class="p">},</span> <span class="p">{</span><span class="mi">131</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">393</span><span class="p">,</span> <span class="mi">139</span><span class="p">,</span> <span class="mi">396</span><span class="p">,</span> <span class="mi">269</span><span class="p">,</span> <span class="mi">143</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">146</span><span class="p">,</span> <span class="mi">661</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">539</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">158</span><span class="p">,</span> <span class="mi">159</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="mi">293</span><span class="p">,</span> <span class="mi">424</span><span class="p">,</span> <span class="mi">165</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">299</span><span class="p">,</span> <span class="mi">172</span><span class="p">,</span> <span class="mi">171</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">426</span><span class="p">,</span> <span class="mi">186</span><span class="p">,</span> <span class="mi">187</span><span class="p">,</span> <span class="mi">188</span><span class="p">,</span> <span class="mi">444</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">576</span><span class="p">,</span> <span class="mi">449</span><span class="p">,</span> <span class="mi">326</span><span class="p">,</span> <span class="mi">71</span><span class="p">,</span> <span class="mi">327</span><span class="p">,</span> <span class="mi">460</span><span class="p">,</span> <span class="mi">79</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">81</span><span class="p">,</span> <span class="mi">720</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="mi">215</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">219</span><span class="p">,</span> <span class="mi">221</span><span class="p">,</span> <span class="mi">222</span><span class="p">,</span> <span class="mi">352</span><span class="p">,</span> <span class="mi">482</span><span class="p">,</span> <span class="mi">226</span><span class="p">,</span> <span class="mi">354</span><span class="p">,</span> <span class="mi">363</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">366</span><span class="p">,</span> <span class="mi">751</span><span class="p">,</span> <span class="mi">113</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">244</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">119</span><span class="p">,</span> <span class="mi">628</span><span class="p">,</span> <span class="mi">381</span><span class="p">},</span> <span class="p">{</span><span class="mi">321</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">530</span><span class="p">,</span> <span class="mi">213</span><span class="p">,</span> <span class="mi">379</span><span class="p">},</span> <span class="p">{</span><span class="mi">514</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">457</span><span class="p">,</span> <span class="mi">398</span><span class="p">,</span> <span class="mi">441</span><span class="p">,</span> <span class="mi">414</span><span class="p">},</span> <span class="p">{</span><span class="mi">672</span><span class="p">,</span> <span class="mi">194</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">677</span><span class="p">},</span> <span class="p">{</span><span class="mi">42</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">13</span><span class="p">},</span> <span class="p">{</span><span class="mi">504</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">431</span><span class="p">},</span> <span class="p">{</span><span class="mi">161</span><span class="p">,</span> <span class="mi">21</span><span class="p">},</span> <span class="p">{</span><span class="mi">26</span><span class="p">,</span> <span class="mi">372</span><span class="p">},</span> <span class="p">{</span><span class="mi">207</span><span class="p">,</span> <span class="mi">31</span><span class="p">},</span> <span class="p">{</span><span class="mi">32</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">707</span><span class="p">,</span> <span class="mi">740</span><span class="p">,</span> <span class="mi">712</span><span class="p">,</span> <span class="mi">747</span><span class="p">,</span> <span class="mi">716</span><span class="p">,</span> <span class="mi">589</span><span class="p">,</span> <span class="mi">752</span><span class="p">,</span> <span class="mi">369</span><span class="p">,</span> <span class="mi">723</span><span class="p">,</span> <span class="mi">343</span><span class="p">,</span> <span class="mi">761</span><span class="p">,</span> <span class="mi">765</span><span class="p">},</span> <span class="p">{</span><span class="mi">33</span><span class="p">,</span> <span class="mi">405</span><span class="p">,</span> <span class="mi">551</span><span class="p">},</span> <span class="p">{</span><span class="mi">34</span><span class="p">,</span> <span class="mi">534</span><span class="p">},</span> <span class="p">{</span><span class="mi">291</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">773</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">238</span><span class="p">,</span> <span class="mi">402</span><span class="p">,</span> <span class="mi">179</span><span class="p">,</span> <span class="mi">283</span><span class="p">},</span> <span class="p">{</span><span class="mi">74</span><span class="p">,</span> <span class="mi">38</span><span class="p">},</span> <span class="p">{</span><span class="mi">533</span><span class="p">,</span> <span class="mi">39</span><span class="p">},</span> <span class="p">{</span><span class="mi">40</span><span class="p">,</span> <span class="mi">629</span><span class="p">,</span> <span class="mi">166</span><span class="p">},</span> <span class="p">{</span><span class="mi">481</span><span class="p">,</span> <span class="mi">47</span><span class="p">},</span> <span class="p">{</span><span class="mi">353</span><span class="p">,</span> <span class="mi">134</span><span class="p">,</span> <span class="mi">136</span><span class="p">,</span> <span class="mi">776</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">274</span><span class="p">,</span> <span class="mi">277</span><span class="p">,</span> <span class="mi">311</span><span class="p">,</span> <span class="mi">760</span><span class="p">,</span> <span class="mi">58</span><span class="p">,</span> <span class="mi">315</span><span class="p">,</span> <span class="mi">157</span><span class="p">},</span> <span class="p">{</span><span class="mi">130</span><span class="p">,</span> <span class="mi">518</span><span class="p">,</span> <span class="mi">715</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">632</span><span class="p">,</span> <span class="mi">731</span><span class="p">,</span> <span class="mi">351</span><span class="p">},</span> <span class="p">{</span><span class="mi">388</span><span class="p">,</span> <span class="mi">517</span><span class="p">,</span> <span class="mi">390</span><span class="p">,</span> <span class="mi">526</span><span class="p">,</span> <span class="mi">144</span><span class="p">,</span> <span class="mi">531</span><span class="p">,</span> <span class="mi">403</span><span class="p">,</span> <span class="mi">419</span><span class="p">,</span> <span class="mi">547</span><span class="p">,</span> <span class="mi">421</span><span class="p">,</span> <span class="mi">552</span><span class="p">,</span> <span class="mi">554</span><span class="p">,</span> <span class="mi">556</span><span class="p">,</span> <span class="mi">175</span><span class="p">,</span> <span class="mi">561</span><span class="p">,</span> <span class="mi">690</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">438</span><span class="p">,</span> <span class="mi">184</span><span class="p">,</span> <span class="mi">447</span><span class="p">,</span> <span class="mi">477</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">107</span><span class="p">,</span> <span class="mi">109</span><span class="p">,</span> <span class="mi">510</span><span class="p">},</span> <span class="p">{</span><span class="mi">120</span><span class="p">,</span> <span class="mi">185</span><span class="p">,</span> <span class="mi">557</span><span class="p">,</span> <span class="mi">54</span><span class="p">},</span> <span class="p">{</span><span class="mi">501</span><span class="p">,</span> <span class="mi">55</span><span class="p">},</span> <span class="p">{</span><span class="mi">259</span><span class="p">,</span> <span class="mi">680</span><span class="p">,</span> <span class="mi">496</span><span class="p">,</span> <span class="mi">497</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">665</span><span class="p">,</span> <span class="mi">639</span><span class="p">},</span> <span class="p">{</span><span class="mi">57</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">173</span><span class="p">},</span> <span class="p">{</span><span class="mi">227</span><span class="p">,</span> <span class="mi">389</span><span class="p">,</span> <span class="mi">618</span><span class="p">,</span> <span class="mi">314</span><span class="p">,</span> <span class="mi">399</span><span class="p">,</span> <span class="mi">623</span><span class="p">,</span> <span class="mi">273</span><span class="p">,</span> <span class="mi">466</span><span class="p">,</span> <span class="mi">471</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">667</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">604</span><span class="p">},</span> <span class="p">{</span><span class="mi">736</span><span class="p">,</span> <span class="mi">705</span><span class="p">,</span> <span class="mi">385</span><span class="p">,</span> <span class="mi">706</span><span class="p">,</span> <span class="mi">775</span><span class="p">,</span> <span class="mi">296</span><span class="p">,</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">555</span><span class="p">,</span> <span class="mi">108</span><span class="p">,</span> <span class="mi">652</span><span class="p">,</span> <span class="mi">686</span><span class="p">,</span> <span class="mi">335</span><span class="p">,</span> <span class="mi">588</span><span class="p">,</span> <span class="mi">370</span><span class="p">,</span> <span class="mi">63</span><span class="p">},</span> <span class="p">{</span><span class="mi">64</span><span class="p">,</span> <span class="mi">432</span><span class="p">},</span> <span class="p">{</span><span class="mi">65</span><span class="p">,</span> <span class="mi">247</span><span class="p">,</span> <span class="mi">367</span><span class="p">},</span> <span class="p">{</span><span class="mi">418</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">422</span><span class="p">,</span> <span class="mi">622</span><span class="p">,</span> <span class="mi">465</span><span class="p">},</span> <span class="p">{</span><span class="mi">72</span><span class="p">,</span> <span class="mi">493</span><span class="p">,</span> <span class="mi">83</span><span class="p">,</span> <span class="mi">440</span><span class="p">,</span> <span class="mi">89</span><span class="p">},</span> <span class="p">{</span><span class="mi">73</span><span class="p">,</span> <span class="mi">140</span><span class="p">},</span> <span class="p">{</span><span class="mi">76</span><span class="p">,</span> <span class="mi">365</span><span class="p">,</span> <span class="mi">94</span><span class="p">},</span> <span class="p">{</span><span class="mi">261</span><span class="p">,</span> <span class="mi">519</span><span class="p">,</span> <span class="mi">104</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mi">270</span><span class="p">,</span> <span class="mi">529</span><span class="p">,</span> <span class="mi">564</span><span class="p">,</span> <span class="mi">411</span><span class="p">,</span> <span class="mi">574</span><span class="p">},</span> <span class="p">{</span><span class="mi">257</span><span class="p">,</span> <span class="mi">129</span><span class="p">,</span> <span class="mi">453</span><span class="p">,</span> <span class="mi">429</span><span class="p">,</span> <span class="mi">78</span><span class="p">},</span> <span class="p">{</span><span class="mi">91</span><span class="p">,</span> <span class="mi">443</span><span class="p">},</span> <span class="p">{</span><span class="mi">768</span><span class="p">,</span> <span class="mi">169</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">595</span><span class="p">,</span> <span class="mi">700</span><span class="p">},</span> <span class="p">{</span><span class="mi">97</span><span class="p">,</span> <span class="mi">196</span><span class="p">},</span> <span class="p">{</span><span class="mi">192</span><span class="p">,</span> <span class="mi">577</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">292</span><span class="p">},</span> <span class="p">{</span><span class="mi">640</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">645</span><span class="p">,</span> <span class="mi">774</span><span class="p">,</span> <span class="mi">391</span><span class="p">,</span> <span class="mi">670</span><span class="p">,</span> <span class="mi">439</span><span class="p">,</span> <span class="mi">704</span><span class="p">,</span> <span class="mi">452</span><span class="p">,</span> <span class="mi">583</span><span class="p">,</span> <span class="mi">458</span><span class="p">,</span> <span class="mi">208</span><span class="p">,</span> <span class="mi">596</span><span class="p">,</span> <span class="mi">597</span><span class="p">,</span> <span class="mi">724</span><span class="p">,</span> <span class="mi">612</span><span class="p">,</span> <span class="mi">106</span><span class="p">,</span> <span class="mi">763</span><span class="p">,</span> <span class="mi">636</span><span class="p">},</span> <span class="p">{</span><span class="mi">486</span><span class="p">,</span> <span class="mi">154</span><span class="p">,</span> <span class="mi">168</span><span class="p">,</span> <span class="mi">553</span><span class="p">,</span> <span class="mi">117</span><span class="p">,</span> <span class="mi">122</span><span class="p">,</span> <span class="mi">575</span><span class="p">},</span> <span class="p">{</span><span class="mi">123</span><span class="p">,</span> <span class="mi">340</span><span class="p">,</span> <span class="mi">373</span><span class="p">,</span> <span class="mi">318</span><span class="p">},</span> <span class="p">{</span><span class="mi">342</span><span class="p">,</span> <span class="mi">127</span><span class="p">},</span> <span class="p">{</span><span class="mi">128</span><span class="p">,</span> <span class="mi">521</span><span class="p">,</span> <span class="mi">155</span><span class="p">},</span> <span class="p">{</span><span class="mi">258</span><span class="p">,</span> <span class="mi">132</span><span class="p">,</span> <span class="mi">374</span><span class="p">,</span> <span class="mi">303</span><span class="p">},</span> <span class="p">{</span><span class="mi">320</span><span class="p">,</span> <span class="mi">325</span><span class="p">,</span> <span class="mi">133</span><span class="p">,</span> <span class="mi">744</span><span class="p">,</span> <span class="mi">302</span><span class="p">,</span> <span class="mi">469</span><span class="p">,</span> <span class="mi">633</span><span class="p">},</span> <span class="p">{</span><span class="mi">537</span><span class="p">,</span> <span class="mi">339</span><span class="p">,</span> <span class="mi">741</span><span class="p">,</span> <span class="mi">135</span><span class="p">},</span> <span class="p">{</span><span class="mi">344</span><span class="p">,</span> <span class="mi">147</span><span class="p">,</span> <span class="mi">316</span><span class="p">,</span> <span class="mi">333</span><span class="p">},</span> <span class="p">{</span><span class="mi">153</span><span class="p">,</span> <span class="mi">713</span><span class="p">},</span> <span class="p">{</span><span class="mi">520</span><span class="p">,</span> <span class="mi">156</span><span class="p">,</span> <span class="mi">408</span><span class="p">},</span> <span class="p">{</span><span class="mi">160</span><span class="p">,</span> <span class="mi">545</span><span class="p">},</span> <span class="p">{</span><span class="mi">163</span><span class="p">,</span> <span class="mi">317</span><span class="p">},</span> <span class="p">{</span><span class="mi">456</span><span class="p">,</span> <span class="mi">167</span><span class="p">},</span> <span class="p">{</span><span class="mi">177</span><span class="p">,</span> <span class="mi">682</span><span class="p">,</span> <span class="mi">689</span><span class="p">,</span> <span class="mi">599</span><span class="p">},</span> <span class="p">{</span><span class="mi">416</span><span class="p">,</span> <span class="mi">407</span><span class="p">,</span> <span class="mi">549</span><span class="p">,</span> <span class="mi">178</span><span class="p">,</span> <span class="mi">246</span><span class="p">,</span> <span class="mi">572</span><span class="p">,</span> <span class="mi">473</span><span class="p">,</span> <span class="mi">508</span><span class="p">,</span> <span class="mi">190</span><span class="p">},</span> <span class="p">{</span><span class="mi">193</span><span class="p">,</span> <span class="mi">298</span><span class="p">,</span> <span class="mi">543</span><span class="p">},</span> <span class="p">{</span><span class="mi">201</span><span class="p">,</span> <span class="mi">195</span><span class="p">},</span> <span class="p">{</span><span class="mi">307</span><span class="p">,</span> <span class="mi">371</span><span class="p">,</span> <span class="mi">197</span><span class="p">},</span> <span class="p">{</span><span class="mi">225</span><span class="p">,</span> <span class="mi">611</span><span class="p">,</span> <span class="mi">198</span><span class="p">,</span> <span class="mi">205</span><span class="p">,</span> <span class="mi">206</span><span class="p">,</span> <span class="mi">657</span><span class="p">,</span> <span class="mi">658</span><span class="p">,</span> <span class="mi">217</span><span class="p">},</span> <span class="p">{</span><span class="mi">256</span><span class="p">,</span> <span class="mi">464</span><span class="p">,</span> <span class="mi">199</span><span class="p">},</span> <span class="p">{</span><span class="mi">200</span><span class="p">,</span> <span class="mi">264</span><span class="p">,</span> <span class="mi">210</span><span class="p">,</span> <span class="mi">721</span><span class="p">},</span> <span class="p">{</span><span class="mi">660</span><span class="p">,</span> <span class="mi">664</span><span class="p">,</span> <span class="mi">666</span><span class="p">,</span> <span class="mi">290</span><span class="p">,</span> <span class="mi">678</span><span class="p">,</span> <span class="mi">436</span><span class="p">,</span> <span class="mi">202</span><span class="p">,</span> <span class="mi">334</span><span class="p">,</span> <span class="mi">337</span><span class="p">,</span> <span class="mi">211</span><span class="p">,</span> <span class="mi">468</span><span class="p">,</span> <span class="mi">341</span><span class="p">,</span> <span class="mi">729</span><span class="p">,</span> <span class="mi">606</span><span class="p">,</span> <span class="mi">479</span><span class="p">,</span> <span class="mi">230</span><span class="p">,</span> <span class="mi">242</span><span class="p">,</span> <span class="mi">502</span><span class="p">,</span> <span class="mi">249</span><span class="p">,</span> <span class="mi">638</span><span class="p">},</span> <span class="p">{</span><span class="mi">234</span><span class="p">,</span> <span class="mi">203</span><span class="p">},</span> <span class="p">{</span><span class="mi">204</span><span class="p">,</span> <span class="mi">294</span><span class="p">},</span> <span class="p">{</span><span class="mi">392</span><span class="p">,</span> <span class="mi">214</span><span class="p">},</span> <span class="p">{</span><span class="mi">224</span><span class="p">,</span> <span class="mi">267</span><span class="p">,</span> <span class="mi">286</span><span class="p">},</span> <span class="p">{</span><span class="mi">323</span><span class="p">,</span> <span class="mi">265</span><span class="p">,</span> <span class="mi">361</span><span class="p">,</span> <span class="mi">235</span><span class="p">,</span> <span class="mi">309</span><span class="p">},</span> <span class="p">{</span><span class="mi">364</span><span class="p">,</span> <span class="mi">245</span><span class="p">},</span> <span class="p">{</span><span class="mi">248</span><span class="p">,</span> <span class="mi">251</span><span class="p">,</span> <span class="mi">693</span><span class="p">,</span> <span class="mi">483</span><span class="p">},</span> <span class="p">{</span><span class="mi">252</span><span class="p">,</span> <span class="mi">260</span><span class="p">},</span> <span class="p">{</span><span class="mi">507</span><span class="p">,</span> <span class="mi">253</span><span class="p">},</span> <span class="p">{</span><span class="mi">580</span><span class="p">,</span> <span class="mi">679</span><span class="p">,</span> <span class="mi">587</span><span class="p">,</span> <span class="mi">590</span><span class="p">,</span> <span class="mi">271</span><span class="p">,</span> <span class="mi">281</span><span class="p">,</span> <span class="mi">602</span><span class="p">},</span> <span class="p">{</span><span class="mi">272</span><span class="p">,</span> <span class="mi">585</span><span class="p">,</span> <span class="mi">592</span><span class="p">,</span> <span class="mi">356</span><span class="p">},</span> <span class="p">{</span><span class="mi">280</span><span class="p">,</span> <span class="mi">282</span><span class="p">},</span> <span class="p">{</span><span class="mi">300</span><span class="p">,</span> <span class="mi">734</span><span class="p">,</span> <span class="mi">287</span><span class="p">},</span> <span class="p">{</span><span class="mi">304</span><span class="p">,</span> <span class="mi">377</span><span class="p">,</span> <span class="mi">360</span><span class="p">},</span> <span class="p">{</span><span class="mi">336</span><span class="p">,</span> <span class="mi">305</span><span class="p">},</span> <span class="p">{</span><span class="mi">489</span><span class="p">,</span> <span class="mi">692</span><span class="p">,</span> <span class="mi">308</span><span class="p">,</span> <span class="mi">605</span><span class="p">},</span> <span class="p">{</span><span class="mi">313</span><span class="p">,</span> <span class="mi">338</span><span class="p">,</span> <span class="mi">357</span><span class="p">},</span> <span class="p">{</span><span class="mi">324</span><span class="p">,</span> <span class="mi">647</span><span class="p">,</span> <span class="mi">563</span><span class="p">,</span> <span class="mi">755</span><span class="p">,</span> <span class="mi">601</span><span class="p">,</span> <span class="mi">698</span><span class="p">,</span> <span class="mi">701</span><span class="p">},</span> <span class="p">{</span><span class="mi">328</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">375</span><span class="p">},</span> <span class="p">{</span><span class="mi">737</span><span class="p">,</span> <span class="mi">733</span><span class="p">,</span> <span class="mi">616</span><span class="p">,</span> <span class="mi">332</span><span class="p">,</span> <span class="mi">621</span><span class="p">,</span> <span class="mi">688</span><span class="p">,</span> <span class="mi">625</span><span class="p">,</span> <span class="mi">756</span><span class="p">,</span> <span class="mi">568</span><span class="p">,</span> <span class="mi">730</span><span class="p">,</span> <span class="mi">635</span><span class="p">,</span> <span class="mi">509</span><span class="p">,</span> <span class="mi">511</span><span class="p">},</span> <span class="p">{</span><span class="mi">523</span><span class="p">,</span> <span class="mi">346</span><span class="p">,</span> <span class="mi">571</span><span class="p">,</span> <span class="mi">655</span><span class="p">},</span> <span class="p">{</span><span class="mi">347</span><span class="p">,</span> <span class="mi">358</span><span class="p">},</span> <span class="p">{</span><span class="mi">362</span><span class="p">,</span> <span class="mi">541</span><span class="p">,</span> <span class="mi">349</span><span class="p">},</span> <span class="p">{</span><span class="mi">355</span><span class="p">,</span> <span class="mi">387</span><span class="p">},</span> <span class="p">{</span><span class="mi">368</span><span class="p">,</span> <span class="mi">384</span><span class="p">},</span> <span class="p">{</span><span class="mi">745</span><span class="p">,</span> <span class="mi">386</span><span class="p">},</span> <span class="p">{</span><span class="mi">394</span><span class="p">,</span> <span class="mi">739</span><span class="p">},</span> <span class="p">{</span><span class="mi">395</span><span class="p">,</span> <span class="mi">478</span><span class="p">},</span> <span class="p">{</span><span class="mi">412</span><span class="p">,</span> <span class="mi">579</span><span class="p">,</span> <span class="mi">404</span><span class="p">},</span> <span class="p">{</span><span class="mi">417</span><span class="p">,</span> <span class="mi">454</span><span class="p">,</span> <span class="mi">425</span><span class="p">,</span> <span class="mi">624</span><span class="p">,</span> <span class="mi">656</span><span class="p">,</span> <span class="mi">470</span><span class="p">,</span> <span class="mi">631</span><span class="p">,</span> <span class="mi">410</span><span class="p">,</span> <span class="mi">475</span><span class="p">},</span> <span class="p">{</span><span class="mi">484</span><span class="p">,</span> <span class="mi">446</span><span class="p">,</span> <span class="mi">415</span><span class="p">},</span> <span class="p">{</span><span class="mi">433</span><span class="p">,</span> <span class="mi">527</span><span class="p">},</span> <span class="p">{</span><span class="mi">434</span><span class="p">,</span> <span class="mi">491</span><span class="p">,</span> <span class="mi">581</span><span class="p">},</span> <span class="p">{</span><span class="mi">499</span><span class="p">,</span> <span class="mi">462</span><span class="p">},</span> <span class="p">{</span><span class="mi">472</span><span class="p">,</span> <span class="mi">674</span><span class="p">,</span> <span class="mi">467</span><span class="p">},</span> <span class="p">{</span><span class="mi">648</span><span class="p">,</span> <span class="mi">485</span><span class="p">},</span> <span class="p">{</span><span class="mi">488</span><span class="p">,</span> <span class="mi">536</span><span class="p">,</span> <span class="mi">573</span><span class="p">,</span> <span class="mi">567</span><span class="p">},</span> <span class="p">{</span><span class="mi">524</span><span class="p">,</span> <span class="mi">764</span><span class="p">},</span> <span class="p">{</span><span class="mi">627</span><span class="p">,</span> <span class="mi">559</span><span class="p">},</span> <span class="p">{</span><span class="mi">569</span><span class="p">,</span> <span class="mi">711</span><span class="p">},</span> <span class="p">{</span><span class="mi">570</span><span class="p">,</span> <span class="mi">653</span><span class="p">},</span> <span class="p">{</span><span class="mi">610</span><span class="p">,</span> <span class="mi">644</span><span class="p">,</span> <span class="mi">591</span><span class="p">},</span> <span class="p">{</span><span class="mi">669</span><span class="p">,</span> <span class="mi">598</span><span class="p">,</span> <span class="mi">671</span><span class="p">},</span> <span class="p">{</span><span class="mi">600</span><span class="p">,</span> <span class="mi">646</span><span class="p">},</span> <span class="p">{</span><span class="mi">714</span><span class="p">,</span> <span class="mi">603</span><span class="p">},</span> <span class="p">{</span><span class="mi">609</span><span class="p">,</span> <span class="mi">749</span><span class="p">,</span> <span class="mi">695</span><span class="p">},</span> <span class="p">{</span><span class="mi">637</span><span class="p">,</span> <span class="mi">687</span><span class="p">},</span> <span class="p">{</span><span class="mi">641</span><span class="p">,</span> <span class="mi">681</span><span class="p">},</span> <span class="p">{</span><span class="mi">726</span><span class="p">,</span> <span class="mi">694</span><span class="p">},</span> <span class="p">{</span><span class="mi">738</span><span class="p">,</span> <span class="mi">708</span><span class="p">},</span> <span class="p">{</span><span class="mi">746</span><span class="p">,</span> <span class="mi">766</span><span class="p">},</span> <span class="p">{</span><span class="mi">753</span><span class="p">,</span> <span class="mi">759</span><span class="p">}]</span>
+</pre></div>
+</div>
+<p>Let’s check by visual inspection if the polymers in the second network
+are conenected.</p>
+<img alt="../_images/network_rings_stacked.png" src="../_images/network_rings_stacked.png" />
+<p>These polymers are all conected by polymers with ring stacking!</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rgyr_mdanalysis_vs_pysoftk.html" class="btn btn-neutral float-left" title="Case example of MDAnalysis vs Pysoftk’s rgyr_micelle" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="RSA_protein_tutorial.html" class="btn btn-neutral float-right" title="Tutorial on the usage of RSA tool" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, and Chris Lorenz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

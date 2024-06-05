@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pysoftk.torsional.torsional &mdash; PySoftK 0.0.1 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>pysoftk.torsional.torsional &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -46,7 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">PySoftK Modular structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pysoftk</a></li>
 </ul>
 
         </div>
@@ -85,7 +87,9 @@
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
 
 
-<div class="viewcode-block" id="Torsional"><a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional">[docs]</a><span class="k">class</span> <span class="nc">Torsional</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Torsional">
+<a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional">[docs]</a>
+<span class="k">class</span> <span class="nc">Torsional</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">       A class for detecting torsional angles in a linear conjugated polymer.</span>
 <span class="sd">          </span>
@@ -105,7 +109,9 @@
 <span class="sd">       &quot;&quot;&quot;</span>
        <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">mol</span>
     
-<div class="viewcode-block" id="Torsional.validate_mol"><a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional.validate_mol">[docs]</a>    <span class="k">def</span> <span class="nf">validate_mol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
+<div class="viewcode-block" id="Torsional.validate_mol">
+<a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional.validate_mol">[docs]</a>
+    <span class="k">def</span> <span class="nf">validate_mol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;Function that validates an object as RDKit Mol object.</span>
 
 <span class="sd">       Parameters</span>
@@ -126,8 +132,11 @@
           <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> is an invalid molecule&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span>
       <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">mol</span></div>
+
        
-<div class="viewcode-block" id="Torsional.seek_angles"><a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional.seek_angles">[docs]</a>    <span class="k">def</span> <span class="nf">seek_angles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Torsional.seek_angles">
+<a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional.seek_angles">[docs]</a>
+    <span class="k">def</span> <span class="nf">seek_angles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;List of torsional angles in a planar polymer.</span>
 
 <span class="sd">      Return</span>
@@ -137,6 +146,7 @@
 <span class="sd">        List of atomic indexes for torsional angles</span>
 <span class="sd">      &quot;&quot;&quot;</span>
       <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_dhdl_atoms</span><span class="p">()</span></div>
+
 
     <span class="k">def</span> <span class="nf">__list_ring_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;Function to compute the inner rings belonging to an RDKit Mol object.</span>
@@ -152,7 +162,9 @@
       
       <span class="k">return</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">values</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ri</span><span class="o">.</span><span class="n">AtomRings</span><span class="p">())]</span>
 
-<div class="viewcode-block" id="Torsional.mol_graph"><a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional.mol_graph">[docs]</a>    <span class="k">def</span> <span class="nf">mol_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Torsional.mol_graph">
+<a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional.mol_graph">[docs]</a>
+    <span class="k">def</span> <span class="nf">mol_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;Function to create a NetworkX graph based on an RDKit molecule.</span>
 <span class="sd">      </span>
 <span class="sd">      Return</span>
@@ -178,6 +190,7 @@
                    <span class="n">bon_type</span><span class="o">=</span><span class="n">bond</span><span class="o">.</span><span class="n">GetBondType</span><span class="p">())</span>
 
       <span class="k">return</span> <span class="n">G</span></div>
+
 
     <span class="k">def</span> <span class="nf">__dihedral_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;Function that computes the dihedral atoms of an RDKit molecule.</span>
@@ -271,7 +284,9 @@
 
       <span class="k">return</span> <span class="n">prb_cas</span>
 
-<div class="viewcode-block" id="Torsional.list_dhdl_atoms"><a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional.list_dhdl_atoms">[docs]</a>    <span class="k">def</span> <span class="nf">list_dhdl_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Torsional.list_dhdl_atoms">
+<a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional.list_dhdl_atoms">[docs]</a>
+    <span class="k">def</span> <span class="nf">list_dhdl_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;Function to compute all dihedral atoms</span>
 
 <span class="sd">      Return</span>
@@ -290,7 +305,10 @@
       
       <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">set_ttl</span><span class="o">-</span><span class="n">set_dlt</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Torsional.mol_graph_neigh"><a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional.mol_graph_neigh">[docs]</a>    <span class="k">def</span> <span class="nf">mol_graph_neigh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Torsional.mol_graph_neigh">
+<a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional.mol_graph_neigh">[docs]</a>
+    <span class="k">def</span> <span class="nf">mol_graph_neigh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;Function to compute adjacency matrix from an RDKit Mol object.</span>
 <span class="sd">       </span>
 <span class="sd">       Return</span>
@@ -312,7 +330,10 @@
 
       <span class="k">return</span> <span class="n">G</span></div>
 
-<div class="viewcode-block" id="Torsional.show_atom_number"><a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional.show_atom_number">[docs]</a>    <span class="k">def</span> <span class="nf">show_atom_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Torsional.show_atom_number">
+<a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional.show_atom_number">[docs]</a>
+    <span class="k">def</span> <span class="nf">show_atom_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
 <span class="w">       </span><span class="sd">&quot;&quot;&quot;Function to set atomic numbers to an RDKit Mol object.</span>
 
 <span class="sd">       Parameters</span>
@@ -334,8 +355,11 @@
        <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">():</span>
             <span class="n">atom</span><span class="o">.</span><span class="n">SetProp</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">()))</span>
        <span class="k">return</span> <span class="n">mol</span></div>
+
   
-<div class="viewcode-block" id="Torsional.draw_molecule"><a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional.draw_molecule">[docs]</a>    <span class="k">def</span> <span class="nf">draw_molecule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">name_pic</span><span class="p">,</span> <span class="n">atoms_idx</span><span class="p">):</span>
+<div class="viewcode-block" id="Torsional.draw_molecule">
+<a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional.draw_molecule">[docs]</a>
+    <span class="k">def</span> <span class="nf">draw_molecule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">name_pic</span><span class="p">,</span> <span class="n">atoms_idx</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to print a molecule into a PNG file.</span>
 
 <span class="sd">        Parameters</span>
@@ -361,8 +385,11 @@
         
         <span class="n">Draw</span><span class="o">.</span><span class="n">MolToFile</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">name_pic</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.png&quot;</span><span class="p">,</span>
                        <span class="n">includeAtomNumbers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">highlightAtoms</span><span class="o">=</span><span class="n">atoms_idx</span><span class="p">)</span> </div>
+
   
-<div class="viewcode-block" id="Torsional.plot_trs_ang"><a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional.plot_trs_ang">[docs]</a>    <span class="k">def</span> <span class="nf">plot_trs_ang</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="Torsional.plot_trs_ang">
+<a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.torsional.Torsional.plot_trs_ang">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot_trs_ang</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;Function to plot torsional atoms from an RDKit Mol Object.</span>
 <span class="sd">      </span>
 <span class="sd">      Parameters</span>
@@ -383,7 +410,9 @@
       <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lst_tor_angl</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">draw_molecule</span><span class="p">(</span><span class="n">rdkit_mol</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="s1">&#39;mol_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span> <span class="n">values</span><span class="p">)</span>
 
-      <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> figures have been printed&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lst_tor_angl</span><span class="p">)))</span></div></div>
+      <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> figures have been printed&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lst_tor_angl</span><span class="p">)))</span></div>
+</div>
+
 
 
 
@@ -398,7 +427,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, Alejandro Santana-Bonilla, Chris Lorenz.</p>
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, and Chris Lorenz.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

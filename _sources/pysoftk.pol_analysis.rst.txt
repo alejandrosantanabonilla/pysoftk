@@ -1,0 +1,117 @@
+pysoftk.pol\_analysis package
+=============================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pysoftk.pol_analysis.tools
+
+Submodules
+----------
+
+pysoftk.pol\_analysis.clustering module
+---------------------------------------
+
+.. automodule:: pysoftk.pol_analysis.clustering
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysoftk.pol\_analysis.contact\_analysis module
+----------------------------------------------
+
+.. automodule:: pysoftk.pol_analysis.contact_analysis
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysoftk.pol\_analysis.ecc\_micelle module
+-----------------------------------------
+
+.. automodule:: pysoftk.pol_analysis.ecc_micelle
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysoftk.pol\_analysis.intrinsic\_density\_micelle module
+--------------------------------------------------------
+
+.. automodule:: pysoftk.pol_analysis.intrinsic_density_micelle
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysoftk.pol\_analysis.intrinsic\_density\_water\_micelle module
+---------------------------------------------------------------
+
+.. automodule:: pysoftk.pol_analysis.intrinsic_density_water_micelle
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysoftk.pol\_analysis.make\_micelle\_whole module
+-------------------------------------------------
+
+.. automodule:: pysoftk.pol_analysis.make_micelle_whole
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysoftk.pol\_analysis.rgyr\_micelle module
+------------------------------------------
+
+.. automodule:: pysoftk.pol_analysis.rgyr_micelle
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysoftk.pol\_analysis.ring\_ring module
+---------------------------------------
+
+.. automodule:: pysoftk.pol_analysis.ring_ring
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysoftk.pol\_analysis.solvation module
+--------------------------------------
+
+.. automodule:: pysoftk.pol_analysis.solvation
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysoftk.pol\_analysis.spherical\_density module
+-----------------------------------------------
+
+.. automodule:: pysoftk.pol_analysis.spherical_density
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysoftk.pol\_analysis.spherical\_density\_water module
+------------------------------------------------------
+
+.. automodule:: pysoftk.pol_analysis.spherical_density_water
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysoftk.pol\_analysis.umap\_analysis module
+-------------------------------------------
+
+.. automodule:: pysoftk.pol_analysis.umap_analysis
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: pysoftk.pol_analysis
+   :members:
+   :undoc-members:
+   :show-inheritance:

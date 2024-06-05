@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pysoftk.pol_analysis.intrinsic_density_water_micelle &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PySoftK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pysoftk</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PySoftK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pysoftk.pol_analysis.intrinsic_density_water_micelle</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pysoftk.pol_analysis.intrinsic_density_water_micelle</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+
+<span class="kn">from</span> <span class="nn">pysoftk.pol_analysis.tools.utils_mda</span> <span class="kn">import</span> <span class="n">MDA_input</span>
+<span class="kn">from</span> <span class="nn">pysoftk.pol_analysis.make_micelle_whole</span> <span class="kn">import</span> <span class="n">micelle_whole</span>
+<span class="kn">from</span> <span class="nn">pysoftk.pol_analysis.clustering</span> <span class="kn">import</span> <span class="n">SCP</span>
+<span class="kn">from</span> <span class="nn">pysoftk.pol_analysis.tools.utils_tools</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="timeit">
+<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.intrinsic_density_water_micelle.timeit">[docs]</a>
+<span class="k">def</span> <span class="nf">timeit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">timeit_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">time</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">total_time</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Function </span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1"> Took </span><span class="si">{</span><span class="n">total_time</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="n">timeit_wrapper</span></div>
+
+
+<div class="viewcode-block" id="intrinsic_density_water">
+<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.intrinsic_density_water_micelle.intrinsic_density_water">[docs]</a>
+<span class="k">class</span> <span class="nc">intrinsic_density_water</span><span class="p">(</span><span class="n">MDA_input</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; A class used to compute the contacts between the polymers </span>
+<span class="sd">        of a micelle. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tpr_file</span><span class="p">,</span> <span class="n">xtc_file</span><span class="p">):</span>
+<span class="w">      </span><span class="sd">&quot;&quot;&quot;Instantiating the MDA_input class as</span>
+<span class="sd">         super function.</span>
+<span class="sd">      &quot;&quot;&quot;</span>
+      
+      <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">tpr_file</span><span class="p">,</span> <span class="n">xtc_file</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="intrinsic_density_water.select_water_atoms">
+<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.intrinsic_density_water_micelle.intrinsic_density_water.select_water_atoms">[docs]</a>
+    <span class="k">def</span> <span class="nf">select_water_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to select the solvent atoms</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+
+<span class="sd">            u: MDAnalysis.Universe</span>
+<span class="sd">               An user-provided MDanalysis trajectory</span>
+
+<span class="sd">            name : list</span>
+<span class="sd">                List with the atom names of the solvent</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+        <span class="n">water_selections</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;name &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="p">)))</span>
+
+        <span class="k">return</span> <span class="n">water_selections</span></div>
+
+
+
+<div class="viewcode-block" id="intrinsic_density_water.intrinsic_density_not_normalized">
+<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.intrinsic_density_water_micelle.intrinsic_density_water.intrinsic_density_not_normalized">[docs]</a>
+    <span class="k">def</span> <span class="nf">intrinsic_density_not_normalized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">whole_micelle_largest_cluster_resids</span><span class="p">,</span> <span class="n">micelle_positions</span><span class="p">,</span> <span class="n">water_selection</span><span class="p">,</span> <span class="n">core_group</span><span class="p">,</span> <span class="n">n_rand_points</span><span class="p">,</span> <span class="n">n_bins</span><span class="p">,</span> <span class="n">n_min</span><span class="p">,</span> <span class="n">n_max</span><span class="p">,</span> <span class="n">n_step</span> <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to run the intrinsic density in a specific frame</span>
+<span class="sd"> </span>
+<span class="sd">           Parameters</span>
+<span class="sd">           -----------</span>
+
+<span class="sd">           u: MDAnalysis.Universe</span>
+<span class="sd">               An user-provided MDanalysis trajectory.</span>
+
+<span class="sd">           frame : int</span>
+<span class="sd">                trajectory frame</span>
+
+<span class="sd">           whole_micelle_largest_cluster_resids: list</span>
+<span class="sd">                list with resids of polymers forming the desired micelle</span>
+
+<span class="sd">            </span>
+<span class="sd">           micelle_positions : np.array</span>
+<span class="sd">                positions of all atoms from micelle selection</span>
+
+<span class="sd">           water_selection: list</span>
+<span class="sd">                list of solvent atoms to calculate the density</span>
+
+<span class="sd">            core_group : class.str</span>
+<span class="sd">                atom  names of the atoms of the core for density calculation</span>
+
+<span class="sd">            n_rand_points : int</span>
+<span class="sd">                number of water molecules</span>
+
+<span class="sd">            n_bins : int </span>
+<span class="sd">                nnumber of bins for the density calculation</span>
+
+<span class="sd">            n_min : int</span>
+<span class="sd">                min bin value for density calculation</span>
+
+<span class="sd">            n_max : int</span>
+<span class="sd">                max bins value for density calculation</span>
+
+<span class="sd">            n_step : int</span>
+<span class="sd">                size of bin</span>
+
+
+<span class="sd">           Returns</span>
+<span class="sd">           --------</span>
+<span class="sd"> </span>
+<span class="sd">           intrinsic_r_total : np.array</span>
+<span class="sd">                not normalized intrinsic density</span>
+
+<span class="sd">           intrinsic_r_total_norm : np.array</span>
+<span class="sd">                normalized intrinsic density</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        <span class="kn">import</span> <span class="nn">MDAnalysis</span> <span class="k">as</span> <span class="nn">mda</span>
+        <span class="kn">import</span> <span class="nn">pysoftk.pysoftwhere.icsi</span> <span class="k">as</span> <span class="nn">pysw_icsi</span>
+        <span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">stats</span>
+        <span class="kn">from</span> <span class="nn">MDAnalysis</span> <span class="kn">import</span> <span class="n">transformations</span> <span class="k">as</span> <span class="n">trans</span>
+
+        <span class="n">u2</span><span class="o">=</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_mda_universe</span><span class="p">()</span>
+        <span class="n">u2</span><span class="o">.</span><span class="n">trajectory</span><span class="p">[</span><span class="n">frame</span><span class="p">]</span>
+
+        <span class="n">micelle</span> <span class="o">=</span> <span class="n">selecting_atoms</span><span class="p">(</span><span class="n">u2</span><span class="p">,</span> <span class="n">whole_micelle_largest_cluster_resids</span><span class="p">)</span>
+        <span class="n">micelle</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">micelle_positions</span><span class="p">[:][</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">water</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">select_water_atoms</span><span class="p">(</span><span class="n">u2</span><span class="p">,</span> <span class="n">water_selection</span><span class="p">)</span>      
+        <span class="n">system</span><span class="o">=</span><span class="n">water</span><span class="o">+</span><span class="n">micelle</span>
+
+        <span class="n">workflow</span><span class="o">=</span><span class="p">(</span><span class="n">trans</span><span class="o">.</span><span class="n">unwrap</span><span class="p">(</span><span class="n">system</span><span class="p">),</span>
+                   <span class="n">trans</span><span class="o">.</span><span class="n">center_in_box</span><span class="p">(</span><span class="n">micelle</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="s1">&#39;mass&#39;</span><span class="p">),</span>
+                   <span class="n">trans</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">compound</span><span class="o">=</span><span class="s1">&#39;fragments&#39;</span><span class="p">))</span>
+
+        <span class="n">u2</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">add_transformations</span><span class="p">(</span><span class="o">*</span><span class="n">workflow</span><span class="p">)</span>
+
+        <span class="n">core</span><span class="o">=</span><span class="n">u2</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;name &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">core_group</span><span class="p">)))</span>
+
+        <span class="n">shell</span><span class="o">=</span><span class="n">water</span>
+        <span class="n">core_positions</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">positions</span>
+        <span class="n">shell_positions</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">positions</span>
+        <span class="n">cluster_atoms_positions</span><span class="o">=</span><span class="n">micelle</span><span class="o">.</span><span class="n">positions</span>
+        
+        <span class="n">intrinsic_r</span><span class="p">,</span> <span class="n">spherical_r</span><span class="p">,</span> <span class="n">icsi_vals</span> <span class="o">=</span> <span class="n">pysw_icsi</span><span class="o">.</span><span class="n">icsi</span><span class="p">(</span><span class="n">u</span><span class="p">,</span>
+                                    <span class="n">cluster_resids</span><span class="o">=</span><span class="n">whole_micelle_largest_cluster_resids</span><span class="p">,</span>
+                                    <span class="n">cluster_atoms_positions</span><span class="o">=</span><span class="n">cluster_atoms_positions</span><span class="p">,</span>
+                                    <span class="n">core_sel_atoms_positions</span><span class="o">=</span><span class="n">core_positions</span><span class="p">,</span>
+                                    <span class="n">shell_sel_atoms_positions</span><span class="o">=</span><span class="n">shell_positions</span><span class="p">,</span>
+                                    <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span>
+                                    <span class="n">no_bins</span><span class="o">=</span><span class="n">n_bins</span><span class="p">,</span>
+                                    <span class="n">no_random_points</span><span class="o">=</span><span class="n">n_rand_points</span><span class="p">,</span>
+                                    <span class="n">normalisation_run</span><span class="o">=</span><span class="kc">False</span><span class="p">)()</span>
+    
+        <span class="n">intrinsic_r_total</span><span class="o">=</span><span class="n">stats</span><span class="o">.</span><span class="n">binned_statistic</span><span class="p">(</span><span class="n">intrinsic_r</span><span class="p">,</span><span class="n">intrinsic_r</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_min</span><span class="p">,</span><span class="n">n_max</span><span class="p">,</span><span class="n">n_step</span><span class="p">),</span><span class="n">statistic</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">statistic</span>
+        
+
+        <span class="n">intrinsic_r_norm</span><span class="p">,</span> <span class="n">spherical_r_norm</span><span class="p">,</span> <span class="n">icsi_vals_norm</span> <span class="o">=</span> <span class="n">pysw_icsi</span><span class="o">.</span><span class="n">icsi</span><span class="p">(</span><span class="n">u</span><span class="p">,</span>
+
+                                    <span class="n">cluster_resids</span><span class="o">=</span><span class="n">whole_micelle_largest_cluster_resids</span><span class="p">,</span>
+                                    <span class="n">cluster_atoms_positions</span><span class="o">=</span><span class="n">cluster_atoms_positions</span><span class="p">,</span>
+                                    <span class="n">core_sel_atoms_positions</span><span class="o">=</span><span class="n">core_positions</span><span class="p">,</span>
+                                    <span class="n">shell_sel_atoms_positions</span><span class="o">=</span><span class="n">shell_positions</span><span class="p">,</span>
+                                    <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span>
+                                    <span class="n">no_bins</span><span class="o">=</span><span class="n">n_bins</span><span class="p">,</span>
+                                    <span class="n">no_random_points</span><span class="o">=</span><span class="n">n_rand_points</span><span class="p">,</span>
+                                    <span class="n">normalisation_run</span><span class="o">=</span><span class="kc">True</span><span class="p">)()</span>
+    
+        <span class="n">intrinsic_r_total_norm</span><span class="o">=</span><span class="n">stats</span><span class="o">.</span><span class="n">binned_statistic</span><span class="p">(</span><span class="n">intrinsic_r_norm</span><span class="p">,</span> <span class="n">intrinsic_r_norm</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_min</span><span class="p">,</span><span class="n">n_max</span><span class="p">,</span><span class="n">n_step</span><span class="p">),</span><span class="n">statistic</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">statistic</span>
+
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">intrinsic_r_total</span><span class="p">,</span> <span class="n">intrinsic_r_total_norm</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="intrinsic_density_water.box_volume">
+<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.intrinsic_density_water_micelle.intrinsic_density_water.box_volume">[docs]</a>
+    <span class="k">def</span> <span class="nf">box_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Function to calculate the volume of the system box at a specific frame</span>
+<span class="sd">        </span>
+<span class="sd">            Parameters</span>
+<span class="sd">            -----------</span>
+
+<span class="sd">            u: MDAnalysis.Universe</span>
+<span class="sd">               An user-provided MDanalysis trajectory.</span>
+
+<span class="sd">            frame : int</span>
+<span class="sd">                frame selected for volume calculation</span>
+
+
+<span class="sd">            Returns</span>
+<span class="sd">            --------</span>
+<span class="sd">            vol : float</span>
+<span class="sd">                volume of system box</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+
+        <span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="p">[</span><span class="n">frame</span><span class="p">]</span>
+
+        <span class="n">vol</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">vol</span></div>
+
+
+
+<div class="viewcode-block" id="intrinsic_density_water.run_intrinsic_density">
+<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.intrinsic_density_water_micelle.intrinsic_density_water.run_intrinsic_density">[docs]</a>
+    <span class="k">def</span> <span class="nf">run_intrinsic_density</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="n">micelle_selection</span><span class="p">,</span> <span class="n">micelle_positions</span><span class="p">,</span> <span class="n">water_selection</span><span class="p">,</span> <span class="n">core</span><span class="p">,</span> <span class="n">heavy_atom_water_name</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">n_bins</span><span class="o">=</span><span class="mi">31</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=-</span><span class="mf">40.5</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">n_step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to run the intrinsic density over time</span>
+<span class="sd"> </span>
+<span class="sd">           Parameters</span>
+<span class="sd">           -----------</span>
+
+<span class="sd">           micelle_selection: list</span>
+<span class="sd">                list of atoms belonging to the micelle</span>
+<span class="sd">            </span>
+<span class="sd">           micelle_positions : np.array</span>
+<span class="sd">                positions of all atoms from micelle selection</span>
+
+<span class="sd">            water_selection : list</span>
+<span class="sd">                solvent atom selection</span>
+
+<span class="sd">            core : class.str</span>
+<span class="sd">                atom  names of the atoms of the core for density calculation</span>
+
+<span class="sd">           shell : class.str</span>
+<span class="sd">                atom names of the atoms of the shell for density calculation</span>
+
+<span class="sd">            heavy_atom_water_name : class.str</span>
+<span class="sd">                name of heavy water atoms</span>
+
+<span class="sd">            start : int</span>
+<span class="sd">                starting frame to perform calculation</span>
+
+<span class="sd">            stop : int</span>
+<span class="sd">                last frame to perform calculation</span>
+
+<span class="sd">            step : int</span>
+<span class="sd">                frames skipped in calculation</span>
+
+<span class="sd">            n_bins : int </span>
+<span class="sd">                nnumber of bins for the density calculation</span>
+
+<span class="sd">            n_min : int</span>
+<span class="sd">                min bin value for density calculation</span>
+
+<span class="sd">            n_max : int</span>
+<span class="sd">                max bins value for density calculation</span>
+
+<span class="sd">            n_step : int</span>
+<span class="sd">                size of bin</span>
+
+
+<span class="sd">           Returns</span>
+<span class="sd">           --------</span>
+<span class="sd"> </span>
+<span class="sd">           final_density : np.array</span>
+<span class="sd">                intrinsic density</span>
+
+<span class="sd">            binned_space : np.array</span>
+<span class="sd">            array with the values of the binned radial distance, this allows easier plotting of the density</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">MDAnalysis</span> <span class="k">as</span> <span class="nn">mda</span>
+        <span class="kn">import</span> <span class="nn">concurrent.futures</span>
+        <span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
+        <span class="kn">import</span>  <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+        <span class="n">u</span><span class="o">=</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_mda_universe</span><span class="p">()</span>
+
+        
+        <span class="n">u_sel</span> <span class="o">=</span> <span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">micelle_positions</span><span class="p">)</span>
+        
+        <span class="n">whole_micelle_largest_cluster_resids</span><span class="o">=</span><span class="n">micelle_selection</span>
+            
+        <span class="n">n_bins_f</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">micelle_positions</span><span class="p">)</span><span class="o">*</span><span class="p">[</span><span class="n">n_bins</span><span class="p">]</span>
+        <span class="n">n_min_f</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">micelle_positions</span><span class="p">)</span><span class="o">*</span><span class="p">[</span><span class="n">n_min</span><span class="p">]</span>
+        <span class="n">n_max_f</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">micelle_positions</span><span class="p">)</span><span class="o">*</span><span class="p">[</span><span class="n">n_max</span><span class="p">]</span>
+        <span class="n">n_step_f</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">micelle_positions</span><span class="p">)</span><span class="o">*</span><span class="p">[</span><span class="n">n_step</span><span class="p">]</span>
+        
+        <span class="n">core_f</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">micelle_positions</span><span class="p">)</span><span class="o">*</span><span class="p">[</span><span class="n">core</span><span class="p">]</span>
+      
+        <span class="n">water</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;name &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">heavy_atom_water_name</span><span class="p">)))</span>
+        
+        <span class="n">n_rand_points</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">water</span><span class="p">)</span>
+        <span class="n">n_rand_points_f</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">micelle_positions</span><span class="p">)</span><span class="o">*</span><span class="p">[</span><span class="n">n_rand_points</span><span class="p">]</span>
+        <span class="n">frames</span><span class="o">=</span><span class="n">get_frames_hydr</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+        <span class="n">box_vol</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">box_volume</span><span class="p">,</span> <span class="n">u_sel</span><span class="p">,</span> <span class="n">frames</span><span class="p">))</span>
+        <span class="n">water_selection_f</span><span class="o">=</span><span class="p">[</span><span class="n">water_selection</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">micelle_positions</span><span class="p">)</span>
+   
+        <span class="n">intrinsic_density_not_normalized_over_time</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intrinsic_density_not_normalized</span><span class="p">,</span> <span class="n">u_sel</span><span class="p">,</span> <span class="n">frames</span><span class="p">,</span> <span class="n">whole_micelle_largest_cluster_resids</span><span class="p">,</span> <span class="n">micelle_positions</span><span class="p">,</span> <span class="n">water_selection_f</span><span class="p">,</span> <span class="n">core_f</span><span class="p">,</span> <span class="n">n_rand_points_f</span><span class="p">,</span> <span class="n">n_bins_f</span><span class="p">,</span> <span class="n">n_min_f</span><span class="p">,</span> <span class="n">n_max_f</span><span class="p">,</span> <span class="n">n_step_f</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">u_sel</span><span class="p">)))</span>
+
+        <span class="n">id_not_normalized</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">intrinsic_density_not_normalized_over_time</span><span class="p">]</span>
+        <span class="n">id_normalized</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">intrinsic_density_not_normalized_over_time</span><span class="p">]</span>
+
+        <span class="n">intrinsic_density_profile</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">id_not_normalized</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">micelle_positions</span><span class="p">)</span>
+        <span class="n">S_bar</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">id_normalized</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">box_vol</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">micelle_positions</span><span class="p">)</span><span class="o">*</span><span class="n">n_rand_points</span><span class="p">)</span>
+        <span class="n">final_density</span><span class="o">=</span><span class="n">intrinsic_density_profile</span><span class="o">/</span><span class="n">S_bar</span>
+        <span class="n">binned_space_plot</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_min</span><span class="p">,</span> <span class="n">n_max</span><span class="p">,</span> <span class="n">n_step</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">final_density</span><span class="p">,</span> <span class="n">binned_space_plot</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, and Chris Lorenz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
