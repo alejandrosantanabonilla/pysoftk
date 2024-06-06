@@ -2,8 +2,8 @@
 
 .. _tutorials:
 
-Tutorials
-=========
+Tutorials: Modelling Polymers
+==============================
 
 In this section, we will introduce the basic workflows that can be developed with PySoftK_. Similarly, the creation of a new function that enables the creation
 of a ring polymer using pre-existing functions of PySoftK_ introduces the user into the process of developing new tools using PySoftK_.
@@ -25,14 +25,5 @@ of a ring polymer using pre-existing functions of PySoftK_ introduces the user i
    create_folders
    calculator
    torsional
-   contacts_tutorial
-   ecc_tutorial
-   intrinsic_density_tutorial
-   micelle_whole_tutorial
-   rgyr_tutorial
-   rgyr_mdanalysis_vs_pysoftk
-   RSA_tutorial
-   RSA_protein_tutorial
-   SCP_tutorial
-   solvation_tutorial
-   spherical_density_tutorial
+   
+   
