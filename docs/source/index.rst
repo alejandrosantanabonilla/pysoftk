@@ -20,6 +20,7 @@ structure of the polymer that can be used as an input for building the desired i
    about
    usage
    tutorials/tutorials
+   tutorials/tutorialspol
    faq
    modules
 

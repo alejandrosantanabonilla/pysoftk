@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('../pysoftk/'))
 # -- Project information -----------------------------------------------------
 
 project = 'PySoftK'
-copyright = '2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, and Chris Lorenz'
+copyright = '2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, Rob Ziolek, and Chris Lorenz'
 author = 'Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, Rob Ziolek and  Chris Lorenz'
 
 # The full version, including alpha/beta/rc tags
