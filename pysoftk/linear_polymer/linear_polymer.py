@@ -266,5 +266,5 @@ class Lp:
         last_mol = ff_ob_relaxation(mol_new, force_field, relax_iterations)
         rot_mol = rotor_opt(last_mol, force_field, rot_steps)
 
-        return mol_new
+        return rot_mol
 
