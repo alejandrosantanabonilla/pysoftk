@@ -20,7 +20,7 @@ setup(
        'wheel', 
        'tqdm >= 4.64.0', 
        'pathos >= 0.2.8',
-       'pyscf < 2.6.0',
+       'pyscf < 2.5.0',
        'pyscf-semiempirical @ git+https://github.com/pyscf/semiempirical', 
        'pyberny', 
        'openbabel-wheel',
