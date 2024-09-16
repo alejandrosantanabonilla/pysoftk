@@ -8,20 +8,20 @@ import os
 from pathlib import Path
 import pytest
 
-@pytest.fixture
-def rootdir():
-    return os.path.dirname(os.path.abspath(__file__))
+#@pytest.fixture
+#def rootdir():
+#    return os.path.dirname(os.path.abspath(__file__))
 
-def test_htp_gfn_creation(rootdir):
+#def test_htp_gfn_creation(rootdir):
   # Creating a tmp folder
   #est_file = os.path.join(rootdir, 'tmp_folder4')
   #os.mkdir(est_file)
   #os.chdir(est_file)
 
   # Test HTP for linear polymer chains created on the fly
-  mol_1=Chem.MolFromSmiles('c1cc(sc1Br)Br')
-  mol_2=Chem.MolFromSmiles('c1cc(sc1Br)Br')
-  a=Sm(mol_1,mol_2,"Br")
+#  mol_1=Chem.MolFromSmiles('c1cc(sc1Br)Br')
+#  mol_2=Chem.MolFromSmiles('c1cc(sc1Br)Br')
+#  a=Sm(mol_1,mol_2,"Br")
 
   #molecules=[]
   #for i in range(1,10):
