@@ -34,7 +34,7 @@ def test_htp_gfn_creation(rootdir):
   Fld().file_to_dir("xyz")
 
   # High-throughput calculations at the gfn-ff level of theory
-  Htp("xyz").htp_xtb_gfn("xtb",4,1)
+  Htp("xyz").htp_xtb_gfn("xtb",1,1)
 
   working_dir=Path(os.getcwd())
   relaxed_str=[path for path in working_dir.glob("**/xtbopt.xyz")]
