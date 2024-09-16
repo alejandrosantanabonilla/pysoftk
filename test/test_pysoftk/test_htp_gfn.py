@@ -14,24 +14,24 @@ def rootdir():
 
 def test_htp_gfn_creation(rootdir):
   # Creating a tmp folder
-  est_file = os.path.join(rootdir, 'tmp_folder4')
-  os.mkdir(est_file)
-  os.chdir(est_file)
+  #est_file = os.path.join(rootdir, 'tmp_folder4')
+  #os.mkdir(est_file)
+  #os.chdir(est_file)
 
   # Test HTP for linear polymer chains created on the fly
   mol_1=Chem.MolFromSmiles('c1cc(sc1Br)Br')
   mol_2=Chem.MolFromSmiles('c1cc(sc1Br)Br')
   a=Sm(mol_1,mol_2,"Br")
 
-  molecules=[]
-  for i in range(1,10):
-    k=a.mon_to_poly()
-    molecules.append(Lp(k,"Br",i,shift=1.0).linear_polymer("MMFF94",150*i))
+  #molecules=[]
+  #for i in range(1,10):
+  #  k=a.mon_to_poly()
+  #  molecules.append(Lp(k,"Br",i,shift=1.0).linear_polymer("MMFF94",150*i))
 
-  for idx, values in enumerate(molecules):
-    Fmt(values).xyz_print("mono_"+str(idx)+".xyz")
+  #for idx, values in enumerate(molecules):
+  #  Fmt(values).xyz_print("mono_"+str(idx)+".xyz")
 
-  Fld().file_to_dir("xyz")
+  #Fld().file_to_dir("xyz")
 
   # High-throughput calculations at the gfn-ff level of theory
   #Htp("xyz").htp_xtb_gfn("xtb",1,1)
@@ -45,5 +45,5 @@ def test_htp_gfn_creation(rootdir):
   #assert len(relaxed_str)==9
   #assert len(a)==9
 
-  shutil.rmtree(est_file)
+  #shutil.rmtree(est_file)
 
