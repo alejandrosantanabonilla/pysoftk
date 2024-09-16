@@ -51,4 +51,4 @@ jobs:
         working-directory: ./test/test_pysoftk
         run: |
           python -m pip install pytest pytest-cov --user
-          python -m pytest -v test_folders_func.py --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage_1.txt
+          python -m pytest -v test_sm_func.py --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage_1.txt
