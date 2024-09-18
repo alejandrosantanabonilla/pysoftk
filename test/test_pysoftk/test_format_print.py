@@ -23,7 +23,7 @@ def test_format_1(rootdir):
 
    a=Sm(mol_1,mol_2,"Br").monomer()
 
-   est_file = os.path.join(rootdir, 'tmp_folder5')
+   est_file = os.path.join(rootdir, 'tmp_folder50')
    os.mkdir(est_file)
    os.chdir(est_file)
    
