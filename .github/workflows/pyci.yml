@@ -15,8 +15,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-12]
         python-version: [3.8, 3.9, 3.10.12]
-        test_file: 
-          - ${{ fromJSON((steps.list-test-files.outputs.files)) }}
+        test_file: ${{ fromJSON((steps.list-test-files.outputs.files)) }}
           
     name: Python ${{ matrix.python-version }} example on ${{ matrix.os }}
     steps:
