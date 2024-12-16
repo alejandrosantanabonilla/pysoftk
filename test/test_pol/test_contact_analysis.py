@@ -20,7 +20,7 @@ def test_contacts_cyclic(rootdir):
     contacts_cyclic=np.load(contacts_cyclic_file, allow_pickle=True)
 
     topology=os.path.join(rootdir, 'data/short_movie_cyclic.tpr')
-    trajectory=os.path.join(rootdir, 'data/short_movie_cyclic.xtc')
+    trajectory=os.path.join(rootdir, 'data/short_movie_cyclic.trr')
 
     cyclic_resids = os.path.join(rootdir, 'data/results_cyclic.parquet')
 
