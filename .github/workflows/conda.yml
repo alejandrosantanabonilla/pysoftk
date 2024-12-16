@@ -24,17 +24,12 @@ jobs:
           channel-priority: flexible
           show-channel-urls: true
           use-only-tar-bz2: true
-          
-      - name: Conda info
-        run: conda info
-        
+                  
       - name: Installation xtb
         run: |
            conda install xtb
 
-      - name: Installing PySoftK
-        shell: bash
+      - name: Conda environment
         run: |
-           python -m pip install wheel --user
-           python -m pip install setuptools --upgrade --user
-           python -m pip install setup.py --user 
+          conda create --name pysoftk_env
+          conda activate pysoftk_env
