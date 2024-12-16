@@ -30,6 +30,8 @@ jobs:
           echo "CONDA_BASE=$HOME/miniconda3" >> $GITHUB_ENV
           echo "CONDA_BIN_DIR=$CONDA_BASE/bin" >> $GITHUB_ENV
           echo "$CONDA_BIN_DIR" >> $GITHUB_PATH
+
+          source $CONDA_BASE/bin/activate base 
      
       - name: Setup conda
         uses: s-weigand/setup-conda@v1
