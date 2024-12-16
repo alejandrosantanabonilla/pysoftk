@@ -13,27 +13,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
         python-version: [3.9, 3.10.12, 3.11.11]
     name: Python ${{ matrix.python-version }} example on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-      
-      - name: Install dependencies (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          brew install gfortran openblas eigen
-
-      - name: Install xtb
-        run: |
-          git clone https://github.com/grimme-lab/xtb.git
-          cd xtb
-          mkdir build
-          cd build
-          cmake -DWITH_PYTHON=ON ..
-          make -j 2
-          make install
-     
       - name: Setup conda
         if: runner.os == 'Linux'
         uses: s-weigand/setup-conda@v1
@@ -46,6 +30,7 @@ jobs:
       - name: Installation xtb
         run: |
            conda install xtb
+           
       - name: Installation MDAnalysis
         run: |
               conda install mdanalysis
