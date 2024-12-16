@@ -37,4 +37,4 @@ jobs:
         run: |
            python -m pip install wheel --user
            python -m pip install setuptools --upgrade --user
-           python -m pip install . --user 
+           python -m pip install setup.py --user 
