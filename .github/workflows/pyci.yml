@@ -37,6 +37,7 @@ jobs:
           update-conda: true
           python-version: ${{ matrix.python-version }}
           conda-channels: anaconda, conda-forge
+          conda-base-path: ${{ env.CONDA_BASE }} 
       
       - name: Installation xtb
         run: |
