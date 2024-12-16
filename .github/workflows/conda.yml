@@ -1,4 +1,4 @@
-name: "PySoftK-testing"
+name: "Conda different OS"
 
 # Controls when the workflow will run
 on:
@@ -6,46 +6,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  example-1:
+    name: Ex1 (${{ matrix.python-version }}, ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        os: [ubuntu-latest]
-        python-version: [3.9, 3.10.1, 3.11.1]
-    name: Python ${{ matrix.python-version }} example on ${{ matrix.os }}
+        os: ["ubuntu-latest", "macos-latest", "windows-latest"]
+        python-version: ["3.7", "3.11"]
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Setup Conda
-      uses: conda-incubator/setup-miniconda@v2
-      with:
-        auto-activate-base: true
-        activate-environment: true
-        python-version: ${{ matrix.python-version }}
-        channels: conda-forge, anaconda
-        miniconda-version: "latest"
-
-    - name: Installation xtb
-      shell: bash
-      run: |
-        conda install conda-forge::xtb
-
-    - name: Installation pip
-      shell: bash
-      run: |
-        conda install pip 
-        
-    - name: Installing PySoftK
-      shell: bash
-      run: |
-        python -m pip install wheel --user
-        python -m pip install setuptools --upgrade --user
-        python -m pip install . --user  
-      
-    - name: Run PySoftK test
-      working-directory: ./test/test_pysoftk
-      shell: bash
-      run: |
-       python -m pip install pytest pytest-cov --user
-       python -m pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage.txt 
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: ${{ matrix.python-version }}
+      - name: Conda info
+        shell: bash -el {0}
+        run: conda info
+      - name: Conda list
+        shell: pwsh
+        run: conda list
