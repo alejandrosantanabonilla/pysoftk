@@ -19,7 +19,7 @@ jobs:
         with:
           auto-update-conda: true
           python-version: ${{ matrix.python-version }}
-          channels: conda-forge,spyder-ide
+          channels: conda-forge, anaconda
           allow-softlinks: true
           channel-priority: flexible
           show-channel-urls: true
@@ -31,3 +31,10 @@ jobs:
       - name: Installation xtb
         run: |
            conda install xtb
+
+      - name: Installing PySoftK
+        shell: bash
+        run: |
+           python -m pip install wheel --user
+           python -m pip install setuptools --upgrade --user
+           python -m pip install . --user 
