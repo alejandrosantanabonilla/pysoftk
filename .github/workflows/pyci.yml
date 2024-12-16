@@ -31,7 +31,8 @@ jobs:
           echo "CONDA_BIN_DIR=$CONDA_BASE/bin" >> $GITHUB_ENV
           echo "$CONDA_BIN_DIR" >> $GITHUB_PATH
 
-          source $CONDA_BIN_DIR/activate base 
+          # Activate base conda environment (Corrected path with 'source')
+          source $CONDA_BIN_DIR/activate base
      
       - name: Setup conda
         uses: s-weigand/setup-conda@v1
