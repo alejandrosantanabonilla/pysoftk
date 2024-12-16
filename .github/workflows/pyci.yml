@@ -19,22 +19,23 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-      - name: Install Conda (if macOS)
+      - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
-        shell: bash
         run: |
-          mkdir -p ~/miniconda3
-          curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh -o ~/miniconda3/miniconda.sh
-          bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
-          rm ~/miniconda3/miniconda.sh
-          echo "CONDA_BASE=$HOME/miniconda3" >> $GITHUB_ENV
-          echo "CONDA_BIN_DIR=$CONDA_BASE/bin" >> $GITHUB_ENV
-          echo "$CONDA_BIN_DIR" >> $GITHUB_PATH
+          brew install gfortran openblas eigen
 
-          # Activate base conda environment (Corrected path with 'source')
-          source $CONDA_BIN_DIR/activate base
+      - name: Install xtb
+        run: |
+          git clone https://github.com/grimme-lab/xtb.git
+          cd xtb
+          mkdir build
+          cd build
+          cmake -DWITH_PYTHON=ON ..
+          make -j 2
+          make install
      
       - name: Setup conda
+        if: runner.os == 'Linux'
         uses: s-weigand/setup-conda@v1
         with:
           update-conda: true
