@@ -13,11 +13,22 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        python-version: [3.9, 3.10.12, 3.11.11]
+        os: [ubuntu-latest, macos-latest]
+        python-version: [3.9]
     name: Python ${{ matrix.python-version }} example on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
+      
+      - name: Install Conda (if macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          mkdir -p ~/miniconda3
+          curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh -o ~/miniconda3/miniconda.sh
+          bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+          rm ~/miniconda3/miniconda.sh
+          echo "::add-path::$HOME/miniconda3/bin"
+     
       - name: Setup conda
         uses: s-weigand/setup-conda@v1
         with:
