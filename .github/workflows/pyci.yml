@@ -27,7 +27,9 @@ jobs:
           curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh -o ~/miniconda3/miniconda.sh
           bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
           rm ~/miniconda3/miniconda.sh
-          echo "::add-path::$HOME/miniconda3/bin"
+          echo "CONDA_BASE=$HOME/miniconda3" >> $GITHUB_ENV
+          echo "CONDA_BIN_DIR=$CONDA_BASE/bin" >> $GITHUB_ENV
+          echo "$CONDA_BIN_DIR" >> $GITHUB_PATH
      
       - name: Setup conda
         uses: s-weigand/setup-conda@v1
