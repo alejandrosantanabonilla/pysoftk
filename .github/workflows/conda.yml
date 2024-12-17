@@ -1,8 +1,6 @@
 name: "Conda different OS"
 
-# Controls when the workflow will run
 on:
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
@@ -18,21 +16,30 @@ jobs:
       - name: Clear conda cache
         run: |
           rm -rf ~/.condarc ~/.conda
+
       - uses: conda-incubator/setup-miniconda@v3
         with:
           auto-update-conda: true
-          activate-environment: pysoftk_env
-          python-version: 3.8
+          python-version: ${{ matrix.python-version }}
           channels: conda-forge, anaconda
-          auto-activate-base: false
+          allow-softlinks: true
+          channel-priority: flexible
+          show-channel-urls: true
+          use-only-tar-bz2: true
           
-      - name: Checking conda 
-        shell: bash 
+      - name: Check conda info
         run: |
-          conda init
-          conda activate pysoftk_env
           conda info
-                  
+
       - name: Installation xtb
         run: |
           conda install -c conda-forge xtb
+
+      - name: Conda environment
+        run: |
+          conda create --name pysoftk_env -c conda-forge python=${{ matrix.python-version }}
+          conda activate pysoftk_env
+
+      - name: Install pysoftk
+        run: |
+          pip install git+https://github.com/alejandrosantanabonilla/pysoftk.git
