@@ -17,6 +17,7 @@ jobs:
     steps:
       - uses: conda-incubator/setup-miniconda@v3
         with:
+          auto-update-conda: true
           activate-environment: pysoftk_env
           python-version: 3.9
           channels: conda-forge, anaconda
