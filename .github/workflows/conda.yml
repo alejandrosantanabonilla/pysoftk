@@ -43,8 +43,10 @@ jobs:
         run: |
           conda install -n my_env -c conda-forge mdanalysis -y
 
-      - name: Install PySoftK (pip install)
-        shell: bash -l {0}
-        working-directory: pysoftk
-        run: pip install .
+      - name: Installing PySoftK
+        shell: bash
+        run: |
+           python -m pip install wheel --user
+           python -m pip install setuptools --upgrade --user
+           python -m pip install . --user  
 
