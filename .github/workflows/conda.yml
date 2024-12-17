@@ -43,3 +43,12 @@ jobs:
         run: |
           conda install -n my_env -c conda-forge mdanalysis -y
 
+      - name: Clone PySoftK repository (pip install)
+        shell: bash -l {0}
+        run: git clone https://github.com/alejandrosantanabonilla/pysoftk.git
+
+      - name: Install PySoftK (pip install)
+        shell: bash -l {0}
+        working-directory: pysoftk
+        run: pip install .
+
