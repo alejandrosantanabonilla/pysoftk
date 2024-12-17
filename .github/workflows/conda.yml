@@ -25,11 +25,16 @@ jobs:
           show-channel-urls: true
           use-only-tar-bz2: true
                   
+
       - name: Installation xtb
         run: |
-           conda install xtb
+          conda install -c conda-forge xtb
 
       - name: Conda environment
         run: |
-          conda create --name pysoftk_env
+          conda create --name pysoftk_env -c conda-forge python=${{ matrix.python-version }}
           conda activate pysoftk_env
+
+      - name: Install pysoftk
+        run: |
+          pip install git+https://github.com/alejandrosantanabonilla/pysoftk.git
