@@ -15,6 +15,9 @@ jobs:
         os: ["ubuntu-latest", "macos-latest"]
         python-version: ["3.8","3.9", "3.10.12", "3.11"]
     steps:
+      - name: Clear conda cache
+        run: |
+          rm -rf ~/.condarc ~/.conda
       - uses: conda-incubator/setup-miniconda@v3
         with:
           auto-update-conda: true
