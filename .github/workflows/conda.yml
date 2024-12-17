@@ -29,6 +29,7 @@ jobs:
       - name: Checking conda 
         shell: bash 
         run: |
+          conda init
           conda activate pysoftk_env
           conda info
                   
