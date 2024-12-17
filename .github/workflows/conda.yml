@@ -18,7 +18,7 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v3
         with:
           activate-environment: pysoftk_env
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.9
           channels: conda-forge, anaconda
           allow-softlinks: true
           channel-priority: flexible
