@@ -32,7 +32,6 @@ jobs:
           auto-update-conda: true
           channels: conda-forge, defaults # Add channels as needed
           python-version: ${{ matrix.python-version }}
-          environment-file: environment.yml # Replace with your environment file
 
       - name: Conda check
         shell: bash -l {0}
