@@ -17,24 +17,21 @@ jobs:
     steps:
       - uses: conda-incubator/setup-miniconda@v3
         with:
-          auto-update-conda: true
+          activate-environment: pysoftk_env
           python-version: ${{ matrix.python-version }}
           channels: conda-forge, anaconda
           allow-softlinks: true
           channel-priority: flexible
           show-channel-urls: true
           use-only-tar-bz2: true
+          
+      - name: Checking conda 
+        run: |
+          conda info
+          conda list
+          conda config --show-sources
+          conda config --show
                   
-
       - name: Installation xtb
         run: |
           conda install -c conda-forge xtb
-
-      - name: Conda environment
-        run: |
-          conda create --name pysoftk_env -c conda-forge python=${{ matrix.python-version }}
-          conda activate pysoftk_env
-
-      - name: Install pysoftk
-        run: |
-          pip install git+https://github.com/alejandrosantanabonilla/pysoftk.git
