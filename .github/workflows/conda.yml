@@ -18,28 +18,23 @@ jobs:
       - name: Clear conda cache
         run: |
           rm -rf ~/.condarc ~/.conda
+      - uses: actions/checkout@v3
       - uses: conda-incubator/setup-miniconda@v3
         with:
           auto-update-conda: true
           activate-environment: pysoftk_env
+          environment-file: environment.yml
           python-version: 3.8
           channels: conda-forge, anaconda
-          allow-softlinks: true
-          channel-priority: flexible
-          show-channel-urls: true
-          use-only-tar-bz2: true
+          auto-activate-base: false
+          
+    
           
       - name: Checking conda 
+        shell: bash 
         run: |
           conda info
-          conda list
-          conda config --show-sources
-          conda config --show
                   
       - name: Installation xtb
         run: |
           conda install -c conda-forge xtb
-
-      - name: Checking python version 
-        run: |
-          python -V
