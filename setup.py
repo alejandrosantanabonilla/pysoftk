@@ -16,7 +16,7 @@ setup(
        'Cython', 
        'networkx >= 2.7; python_version>="3.8"', 
        'networkx < 2.7; python_version<"3.8"', 
-       'rdkit >=2021.3.1.2', 
+       'rdkit', 
        'wheel', 
        'tqdm >= 4.64.0', 
        'pathos >= 0.2.8',
