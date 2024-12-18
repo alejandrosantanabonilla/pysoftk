@@ -36,7 +36,7 @@ jobs:
       - name: xtb installation
         shell: bash -l {0}
         run: |
-          conda install xtb 
+          conda install -n my_env -c conda-forge xtb -y
 
       - name: Install MDAnalysis
         shell: bash -l {0}
