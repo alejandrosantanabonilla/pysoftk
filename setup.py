@@ -24,7 +24,7 @@ setup(
        'pyscf-semiempirical @ git+https://github.com/pyscf/semiempirical', 
        'pyberny', 
        'openbabel-wheel',
-       'numba < 0.59.0', 
+       'numba', 
        'umap-learn', 
        'hdbscan', 
        'pandas', 
