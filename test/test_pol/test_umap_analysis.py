@@ -25,13 +25,13 @@ def test_umap_anaysis(rootdir):
     all_pos=os.path.join(rootdir, 'data/data_umap/all_pos.npy')
 
     cyclic_x_embed_file=os.path.join(rootdir, 'data/data_umap/cyclic_x_embedding.npy')
-    cyclic_x_embed=np.load(cyclic_x_embed_file, allow_pickle=True)
+    cyclic_x_embed=np.load(cyclic_x_embed_file, allow_pickle=True, encoding='latin1')
 
     cyclic_y_pred_file=os.path.join(rootdir, 'data/data_umap/cyclic_y_pred.npy')
-    cyclic_y_pred=np.load(cyclic_y_pred_file, allow_pickle=True)
+    cyclic_y_pred=np.load(cyclic_y_pred_file, allow_pickle=True, encoding='latin1')
 
     cyclic_average_rep_file=os.path.join(rootdir, 'data/data_umap/cyclic_av_rep.npy')
-    cyclic_average_rep=np.load(cyclic_average_rep_file, allow_pickle=True)
+    cyclic_average_rep=np.load(cyclic_average_rep_file, allow_pickle=True, encoding='latin1')
 
     X_embedded = umap_analysis(all_pos).umap_run(8, cwd)
 
