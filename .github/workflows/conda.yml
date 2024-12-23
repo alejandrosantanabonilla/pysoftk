@@ -56,4 +56,11 @@ jobs:
         shell: bash -l {0}
         run: |
           python -m pip install pytest pytest-cov --user
+          python -m pytest --junitxml=pytest1.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage_1.txt
+
+      - name: Run PySoftK-pol test
+        working-directory: ./test/test_pol
+        shell: bash -l {0}
+        run: |
+          python -m pip install pytest pytest-cov --user
           python -m pytest --junitxml=pytest2.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage_2.txt
