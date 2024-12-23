@@ -2,11 +2,13 @@ import pytest
 import os
 from functools import wraps
 import numpy as np
+import json
 
 import pytest
 import os
 from functools import wraps
 import numpy as np
+from umap import UMAP
 
 from pysoftk.pol_analysis.tools.utils_mda import MDA_input
 from pysoftk.pol_analysis.tools.utils_tools import *
@@ -25,13 +27,21 @@ def test_umap_anaysis(rootdir):
     all_pos=os.path.join(rootdir, 'data/data_umap/all_pos.npy')
 
     cyclic_x_embed_file=os.path.join(rootdir, 'data/data_umap/cyclic_x_embedding.npy')
-    cyclic_x_embed=np.load(cyclic_x_embed_file, allow_pickle=True, encoding='latin1')
+    cyclic_x_embed=np.load(cyclic_x_embed_file, allow_pickle=True)
+
+    # Load UMAP parameters from JSON
+    umap_params_file = os.path.join(rootdir, 'data/data_umap/umap_params.json')
+    with open(umap_params_file, 'r') as f:
+        umap_params = json.load(f)
+    
+    # Recreate the UMAP object
+    cyclic_y_pred = UMAP(**umap_params)
+    
+    #cyclic_y_pred_file=os.path.join(rootdir, 'data/data_umap/cyclic_y_pred.npy')
+    #cyclic_y_pred=np.load(cyclic_y_pred_file, allow_pickle=True)
 
     cyclic_average_rep_file=os.path.join(rootdir, 'data/data_umap/cyclic_av_rep.npy')
-    cyclic_average_rep=np.load(cyclic_average_rep_file, allow_pickle=True, encoding='latin1')
-
-    cyclic_y_pred_file=os.path.join(rootdir, 'data/data_umap/cyclic_y_pred.npy')
-    cyclic_y_pred=np.load(cyclic_y_pred_file, allow_pickle=True, encoding='latin1')
+    cyclic_average_rep=np.load(cyclic_average_rep_file, allow_pickle=True)
 
     X_embedded = umap_analysis(all_pos).umap_run(8, cwd)
 
@@ -42,13 +52,3 @@ def test_umap_anaysis(rootdir):
     expected_length = 2
     assert len(png_files) == expected_length
 
-
-
-
-
-
-
-
-
-
- 
