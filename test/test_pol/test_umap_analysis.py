@@ -1,12 +1,6 @@
 import pytest
 import os
-from functools import wraps
-import numpy as np
 import json
-
-import pytest
-import os
-from functools import wraps
 import numpy as np
 from umap import UMAP
 
@@ -26,19 +20,28 @@ def test_umap_anaysis(rootdir):
 
     all_pos=os.path.join(rootdir, 'data/data_umap/all_pos.npy')
 
-    cyclic_x_embed_file=os.path.join(rootdir, 'data/data_umap/cyclic_x_embedding.npy')
-    cyclic_x_embed=np.load(cyclic_x_embed_file, allow_pickle=True)
-
-    # Load UMAP parameters from JSON
+    # Load UMAP parameters from JSON for X_embedded
     umap_params_file = os.path.join(rootdir, 'data/data_umap/umap_params.json')
     with open(umap_params_file, 'r') as f:
         umap_params = json.load(f)
     
-    # Recreate the UMAP object
-    cyclic_y_pred = UMAP(**umap_params)
+    # Recreate the UMAP object for X_embedded
+    umap_object = UMAP(**umap_params) 
+
+    # Assuming you have the data for fitting UMAP stored in 'data_for_umap.npy'
+    data_for_umap_file = os.path.join(rootdir, 'data/data_umap/data_for_umap.npy')
+    data_for_umap = np.load(data_for_umap_file, allow_pickle=True)
+
+    # Generate X_embedded 
+    X_embedded = umap_object.fit_transform(data_for_umap) 
+
+
+    # Load UMAP parameters from JSON for cyclic_y_pred (same as before)
+    with open(umap_params_file, 'r') as f:
+        umap_params = json.load(f)
     
-    #cyclic_y_pred_file=os.path.join(rootdir, 'data/data_umap/cyclic_y_pred.npy')
-    #cyclic_y_pred=np.load(cyclic_y_pred_file, allow_pickle=True)
+    # Recreate the UMAP object for cyclic_y_pred
+    cyclic_y_pred = UMAP(**umap_params)
 
     cyclic_average_rep_file=os.path.join(rootdir, 'data/data_umap/cyclic_av_rep.npy')
     cyclic_average_rep=np.load(cyclic_average_rep_file, allow_pickle=True)
