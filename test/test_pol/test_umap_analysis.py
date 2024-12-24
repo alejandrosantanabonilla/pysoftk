@@ -23,7 +23,6 @@ def rootdir():
 def test_umap_anaysis(rootdir):
 
     cwd=os.path.join(rootdir, 'data/data_umap')
-
     all_pos=os.path.join(rootdir, 'data/data_umap/all_pos.npy')
 
     cyclic_x_embed_file=os.path.join(rootdir, 'data/data_umap/cyclic_x_embedding.npy')
@@ -37,9 +36,6 @@ def test_umap_anaysis(rootdir):
     # Recreate the UMAP object
     cyclic_y_pred = UMAP(**umap_params)
     
-    #cyclic_y_pred_file=os.path.join(rootdir, 'data/data_umap/cyclic_y_pred.npy')
-    #cyclic_y_pred=np.load(cyclic_y_pred_file, allow_pickle=True)
-
     cyclic_average_rep_file=os.path.join(rootdir, 'data/data_umap/cyclic_av_rep.npy')
     cyclic_average_rep=np.load(cyclic_average_rep_file, allow_pickle=True)
 
