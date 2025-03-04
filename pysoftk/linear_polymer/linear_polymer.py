@@ -263,6 +263,7 @@ class Lp:
         # Relaxation and optimization:
         last_mol = ff_ob_relaxation(mol_new, force_field, relax_iterations)
         rot_mol = rotor_opt(last_mol, force_field, rot_steps)
+<<<<<<< HEAD
 
         return rot_mol
 
@@ -332,5 +333,10 @@ class Lpr:
         last_mol = ff_ob_relaxation(mol_new, force_field, relax_iterations)
         rot_mol = rotor_opt(last_mol, force_field, rot_steps)
         rel_mol = ff_ob_relaxation(rot_mol, force_field, relax_iterations)
+=======
+        rel_mol = ff_ob_relaxation(mol_new, force_field, relax_iterations)
+        
+        return rel_mol
+>>>>>>> 268db9a9d6df5eac33889591c650149a8d094e7a
 
         return rel_mol

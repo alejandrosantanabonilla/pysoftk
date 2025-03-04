@@ -1,0 +1,6 @@
+{
+  "min_dist": 0.0,
+  "n_neighbors": 8,
+  "random_state": 9,
+  "verbose": true
+}

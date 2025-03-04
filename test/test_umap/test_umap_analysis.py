@@ -3,7 +3,10 @@ import os
 from functools import wraps
 import numpy as np
 import json
+<<<<<<< HEAD:test/test_umap/test_umap_analysis.py
 import shutil
+=======
+>>>>>>> 268db9a9d6df5eac33889591c650149a8d094e7a:test/test_pol/test_umap_analysis.py
 
 import pytest
 import os
@@ -24,7 +27,6 @@ def rootdir():
 def test_umap_anaysis(rootdir):
 
     cwd=os.path.join(rootdir, 'data/data_umap')
-
     all_pos=os.path.join(rootdir, 'data/data_umap/all_pos.npy')
 
     cyclic_x_embed_file=os.path.join(rootdir, 'data/data_umap/cyclic_x_embedding.npy')
@@ -38,9 +40,12 @@ def test_umap_anaysis(rootdir):
     # Recreate the UMAP object
     cyclic_y_pred = UMAP(**umap_params)
     
+<<<<<<< HEAD:test/test_umap/test_umap_analysis.py
     #cyclic_y_pred_file=os.path.join(rootdir, 'data/data_umap/cyclic_y_pred.npy')
     #cyclic_y_pred=np.load(cyclic_y_pred_file, allow_pickle=True)
 
+=======
+>>>>>>> 268db9a9d6df5eac33889591c650149a8d094e7a:test/test_pol/test_umap_analysis.py
     cyclic_average_rep_file=os.path.join(rootdir, 'data/data_umap/cyclic_av_rep.npy')
     cyclic_average_rep=np.load(cyclic_average_rep_file, allow_pickle=True)
 
@@ -54,6 +59,7 @@ def test_umap_anaysis(rootdir):
     expected_length = 2
     assert len(png_files) == expected_length
 
+<<<<<<< HEAD:test/test_umap/test_umap_analysis.py
     final=os.path.join(rootdir, 'data/data_umap/umpap_output.png')
     final2=os.path.join(rootdir, 'data/data_umap/hdbscan_output.png')
     
@@ -72,3 +78,5 @@ def test_umap_anaysis(rootdir):
 
 
  
+=======
+>>>>>>> 268db9a9d6df5eac33889591c650149a8d094e7a:test/test_pol/test_umap_analysis.py
