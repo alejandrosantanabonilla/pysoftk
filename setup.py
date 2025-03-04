@@ -12,7 +12,8 @@ setup(
     description='PySoftK: Python Soft-Matter Kings College London',
     #long_description=open('README.txt').read(),
     install_requires=[ 
-       'pytest >= 2.7.2', 
+       'pytest >= 2.7.2',
+       'numpy < 1.27',
        'Cython', 
        'networkx >= 2.7; python_version>="3.8"', 
        'networkx < 2.7; python_version<"3.8"', 
@@ -23,7 +24,7 @@ setup(
        'pyscf-semiempirical @ git+https://github.com/pyscf/semiempirical', 
        'pyberny', 
        'openbabel-wheel', 
-       'numba ', 
+       'numba==0.58.1', 
        'umap-learn', 
        'hdbscan', 
        'pandas', 

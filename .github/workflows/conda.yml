@@ -1,51 +1,66 @@
-name: "PySoftK-testing"
+name: "Conda different OS"
 
-# Controls when the workflow will run
 on:
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
-  build:
+  example-1:
+    name: Ex1 (${{ matrix.python-version }}, ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        os: [ubuntu-latest]
-        python-version: [3.9, 3.10.1]
-    name: Python ${{ matrix.python-version }} example on ${{ matrix.os }}
+        os: ["ubuntu-latest", "macos-13"]
+        python-version: ["3.9", "3.10.12", "3.11"]
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Clear conda cache
+        run: |
+          rm -rf ~/.condarc ~/.conda
+          
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Setup Conda
-      uses: conda-incubator/setup-miniconda@v2
-      with:
-        auto-activate-base: true
-        activate-environment: true
-        python-version: ${{ matrix.python-version }}
-        channels: conda-forge, anaconda
-        miniconda-version: "latest"
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    - name: Installation xtb
-      shell: bash
-      run: |
-        conda install conda-forge::xtb
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: my_env
+          auto-update-conda: true
+          channels: conda-forge, defaults # Add channels as needed
+          python-version: ${{ matrix.python-version }}
 
-    - name: Installation pip
-      shell: bash
-      run: |
-        conda install pip 
-        
-    - name: Installing PySoftK
-      shell: bash
-      run: |
-        python -m pip install wheel --user
-        python -m pip install setuptools --upgrade --user
-        python -m pip install . --user  
-      
-    - name: Run PySoftK test
-      working-directory: ./test/test_pysoftk
-      shell: bash
-      run: |
-       python -m pip install pytest pytest-cov --user
-       python -m pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage.txt 
+      - name: xtb installation
+        shell: bash -l {0}
+        run: |
+          conda install -n my_env -c conda-forge xtb -y
+
+      - name: Install MDAnalysis
+        shell: bash -l {0}
+        run: |
+          conda install -n my_env -c conda-forge mdanalysis -y
+
+      - name: Installing PySoftK
+        shell: bash -l {0}
+        run: |
+           python -m pip install wheel --user
+           python -m pip install setuptools --upgrade --user
+           python -m pip install . --user  
+
+
+      - name: Run PySoftK-pysoftk test
+        working-directory: ./test/test_pysoftk
+        shell: bash -l {0}
+        run: |
+          python -m pip install pytest pytest-cov --user
+          python -m pytest --junitxml=pytest1.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage_1.txt
+
+      - name: Run PySoftK-pol test
+        working-directory: ./test/test_pol
+        shell: bash -l {0}
+        run: |
+          python -m pip install pytest pytest-cov --user
+          python -m pytest --junitxml=pytest2.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage_2.txt

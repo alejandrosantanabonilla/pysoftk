@@ -1,16 +1,14 @@
+import numpy as np
+
 from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Geometry import Point3D
-
 from rdkit.Chem import rdDistGeom
 from rdkit.Chem import rdDistGeom as molDG
 from rdkit.Chem.rdMolTransforms import *
-
 from rdkit import RDLogger
 RDLogger.DisableLog('rdApp.*')
 
-
-import numpy as np
 from pysoftk.tools.utils_func import *
 from pysoftk.tools.utils_ob   import *
 from pysoftk.tools.utils_rdkit   import *
@@ -266,5 +264,73 @@ class Lp:
         last_mol = ff_ob_relaxation(mol_new, force_field, relax_iterations)
         rot_mol = rotor_opt(last_mol, force_field, rot_steps)
 
-        return mol_new
+        return rot_mol
 
+class Lpr:
+    """
+    Generates a recursive SMILES string with a stopping condition and a final replacement.
+    """
+    __slots__ = ['mol', 'replacements', 'max_repetitions', 'final_replacement']
+
+    def __init__(self, mol, replacements, max_repetitions=10, final_replacement="*"):
+        """
+        Initializes the Lpr object.
+
+        Args:
+            smiles: The base SMILES string with a placeholder.
+            replacements: A dictionary of replacement strings.
+            max_iterations: The maximum number of recursive substitutions.
+            final_replacement: The SMILES string or SMART to replace the placeholder after recursion.
+        """
+        self.mol = mol
+        self.replacements = replacements
+        self.max_repetitions = max_repetitions
+        self.final_replacement = final_replacement
+
+    def generate_recursive_smiles(self, force_field="MMFF", relax_iterations=350, rot_steps=125):
+        """
+        Performs the recursive SMILES generation.
+
+        Returns:
+            A fully resolved SMILES string.
+        """
+        smiles = self.mol
+        for _ in range(self.max_repetitions-1):
+            try:
+                new_smiles = smiles.format(**self.replacements)
+            except KeyError as e:
+                print(f"KeyError: {e} in replacements. Please check your replacements dictionary and input SMILES string.")
+                return smiles # Return the most recent processed string, or handle as needed.
+
+            if new_smiles == smiles:  # Stop if the SMILES string doesn't change
+                break
+            smiles = new_smiles
+
+        # Replace the placeholder with the final_replacement
+        smiles = smiles.replace("{R}", self.final_replacement)
+
+        mol_new=pb.readstring('smiles', smiles)
+        mol_new.make3D()
+        
+        # Validate force field:
+        valid_force_fields = ("MMFF", "UFF", "MMFF94")
+        if force_field not in valid_force_fields:
+            raise ValueError(f"Invalid force field: {force_field}. Valid options are: {valid_force_fields}")
+
+        # Automatically change ff if necessary:
+        if force_field == "MMFF":
+            force_field = "MMFF94"  # Change to default MMFF94 for MMFF
+
+        # Validate and convert iterations and steps to integers:
+        try:
+            relax_iterations = int(relax_iterations)
+            rot_steps = int(rot_steps)
+        except ValueError:
+            raise ValueError("relax_iterations and rot_steps must be integers.")
+
+        # Relaxation and optimization:
+        last_mol = ff_ob_relaxation(mol_new, force_field, relax_iterations)
+        rot_mol = rotor_opt(last_mol, force_field, rot_steps)
+        rel_mol = ff_ob_relaxation(rot_mol, force_field, relax_iterations)
+
+        return rel_mol

@@ -10,9 +10,11 @@ Frequently Asked Questions
 How should I cite PySoftK_?
 ----------------------------
 
-If you find PySoftK useful in your research please cite the following articles:
+If you find PySoftK_ useful in your research please cite the following articles:
 
-[1] Ziolek, Robert M., et al. "Conformational Heterogeneity and Interchain Percolation Revealed in an Amorphous Conjugated Polymer." ACS nano (2022).
+1. Pyso_ : Modular Software for Generating and Modeling Diverse Polymer Databases.
+2. Pyso1_ : Automated Analysis of Soft Matter Interfaces, Interactions, and Self-Assembly with PySoftK.
+3. Pyso2_: Conformational Heterogeneity and Interchain Percolation Revealed in an Amorphous Conjugated Polymer.
 
 
 Known problems

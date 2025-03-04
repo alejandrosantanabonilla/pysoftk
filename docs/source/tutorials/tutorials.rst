@@ -20,6 +20,7 @@ of a ring polymer using pre-existing functions of PySoftK_ introduces the user i
    polymer_cyclic
    polymer_branched
    polymer_pattern
+   polymer_lrp
    bigamino
    combined_modules
    create_folders
