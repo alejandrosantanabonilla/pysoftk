@@ -1,22 +1,20 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.tools.utils_func &mdash; PySoftK 1.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=292eb321"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -77,19 +75,19 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pysoftk.tools.utils_func</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-<span class="kn">import</span> <span class="nn">rdkit</span>
-<span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
-<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">rdkit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>
 
-<span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">RDLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">RDLogger</span>
 <span class="n">RDLogger</span><span class="o">.</span><span class="n">DisableLog</span><span class="p">(</span><span class="s1">&#39;rdApp.*&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="get_file_extension">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.get_file_extension">[docs]</a>
-<span class="k">def</span> <span class="nf">get_file_extension</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_file_extension</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets the extension of a file.</span>
 
 <span class="sd">    Args:</span>
@@ -107,7 +105,7 @@
 
 <div class="viewcode-block" id="pattern_recon">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.pattern_recon">[docs]</a>
-<span class="k">def</span> <span class="nf">pattern_recon</span><span class="p">(</span><span class="n">pattern</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pattern_recon</span><span class="p">(</span><span class="n">pattern</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to find unique values from a string pattern.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -127,7 +125,7 @@
 
 <div class="viewcode-block" id="pattern_repl">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.pattern_repl">[docs]</a>
-<span class="k">def</span> <span class="nf">pattern_repl</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">tup_repl</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pattern_repl</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">tup_repl</span><span class="p">):</span>
 <span class="w">   </span><span class="sd">&quot;&quot;&quot;Function to perform a pattern replacement using tuples generated </span>
 <span class="sd">      by pattern and molecular names.</span>
 <span class="sd">   </span>
@@ -156,7 +154,7 @@
 
 <div class="viewcode-block" id="pattern_mol_seq">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.pattern_mol_seq">[docs]</a>
-<span class="k">def</span> <span class="nf">pattern_mol_seq</span><span class="p">(</span><span class="n">mols</span><span class="p">,</span> <span class="n">pattern</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pattern_mol_seq</span><span class="p">(</span><span class="n">mols</span><span class="p">,</span> <span class="n">pattern</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to create a list of molecules based on a user </span>
 <span class="sd">       provided pattern.</span>
 
@@ -186,7 +184,7 @@
 
 <div class="viewcode-block" id="count_plholder">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.count_plholder">[docs]</a>
-<span class="k">def</span> <span class="nf">count_plholder</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">count_plholder</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to count the number of user defined </span>
 <span class="sd">       atomic placeholders.</span>
 
@@ -217,7 +215,7 @@
 
 <div class="viewcode-block" id="atom_neigh">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.atom_neigh">[docs]</a>
-<span class="k">def</span> <span class="nf">atom_neigh</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">atom_neigh</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
 <span class="w">   </span><span class="sd">&quot;&quot;&quot;Find the neighbours from an atoms inside a molecule. </span>
 
 <span class="sd">   Parameters</span>
@@ -249,7 +247,7 @@
 
 <div class="viewcode-block" id="tuple_bonds">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.tuple_bonds">[docs]</a>
-<span class="k">def</span> <span class="nf">tuple_bonds</span><span class="p">(</span><span class="n">lst_atm_neigh</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tuple_bonds</span><span class="p">(</span><span class="n">lst_atm_neigh</span><span class="p">):</span>
 <span class="w">   </span><span class="sd">&quot;&quot;&quot;Function to seek atomic neighbours</span>
 
 <span class="sd">   Parameters</span>
@@ -277,7 +275,7 @@
 
 <div class="viewcode-block" id="create_pol">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.create_pol">[docs]</a>
-<span class="k">def</span> <span class="nf">create_pol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">tpb</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_pol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">tpb</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to create polymers.</span>
 
 <span class="sd">    Parameters</span>

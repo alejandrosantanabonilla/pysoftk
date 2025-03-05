@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
@@ -5,19 +7,15 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Creating cyclic Polymers &mdash; PySoftK 1.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=292eb321"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=292eb321"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
@@ -59,6 +57,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Creating cyclic Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_lrp.html">Recursive linear polymer generation with Lpr</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bigamino.html">Modelling soft-matter long chain polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="combined_modules.html">Creating new polymers from different modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
@@ -99,15 +98,15 @@
   <section id="creating-cyclic-polymers">
 <span id="polymer-cyclic"></span><h1>Creating cyclic Polymers<a class="headerlink" href="#creating-cyclic-polymers" title="Link to this heading"></a></h1>
 <p>Constructing a polymer with cyclic topology can be carried out in <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> by employing the <a class="reference internal" href="../pysoftk.topologies.html#module-pysoftk.topologies.ring" title="pysoftk.topologies.ring"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pysoftk.topologies.ring</span></code></a> function. First, we need to import the initial molecule and read it using <a class="reference external" href="https://www.rdkit.org/">RDKit</a>, as shown in the following snippet:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
-<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>
 
 <span class="n">mol</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;c1cc(ccc1Br)Br&quot;</span><span class="p">)</span>
 <span class="n">AllChem</span><span class="o">.</span><span class="n">EmbedMolecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Then, we can create a cyclic topology, by using the following commands:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysoftk.topologies.ring</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.topologies.ring</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">cyc</span><span class="o">=</span><span class="n">Rn</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="s1">&#39;Br&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">pol_ring</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="n">FF</span><span class="o">=</span><span class="s2">&quot;UFF&quot;</span><span class="p">,</span><span class="n">iters</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
@@ -115,14 +114,15 @@
 <p>The new molecular unit (stored in the variable <strong>cyc</strong>) can be used to replicate and form a polymer with a given desired number of units (in this case 8).</p>
 <p>It is important to notice that we have used a <strong>different</strong> Force Field (Universal Force Field) and <strong>increased</strong> the number of iterations in the geometry optiomization process (iters=1000). This ensures a correct initial configuration highligthing the importance of always testing the correct parameters to generate correct structures.</p>
 <p>To print the structure in XYZ format, one needs to add the following lines of conde as can be seen in this snipet:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysoftk.format_printers.format_mol</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.format_printers.format_mol</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">Fmt</span><span class="p">(</span><span class="n">cyc</span><span class="p">)</span><span class="o">.</span><span class="n">xyz_print</span><span class="p">(</span><span class="s2">&quot;ring.xyz&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>By using a common visualization program (such as <a class="reference external" href="https://www.ks.uiuc.edu/Research/vmd/">VMD</a>), the built structure <strong>ring.xyz</strong> can be displayed and the result as presented above</p>
 <figure class="align-center" id="id1">
-<a class="reference internal image-reference" href="../_images/ring_2.png"><img alt="../_images/ring_2.png" src="../_images/ring_2.png" style="width: 250px; height: 250px;" /></a>
+<a class="reference internal image-reference" href="../_images/ring_2.png"><img alt="../_images/ring_2.png" src="../_images/ring_2.png" style="width: 250px; height: 250px;" />
+</a>
 <figcaption>
 <p><span class="caption-text"><strong>Figure</strong> Cyclic polymer with 8 repetition units.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>

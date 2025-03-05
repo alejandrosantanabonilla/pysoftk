@@ -1,22 +1,20 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.pol_analysis.umap_analysis &mdash; PySoftK 1.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=292eb321"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -77,16 +75,16 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pysoftk.pol_analysis.umap_analysis</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
 
 <div class="viewcode-block" id="timeit">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.umap_analysis.timeit">[docs]</a>
-<span class="k">def</span> <span class="nf">timeit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">timeit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">timeit_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">time</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">timeit_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
         <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
@@ -98,13 +96,13 @@
 
 <div class="viewcode-block" id="umap_analysis">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.umap_analysis.umap_analysis">[docs]</a>
-<span class="k">class</span> <span class="nc">umap_analysis</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">umap_analysis</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; A class used to compute to do umap cluster identification </span>
 <span class="sd">        of polymer conformations within an spatial configuration </span>
 <span class="sd">        of moieties. </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_pos</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_pos</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initiating the class umap_analysis.</span>
 <span class="sd">         </span>
 <span class="sd">        Parameters</span>
@@ -120,7 +118,7 @@
 
 <div class="viewcode-block" id="umap_analysis.get_array">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.umap_analysis.umap_analysis.get_array">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to load the all pos distances.</span>
 
 <span class="sd">        Parameters</span>
@@ -136,7 +134,7 @@
 <span class="sd">            np.array to load</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
         <span class="n">all_pos</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_pos</span><span class="p">)</span>
 
@@ -146,7 +144,7 @@
 
 <div class="viewcode-block" id="umap_analysis.umap_run">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.umap_analysis.umap_analysis.umap_run">[docs]</a>
-    <span class="k">def</span> <span class="nf">umap_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_neigh</span><span class="p">,</span> <span class="n">cwd</span><span class="p">,</span> <span class="n">n_comp</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">min_d</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">umap_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_neigh</span><span class="p">,</span> <span class="n">cwd</span><span class="p">,</span> <span class="n">n_comp</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">min_d</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                  <span class="n">verb</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">rs</span><span class="o">=</span><span class="mi">9</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to run umap on all_pos array.</span>
 
@@ -182,10 +180,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-        <span class="kn">import</span> <span class="nn">umap</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">umap</span>
 
         <span class="n">all_pos</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_array</span><span class="p">()</span>
 
@@ -216,7 +214,7 @@
 
 <div class="viewcode-block" id="umap_analysis.hdbscan_cluster">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.umap_analysis.umap_analysis.hdbscan_cluster">[docs]</a>
-    <span class="k">def</span> <span class="nf">hdbscan_cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_embedded</span><span class="p">,</span> <span class="n">min_cs</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">cwd</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;leaf&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hdbscan_cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_embedded</span><span class="p">,</span> <span class="n">min_cs</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">cwd</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;leaf&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to hdbscan on umap clustered data.</span>
 
 <span class="sd">        Parameters</span>
@@ -248,10 +246,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-        <span class="kn">import</span> <span class="nn">hdbscan</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">hdbscan</span>
 
         <span class="n">hdb</span> <span class="o">=</span> <span class="n">hdbscan</span><span class="o">.</span><span class="n">HDBSCAN</span><span class="p">(</span>
         <span class="n">min_cluster_size</span><span class="o">=</span> <span class="n">min_cs</span><span class="p">,</span>              <span class="c1"># minimum number of points for a group to be considered a cluster</span>
@@ -300,7 +298,7 @@
 
 <div class="viewcode-block" id="umap_analysis.cluster_order_appearance">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.umap_analysis.umap_analysis.cluster_order_appearance">[docs]</a>
-    <span class="k">def</span> <span class="nf">cluster_order_appearance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_embedded</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">cwd</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cluster_order_appearance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_embedded</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">cwd</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to ouput hdbscan with the groups labeled ordered </span>
 <span class="sd">           with their order of appearance in the trajectory.</span>
 
@@ -325,8 +323,8 @@
 <span class="sd">            </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
         <span class="c1">#ignore noise</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span> 
@@ -365,7 +363,7 @@
 
 <div class="viewcode-block" id="umap_analysis.find_closest_point">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.umap_analysis.umap_analysis.find_closest_point">[docs]</a>
-    <span class="k">def</span> <span class="nf">find_closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">target_point</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">target_point</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to find the closest point from an array to a given target point</span>
 
 <span class="sd">        Parameters</span>
@@ -386,8 +384,8 @@
 <span class="sd">            </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-        <span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">cdist</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">cdist</span>
 
         <span class="c1"># Calculate pairwise distances</span>
         <span class="n">distances</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">target_point</span><span class="p">]))</span>
@@ -402,7 +400,7 @@
 
 <div class="viewcode-block" id="umap_analysis.get_average_rep_cluster">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.umap_analysis.umap_analysis.get_average_rep_cluster">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_average_rep_cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_embedded</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_average_rep_cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_embedded</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to get the X_embedded point that represents the </span>
 <span class="sd">           mean of each umap cluster.</span>
 
@@ -428,7 +426,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
         <span class="n">unique_clusters</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span>
         <span class="n">cluster_points</span><span class="o">=</span><span class="p">[]</span>

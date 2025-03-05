@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
@@ -5,25 +7,21 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Modelling soft-matter long chain polymers &mdash; PySoftK 1.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=292eb321"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=292eb321"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Creating new polymers from different modules" href="combined_modules.html" />
-    <link rel="prev" title="Creating patterned Polymers" href="polymer_pattern.html" /> 
+    <link rel="prev" title="Recursive linear polymer generation with Lpr" href="polymer_lrp.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -59,6 +57,7 @@
 <li class="toctree-l2"><a class="reference internal" href="polymer_cyclic.html">Creating cyclic Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_lrp.html">Recursive linear polymer generation with Lpr</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Modelling soft-matter long chain polymers</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#modelling-long-chains">Modelling long chains</a></li>
 </ul>
@@ -106,12 +105,12 @@
 <h2>Modelling long chains<a class="headerlink" href="#modelling-long-chains" title="Link to this heading"></a></h2>
 <p><a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> enables the use of <a class="reference external" href="https://github.com/grimme-lab/xtb">xtb</a> as a <strong>calculator</strong> employing a customized Force Field implementation (called <strong>xtb_ff</strong>).
 To introduce this functionality, one needs to import the corresponding <a class="reference external" href="https://www.rdkit.org/">RDKit</a> auxiliary functions (line 1-2) and the needed modules from <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> as shown in the following snipet:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
-<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
-<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">rdDistGeom</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">rdDistGeom</span>
 
-<span class="kn">from</span> <span class="nn">pysoftk.topologies.diblock</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.format_printers.format_mol</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.topologies.diblock</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.format_printers.format_mol</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 </div>
 <p>To demonstrate the functionality of this module, two aminoacids (PEG and PGLA) are used to create a <em>patterned-polymer</em> (and stored in the variable <strong>mols</strong>). The pattern can be created in python-lists containing user-defined sequences of letters. In this case we have used 45 <em>A’s</em> and 15 <em>B’s</em>. This is displayed in the following snipet:</p>
@@ -145,7 +144,8 @@ the relax_iterations (Number of relaxation steps for energy minimization), force
 </div>
 <p>The results of the geometrical optimization are printed to the file <strong>test.pdb</strong> and can be visualized using <a class="reference external" href="https://www.ks.uiuc.edu/Research/vmd/">VMD</a>.</p>
 <figure class="align-center">
-<a class="reference internal image-reference" href="../_images/bigamino.png"><img alt="../_images/bigamino.png" src="../_images/bigamino.png" style="width: 388px; height: 208px;" /></a>
+<a class="reference internal image-reference" href="../_images/bigamino.png"><img alt="../_images/bigamino.png" src="../_images/bigamino.png" style="width: 388px; height: 208px;" />
+</a>
 </figure>
 </section>
 </section>
@@ -154,7 +154,7 @@ the relax_iterations (Number of relaxation steps for energy minimization), force
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="polymer_pattern.html" class="btn btn-neutral float-left" title="Creating patterned Polymers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="polymer_lrp.html" class="btn btn-neutral float-left" title="Recursive linear polymer generation with Lpr" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="combined_modules.html" class="btn btn-neutral float-right" title="Creating new polymers from different modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

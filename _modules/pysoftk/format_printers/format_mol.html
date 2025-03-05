@@ -1,22 +1,20 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.format_printers.format_mol &mdash; PySoftK 1.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=292eb321"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -77,18 +75,18 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pysoftk.format_printers.format_mol</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">openbabel</span> <span class="kn">import</span> <span class="n">openbabel</span> <span class="k">as</span> <span class="n">ob</span>
-<span class="kn">from</span> <span class="nn">openbabel</span> <span class="kn">import</span> <span class="n">pybel</span> <span class="k">as</span> <span class="n">pb</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">openbabel</span><span class="w"> </span><span class="kn">import</span> <span class="n">openbabel</span> <span class="k">as</span> <span class="n">ob</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openbabel</span><span class="w"> </span><span class="kn">import</span> <span class="n">pybel</span> <span class="k">as</span> <span class="n">pb</span>
 
-<span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
-<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
-<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">rdDistGeom</span> <span class="k">as</span> <span class="n">molDG</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">rdDistGeom</span> <span class="k">as</span> <span class="n">molDG</span>
 
-<span class="kn">from</span> <span class="nn">pysoftk.tools.utils_func</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.tools.utils_func</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <div class="viewcode-block" id="Fmt">
 <a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt">[docs]</a>
-<span class="k">class</span> <span class="nc">Fmt</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Fmt</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class printing RDkit Mol Object in different formats</span>
 <span class="sd">          </span>
 <span class="sd">    Returns</span>
@@ -99,7 +97,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
 <span class="w">       </span><span class="sd">&quot;&quot;&quot; Initialise the class Fmt</span>
 
 <span class="sd">       Parameters</span>
@@ -112,7 +110,7 @@
     
 <div class="viewcode-block" id="Fmt.xyz_print">
 <a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt.xyz_print">[docs]</a>
-    <span class="k">def</span> <span class="nf">xyz_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">xyz_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to print in XYZ format</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
@@ -148,7 +146,7 @@
 
 <div class="viewcode-block" id="Fmt.pdb_print">
 <a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt.pdb_print">[docs]</a>
-    <span class="k">def</span> <span class="nf">pdb_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pdb_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to print in PDB format</span>
 
 <span class="sd">        Parameters</span>
@@ -181,7 +179,7 @@
           
 <div class="viewcode-block" id="Fmt.mol_print">
 <a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt.mol_print">[docs]</a>
-    <span class="k">def</span> <span class="nf">mol_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mol_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to print in MOL format</span>
 
 <span class="sd">        Parameters</span>
@@ -213,7 +211,7 @@
 
 <div class="viewcode-block" id="Fmt.format_print">
 <a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt.format_print">[docs]</a>
-    <span class="k">def</span> <span class="nf">format_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">format_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to print a pysoftk.object into an user </span>
 <span class="sd">        provided output_format.</span>
 
@@ -253,7 +251,7 @@
 
 <div class="viewcode-block" id="Cnv">
 <a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Cnv">[docs]</a>
-<span class="k">class</span> <span class="nc">Cnv</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Cnv</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for converting files from X to Y format. </span>
 <span class="sd">          </span>
 <span class="sd">    Returns</span>
@@ -263,7 +261,7 @@
 <span class="sd">            A file with the provided molecule in a chosen format.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_mol</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_mol</span><span class="p">):</span>
 <span class="w">       </span><span class="sd">&quot;&quot;&quot; Initialise the class Fmt</span>
 
 <span class="sd">       Parameters</span>
@@ -278,7 +276,7 @@
        
 <div class="viewcode-block" id="Cnv.file_in_out">
 <a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Cnv.file_in_out">[docs]</a>
-    <span class="k">def</span> <span class="nf">file_in_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;mol2&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">file_in_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;mol2&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to convert an user-provided file </span>
 <span class="sd">           with X format to an user-provided Y format.</span>
 

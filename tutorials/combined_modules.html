@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
@@ -5,19 +7,15 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Creating new polymers from different modules &mdash; PySoftK 1.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=292eb321"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=292eb321"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
@@ -59,6 +57,7 @@
 <li class="toctree-l2"><a class="reference internal" href="polymer_cyclic.html">Creating cyclic Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_lrp.html">Recursive linear polymer generation with Lpr</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bigamino.html">Modelling soft-matter long chain polymers</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Creating new polymers from different modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
@@ -102,18 +101,18 @@
 <p>Let’s create a patterned polymer by permuting four monomers using the <a class="reference internal" href="../pysoftk.topologies.html#module-pysoftk.topologies.diblock" title="pysoftk.topologies.diblock"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pysoftk.topologies.diblock</span></code></a> function.</p>
 <p>First, we need to import the corresponding modules from <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> to allow us to read and join the monomers
 using <a class="reference external" href="https://www.rdkit.org/">RDKit</a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rdkit</span>
-<span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
-<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">permutations</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rdkit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">permutations</span>
 
-<span class="kn">from</span> <span class="nn">pysoftk.topologies.diblock</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.topologies.diblock</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer.utils</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 </div>
 <p>Then, we can create the alphabetic permutations and define the monomers whose SMILES codes have been inputted  using  <a class="reference external" href="https://www.rdkit.org/">RDKit</a> :</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysoftk.topologies.diblock</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.utils</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.topologies.diblock</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer.utils</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 </pre></div>
 </div>
@@ -134,21 +133,21 @@ In this case, we use the linear polymer function (<a class="reference internal" 
 uses the previous patterned polymer as initial monomer and creates a new linear polymer
 of two-unit repetition.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Linear polymer module </span>
-<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.linear_polymer</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.format_printers.format_mol</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer.linear_polymer</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.format_printers.format_mol</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">new</span><span class="o">=</span><span class="n">Lp</span><span class="p">(</span><span class="n">patt</span><span class="p">,</span><span class="s2">&quot;Br&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">linear_polymer</span><span class="p">(</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="n">Fmt</span><span class="p">(</span><span class="n">new</span><span class="p">)</span><span class="o">.</span><span class="n">xyz_print</span><span class="p">(</span><span class="s2">&quot;ABCD_pol.xyz&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The final script is:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rdkit</span>
-<span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
-<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">permutations</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rdkit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">permutations</span>
 
-<span class="kn">from</span> <span class="nn">pysoftk.topologies.diblock</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.topologies.diblock</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer.utils</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># Creating permutations for 4 different units</span>
 <span class="n">alph1</span><span class="o">=</span><span class="n">permutations</span><span class="p">([</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">],</span> <span class="mi">4</span><span class="p">)</span>
@@ -162,8 +161,8 @@ of two-unit repetition.</p>
 <span class="n">patt</span><span class="o">=</span><span class="n">Pt</span><span class="p">(</span><span class="n">string</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mols</span><span class="p">,</span> <span class="s2">&quot;Br&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">pattern_block_poly</span><span class="p">(</span><span class="n">swap_H</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Linear polymer module </span>
-<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.linear_polymer</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.format_printers.format_mol</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer.linear_polymer</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.format_printers.format_mol</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">new</span><span class="o">=</span><span class="n">Lp</span><span class="p">(</span><span class="n">patt</span><span class="p">,</span><span class="s2">&quot;Br&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">linear_polymer</span><span class="p">(</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="n">Fmt</span><span class="p">(</span><span class="n">new</span><span class="p">)</span><span class="o">.</span><span class="n">xyz_print</span><span class="p">(</span><span class="s2">&quot;ABCD_pol.xyz&quot;</span><span class="p">)</span>

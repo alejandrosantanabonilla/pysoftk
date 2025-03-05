@@ -1,0 +1,209 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recursive linear polymer generation with Lpr &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=292eb321"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Modelling soft-matter long chain polymers" href="bigamino.html" />
+    <link rel="prev" title="Creating patterned Polymers" href="polymer_pattern.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PySoftK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials: Modelling Polymers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="prepare_molecules.html">Preparing monomers for PySoftK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monomer_polymers.html">From single molecules to polymers using PySoftK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="super_monomer.html">Creating a Polymer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_chains.html">Creating chains of Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_diblock.html">Creating diblock Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_random.html">Creating random Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_cyclic.html">Creating cyclic Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Recursive linear polymer generation with Lpr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bigamino.html">Modelling soft-matter long chain polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combined_modules.html">Creating new polymers from different modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calculator.html">Computing using <strong>ab-initio</strong> calculators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="torsional.html">Automatic torsional angle detection for planar polymers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorialspol.html">Tutorials: Analysis Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">pysoftk</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PySoftK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="tutorials.html">Tutorials: Modelling Polymers</a></li>
+      <li class="breadcrumb-item active">Recursive linear polymer generation with Lpr</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/polymer_lrp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="recursive-linear-polymer-generation-with-lpr">
+<span id="linear-lrp"></span><h1>Recursive linear polymer generation with Lpr<a class="headerlink" href="#recursive-linear-polymer-generation-with-lpr" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Lpr</span></code> class in the <a class="reference internal" href="../pysoftk.linear_polymer.html#module-pysoftk.linear_polymer.linear_polymer" title="pysoftk.linear_polymer.linear_polymer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pysoftk.linear_polymer.linear_polymer</span></code></a> module provides a powerful way to generate linear polymers from repeating monomer units. This tutorial will guide you through its usage, explaining the key parameters and options. The <code class="docutils literal notranslate"><span class="pre">Lpr</span></code> class is initialized with a starting SMILES string, a dictionary of replacements, and the maximum number of repetitions.</p>
+<p>Let’s start with a simple example of generating polystyrene.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer.linear_polymer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lpr</span>
+
+<span class="n">smiles</span> <span class="o">=</span> <span class="s2">&quot;CC(c1ccccc1)</span><span class="si">{R}</span><span class="s2">&quot;</span>
+<span class="n">replacements</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="s2">&quot;CC(c1ccccc1)</span><span class="si">{R}</span><span class="s2">&quot;</span><span class="p">}</span>
+<span class="n">final_replacement</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">lpr_instance</span> <span class="o">=</span> <span class="n">Lpr</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">replacements</span><span class="p">,</span> <span class="n">max_repetitions</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">final_replacement</span><span class="o">=</span><span class="n">final_replacement</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">lpr_instance</span><span class="o">.</span><span class="n">generate_recursive_smiles</span><span class="p">(</span><span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is the result of the recursive implementation:</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/styrene_lrp.png"><img alt="../_images/styrene_lrp.png" src="../_images/styrene_lrp.png" style="width: 550px; height: 550px;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure</strong> recursive linear polymer with 10 styrene units.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple">
+<li><p><strong>Initialization:</strong>
+* <code class="docutils literal notranslate"><span class="pre">smiles</span> <span class="pre">=</span> <span class="pre">&quot;CC(c1ccccc1){R}&quot;</span></code>: This is the starting SMILES string. The <code class="docutils literal notranslate"><span class="pre">{R}</span></code> placeholder indicates the point where the polymer chain will extend.
+* <code class="docutils literal notranslate"><span class="pre">replacements</span> <span class="pre">=</span> <span class="pre">{&quot;R&quot;:</span> <span class="pre">&quot;CC(c1ccccc1){R}&quot;}</span></code>: This dictionary defines the replacement rule. The <code class="docutils literal notranslate"><span class="pre">{R}</span></code> placeholder in the replacement string is crucial for recursive polymer growth.
+* <code class="docutils literal notranslate"><span class="pre">max_repetitions=10</span></code>: This specifies the number of times the replacement rule will be applied, determining the polymer’s length.
+* <code class="docutils literal notranslate"><span class="pre">final_replacement</span> <span class="pre">=</span> <span class="pre">&quot;&quot;</span></code>: This allows a final modification to the end of the polymer chain. In this case, there’s no final replacement.
+* <code class="docutils literal notranslate"><span class="pre">lpr_instance</span> <span class="pre">=</span> <span class="pre">Lpr(smiles,</span> <span class="pre">replacements,</span> <span class="pre">max_repetitions=10,</span> <span class="pre">final_replacement=final_replacement)</span></code>: This creates an instance of the Lpr class.</p></li>
+<li><p><strong>Polymer Generation:</strong>
+* <code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">lpr_instance.generate_recursive_smiles(force_field=&quot;MMFF&quot;,</span> <span class="pre">relax_iterations=250,</span> <span class="pre">rot_steps=1)</span></code>: This generates the polymer using the specified parameters.
+* <code class="docutils literal notranslate"><span class="pre">force_field=&quot;MMFF&quot;</span></code>: Specifies the force field to use for geometry optimization.
+* <code class="docutils literal notranslate"><span class="pre">relax_iterations=250</span></code>: Sets the number of iterations for geometry optimization.
+* <code class="docutils literal notranslate"><span class="pre">rot_steps=1</span></code>: Sets the number of rotational steps.
+* <code class="docutils literal notranslate"><span class="pre">print(result)</span></code>: Prints the generated molecule.</p></li>
+</ol>
+<p><strong>Lpr Class Parameters</strong></p>
+<p>The Lpr class contains the following parameters:</p>
+<ul class="simple">
+<li><p><strong>`smiles` (str):</strong> The starting SMILES string.</p></li>
+<li><p><strong>`replacements` (dict):</strong> A dictionary of replacement rules.</p></li>
+<li><p><strong>`max_repetitions` (int):</strong> The maximum number of repetitions.</p></li>
+<li><p><strong>`final_replacement` (str, optional):</strong> A final replacement string. Defaults to an empty string.</p></li>
+</ul>
+<p><strong>generate_recursive_smiles` Method Parameters</strong></p>
+<p>The generative_recursive_smiles function has the following parameters:</p>
+<ul class="simple">
+<li><p><strong>`force_field` (str, optional):</strong> The force field to use for geometry optimization (e.g., “MMFF”, “UFF”). Defaults to None (no optimization).</p></li>
+<li><p><strong>`relax_iterations` (int, optional):</strong> The number of iterations for geometry optimization. Defaults to 0.</p></li>
+<li><p><strong>`rot_steps` (int, optional):</strong> The number of rotational steps. Defaults to 1.</p></li>
+</ul>
+<p><strong>Further notes:</strong></p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">{R}</span></code> placeholder is essential for defining the polymer chain’s growth points.</p></li>
+<li><p>Geometry optimization can be computationally intensive, especially for large polymers. Adjust <code class="docutils literal notranslate"><span class="pre">relax_iterations</span></code> accordingly.</p></li>
+<li><p>Ensure that the starting SMILES string and replacement rules are valid.</p></li>
+<li><p>It is advised to use smaller values for max_repetitions and relax_iterations when testing, and then increase them for the final run.</p></li>
+</ul>
+<p>Here’s an example of generating polyethylene:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer.linear_polymer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lpr</span>
+
+<span class="n">smiles</span> <span class="o">=</span> <span class="s2">&quot;C=C</span><span class="si">{R}</span><span class="s2">&quot;</span>
+<span class="n">replacements</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="s2">&quot;C=C</span><span class="si">{R}</span><span class="s2">&quot;</span><span class="p">}</span>
+<span class="n">final_replacement</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">lpr_instance</span> <span class="o">=</span> <span class="n">Lpr</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">replacements</span><span class="p">,</span> <span class="n">max_repetitions</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">final_replacement</span><span class="o">=</span><span class="n">final_replacement</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">lpr_instance</span><span class="o">.</span><span class="n">generate_recursive_smiles</span><span class="p">(</span><span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/ethylene_lrp.png"><img alt="../_images/ethylene_lrp.png" src="../_images/ethylene_lrp.png" style="width: 850px; height: 350px;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><strong>Figure</strong> recursive linear polymer with 10 ethylene units.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>In this example, we generate a longer polyethylene chain using a higher <code class="docutils literal notranslate"><span class="pre">max_repetitions</span></code> value. Experiment with different starting SMILES strings and replacement rules to create various linear polymers. Adjust the optimization parameters to fine-tune the resulting structures. This documentation should help you get started with using the Lrp class.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="polymer_pattern.html" class="btn btn-neutral float-left" title="Creating patterned Polymers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bigamino.html" class="btn btn-neutral float-right" title="Modelling soft-matter long chain polymers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, Rob Ziolek, and Chris Lorenz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

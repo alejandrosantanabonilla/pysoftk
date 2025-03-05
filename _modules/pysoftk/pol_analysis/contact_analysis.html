@@ -1,22 +1,20 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.pol_analysis.contact_analysis &mdash; PySoftK 1.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=292eb321"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -77,22 +75,22 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pysoftk.pol_analysis.contact_analysis</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
 
-<span class="kn">from</span> <span class="nn">pysoftk.pol_analysis.tools.utils_mda</span> <span class="kn">import</span> <span class="n">MDA_input</span>
-<span class="kn">from</span> <span class="nn">pysoftk.pol_analysis.tools.utils_tools</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.pol_analysis.tools.utils_mda</span><span class="w"> </span><span class="kn">import</span> <span class="n">MDA_input</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.pol_analysis.tools.utils_tools</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
-<span class="kn">from</span> <span class="nn">pysoftk.pol_analysis.make_micelle_whole</span> <span class="kn">import</span> <span class="n">micelle_whole</span>
-<span class="kn">from</span> <span class="nn">pysoftk.pol_analysis.clustering</span> <span class="kn">import</span> <span class="n">SCP</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.pol_analysis.make_micelle_whole</span><span class="w"> </span><span class="kn">import</span> <span class="n">micelle_whole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.pol_analysis.clustering</span><span class="w"> </span><span class="kn">import</span> <span class="n">SCP</span>
 
 <div class="viewcode-block" id="timeit">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.contact_analysis.timeit">[docs]</a>
-<span class="k">def</span> <span class="nf">timeit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">timeit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">timeit_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">time</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">timeit_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
         <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
@@ -104,12 +102,12 @@
 
 <div class="viewcode-block" id="contacts">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.contact_analysis.contacts">[docs]</a>
-<span class="k">class</span> <span class="nc">contacts</span><span class="p">(</span><span class="n">MDA_input</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">contacts</span><span class="p">(</span><span class="n">MDA_input</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; A class used to compute the contacts between the polymers </span>
 <span class="sd">        of a micelle. </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tpr_file</span><span class="p">,</span> <span class="n">xtc_file</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tpr_file</span><span class="p">,</span> <span class="n">xtc_file</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;Instantiating the MDA_input class as</span>
 <span class="sd">         super function.</span>
 <span class="sd">      &quot;&quot;&quot;</span>
@@ -119,7 +117,7 @@
 
 <div class="viewcode-block" id="contacts.contacts_calc">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.contact_analysis.contacts.contacts_calc">[docs]</a>
-    <span class="k">def</span> <span class="nf">contacts_calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">micelle_selection</span><span class="p">,</span> <span class="n">micelle_positions</span><span class="p">,</span> <span class="n">group1</span><span class="p">,</span> <span class="n">group2</span><span class="p">,</span> <span class="n">contact_distance</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">contacts_calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">micelle_selection</span><span class="p">,</span> <span class="n">micelle_positions</span><span class="p">,</span> <span class="n">group1</span><span class="p">,</span> <span class="n">group2</span><span class="p">,</span> <span class="n">contact_distance</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to get atom pairs</span>
 
 <span class="sd"> </span>
@@ -149,8 +147,8 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-        <span class="kn">import</span> <span class="nn">MDAnalysis</span> <span class="k">as</span> <span class="nn">mda</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
 
 
         <span class="n">micelle</span> <span class="o">=</span> <span class="n">micelle_selection</span>
@@ -199,7 +197,7 @@
 
 <div class="viewcode-block" id="contacts.run_contacts_calc">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.contact_analysis.contacts.run_contacts_calc">[docs]</a>
-    <span class="k">def</span> <span class="nf">run_contacts_calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="n">micelle_selection</span><span class="p">,</span> <span class="n">micelle_positions</span><span class="p">,</span> <span class="n">group1</span><span class="p">,</span> <span class="n">group2</span><span class="p">,</span> <span class="n">contacts_distance</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_contacts_calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="n">micelle_selection</span><span class="p">,</span> <span class="n">micelle_positions</span><span class="p">,</span> <span class="n">group1</span><span class="p">,</span> <span class="n">group2</span><span class="p">,</span> <span class="n">contacts_distance</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to run contacts_calc function over timme</span>
 <span class="sd"> </span>
 <span class="sd">            Parameters</span>
@@ -227,9 +225,9 @@
 <span class="sd">                Array with the contacts between polymers in each timestep</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">MDAnalysis</span> <span class="k">as</span> <span class="nn">mda</span>
-        <span class="kn">import</span> <span class="nn">concurrent.futures</span>
-        <span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">concurrent.futures</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm.auto</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
         <span class="n">u</span><span class="o">=</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_mda_universe</span><span class="p">()</span>
         

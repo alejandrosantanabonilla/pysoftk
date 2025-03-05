@@ -1,22 +1,20 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.topologies.ring &mdash; PySoftK 1.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=292eb321"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -77,28 +75,28 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pysoftk.topologies.ring</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">rdkit</span>
-<span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
-<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rdkit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>
 
-<span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">RDLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">RDLogger</span>
 <span class="n">RDLogger</span><span class="o">.</span><span class="n">DisableLog</span><span class="p">(</span><span class="s1">&#39;rdApp.*&#39;</span><span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 
-<span class="kn">from</span> <span class="nn">pysoftk.topologies.diblock</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.linear_polymer</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.topologies.diblock</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer.linear_polymer</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
-<span class="kn">from</span> <span class="nn">pysoftk.tools.utils_func</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.tools.utils_rdkit</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.tools.utils_func</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.tools.utils_rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
-<span class="kn">from</span> <span class="nn">openbabel</span> <span class="kn">import</span> <span class="n">openbabel</span> <span class="k">as</span> <span class="n">ob</span>
-<span class="kn">from</span> <span class="nn">openbabel</span> <span class="kn">import</span> <span class="n">pybel</span> <span class="k">as</span> <span class="n">pb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openbabel</span><span class="w"> </span><span class="kn">import</span> <span class="n">openbabel</span> <span class="k">as</span> <span class="n">ob</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openbabel</span><span class="w"> </span><span class="kn">import</span> <span class="n">pybel</span> <span class="k">as</span> <span class="n">pb</span>
 
 <div class="viewcode-block" id="Rn">
 <a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.ring.Rn">[docs]</a>
-<span class="k">class</span> <span class="nc">Rn</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Rn</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for creating a circular (ring-shaped) polymer </span>
 <span class="sd">       from given RDKit molecules.</span>
 
@@ -113,7 +111,7 @@
     
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mol&#39;</span><span class="p">,</span> <span class="s1">&#39;atom&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
 <span class="w">       </span><span class="sd">&quot;&quot;&quot;Initialize this class.</span>
 <span class="sd">       &quot;&quot;&quot;</span>       
        <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">=</span><span class="n">mol</span>
@@ -121,7 +119,7 @@
      
 <div class="viewcode-block" id="Rn.pol_ring">
 <a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.ring.Rn.pol_ring">[docs]</a>
-    <span class="k">def</span> <span class="nf">pol_ring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">len_polymer</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pol_ring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">len_polymer</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span>
                  <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span> <span class="n">more_iter</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span> 
 <span class="w">      </span><span class="sd">&quot;&quot;&quot; Function to create a polymer with ring structure (circular)</span>
 
@@ -200,7 +198,7 @@
      
 <div class="viewcode-block" id="apply_force_field">
 <a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.ring.apply_force_field">[docs]</a>
-<span class="k">def</span> <span class="nf">apply_force_field</span><span class="p">(</span><span class="n">molecule</span><span class="p">:</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">,</span> <span class="n">force_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">apply_force_field</span><span class="p">(</span><span class="n">molecule</span><span class="p">:</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">,</span> <span class="n">force_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Applies the specified force field to the molecule.&quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">force_field</span> <span class="o">==</span> <span class="s2">&quot;MMFF&quot;</span><span class="p">:</span>
@@ -213,7 +211,7 @@
 
 <div class="viewcode-block" id="check_proto">
 <a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.ring.check_proto">[docs]</a>
-<span class="k">def</span> <span class="nf">check_proto</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ff_thr</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_proto</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ff_thr</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">):</span>
 <span class="w">   </span><span class="sd">&quot;&quot;&quot;Function to check the proto polymer creation.</span>
 
 

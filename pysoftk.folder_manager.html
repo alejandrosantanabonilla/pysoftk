@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -5,19 +7,15 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.folder_manager package &mdash; PySoftK 1.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=292eb321"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=292eb321"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
@@ -110,8 +108,8 @@
 <dt class="sig sig-object py" id="pysoftk.folder_manager.folder_creator.Fld">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.folder_manager.folder_creator.</span></span><span class="sig-name descname"><span class="pre">Fld</span></span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Create folders automatically to be used as stand-alone application or along PySoftK.</p>
-<p class="rubric">Examples</p>
+<p>Create folders automatically to be used as stand-alone
+application or along PySoftK.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.folder_manager.folder_creator.Fld.copy_dir">
 <span class="sig-name descname"><span class="pre">copy_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.copy_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.copy_dir" title="Link to this definition"></a></dt>
@@ -134,14 +132,17 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.folder_manager.folder_creator.Fld.create">
-<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.create" title="Link to this definition"></a></dt>
-<dd><p>Function to create a folder in the current working directory.</p>
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.create" title="Link to this definition"></a></dt>
+<dd><p>Function to create folders in the current working directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>times</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Number of times that a folder will be created</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>times</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of times that a folder will be created</p></li>
+<li><p><strong>fixed_names</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – Array of fixed names for the folders</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>None</strong> – Creates a folder with a provided name.</p>
+<dd class="field-even"><p>Creates folders with provided names.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
@@ -151,13 +152,14 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.folder_manager.folder_creator.Fld.file_to_dir">
-<span class="sig-name descname"><span class="pre">file_to_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format_extension</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.file_to_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.file_to_dir" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">file_to_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format_extension</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.file_to_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.file_to_dir" title="Link to this definition"></a></dt>
 <dd><p>Function to move files to directories in parallel</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>format_extension</strong> (<em>str</em>) – Format extension used to seek.</p></li>
-<li><p><strong>num_cores</strong> (<em>int. optional</em>) – Number of cores to be used.</p></li>
+<li><p><strong>num_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of cores to be used.</p></li>
+<li><p><strong>fixed_names</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – Array of fixed names for the folders</p></li>
 <li><p><strong>Results</strong></p></li>
 <li><p><strong>-------</strong></p></li>
 <li><p><strong>None</strong> – Move files to directories.</p></li>
@@ -171,17 +173,40 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.folder_manager.folder_creator.Fld.fxd_name">
-<span class="sig-name descname"><span class="pre">fxd_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">testname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.fxd_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.fxd_name" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fxd_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">testname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.fxd_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.fxd_name" title="Link to this definition"></a></dt>
 <dd><p>Create an array of fixed names for folders.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>testname</strong> (<em>str</em>) – Base name to be used as name</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>testname</strong> (<em>str</em>) – Base name to be used as name</p></li>
+<li><p><strong>times</strong> (<em>int</em>) – Number of folders to create</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>An array of names for folders</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.folder_manager.folder_creator.Fld.move_files_to_folder">
+<span class="sig-name descname"><span class="pre">move_files_to_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_extension</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.move_files_to_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.move_files_to_folder" title="Link to this definition"></a></dt>
+<dd><p>Moves all files with the given extension into a new folder with the
+specified name, using parallel processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_extension</strong> (<em>str</em>) – The extension of the files to move (e.g., “txt”, “csv”, “pdf”).</p></li>
+<li><p><strong>folder_name</strong> (<em>str</em>) – The name of the folder to create and move the files into.</p></li>
+<li><p><strong>num_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of CPU cores to use for parallel processing.
+Defaults to None, which uses the number of available cores.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>

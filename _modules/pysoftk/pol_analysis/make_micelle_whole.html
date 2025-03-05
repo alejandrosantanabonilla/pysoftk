@@ -1,22 +1,20 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.pol_analysis.make_micelle_whole &mdash; PySoftK 1.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=292eb321"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -77,18 +75,18 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pysoftk.pol_analysis.make_micelle_whole</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
-<span class="kn">from</span> <span class="nn">pysoftk.pol_analysis.tools.utils_mda</span> <span class="kn">import</span> <span class="n">MDA_input</span>
-<span class="kn">from</span> <span class="nn">pysoftk.pol_analysis.tools.utils_tools</span> <span class="kn">import</span> <span class="o">*</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.pol_analysis.tools.utils_mda</span><span class="w"> </span><span class="kn">import</span> <span class="n">MDA_input</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.pol_analysis.tools.utils_tools</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <div class="viewcode-block" id="timeit">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.make_micelle_whole.timeit">[docs]</a>
-<span class="k">def</span> <span class="nf">timeit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">timeit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">timeit_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">time</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">timeit_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
         <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
@@ -101,12 +99,12 @@
 
 <div class="viewcode-block" id="micelle_whole">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.make_micelle_whole.micelle_whole">[docs]</a>
-<span class="k">class</span> <span class="nc">micelle_whole</span><span class="p">(</span><span class="n">MDA_input</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">micelle_whole</span><span class="p">(</span><span class="n">MDA_input</span><span class="p">):</span>
 <span class="w">   </span><span class="sd">&quot;&quot;&quot;A class used to make the largest micelle whole across </span>
 <span class="sd">      the pbc for better analysis.</span>
 <span class="sd">   &quot;&quot;&quot;</span>
 
-   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tpr_file</span><span class="p">,</span> <span class="n">xtc_file</span><span class="p">):</span>
+   <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tpr_file</span><span class="p">,</span> <span class="n">xtc_file</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;Instantiating the MDA_input class as</span>
 <span class="sd">         super function.</span>
 <span class="sd">      &quot;&quot;&quot;</span>
@@ -115,7 +113,7 @@
   
 <div class="viewcode-block" id="micelle_whole.obtain_largest_micelle_resids">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.make_micelle_whole.micelle_whole.obtain_largest_micelle_resids">[docs]</a>
-   <span class="k">def</span> <span class="nf">obtain_largest_micelle_resids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spatial_clustering_results</span><span class="p">):</span>
+   <span class="k">def</span><span class="w"> </span><span class="nf">obtain_largest_micelle_resids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spatial_clustering_results</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;Function to obtain the largest micelle resids Bare in mind this may give two </span>
 <span class="sd">         different clusters if they have the same size - should check that you only select </span>
 <span class="sd">         one when using the results from here</span>
@@ -141,8 +139,8 @@
 <span class="sd">             </span>
 <span class="sd">      &quot;&quot;&quot;</span>
 
-      <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-      <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+      <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+      <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
       
       <span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">spatial_clustering_results</span><span class="p">))</span>
@@ -156,7 +154,7 @@
 
 <div class="viewcode-block" id="micelle_whole.pbc_per_dimension">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.make_micelle_whole.micelle_whole.pbc_per_dimension">[docs]</a>
-   <span class="k">def</span> <span class="nf">pbc_per_dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cluster_sel_positions</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">dimension</span><span class="p">,</span> <span class="n">bins_min</span><span class="p">,</span> <span class="n">bins_max</span><span class="p">,</span> <span class="n">bins_step</span><span class="p">):</span>
+   <span class="k">def</span><span class="w"> </span><span class="nf">pbc_per_dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cluster_sel_positions</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">dimension</span><span class="p">,</span> <span class="n">bins_min</span><span class="p">,</span> <span class="n">bins_max</span><span class="p">,</span> <span class="n">bins_step</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;Function to find the broken parts of the micelle across the pbc and make it whole</span>
 
 <span class="sd">         Parameters</span>
@@ -191,10 +189,10 @@
 <span class="sd">      </span>
 <span class="sd">      &quot;&quot;&quot;</span>
 
-      <span class="kn">import</span> <span class="nn">MDAnalysis</span> <span class="k">as</span> <span class="nn">mda</span> 
-      <span class="kn">import</span> <span class="nn">MDAnalysis.analysis.distances</span>
-      <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-      <span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">stats</span>
+      <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span> 
+      <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis.analysis.distances</span>
+      <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+      <span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
 
       <span class="n">cluster_sel_positions_return</span><span class="o">=</span><span class="n">cluster_sel_positions</span><span class="p">[:,</span><span class="n">dimension</span><span class="p">]</span>
 
@@ -230,7 +228,7 @@
 
 <div class="viewcode-block" id="micelle_whole.get_polymer_positions">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.make_micelle_whole.micelle_whole.get_polymer_positions">[docs]</a>
-   <span class="k">def</span> <span class="nf">get_polymer_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">resname</span><span class="p">,</span> <span class="n">cluster_resids</span><span class="p">):</span>
+   <span class="k">def</span><span class="w"> </span><span class="nf">get_polymer_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">resname</span><span class="p">,</span> <span class="n">cluster_resids</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;Function to find the polymer positions</span>
 
 <span class="sd">         Parameters</span>
@@ -263,7 +261,7 @@
 <span class="sd">         </span>
 <span class="sd">      &quot;&quot;&quot;</span>
 
-      <span class="kn">import</span> <span class="nn">MDAnalysis</span> <span class="k">as</span> <span class="nn">mda</span>
+      <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
     
       <span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="p">[</span><span class="n">frame</span><span class="p">]</span>
       <span class="c1">#print(&quot; &quot;.join([str(item) for item in resname]))</span>
@@ -278,7 +276,7 @@
 
 <div class="viewcode-block" id="micelle_whole.count_dimensions">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.make_micelle_whole.micelle_whole.count_dimensions">[docs]</a>
-   <span class="k">def</span> <span class="nf">count_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">cluster_atoms_positions</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">):</span>
+   <span class="k">def</span><span class="w"> </span><span class="nf">count_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">cluster_atoms_positions</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;Function to get the dimensions of a system, the box size and </span>
 <span class="sd">         cluster_atom_positions in the form to use in make_cluster_whole</span>
 
@@ -317,7 +315,7 @@
 
 <div class="viewcode-block" id="micelle_whole.make_cluster_whole">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.make_micelle_whole.micelle_whole.make_cluster_whole">[docs]</a>
-   <span class="k">def</span> <span class="nf">make_cluster_whole</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+   <span class="k">def</span><span class="w"> </span><span class="nf">make_cluster_whole</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                        <span class="n">frame</span><span class="p">,</span>
                        <span class="n">resname</span><span class="p">,</span>
                        <span class="n">cluster_resids</span><span class="p">,</span>
@@ -361,8 +359,8 @@
 <span class="sd">            Array with the atom positions of the micelle made whole across the pbc</span>
 <span class="sd">      </span>
 <span class="sd">      &quot;&quot;&quot;</span>
-      <span class="kn">import</span> <span class="nn">MDAnalysis</span> <span class="k">as</span> <span class="nn">mda</span>
-      <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+      <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
+      <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
       
       <span class="n">u</span><span class="o">=</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_mda_universe</span><span class="p">()</span>
 
@@ -384,7 +382,7 @@
 <div class="viewcode-block" id="micelle_whole.running_make_cluster_whole">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.make_micelle_whole.micelle_whole.running_make_cluster_whole">[docs]</a>
    <span class="nd">@timeit</span>
-   <span class="k">def</span> <span class="nf">running_make_cluster_whole</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resname</span><span class="p">,</span> <span class="n">cluster_resids</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">skip</span><span class="p">,</span> <span class="n">bins_min</span><span class="o">=-</span><span class="mi">50</span><span class="p">,</span> 
+   <span class="k">def</span><span class="w"> </span><span class="nf">running_make_cluster_whole</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resname</span><span class="p">,</span> <span class="n">cluster_resids</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">skip</span><span class="p">,</span> <span class="n">bins_min</span><span class="o">=-</span><span class="mi">50</span><span class="p">,</span> 
                                   <span class="n">bins_max</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">bins_step</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;Function to run the make_cluster_whole function over several frames </span>
 
@@ -426,10 +424,10 @@
 
 <span class="sd">      &quot;&quot;&quot;</span>
 
-      <span class="kn">import</span> <span class="nn">MDAnalysis</span> <span class="k">as</span> <span class="nn">mda</span>
-      <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+      <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
+      <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
       
-      <span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
+      <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm.auto</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
       
       <span class="n">u</span><span class="o">=</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_mda_universe</span><span class="p">()</span>
@@ -455,7 +453,7 @@
 
 <div class="viewcode-block" id="micelle_whole.get_atom_name_list">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.make_micelle_whole.micelle_whole.get_atom_name_list">[docs]</a>
-   <span class="k">def</span> <span class="nf">get_atom_name_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom_sel</span><span class="p">):</span>
+   <span class="k">def</span><span class="w"> </span><span class="nf">get_atom_name_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom_sel</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;Function to obtain the residues based on user-provided atom selection.</span>
 
 
@@ -474,7 +472,7 @@
 <span class="sd">          List containing all names of atoms.</span>
 
 <span class="sd">      &quot;&quot;&quot;</span>
-      <span class="kn">import</span> <span class="nn">itertools</span>
+      <span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
         
       <span class="n">b</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">)]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">atom_sel</span><span class="p">]</span>
       <span class="n">c</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="p">[])</span>
@@ -488,7 +486,7 @@
 
 <div class="viewcode-block" id="micelle_whole.obtain_snapshot">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.make_micelle_whole.micelle_whole.obtain_snapshot">[docs]</a>
-   <span class="k">def</span> <span class="nf">obtain_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">,</span> <span class="n">atom_positions_at_specific_frame</span><span class="p">,</span> <span class="n">cluster_resids</span><span class="p">,</span> <span class="n">polymer_resname</span><span class="p">,</span> 
+   <span class="k">def</span><span class="w"> </span><span class="nf">obtain_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">,</span> <span class="n">atom_positions_at_specific_frame</span><span class="p">,</span> <span class="n">cluster_resids</span><span class="p">,</span> <span class="n">polymer_resname</span><span class="p">,</span> 
                        <span class="n">frame</span><span class="p">,</span> <span class="n">water_resname</span><span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SOL&#39;</span><span class="p">],</span> <span class="n">water_atom_name</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;OW&#39;</span><span class="p">],</span> <span class="n">solvant</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">      </span><span class="sd">&quot;&quot;&quot;Function to obtain an snapshot of the micelle (pdb) file of a specific </span>
 <span class="sd">         frame and returns the new universe to analyse.</span>
@@ -530,10 +528,10 @@
 <span class="sd">            </span>
 <span class="sd">      &quot;&quot;&quot;</span>
 
-      <span class="kn">import</span> <span class="nn">MDAnalysis</span> <span class="k">as</span> <span class="nn">mda</span>
-      <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-      <span class="kn">import</span> <span class="nn">concurrent.futures</span>
-      <span class="kn">from</span> <span class="nn">MDAnalysis</span> <span class="kn">import</span> <span class="n">transformations</span> <span class="k">as</span> <span class="n">trans</span>
+      <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
+      <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+      <span class="kn">import</span><span class="w"> </span><span class="nn">concurrent.futures</span>
+      <span class="kn">from</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="kn">import</span> <span class="n">transformations</span> <span class="k">as</span> <span class="n">trans</span>
   
       
       <span class="n">u2</span><span class="o">=</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_mda_universe</span><span class="p">()</span>

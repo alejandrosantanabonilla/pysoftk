@@ -1,22 +1,20 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.linear_polymer.linear_polymer &mdash; PySoftK 1.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=292eb321"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -77,30 +75,28 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pysoftk.linear_polymer.linear_polymer</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
-<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
-<span class="kn">from</span> <span class="nn">rdkit.Geometry</span> <span class="kn">import</span> <span class="n">Point3D</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">rdDistGeom</span>
-<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">rdDistGeom</span> <span class="k">as</span> <span class="n">molDG</span>
-<span class="kn">from</span> <span class="nn">rdkit.Chem.rdMolTransforms</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">RDLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point3D</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">rdDistGeom</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">rdDistGeom</span> <span class="k">as</span> <span class="n">molDG</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem.rdMolTransforms</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">RDLogger</span>
 <span class="n">RDLogger</span><span class="o">.</span><span class="n">DisableLog</span><span class="p">(</span><span class="s1">&#39;rdApp.*&#39;</span><span class="p">)</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.tools.utils_func</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.tools.utils_ob</span><span class="w">   </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.tools.utils_rdkit</span><span class="w">   </span><span class="kn">import</span> <span class="o">*</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">pysoftk.tools.utils_func</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.tools.utils_ob</span>   <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.tools.utils_rdkit</span>   <span class="kn">import</span> <span class="o">*</span>
-
-<span class="kn">from</span> <span class="nn">openbabel</span> <span class="kn">import</span> <span class="n">openbabel</span> <span class="k">as</span> <span class="n">ob</span>
-<span class="kn">from</span> <span class="nn">openbabel</span> <span class="kn">import</span> <span class="n">pybel</span> <span class="k">as</span> <span class="n">pb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openbabel</span><span class="w"> </span><span class="kn">import</span> <span class="n">openbabel</span> <span class="k">as</span> <span class="n">ob</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openbabel</span><span class="w"> </span><span class="kn">import</span> <span class="n">pybel</span> <span class="k">as</span> <span class="n">pb</span>
 
 
 <div class="viewcode-block" id="Lp">
 <a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lp">[docs]</a>
-<span class="k">class</span> <span class="nc">Lp</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Lp</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class for creating a linear polymer from given RdKit molecules.</span>
 
@@ -116,7 +112,7 @@
     
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mol&#39;</span><span class="p">,</span> <span class="s1">&#39;atom&#39;</span><span class="p">,</span> <span class="s1">&#39;n_copies&#39;</span><span class="p">,</span> <span class="s1">&#39;shift&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">n_copies</span><span class="p">,</span> <span class="n">shift</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">n_copies</span><span class="p">,</span> <span class="n">shift</span><span class="p">):</span>
 <span class="w">       </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">       Initialize this class.</span>
 <span class="sd">          </span>
@@ -143,7 +139,7 @@
 
 <div class="viewcode-block" id="Lp.max_dist_mol">
 <a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lp.max_dist_mol">[docs]</a>
-    <span class="k">def</span> <span class="nf">max_dist_mol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">max_dist_mol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the maximum distance between atoms from an RDKit Mol Object.</span>
 
 <span class="sd">        Return</span>
@@ -160,7 +156,7 @@
 
 <div class="viewcode-block" id="Lp.x_shift">
 <a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lp.x_shift">[docs]</a>
-    <span class="k">def</span> <span class="nf">x_shift</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">x_shift</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Re-calibrate distance between monomers</span>
 <span class="sd">     </span>
 <span class="sd">        Return</span>
@@ -178,7 +174,7 @@
 
 <div class="viewcode-block" id="Lp.copy_mol">
 <a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lp.copy_mol">[docs]</a>
-    <span class="k">def</span> <span class="nf">copy_mol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy_mol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">       </span><span class="sd">&quot;&quot;&quot;Function to replicate super_monomers.</span>
 
 <span class="sd">       Parameters</span>
@@ -207,7 +203,7 @@
 
 <div class="viewcode-block" id="Lp.polimerisation">
 <a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lp.polimerisation">[docs]</a>
-    <span class="k">def</span> <span class="nf">polimerisation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragments</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">polimerisation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragments</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to produce a polymer in a recursive manner. </span>
 
 <span class="sd">        Parameters</span>
@@ -239,7 +235,7 @@
 
 <div class="viewcode-block" id="Lp.bond_conn">
 <a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lp.bond_conn">[docs]</a>
-    <span class="k">def</span> <span class="nf">bond_conn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outmol</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bond_conn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outmol</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to peruse the bonds and connections of place-hold </span>
 <span class="sd">        atom within a super_monomer object.</span>
 <span class="sd"> </span>
@@ -270,7 +266,7 @@
     
 <div class="viewcode-block" id="Lp.proto_polymer">
 <a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lp.proto_polymer">[docs]</a>
-    <span class="k">def</span> <span class="nf">proto_polymer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">proto_polymer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">       </span><span class="sd">&quot;&quot;&quot;Function to create a linear polymer from a given </span>
 <span class="sd">          super_monomer object.</span>
 
@@ -306,7 +302,7 @@
 
 <div class="viewcode-block" id="Lp.linear_polymer">
 <a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lp.linear_polymer">[docs]</a>
-    <span class="k">def</span> <span class="nf">linear_polymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">125</span><span class="p">,</span> <span class="n">no_att</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">linear_polymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">125</span><span class="p">,</span> <span class="n">no_att</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to create a linear polymer from a </span>
 <span class="sd">        given super_monomer object.</span>
 
@@ -367,9 +363,83 @@
         <span class="n">last_mol</span> <span class="o">=</span> <span class="n">ff_ob_relaxation</span><span class="p">(</span><span class="n">mol_new</span><span class="p">,</span> <span class="n">force_field</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">)</span>
         <span class="n">rot_mol</span> <span class="o">=</span> <span class="n">rotor_opt</span><span class="p">(</span><span class="n">last_mol</span><span class="p">,</span> <span class="n">force_field</span><span class="p">,</span> <span class="n">rot_steps</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">mol_new</span></div>
+        <span class="k">return</span> <span class="n">rot_mol</span></div>
 </div>
 
+
+<div class="viewcode-block" id="Lpr">
+<a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lpr">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Lpr</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a recursive SMILES string with a stopping condition and a final replacement.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mol&#39;</span><span class="p">,</span> <span class="s1">&#39;replacements&#39;</span><span class="p">,</span> <span class="s1">&#39;max_repetitions&#39;</span><span class="p">,</span> <span class="s1">&#39;final_replacement&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">replacements</span><span class="p">,</span> <span class="n">max_repetitions</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">final_replacement</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the Lpr object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            smiles: The base SMILES string with a placeholder.</span>
+<span class="sd">            replacements: A dictionary of replacement strings.</span>
+<span class="sd">            max_iterations: The maximum number of recursive substitutions.</span>
+<span class="sd">            final_replacement: The SMILES string or SMART to replace the placeholder after recursion.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">mol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">replacements</span> <span class="o">=</span> <span class="n">replacements</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_repetitions</span> <span class="o">=</span> <span class="n">max_repetitions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">final_replacement</span> <span class="o">=</span> <span class="n">final_replacement</span>
+
+<div class="viewcode-block" id="Lpr.generate_recursive_smiles">
+<a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.linear_polymer.Lpr.generate_recursive_smiles">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_recursive_smiles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">125</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Performs the recursive SMILES generation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A fully resolved SMILES string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">smiles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_repetitions</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">new_smiles</span> <span class="o">=</span> <span class="n">smiles</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">replacements</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;KeyError: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2"> in replacements. Please check your replacements dictionary and input SMILES string.&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">smiles</span> <span class="c1"># Return the most recent processed string, or handle as needed.</span>
+
+            <span class="k">if</span> <span class="n">new_smiles</span> <span class="o">==</span> <span class="n">smiles</span><span class="p">:</span>  <span class="c1"># Stop if the SMILES string doesn&#39;t change</span>
+                <span class="k">break</span>
+            <span class="n">smiles</span> <span class="o">=</span> <span class="n">new_smiles</span>
+
+        <span class="c1"># Replace the placeholder with the final_replacement</span>
+        <span class="n">smiles</span> <span class="o">=</span> <span class="n">smiles</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{R}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_replacement</span><span class="p">)</span>
+
+        <span class="n">mol_new</span><span class="o">=</span><span class="n">pb</span><span class="o">.</span><span class="n">readstring</span><span class="p">(</span><span class="s1">&#39;smiles&#39;</span><span class="p">,</span> <span class="n">smiles</span><span class="p">)</span>
+        <span class="n">mol_new</span><span class="o">.</span><span class="n">make3D</span><span class="p">()</span>
+        
+        <span class="c1"># Validate force field:</span>
+        <span class="n">valid_force_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="s2">&quot;UFF&quot;</span><span class="p">,</span> <span class="s2">&quot;MMFF94&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">force_field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_force_fields</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid force field: </span><span class="si">{</span><span class="n">force_field</span><span class="si">}</span><span class="s2">. Valid options are: </span><span class="si">{</span><span class="n">valid_force_fields</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Automatically change ff if necessary:</span>
+        <span class="k">if</span> <span class="n">force_field</span> <span class="o">==</span> <span class="s2">&quot;MMFF&quot;</span><span class="p">:</span>
+            <span class="n">force_field</span> <span class="o">=</span> <span class="s2">&quot;MMFF94&quot;</span>  <span class="c1"># Change to default MMFF94 for MMFF</span>
+
+        <span class="c1"># Validate and convert iterations and steps to integers:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">relax_iterations</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">relax_iterations</span><span class="p">)</span>
+            <span class="n">rot_steps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rot_steps</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;relax_iterations and rot_steps must be integers.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Relaxation and optimization:</span>
+        <span class="n">last_mol</span> <span class="o">=</span> <span class="n">ff_ob_relaxation</span><span class="p">(</span><span class="n">mol_new</span><span class="p">,</span> <span class="n">force_field</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">)</span>
+        <span class="n">rot_mol</span> <span class="o">=</span> <span class="n">rotor_opt</span><span class="p">(</span><span class="n">last_mol</span><span class="p">,</span> <span class="n">force_field</span><span class="p">,</span> <span class="n">rot_steps</span><span class="p">)</span>
+        <span class="n">rel_mol</span> <span class="o">=</span> <span class="n">ff_ob_relaxation</span><span class="p">(</span><span class="n">rot_mol</span><span class="p">,</span> <span class="n">force_field</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">rel_mol</span></div>
+</div>
 
 </pre></div>
 

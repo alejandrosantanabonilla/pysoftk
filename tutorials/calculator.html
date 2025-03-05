@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
@@ -5,19 +7,15 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Computing using ab-initio calculators &mdash; PySoftK 1.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=292eb321"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=292eb321"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
@@ -59,6 +57,7 @@
 <li class="toctree-l2"><a class="reference internal" href="polymer_cyclic.html">Creating cyclic Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_branched.html">Creating branched Polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polymer_pattern.html">Creating patterned Polymers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymer_lrp.html">Recursive linear polymer generation with Lpr</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bigamino.html">Modelling soft-matter long chain polymers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="combined_modules.html">Creating new polymers from different modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="create_folders.html">Automatic Folder Creation</a></li>
@@ -109,13 +108,13 @@
 <h2>Geometry optimization using GFN-FF<a class="headerlink" href="#geometry-optimization-using-gfn-ff" title="Link to this heading"></a></h2>
 <p><a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> enables the use of <a class="reference external" href="https://github.com/grimme-lab/xtb">xtb</a> as a <strong>calculator</strong> employing a customized Force Field implementation (called <strong>xtb_ff</strong>).
 To introduce this functionality, one needs to import the corresponding <a class="reference external" href="https://www.rdkit.org/">RDKit</a> auxiliary functions (line 1-2) and the needed modules from <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> as shown in the following snipet:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
-<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>
 
-<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.super_monomer</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.format_printers.format_mol</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.linear_polymer</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.calculators</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer.super_monomer</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.format_printers.format_mol</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer.linear_polymer</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer.calculators</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 </div>
 <p>To demonstrate the functionality of this module, two molecules (Benzene and Thiol) are used to create a <em>super-monomer</em> (and stored in the variable <strong>a</strong>). The object <strong>a</strong> is later used as an initial polymer unit (variable <strong>k</strong>) and replicated 5 times (and stored in variable <strong>new</strong>). The result of this operation is then printed in a <strong>XYZ</strong> file called <strong>test_1.xyz</strong>, using the function <strong>FMT(object).xyz_print(name_to_be_printed)</strong>.</p>
@@ -152,13 +151,13 @@ export XTBHOME=”PATH_TO_XTB_FOLDER/xtb-X.X.X”</p>
 <section id="geometry-optimization-using-pyscf">
 <h2>Geometry optimization using PySCF<a class="headerlink" href="#geometry-optimization-using-pyscf" title="Link to this heading"></a></h2>
 <p><a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> also permits the use of <a class="reference external" href="https://pyscf.org/">pyscf</a> as a <strong>calculator</strong> at the semiempirical-mindo3 level of theory. Initially, one needs to import the corresponding <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> modules and <a class="reference external" href="https://www.rdkit.org/">RDKit</a> auxiliary functions as shown below:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
-<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>
 
-<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.super_monomer</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.linear_polymer</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.calculators</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.format_printers.format_mol</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer.super_monomer</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer.linear_polymer</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer.calculators</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.format_printers.format_mol</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 </div>
 <p>As shown in the previous example, the result of this operation is then printed in a <strong>XYZ</strong> file called <strong>test_2.xyz</strong>, using the function <strong>FMT(object).xyz_print(name_to_be_printed)</strong>.</p>
@@ -190,16 +189,16 @@ export XTBHOME=”PATH_TO_XTB_FOLDER/xtb-X.X.X”</p>
 <h2>High-Throughput Calculations using the calculators<a class="headerlink" href="#high-throughput-calculations-using-the-calculators" title="Link to this heading"></a></h2>
 <p><a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> has been designed with the aim of allowing high-throughput calculations (HTPc) at different levels of theory. This is achieved by using the <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> module <a class="reference internal" href="../pysoftk.htp_tools.html#pysoftk.htp_tools.calculator_htp.Htp" title="pysoftk.htp_tools.calculator_htp.Htp"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pysoftk.htp_tools.calculator_htp.Htp</span></code></a>, which can be combined with <a class="reference internal" href="../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld" title="pysoftk.folder_manager.folder_creator.Fld"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pysoftk.folder_manager.folder_creator.Fld</span></code></a> for setting up and creating numerical workflows that include <em>ab-initio</em> calculations.</p>
 <p>The needed <a class="reference external" href="https://github.com/alejandrosantanabonilla/pysoftk">PySoftK</a> modules and <a class="reference external" href="https://www.rdkit.org/">RDKit</a> functions are imported as displayed in the following lines of code:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.super_monomer</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.linear_polymer.linear_polymer</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer.super_monomer</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer.linear_polymer</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
-<span class="kn">from</span> <span class="nn">pysoftk.format_printers.format_mol</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pysoftk.folder_manager.folder_creator</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.format_printers.format_mol</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.folder_manager.folder_creator</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
-<span class="kn">from</span> <span class="nn">pysoftk.htp_tools.calculator_htp</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.htp_tools.calculator_htp</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
-<span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
-<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>
 </pre></div>
 </div>
 <p>For this example, a set of 10 linear Polymers (using Thiol as initial monomer) are assembled and merged into one <strong>super-monomer</strong>.</p>

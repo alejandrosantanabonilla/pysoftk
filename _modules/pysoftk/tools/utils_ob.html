@@ -1,22 +1,20 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.tools.utils_ob &mdash; PySoftK 1.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=292eb321"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -77,16 +75,16 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pysoftk.tools.utils_ob</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">.utils_func</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">openbabel</span> <span class="kn">import</span> <span class="n">openbabel</span> <span class="k">as</span> <span class="n">ob</span>
-<span class="kn">from</span> <span class="nn">openbabel</span> <span class="kn">import</span> <span class="n">pybel</span> <span class="k">as</span> <span class="n">pb</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">.utils_func</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openbabel</span><span class="w"> </span><span class="kn">import</span> <span class="n">openbabel</span> <span class="k">as</span> <span class="n">ob</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openbabel</span><span class="w"> </span><span class="kn">import</span> <span class="n">pybel</span> <span class="k">as</span> <span class="n">pb</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
 <div class="viewcode-block" id="ff_ob_relaxation">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_ob.ff_ob_relaxation">[docs]</a>
-<span class="k">def</span> <span class="nf">ff_ob_relaxation</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF94&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">ff_thr</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ff_ob_relaxation</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF94&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">ff_thr</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Setting up an openbabel FF for </span>
 <span class="sd">       geometry optimization.</span>
 <span class="sd">      </span>
@@ -121,7 +119,7 @@
 
 <div class="viewcode-block" id="rotor_opt">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_ob.rotor_opt">[docs]</a>
-<span class="k">def</span> <span class="nf">rotor_opt</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF94&quot;</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">125</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rotor_opt</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF94&quot;</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">125</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Setting up an openbabel FF for rotor </span>
 <span class="sd">    optimization.</span>
 <span class="sd">      </span>
@@ -159,7 +157,7 @@
 
 <div class="viewcode-block" id="global_opt">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_ob.global_opt">[docs]</a>
-<span class="k">def</span> <span class="nf">global_opt</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF94&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">125</span><span class="p">,</span> <span class="n">ff_thr</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">global_opt</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF94&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">125</span><span class="p">,</span> <span class="n">ff_thr</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Setting up an openbabel FF for rotor </span>
 <span class="sd">    optimization.</span>
 <span class="sd">      </span>
@@ -198,7 +196,7 @@
 
 <div class="viewcode-block" id="check_bond_order">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_ob.check_bond_order">[docs]</a>
-<span class="k">def</span> <span class="nf">check_bond_order</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_bond_order</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to check and correct the bonds</span>
 <span class="sd">       of a given file. </span>
 
