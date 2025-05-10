@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu-latest", "macos-13"]
+        os: ["ubuntu-latest", "macos-14"]
         python-version: ["3.9", "3.10.12", "3.11"]
     steps:
       - name: Clear conda cache
@@ -36,7 +36,7 @@ jobs:
       - name: xtb installation
         shell: bash -l {0}
         run: |
-          conda install -n my_env -c conda-forge::xtb
+           conda install -n my_env -c conda-forge xtb -y
 
       - name: Install MDAnalysis
         shell: bash -l {0}
