@@ -42,8 +42,8 @@ def test_htp_gfn_creation(rootdir):
     print("\n--- Running GFN-XTB ---")
     htp_calculator.htp_xtb_gfn(
             directory=base_dir,
-            max_work=4,
-            num_cores=4,
+            max_work=1,
+            num_cores=1,
             threshold="normal")
 
 
@@ -94,8 +94,8 @@ def test_htp_gff_creation(rootdir):
     print("\n--- Running GFN-XTB ---")
     htp_calculator.htp_xtb_ff(
             directory=base_dir,
-            max_work=4,
-            num_cores=4,
+            max_work=1,
+            num_cores=1,
             threshold="normal")
 
 
