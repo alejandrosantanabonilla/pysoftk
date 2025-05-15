@@ -36,6 +36,7 @@ jobs:
       - name: xtb installation
         shell: bash -l {0}
         run: |
+           conda install -n my_env -c conda-forge gfortran=7.5
            conda install -n my_env -c conda-forge xtb -y
 
       - name: Install MDAnalysis
