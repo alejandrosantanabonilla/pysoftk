@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu-22.04", "macos-latest"]
+        os: ["ubuntu-latest", "macos-latest"]
         python-version: ["3.9", "3.10.10", "3.11"]
     steps:
       - name: Clear conda cache
