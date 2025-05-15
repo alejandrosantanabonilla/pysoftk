@@ -235,7 +235,7 @@ def etkdgv3_energies(mol, num_conf=1):
       
    ps=AllChem.ETKDGv3()
    ps.randomSeed=0xf00d
-   ps.RandomCoords=False
+   ps.useRandomCoords=False
      
    cids=AllChem.EmbedMultipleConfs(m,int(num_conf),ps)
    mp=AllChem.MMFFGetMoleculeProperties(m, mmffVariant='MMFF94s')
