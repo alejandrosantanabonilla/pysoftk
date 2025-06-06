@@ -32,7 +32,7 @@ def test_htp_gfn_creation(rootdir):
     Fmt(values).xyz_print("mono_"+str(idx)+".xyz")
 
   Fld().file_to_dir("xyz")
-  xtb_identifier = "xtb"
+  xtb_identifier = "/home/santaninci/Documents/programs/xtb-dist/bin/xtb"
   
   try:
     # Pass the command name or path to the constructor
@@ -84,7 +84,7 @@ def test_htp_gff_creation(rootdir):
     Fmt(values).xyz_print("mono_"+str(idx)+".xyz")
 
   Fld().file_to_dir("xyz")
-  xtb_identifier = "xtb"
+  xtb_identifier = "/home/santaninci/Documents/programs/xtb-dist/bin/xtb"
   
   try:
     # Pass the command name or path to the constructor

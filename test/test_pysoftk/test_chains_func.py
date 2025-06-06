@@ -2,13 +2,14 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 
 from pysoftk.linear_polymer.super_monomer import *
-from pysoftk.linear_polymer.mol_conformer import *
 from pysoftk.linear_polymer.linear_polymer import *
 from pysoftk.linear_polymer.linear_polymer import Lpr
 
 from pysoftk.format_printers.format_mol import *
 from pysoftk.folder_manager.folder_creator import *
 from pysoftk.torsional.torsional import *
+from pysoftk.torsional.mol_conformer import *
+
 from pysoftk.folder_manager.folder_creator import *
 
 from openbabel import openbabel as ob
@@ -72,6 +73,28 @@ def test_mol_conformer():
   assert len(res) == 10
 
   os.remove("conformers.sdf")
+
+
+def test_mol_conformer_1():
+  conformer_generator = ConformerGenerator(num_conformers=5, forcefield="uff", make3D_steps=100, convergence=10)
+
+  # Example usage 3: Overriding default parameters in ga_generate_conformers
+  smiles_override = "CCO"  # SMILES string for ethanol
+  base_name_override = "ethanol_ga_override"
+  output_directory_override = "ethanol_ga_override_conformers"
+  propanol_conformers_override = conformer_generator.ga_generate_conformers(
+      smiles=smiles_override,
+      num_conformers=8,       # Override default num_conformers
+      forcefield="mmff94",    # Override default forcefield
+      make3D_steps=50,        # Override default make3D_steps
+      convergence=5           # Override default convergence
+  )
+  if propanol_conformers_override:
+      conformer_generator.save_conformers_to_separate_files(propanol_conformers_override, base_name_override, output_dir=output_directory_override, file_format="xyz")
+      print(f"Generated and saved {propanol_conformers_override.OBMol.NumConformers()} conformers (GA-like, overridden) in '{output_directory_override}'.")
+  else:
+      print("Failed to generate conformers for ethanol using GA-like method (overridden defaults).")
+
 
 def test_torsional_list():
 

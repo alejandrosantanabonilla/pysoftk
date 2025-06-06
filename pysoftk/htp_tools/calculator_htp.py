@@ -145,6 +145,7 @@ class Htp(object):
         - Appends error details (Python exception, stderr from xtb) to the
           "output.log" file upon failure.
         """
+        
         # Set default values if None
         num_cores = 1 if num_cores is None else int(num_cores)
         threshold = "crude" if threshold is None else str(threshold)
@@ -223,6 +224,7 @@ class Htp(object):
         - Prints warnings/errors similar to `xtb_gfn`.
         - Appends error details to "output_ff.log" upon failure.
         """
+        
         # Set default values if None
         num_cores = 1 if num_cores is None else int(num_cores)
         threshold = "crude" if threshold is None else str(threshold)
@@ -283,6 +285,7 @@ class Htp(object):
             A list containing the absolute paths of all found '.xyz' files.
             Returns an empty list if no matching files are found.
         """
+        
         # Use glob to find files matching the pattern in the specified directory
         xyz_files = glob.glob(os.path.join(directory, '*.xyz'))
         return xyz_files
@@ -318,6 +321,7 @@ class Htp(object):
             This method primarily executes side effects (running calculations,
             printing output, creating files) and does not return a value.
         """
+        
         # --- Scan for Suitable Subdirectories ---
         subdirs_to_process = [] # List to hold paths of valid subdirectories
         xyz_files_map = {}      # Dictionary mapping subdir path to its .xyz file path
@@ -426,6 +430,7 @@ class Htp(object):
         None
             Executes calculations and prints progress; does not return a value.
         """
+        
         # --- Scan for Suitable Subdirectories (Identical to htp_xtb_gfn) ---
         subdirs_to_process = []
         xyz_files_map = {}
