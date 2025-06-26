@@ -15,6 +15,12 @@
 **PySoftK** is a set of Python tools and programs for modelling and simulating polymers with different topologies. The program is still under active 
 development and contributions are welcome. A complete introduction into the program can be found in this link [Documentation][1]. 
 
+# WINDOWS USERS:
+
+Please take a note that PySCF doesn't support windows OS and therefore you should comment that package in the setup.py file if 
+you would like to install **PySoftK** in Windows.
+
+
 # Pip installation
 
 To quickly install **PySoftk**, we encourage to do it inside a virtual environment, which can be achieved in the following way:
