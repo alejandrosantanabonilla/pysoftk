@@ -64,3 +64,10 @@ jobs:
         run: |
           python -m pip install pytest pytest-cov --user
           python -m pytest --junitxml=pytest2.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage_2.txt
+      
+      - name: Run PySoftK-umap test
+        working-directory: ./test/test_umap
+        shell: bash -l {0}
+        run: |
+          python -m pip install pytest pytest-cov --user
+          python -m pytest --junitxml=pytest2.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage_3.txt
