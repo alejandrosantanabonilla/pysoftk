@@ -8,6 +8,10 @@ import os
 import sys
 from openbabel import pybel, openbabel as ob
 
+import os
+import sys
+from openbabel import pybel, openbabel as ob
+
 class ConformerGenerator:
     """
     A class to generate and save molecular conformers using Open Babel.
@@ -19,12 +23,6 @@ class ConformerGenerator:
     def __init__(self, num_conformers: int = 10, forcefield: str = "mmff94", make3D_steps: int = 50, convergence: int = 5):
         """
         Initializes the ConformerGenerator with default parameters for conformer generation.
-
-        Args:
-            num_conformers: The default target number of conformers to generate.
-            forcefield: The default force field to use for initial 3D coordinate generation.
-            make3D_steps: The default number of steps to use for initial 3D coordinate generation.
-            convergence: The default parameter controlling the convergence criteria of the GA-like search.
         """
         self.default_num_conformers = num_conformers
         self.default_forcefield = forcefield
@@ -32,44 +30,20 @@ class ConformerGenerator:
         self.default_convergence = convergence
 
     def ga_generate_conformers(self, input_file: str = None,
-                                   smiles: str = None,
-                                   num_conformers: int = None,
-                                   forcefield: str = None,
-                                   make3D_steps: int = None,
-                                   mutability: int = 5,
-                                   convergence: int = None,
-                                   num_children: int = None) -> pybel.Molecule:
+                               smiles: str = None,
+                               output_dir: str = None,
+                               output_format: str = 'xyz',
+                               base_filename: str = None,
+                               num_conformers: int = None,
+                               forcefield: str = None,
+                               make3D_steps: int = None,
+                               mutability: int = 5,
+                               convergence: int = None,
+                               num_children: int = None) -> int:
         """
-        Generates conformers using Open Babel's weighted rotor search (similar to a
-        genetic algorithm approach). The molecule can be provided as a file
-        or a SMILES string.
-
-        Args:
-            input_file: Path to a molecular file (e.g., MOL, SDF, XYZ).
-                        If provided, this will be used as the input.
-            smiles: A SMILES string representing the molecule.
-                    This will be used if input_file is not provided.
-            num_conformers: The target number of conformers to generate (default: initialized value).
-            forcefield: The force field to use for initial 3D coordinate generation
-                        (default: initialized value).
-            make3D_steps: The number of steps to use for initial 3D coordinate
-                          generation (default: initialized value).
-            mutability: Parameter controlling the rotor key search randomization
-                        (default: 5). Higher values explore more diverse torsions.
-            convergence: Parameter controlling the convergence criteria of the
-                         search (default: initialized value). Higher values mean stricter convergence.
-            num_children: Number of children conformers generated in each step
-                          (default: num_conformers * 2).
-
-        Returns:
-            A *new* pybel.Molecule object containing the generated conformers.
-            The original molecule object is not modified. Returns None if
-            the input is invalid or if conformer generation fails.
-
-        Raises:
-            ValueError: If num_conformers is less than 1.
-            ValueError: If neither input_file nor smiles is provided.
-            FileNotFoundError: If input_file is provided but does not exist.
+        Generates conformers using Open Babel's weighted rotor search (GA).
+        Saves conformers to separate files in a specified directory.
+        Returns the number of generated conformers.
         """
         num_conformers = num_conformers if num_conformers is not None else self.default_num_conformers
         forcefield = forcefield if forcefield is not None else self.default_forcefield
@@ -79,6 +53,7 @@ class ConformerGenerator:
         if num_conformers < 1:
             raise ValueError("Number of conformers (num_conformers) must be at least 1.")
 
+        molecule = None
         if input_file:
             if not os.path.exists(input_file):
                 raise FileNotFoundError(f"Input file not found: {input_file}")
@@ -89,7 +64,7 @@ class ConformerGenerator:
                 print(f"Loaded molecule from: {input_file} ({molecule.title})")
             except Exception as e:
                 print(f"Error reading input file '{input_file}': {e}", file=sys.stderr)
-                return None
+                return 0
         elif smiles:
             try:
                 molecule = pybel.readstring("smi", smiles)
@@ -97,52 +72,94 @@ class ConformerGenerator:
                 print(f"Loaded molecule from SMILES: {smiles}")
             except Exception as e:
                 print(f"Error reading SMILES string '{smiles}': {e}", file=sys.stderr)
-                return None
+                return 0
         else:
             raise ValueError("Either 'input_file' or 'smiles' must be provided.")
 
-        # 2. Generate initial 3D coordinates if not present
-        if not molecule.OBMol.Has3D():
-            print(f"Generating initial 3D coordinates for {molecule.title} using forcefield '{forcefield}'...")
+        try:
+            molecule.addh()
             molecule.make3D(forcefield=forcefield, steps=make3D_steps)
+            
             if not molecule.OBMol.Has3D():
-                print("Failed to generate 3D coordinates.", file=sys.stderr)
-                return None
-            print("Initial 3D coordinates generated.")
-        else:
-            print(f"Molecule '{molecule.title}' already has 3D coordinates.")
+                print(f"Error: Failed to generate 3D coordinates for molecule. Check your SMILES or force field.", file=sys.stderr)
+                return 0
+            
+            ff = pybel._forcefields[forcefield]
+            if not ff.Setup(molecule.OBMol):
+                print(f"Warning: Force field '{forcefield}' setup failed on the molecule. This can cause the conformer search to fail.", file=sys.stderr)
+                return 0
+        except Exception as e:
+            print(f"Error during molecule preparation (3D coords or FF setup): {e}", file=sys.stderr)
+            return 0
 
-        # Work on a clone to avoid modifying the original molecule
         mol_clone = pybel.Molecule(molecule.OBMol)
-
-        # Determine the number of children if not specified
         children = num_children if num_children is not None else num_conformers * 2
-
-        # --- Conformer Search Setup ---
         cs = ob.OBConformerSearch()
+        
         setup_successful = cs.Setup(mol_clone.OBMol,
-                                     num_conformers,   # target number of conformers
-                                     children,         # numChildren in docs
-                                     mutability,       # mutability in docs
-                                     convergence)      # convergence in docs
+                                     num_conformers,
+                                     children,
+                                     mutability,
+                                     convergence)
 
         if not setup_successful:
-            print(f"Error: OBConformerSearch setup failed for molecule: {molecule.title}", file=sys.stderr)
-            return None # Or raise an exception
+            print(f"Error: OBConformerSearch setup failed for molecule: {molecule.title}. This is likely due to the molecule having no rotatable bonds or an invalid state.", file=sys.stderr)
+            return 0
 
-        # --- Perform the Search ---
-        print(f"Starting conformer search for {molecule.title}...")
+        print(f"Starting GA conformer search for {molecule.title}...")
         cs.Search()
-        print("Conformer search finished.")
-
-        # --- Retrieve Conformers ---
+        print("GA conformer search finished.")
         cs.GetConformers(mol_clone.OBMol)
-
-        # Get the actual number found (might be less than requested)
         actual_conformers = mol_clone.OBMol.NumConformers()
-        print(f"Found {actual_conformers} conformers.")
+        
+        # --- NEW LOGIC: Call the helper method to save to separate files ---
+        if actual_conformers > 0:
+            base = base_filename if base_filename is not None else "molecule"
+            self.save_conformers_to_separate_files(mol_clone, base, output_dir, output_format)
+            print(f"Successfully generated and saved {actual_conformers} conformers.")
+            return actual_conformers
+        else:
+            print("No conformers found.")
+            return 0
+        # --- END OF NEW LOGIC ---
 
-        return mol_clone
+    def save_conformers_to_separate_files(self, molecule_with_conformers: pybel.Molecule,
+                                          base_name: str,
+                                          output_dir: str = None,
+                                          file_format: str = "xyz"):
+        """
+        Splits a pybel.Molecule object containing multiple conformers into
+        separate files, one for each conformer.
+        """
+        if not molecule_with_conformers or molecule_with_conformers.OBMol.NumConformers() == 0:
+            print("No conformers found in the input molecule, nothing to save.")
+            return
+
+        num_found = molecule_with_conformers.OBMol.NumConformers()
+        print(f"\nSaving {num_found} conformers for {molecule_with_conformers.title} to separate files.")
+
+        if output_dir is None:
+            output_dir = f"{base_name}_conformers"
+        os.makedirs(output_dir, exist_ok=True)
+        print(f"Saving individual conformers into directory: '{output_dir}/'")
+
+        padding = len(str(num_found))
+
+        for i in range(num_found):
+            molecule_with_conformers.OBMol.SetConformer(i)
+            single_conformer_mol = pybel.Molecule(molecule_with_conformers.OBMol)
+            single_conformer_mol.title = f"{molecule_with_conformers.title}_conformer_{i+1}"
+            output_filename = os.path.join(
+                output_dir,
+                f"{base_name}_conf_{str(i+1).zfill(padding)}.{file_format}"
+            )
+            try:
+                single_conformer_mol.write(file_format, output_filename, overwrite=True)
+                print(f" Saved: {os.path.basename(output_filename)}", end='\r')
+            except Exception as e:
+                print(f"\nError saving conformer {i+1} to file '{output_filename}': {e}", file=sys.stderr)
+
+        print("\nFinished saving all conformers to separate files.")
 
     def confab_generate_conformers(self, molecule_input: str,
                                        output_dir: str,
@@ -375,3 +392,4 @@ class Mcon(object):
         w.close()
 
         print("Number of conformers created: {} ".format(len(cids)))
+
