@@ -13,7 +13,7 @@ setup(
     #long_description=open('README.txt').read(),
     install_requires=[ 
        'pytest >= 2.7.2',
-       'numpy < 1.27',
+       'numpy',
        'Cython', 
        'networkx >= 2.7; python_version>="3.8"', 
        'networkx < 2.7; python_version<"3.8"', 
@@ -25,7 +25,7 @@ setup(
        'pyscf-semiempirical @ git+https://github.com/pyscf/semiempirical', 
        'pyberny', 
        'openbabel-wheel', 
-       'numba==0.58.1', 
+       'numba', 
        'umap-learn', 
        'hdbscan', 
        'pandas', 
