@@ -16,8 +16,6 @@ from pysoftk.linear_polymer import super_monomer as sm
 from pysoftk.tools.utils_rdkit import *
 from pysoftk.tools.utils_func import *
 
-from pysoftk.topologies.ring import *
-
 from openbabel import openbabel as ob
 from openbabel import pybel as pb
 
