@@ -12,6 +12,7 @@ from collections import OrderedDict
 
 from pysoftk.linear_polymer import linear_polymer as lp
 from pysoftk.linear_polymer import super_monomer as sm
+from pysoftk.topologies.ring import *
 
 from pysoftk.tools.utils_rdkit import *
 from pysoftk.tools.utils_func import *
