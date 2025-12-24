@@ -77,6 +77,7 @@ def swap_hyd(mol, relax_iterations, atom, force_field="MMFF"):
                  mol.GetAtomWithIdx(atoms.GetIdx()).SetAtomicNum(1)
 
        newMol = AllChem.AssignBondOrdersFromTemplate(mol, mol)
+       newMol.UpdatePropertyCache(strict=False)
        newMol_H = Chem.AddHs(newMol, addCoords=True)
 
        # This for dealing with big polymers
