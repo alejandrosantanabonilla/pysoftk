@@ -174,6 +174,7 @@ class Bd:
         atom = self.atom
 
         res = self.merge_arms(core, arm, str(atom))
+        res.UpdatePropertyCache(strict=False)
         AllChem.EmbedMolecule(res)
 
         nm_ph = count_plholder(res, str(atom))
