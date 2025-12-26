@@ -111,6 +111,7 @@ class Bd:
         """
 
         outmol = Chem.CombineMols(core, arm)
+        outmol.UpdatePropertyCache(strict=False)
         AllChem.EmbedMolecule(outmol)
 
         new_bond = atom_neigh(outmol, str(atom))
