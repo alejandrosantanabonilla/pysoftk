@@ -31,6 +31,7 @@ def no_swap(mol, relax_iterations, force_field="MMFF"):
        """
        
        newMol = AllChem.AssignBondOrdersFromTemplate(mol, mol)
+       newMol.UpdatePropertyCache(strict=False)
        newMol_H = Chem.AddHs(newMol, addCoords=True)
 
        # This for dealing with big polymers
