@@ -77,6 +77,3 @@ jobs:
           files: ./test/test_pysoftk/coverage1.xml,./test/test_pol/coverage2.xml,./test/test_umap/coverage3.xml
           fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./test/test_pysoftk/coverage1.xml,./test/test_pol/coverage2.xml,./test/test_umap/coverage3.xml
-          fail_ci_if_error: false
-          token: ${{ secrets.CODECOV_TOKEN }}
