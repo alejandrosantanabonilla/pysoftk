@@ -46,34 +46,37 @@ jobs:
       - name: Installing PySoftK
         shell: bash -l {0}
         run: |
-           python -m pip install wheel --user
-           python -m pip install setuptools --upgrade --user
-           python -m pip install . --user  
+           python -m pip install wheel
+           python -m pip install setuptools --upgrade
+           python -m pip install .  
 
       - name: Run PySoftK-pysoftk test
         working-directory: ./test/test_pysoftk
         shell: bash -l {0}
         run: |
-          python -m pip install pytest pytest-cov --user
+          python -m pip install pytest pytest-cov setuptools
           python -m pytest --junitxml=pytest1.xml --cov-report=xml:coverage1.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage_1.txt
 
       - name: Run PySoftK-pol test
         working-directory: ./test/test_pol
         shell: bash -l {0}
         run: |
-          python -m pip install pytest pytest-cov --user
+          python -m pip install pytest pytest-cov setuptools
           python -m pytest --junitxml=pytest2.xml --cov-report=xml:coverage2.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage_2.txt
       
       - name: Run PySoftK-umap test
         working-directory: ./test/test_umap
         shell: bash -l {0}
         run: |
-          python -m pip install pytest pytest-cov --user
+          python -m pip install pytest pytest-cov setuptools
           python -m pytest --junitxml=pytest3.xml --cov-report=xml:coverage3.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage_3.txt
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
+          files: ./test/test_pysoftk/coverage1.xml,./test/test_pol/coverage2.xml,./test/test_umap/coverage3.xml
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ./test/test_pysoftk/coverage1.xml,./test/test_pol/coverage2.xml,./test/test_umap/coverage3.xml
           fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
