@@ -1,284 +1,306 @@
-import rdkit
-from rdkit import Chem
-from rdkit.Chem import AllChem
+"""
+Optimized Polymer Builder Module.
 
-from rdkit import RDLogger
-RDLogger.DisableLog('rdApp.*')
+This module provides the `Rnp` class for the computational synthesis of 
+ultra-large random copolymers. It utilizes a highly efficient binary tree 
+assembly algorithm for topology construction and integrates OpenBabel 
+for realistic 3D spatial geometry optimization.
+"""
 
 import numpy as np
-import random
-import copy
+from rdkit import Chem
+from rdkit.Chem import AllChem
+from rdkit import RDLogger
 
-from pysoftk.linear_polymer import linear_polymer as lp
-from pysoftk.linear_polymer import super_monomer as sm
+# 1. SILENCE WARNINGS
+RDLogger.DisableLog('rdApp.*')
 
-from pysoftk.tools.utils_rdkit import *
-from pysoftk.tools.utils_func import *
+# Robust Import for Super Monomer
+try:
+    from pysoftk.linear_polymer.super_monomer import Sm
+except ImportError:
+    try:
+        from super_monomer import Sm
+    except ImportError:
+        from .super_monomer import Sm
 
-class Rnp():
+# Import external OpenBabel utilities
+try:
+    from pysoftk.tools.utils_ob import *
+except ImportError:
+    print("Warning: Could not import pysoftk.tools.utils_ob")
+
+
+class Rnp:
     """
-    A class for the **computational synthesis of random copolymers** from a
-    given set of RDKit monomer molecules.
+    Optimized Polymer Builder for Ultra-Large Molecules.
 
-    This class enables the construction of linear polymer chains where the
-    sequence of different monomer types is determined stochastically based
-    on user-defined probabilities. It supports both two-component (A-B)
-    and three-component (A-B-C) random copolymers, followed by 3D embedding
-    and force field optimization.
+    This class constructs A-B and A-B-C random copolymers. It prevents the 
+    typical O(N^2) scaling bottlenecks of linear polymer growth by using a 
+    binary tree assembly approach. It also delegates 3D coordinate generation 
+    to OpenBabel for physically realistic spatial accommodation.
 
-    Examples
-    ---------
-    >>> from rdkit import Chem
-    >>> from pysoftk.topologies.random import Rnp
-    >>> # Define two monomers with placeholder atoms (e.g., [Pt])
-    >>> monomer_A = Chem.MolFromSmiles("C([Pt])C")
-    >>> monomer_B = Chem.MolFromSmiles("N([Pt])N")
-    >>>
-    >>> # Initialize the Rnp class for A-B random copolymer
-    >>> random_copoly_builder_AB = Rnp(ma=monomer_A, mb=monomer_B, atom="Pt")
-    >>>
-    >>> # Create a random A-B copolymer of length 10 with 70% A probability
-    >>> copolymer_AB = random_copoly_builder_AB.random_ab_copolymer(
-    ...     len_polymer=10, pA=0.7, force_field="MMFF"
-    ... )
-    >>> print(f"Random A-B copolymer atoms: {copolymer_AB.GetNumAtoms()}")
-    >>>
-    >>> # Define a third monomer (C)
-    >>> monomer_C = Chem.MolFromSmiles("O([Pt])O")
-    >>> # Create a random A-B-C copolymer of length 15 with pA=0.4, pB=0.3
-    >>> copolymer_ABC = random_copoly_builder_AB.random_abc_copolymer(
-    ...     mc=monomer_C, len_polymer=15, pA=0.4, pB=0.3, force_field="UFF"
-    ... )
-    >>> print(f"Random A-B-C copolymer atoms: {copolymer_ABC.GetNumAtoms()}")
-
-    Note
-    -----
-    The **RDKit package must be installed** in your Python environment for this
-    class to function correctly. Ensure that all monomer molecules provided
-    contain the same specified placeholder atom for proper bonding.
-    This class relies on functionalities from `pysoftk.linear_polymer`
-    and `pysoftk.tools`.
+    Attributes
+    ----------
+    ma : rdkit.Chem.rdchem.Mol
+        RDKit Mol object representing monomer A.
+    mb : rdkit.Chem.rdchem.Mol
+        RDKit Mol object representing monomer B.
+    atom : str
+        The placeholder atomic symbol (e.g., 'Br', 'At') used as the 
+        connection point between monomers.
     """
 
     __slots__ = ['ma', 'mb', 'atom']
 
-    def __init__(self, ma, mb, atom):
+    def __init__(self, ma: Chem.Mol, mb: Chem.Mol, atom: str):
         """
-        Initializes the `Rnp` class with two distinct RDKit monomer molecules
-        (monomer A and monomer B) and the common placeholder atom used for linking them.
-
-        These input molecules serve as the fundamental building blocks for the
-        random copolymerization process. For three-component copolymers,
-        the third monomer (C) is passed directly to the `random_abc_copolymer` method.
+        Initializes the Rnp builder with base monomers and a placeholder atom.
 
         Parameters
-        -----------
+        ----------
         ma : rdkit.Chem.rdchem.Mol
-            The **RDKit Mol object** representing **monomer A**. This molecule
-            must contain a designated placeholder atom.
-
+            The first monomer template.
         mb : rdkit.Chem.rdchem.Mol
-            The **RDKit Mol object** representing **monomer B**. This molecule
-            must also contain a designated placeholder atom.
-
+            The second monomer template.
         atom : str
-            The **atomic symbol** (e.g., "Pt", "Au") of the placeholder atom.
-            This specific atom type must be present in all monomer types (`ma`, `mb`, `mc`)
-            and will be used to establish bonds during the random polymerization process.
+            The atomic symbol used as the reactive placeholder.
         """
-
         self.ma = ma
         self.mb = mb
         self.atom = atom
 
-    def random_ab_copolymer(self, len_polymer, pA,
-                            relax_iterations=100, force_field="MMFF", swap_H=True):
+    def _build_sequence_tree(self, mol_list: list) -> Chem.Mol:
         """
-        Constructs a **random A-B copolymer** of a specified length, where the
-        incorporation of monomer A versus monomer B is determined by a user-defined
-        probability `pA`. The probability of incorporating monomer B is `1 - pA`.
+        Assembles a list of molecules into a single chain using binary tree reduction.
+        
 
-        This function iteratively builds the polymer chain by randomly selecting
-        either monomer A or monomer B at each step based on the given probabilities.
-        The final polymer undergoes 3D embedding and force field optimization.
+        Instead of adding monomers one by one linearly, this pairs them up and 
+        merges them recursively, reducing assembly depth to O(log N).
 
         Parameters
-        -----------
-        len_polymer : int
-            The **total number of monomer units** (A + B) that will form the
-            random copolymer chain.
+        ----------
+        mol_list : list of rdkit.Chem.rdchem.Mol
+            An ordered sequence of monomer RDKit Mol objects.
 
-        pA : float
-            The **probability (between 0.0 and 1.0)** of incorporating monomer A
-            at each step of the polymerization. Consequently, the probability
-            of incorporating monomer B is `1 - pA`.
-
-        relax_iterations : int, optional
-            The **maximum number of iterations** for the force field relaxation
-            algorithm during the final polymer optimization. Defaults to 100.
-
-        force_field : str, optional
-            The **name of the force field** to apply during the geometry
-            optimization. Accepted values are "MMFF" (which defaults to MMFF94)
-            or "UFF". Defaults to "MMFF".
-
-        swap_H : bool, optional
-            A flag indicating whether the placeholder atoms (specified by `self.atom`)
-            at the termini of the constructed polymer should be **replaced with
-            hydrogen atoms**.
-            * If `True` (default), placeholder atoms are converted to hydrogens
-              before the final optimization.
-            * If `False`, the placeholder atoms remain in the structure.
-
-        Return
+        Returns
         -------
+        rdkit.Chem.rdchem.Mol
+            A single RDKit Mol object containing the 2D topology of the entire chain.
+        """
+        current_layer = mol_list
+        while len(current_layer) > 1:
+            next_layer = []
+            
+            for i in range(0, len(current_layer) - 1, 2):
+                mol_left = current_layer[i]
+                mol_right = current_layer[i+1]
+                
+                # Instant topology construction
+                combined = Sm(mol_left, mol_right, str(self.atom)).build_topology_only()
+                next_layer.append(combined)
+
+            # Carry over the odd molecule if the layer has an uneven count
+            if len(current_layer) % 2 == 1:
+                next_layer.append(current_layer[-1])
+            current_layer = next_layer
+            
+        return current_layer[0]
+
+    def _swap_h_topology_only(self, mol: Chem.Mol) -> Chem.Mol:
+        """
+        Replaces remaining terminal placeholder atoms with Hydrogen purely at the graph level.
+
+        Parameters
+        ----------
         mol : rdkit.Chem.rdchem.Mol
-            An **RDKit Mol object** representing the fully constructed and
-            geometry-optimized random A-B copolymer.
+            The constructed polymer chain containing terminal placeholder atoms.
+
+        Returns
+        -------
+        rdkit.Chem.rdchem.Mol
+            The modified polymer with placeholder atoms replaced by Hydrogen.
         """
+        if not mol:
+            return None
+            
+        pattern = Chem.MolFromSmiles(f"[{self.atom}]")
+        replacement = Chem.MolFromSmiles("[H]")
+        
+        try:
+            res = AllChem.ReplaceSubstructs(mol, pattern, replacement, replaceAll=True)
+            new_mol = res[0] if res else mol
+            Chem.SanitizeMol(new_mol)
+            return new_mol
+        except Exception:
+            return mol
 
-        ma = self.ma
-        mb = self.mb
-        atom = self.atom
+    def _finalize_structure(self, mol: Chem.Mol, relax_iterations: int, 
+                            force_field: str, swap_H: bool, 
+                            rot_steps: int, ff_thr: float) -> Chem.Mol:
+        """
+        Handles final topological cleanup and bridges to OpenBabel for 3D generation.
+        
 
-        rand = np.random.rand()
+        Parameters
+        ----------
+        mol : rdkit.Chem.rdchem.Mol
+            The 2D polymer graph.
+        relax_iterations : int
+            Number of iterations for the OpenBabel geometry optimization.
+        force_field : str
+            The force field to apply (e.g., 'MMFF94', 'UFF').
+        swap_H : bool
+            Whether to replace terminal placeholders with Hydrogen atoms.
+        rot_steps : int
+            Number of iterations for the weighted rotor search.
+        ff_thr : float
+            Convergence threshold for the optimization.
 
-        if rand < pA:
-            m1 = ma
-        else:
-            m1 = mb
+        Returns
+        -------
+        rdkit.Chem.rdchem.Mol
+            The final 3D-optimized polymer as a standard RDKit Mol object.
+        """
+        final_mol = mol
 
-        rand = np.random.rand()
+        # Ensure Hydrogens are present for accurate 3D physics
+        if final_mol:
+            final_mol = Chem.AddHs(final_mol)
 
-        if rand < pA:
-            m2 = ma
-        else:
-            m2 = mb
-
-        monomer = sm.Sm(m1, m2, str(atom))
-
-        for i in range(len_polymer - 1):
-            rand = np.random.rand()
-
-            if rand < pA:
-                m3 = ma
-            else:
-                m3 = mb
-
-            monomer = sm.Sm(monomer.mon_to_poly(), m3, str(atom))
-
-        mol = monomer.mon_to_poly()
-
+        # Swap Placeholders for H
         if swap_H:
-            newMol_H = swap_hyd(mol, relax_iterations, str(atom), force_field)
+            final_mol = self._swap_h_topology_only(final_mol)
+            if final_mol:
+                final_mol = Chem.AddHs(final_mol)
 
-        if not swap_H:
-            newMol_H = no_swap(mol, relax_iterations, force_field)
+        # --- 3D Generation via OpenBabel Bridge ---
+        if final_mol:
+            try:
+                from openbabel import pybel as pb
+                
+                mol_block_2d = Chem.MolToMolBlock(final_mol)
+                ob_mol = pb.readstring("mol", mol_block_2d)
+                
+                # Map force field names correctly
+                ff_lower = force_field.lower() if force_field else "mmff94"
+                if ff_lower == "mmff":
+                    ff_lower = "mmff94"
+                    
+                ff_standard = "MMFF94" if ff_lower == "mmff94" else force_field.upper()
+                
+                print(f"\n[Physics] Generating spatial 3D coordinates via OpenBabel ({ff_lower})...")
+                # Step 1: Fast initial spatial placement out of the 2D plane
+                ob_mol.make3D(forcefield=ff_lower, steps=50)
+                
+                # Step 2: Global Optimization (Relaxation + Rotor Search)
+                if relax_iterations > 0:
+                    print(f"[Physics] Calling external global_opt (iters: {relax_iterations}, rotor_steps: {rot_steps}, thr: {ff_thr})...")
+                    ob_mol = global_opt(ob_mol, FF=ff_standard, relax_iterations=relax_iterations, 
+                                        rot_steps=rot_steps, ff_thr=ff_thr)
+                
+                # Bridge back to RDKit
+                mol_block_3d = ob_mol.write("mol")
+                final_mol_3d = Chem.MolFromMolBlock(mol_block_3d, removeHs=False)
+                
+                return final_mol_3d if final_mol_3d else final_mol 
 
-        return newMol_H
+            except Exception as e:
+                print(f"\n[Warning] OpenBabel Bridge failed ({e}). Falling back to RDKit's random 3D coordinates.")
+                try:
+                    res = AllChem.EmbedMolecule(final_mol, useRandomCoords=True)
+                    if res != -1 and relax_iterations > 0:
+                        try:
+                            if force_field in ["MMFF", "MMFF94", "mmff94"]:
+                                AllChem.MMFFOptimizeMolecule(final_mol, maxIters=relax_iterations)
+                            else:
+                                AllChem.UFFOptimizeMolecule(final_mol, maxIters=relax_iterations)
+                        except Exception:
+                            pass 
+                except Exception:
+                    pass 
 
-    def random_abc_copolymer(self, mc, len_polymer, pA,
-                             pB, relax_iterations=100, force_field="MMFF", swap_H=True):
+        return final_mol
+
+    def random_ab_copolymer(self, len_polymer: int, pA: float, 
+                            relax_iterations: int = 100, force_field: str = "MMFF94", 
+                            swap_H: bool = True, rot_steps: int = 125, 
+                            ff_thr: float = 1.0e-6) -> Chem.Mol:
         """
-        Constructs a **random A-B-C terpolymer** of a specified length, where the
-        incorporation of monomer A, B, or C is determined by user-defined
-        probabilities `pA` and `pB`. The probability of incorporating monomer C
-        is implicitly `1 - pA - pB`.
+        Constructs a randomly sequenced two-component (A-B) copolymer.
 
-        This function iteratively builds the polymer chain by randomly selecting
-        monomer A, B, or C at each step based on the given probabilities.
-        The final polymer undergoes 3D embedding and force field optimization.
+        Parameters
+        ----------
+        len_polymer : int
+            The total number of monomer units in the desired polymer chain.
+        pA : float
+            The probability (0.0 to 1.0) of selecting monomer A at any position.
+        relax_iterations : int, optional
+            Number of iterations for geometry relaxation. Defaults to 100.
+        force_field : str, optional
+            The force field for 3D optimization. Defaults to 'MMFF94'.
+        swap_H : bool, optional
+            If True, caps terminal placeholders with Hydrogen. Defaults to True.
+        rot_steps : int, optional
+            Thoroughness of the OpenBabel rotor search. Defaults to 125.
+        ff_thr : float, optional
+            Convergence threshold for optimization. Defaults to 1.0e-6.
+
+        Returns
+        -------
+        rdkit.Chem.rdchem.Mol
+            The synthesized and 3D-optimized A-B copolymer.
+        """
+        monomers = [self.ma, self.mb]
+        probs = [pA, 1.0 - pA]
+        
+        sequence_indices = np.random.choice([0, 1], size=len_polymer, p=probs)
+        mol_sequence = [monomers[i] for i in sequence_indices]
+
+        raw_poly = self._build_sequence_tree(mol_sequence)
+        return self._finalize_structure(raw_poly, relax_iterations, force_field, swap_H, rot_steps, ff_thr)
+
+    def random_abc_copolymer(self, mc: Chem.Mol, len_polymer: int, pA: float, pB: float, 
+                             relax_iterations: int = 100, force_field: str = "MMFF94", 
+                             swap_H: bool = True, rot_steps: int = 125, 
+                             ff_thr: float = 1.0e-6) -> Chem.Mol:
+        """
+        Constructs a randomly sequenced three-component (A-B-C) terpolymer.
 
         Parameters
         ----------
         mc : rdkit.Chem.rdchem.Mol
-            The **RDKit Mol object** representing **monomer C**. This molecule
-            must also contain the designated placeholder atom.
-
+            RDKit Mol object representing the third monomer, C.
         len_polymer : int
-            The **total number of monomer units** (A + B + C) that will form the
-            random terpolymer chain.
-
+            The total number of monomer units in the desired polymer chain.
         pA : float
-            The **probability (between 0.0 and 1.0)** of incorporating monomer A
-            at each step of the polymerization.
-
+            The probability (0.0 to 1.0) of selecting monomer A.
         pB : float
-            The **probability (between 0.0 and 1.0)** of incorporating monomer B
-            at each step of the polymerization. It is expected that `pA + pB <= 1.0`.
-
+            The probability (0.0 to 1.0) of selecting monomer B. 
+            (Note: Probability of C is calculated as 1.0 - pA - pB).
         relax_iterations : int, optional
-            The **maximum number of iterations** for the force field relaxation
-            algorithm during the final polymer optimization. Defaults to 100.
-
+            Number of iterations for geometry relaxation. Defaults to 100.
         force_field : str, optional
-            The **name of the force field** to apply during the geometry
-            optimization. Accepted values are "MMFF" (which defaults to MMFF94)
-            or "UFF". Defaults to "MMFF".
-
+            The force field for 3D optimization. Defaults to 'MMFF94'.
         swap_H : bool, optional
-            A flag indicating whether the placeholder atoms (specified by `self.atom`)
-            at the termini of the constructed polymer should be **replaced with
-            hydrogen atoms**.
-            * If `True` (default), placeholder atoms are converted to hydrogens
-              before the final optimization.
-            * If `False`, the placeholder atoms remain in the structure.
+            If True, caps terminal placeholders with Hydrogen. Defaults to True.
+        rot_steps : int, optional
+            Thoroughness of the OpenBabel rotor search. Defaults to 125.
+        ff_thr : float, optional
+            Convergence threshold for optimization. Defaults to 1.0e-6.
 
-        Return
+        Returns
         -------
-        mol : rdkit.Chem.rdchem.Mol
-            An **RDKit Mol object** representing the fully constructed and
-            geometry-optimized random A-B-C terpolymer.
+        rdkit.Chem.rdchem.Mol
+            The synthesized and 3D-optimized A-B-C terpolymer.
         """
+        pC = max(0.0, 1.0 - (pA + pB))
+        probs = np.array([pA, pB, pC])
+        probs /= probs.sum()
 
-        ma = self.ma
-        mb = self.mb
-        atom = self.atom
+        choices = [self.ma, self.mb, mc]
+        indices = np.random.choice([0, 1, 2], size=len_polymer, p=probs)
+        mol_sequence = [choices[i] for i in indices]
 
-        rand = np.random.rand()
-        pAB = pA + pB
-
-        if rand < pA:
-            m1 = ma
-
-        elif rand < pAB:
-            m1 = mb
-
-        else:
-            m1 = mc
-
-        rand = np.random.rand()
-
-        if rand < pA:
-            m2 = ma
-
-        elif rand < pAB:
-            m2 = mb
-
-        else:
-            m2 = mc
-
-        monomer = sm.Sm(m1, m2, str(atom))
-
-        for i in range(len_polymer - 1):
-            rand = np.random.rand()
-
-            if rand < pA:
-                m3 = ma
-
-            elif rand < pAB:
-                m3 = mb
-
-            else:
-                m3 = mc
-
-            monomer = sm.Sm(monomer.mon_to_poly(), m3, str(atom))
-
-        mol = monomer.mon_to_poly()
-
-        if swap_H:
-            newMol_H = swap_hyd(mol, relax_iterations, str(atom), force_field)
-        if not swap_H:
-            newMol_H = no_swap(mol, relax_iterations, force_field)
-
-        return newMol_H
+        raw_poly = self._build_sequence_tree(mol_sequence)
+        return self._finalize_structure(raw_poly, relax_iterations, force_field, swap_H, rot_steps, ff_thr)
