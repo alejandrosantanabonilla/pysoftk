@@ -1,8 +1,9 @@
 [![Conda pytests](https://github.com/alejandrosantanabonilla/pysoftk/actions/workflows/pyci.yml/badge.svg)](https://github.com/alejandrosantanabonilla/pysoftk/actions/workflows/pyci.yml)
 [![codecov](https://codecov.io/gh/alejandrosantanabonilla/pysoftk/graph/badge.svg)](https://codecov.io/gh/alejandrosantanabonilla/pysoftk)
 ![Python Versions](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11-blue)
-[![License](https://img.shields.io/badge/License-YOUR--LICENSE--HERE-blue.svg)](https://opensource.org/licenses/YOUR-LICENSE-HERE)
+[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://github.com/alejandrosantanabonilla/pysoftk/blob/main/LICENSE)
 [![Documentation](https://img.shields.io/badge/docs-GitHub_Pages-blue.svg)](https://alejandrosantanabonilla.github.io/pysoftk/)
+[![GitHub last commit](https://img.shields.io/github/last-commit/alejandrosantanabonilla/pysoftk)](https://github.com/alejandrosantanabonilla/pysoftk/commits/main)
 
 <p align="center">
     <img width="450" src="pysoftklogo.png" alt="PySoftK Logo">
