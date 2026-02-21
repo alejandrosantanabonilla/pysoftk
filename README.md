@@ -10,27 +10,7 @@
 ## Windows users:
 
 Please take note that PySCF doesn't support Windows OS. Therefore, you should comment out that package in the `setup.py` file if you would like to install **PySoftK** on Windows.
-
 ---
-
-## Pip installation
-
-To quickly install **PySoftk**, we encourage doing it inside a virtual environment. This can be achieved in the following way:
-
-1. Create a directory named as you want and access it (in this case called `work_pol`):
-```bash 
-mkdir work_pol
-cd work_pol
-
-
-**PySoftK** is a set of Python tools and programs for modelling and simulating polymers with different topologies. The program is still under active 
-development and contributions are welcome. A complete introduction into the program can be found in this link [Documentation][1]. 
-
-# Windows users:
-
-Please take a note that PySCF doesn't support windows OS and therefore you should comment that package in the setup.py file if 
-you would like to install **PySoftK** in Windows.
-
 
 # Pip installation
 
