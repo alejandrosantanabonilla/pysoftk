@@ -1,34 +1,31 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Docs Building
 
-# Controls when the workflow will run
 on:
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# Add this block to give the GITHUB_TOKEN write access
+permissions:
+  contents: write
+
 jobs:
-  # This workflow contains a single job called "build"
   build:
     runs-on: ubuntu-latest 
 
     steps:
      - name: Checkout
-       uses: actions/checkout@master
+       uses: actions/checkout@v4 # Updated to latest version
        with:
          fetch-depth: 0
     
      - name: Set up Python
-       uses: actions/setup-python@v2
+       uses: actions/setup-python@v4 # Updated to latest version
        with:
-          python-version: 3.9
+          python-version: '3.9'
           
      - name: Install dependencies
        run: |
           pip install --upgrade pip
-          python -m pip install -U sphinx
-          python -m pip install -U sphinx-rtd-theme
+          pip install sphinx sphinx-rtd-theme
           
      - name: Install PySoftK
        run: |
@@ -37,14 +34,15 @@ jobs:
      - name: Sphinx apidocs
        shell: bash
        run: |
-         cd docs
-         sphinx-apidoc -o ./source ../pysoftk
-         make html
-         cd ..
+          cd docs
+          # Note: Ensure these paths match your repo structure
+          sphinx-apidoc -o ./source ../pysoftk
+          make html
          
      - name: Deploy
        uses: peaceiris/actions-gh-pages@v3
        with:
-         publish_branch: gh-pages
-         github_token: ${{ secrets.PYSOFTK_DOCS }}
-         publish_dir: ./docs/build/html 
+          # Use the built-in token instead of a custom secret
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./docs/build/html
