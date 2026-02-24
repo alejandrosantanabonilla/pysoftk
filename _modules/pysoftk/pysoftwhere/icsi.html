@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.pysoftwhere.icsi &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
@@ -87,162 +87,268 @@
 <a class="viewcode-back" href="../../../pysoftk.pysoftwhere.html#pysoftk.pysoftwhere.icsi.icsi">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">icsi</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculates the intrinsic surface density (ISD) of a cluster in a molecular</span>
-<span class="sd">    simulation.</span>
+<span class="sd">    Calculates the **Intrinsic Surface Density (ISD)** of a defined cluster</span>
+<span class="sd">    within a molecular dynamics simulation.</span>
 
-<span class="sd">    This class implements the Intrinsic Surface Density (ISD) calculation as</span>
-<span class="sd">    described in [Reference]. It takes a universe (`u`), cluster definition</span>
-<span class="sd">    information, and options for frame and binning as input and returns the</span>
-<span class="sd">    intrinsic radius, spherical radius, and interface values.</span>
+<span class="sd">    The Intrinsic Surface Density (ISD) provides a quantitative measure of</span>
+<span class="sd">    the local density fluctuations at the interface of a molecular cluster.</span>
+<span class="sd">    This class implements the ISD calculation, as described in scientific</span>
+<span class="sd">    literature, to characterize the roughness or compactness of a cluster&#39;s</span>
+<span class="sd">    surface. It processes molecular positions, converts them to spherical</span>
+<span class="sd">    coordinates, and performs binning to determine the intrinsic radius,</span>
+<span class="sd">    spherical radius, and interface values.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        u: An MDAnalysis universe object.</span>
-<span class="sd">        cluster_resids: A list of residue indices that define the cluster.</span>
-<span class="sd">        cluster_atoms_positions: A 3D NumPy array of atomic positions in the</span>
-<span class="sd">            cluster across all frames.</span>
-<span class="sd">        core_sel_atoms_positions: A 3D NumPy array of atomic positions for the</span>
-<span class="sd">            core region of the cluster.</span>
-<span class="sd">        shell_sel_atoms_positions: A 3D NumPy array of atomic positions for the</span>
-<span class="sd">            shell region of the cluster.</span>
-<span class="sd">        frame: The frame index to use for the calculation (default: -1 for</span>
-<span class="sd">            the last frame).</span>
-<span class="sd">        no_bins: The number of bins for the 2D histogram (default: 31).</span>
-<span class="sd">        no_random_points: The number of random points to use for</span>
-<span class="sd">            normalization (default: 10000).</span>
-<span class="sd">        normalisation_run: Whether to use random points for normalization</span>
-<span class="sd">            (default: False).</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : MDAnalysis.Universe</span>
+<span class="sd">        An **MDAnalysis Universe object** containing the trajectory and</span>
+<span class="sd">        topology information of the molecular system. This universe provides</span>
+<span class="sd">        the context for atom selections and positions.</span>
+<span class="sd">    cluster_resids : list of int</span>
+<span class="sd">        A **list of residue IDs** (integers) that collectively define the</span>
+<span class="sd">        cluster of interest. All atoms belonging to these residues will be</span>
+<span class="sd">        considered part of the cluster.</span>
+<span class="sd">    cluster_atoms_positions : numpy.ndarray</span>
+<span class="sd">        A **3D NumPy array** of shape `(n_atoms, 3)` representing the Cartesian</span>
+<span class="sd">        coordinates (x, y, z) of all atoms within the `cluster_resids`</span>
+<span class="sd">        for a specific frame.</span>
+<span class="sd">    core_sel_atoms_positions : numpy.ndarray</span>
+<span class="sd">        A **3D NumPy array** of shape `(n_core_atoms, 3)` representing the</span>
+<span class="sd">        Cartesian coordinates (x, y, z) of atoms defined as the **core region**</span>
+<span class="sd">        of the cluster. These atoms are used to establish the &quot;inner&quot; boundary</span>
+<span class="sd">        for the intrinsic radius calculation.</span>
+<span class="sd">    shell_sel_atoms_positions : numpy.ndarray</span>
+<span class="sd">        A **3D NumPy array** of shape `(n_shell_atoms, 3)` representing the</span>
+<span class="sd">        Cartesian coordinates (x, y, z) of atoms defined as the **shell region**</span>
+<span class="sd">        of the cluster. These atoms represent the &quot;outer&quot; boundary and are</span>
+<span class="sd">        used to probe the surface.</span>
+<span class="sd">    frame : int, optional</span>
+<span class="sd">        The **index of the trajectory frame** to use for the ISD calculation.</span>
+<span class="sd">        A value of -1 (default) indicates the last frame of the trajectory.</span>
+<span class="sd">    no_bins : int, optional</span>
+<span class="sd">        The **number of bins** to use for constructing the 2D histogram in</span>
+<span class="sd">        spherical coordinate space ($\cos(\theta)$ and $\phi$). A higher</span>
+<span class="sd">        number of bins provides finer resolution but may lead to sparser data.</span>
+<span class="sd">        Defaults to 31.</span>
+<span class="sd">    no_random_points : int, optional</span>
+<span class="sd">        The **number of random points** to generate for normalization purposes</span>
+<span class="sd">        when `normalisation_run` is set to `True`. These points are uniformly</span>
+<span class="sd">        distributed within the simulation box. Defaults to 10000.</span>
+<span class="sd">    normalisation_run : bool, optional</span>
+<span class="sd">        A flag indicating whether the calculation should use **randomly</span>
+<span class="sd">        generated points for normalization** instead of the actual `shell_sel_atoms_positions`.</span>
+<span class="sd">        Set to `True` for normalization runs, `False` (default) for actual</span>
+<span class="sd">        ISD calculation.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        intrinsic_r: A list of intrinsic radii.</span>
-<span class="sd">        spherical_r: A list of spherical radii.</span>
-<span class="sd">        interface_vals: A 2D NumPy array of interface values.</span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    intrinsic_r : list of float</span>
+<span class="sd">        A list containing the **calculated intrinsic radii** for each shell atom.</span>
+<span class="sd">        The intrinsic radius represents the distance from the cluster&#39;s effective</span>
+<span class="sd">        surface to the shell atom.</span>
+<span class="sd">    spherical_r : list of float</span>
+<span class="sd">        A list containing the **calculated spherical radii** for each shell atom.</span>
+<span class="sd">        The spherical radius is the radial distance of the shell atom from the</span>
+<span class="sd">        center of mass of the cluster.</span>
+<span class="sd">    interface_vals : numpy.ndarray</span>
+<span class="sd">        A **2D NumPy array** representing the calculated interface values</span>
+<span class="sd">        across the binned spherical coordinate space. This array effectively</span>
+<span class="sd">        maps the &quot;edge&quot; of the core region in different angular directions.</span>
 
-<span class="sd">    Raises:</span>
-<span class="sd">        ValueError: If an invalid frame index is provided.</span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If an invalid `frame` index is provided (e.g., out of trajectory bounds).</span>
 
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    MDAnalysis.Universe : For details on the MDAnalysis Universe object.</span>
+<span class="sd">    scipy.stats.binned_statistic_2d : For details on the 2D histogramming function.</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The calculation of the intrinsic surface density involves:</span>
+<span class="sd">    1.  Defining a cluster, its core, and its shell regions.</span>
+<span class="sd">    2.  Translating all atomic coordinates to the center of mass of the cluster.</span>
+<span class="sd">    3.  Converting Cartesian coordinates of core and shell atoms to spherical</span>
+<span class="sd">        coordinates (r, $\theta$, $\phi$).</span>
+<span class="sd">    4.  Binning the spherical coordinates to create a 2D histogram.</span>
+<span class="sd">    5.  Determining the &quot;interface&quot; position, typically by finding the maximum</span>
+<span class="sd">        radial distance of core atoms within each angular bin.</span>
+<span class="sd">    6.  Calculating the intrinsic radius for each shell atom as the difference</span>
+<span class="sd">        between its spherical radius and the interface position in its</span>
+<span class="sd">        corresponding angular bin.</span>
+
+<span class="sd">    The method handles missing data (NaNs) in the interface values by</span>
+<span class="sd">    averaging from neighboring bins, ensuring a continuous interface definition.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                    <span class="n">u</span><span class="p">,</span>
-                    <span class="n">cluster_resids</span><span class="p">,</span>
-                    <span class="n">cluster_atoms_positions</span><span class="p">,</span>
-                    <span class="n">core_sel_atoms_positions</span><span class="p">,</span>
-                    <span class="n">shell_sel_atoms_positions</span><span class="p">,</span>
-                    <span class="n">frame</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-                    <span class="n">no_bins</span><span class="o">=</span><span class="mi">31</span><span class="p">,</span>
-                    <span class="n">no_random_points</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
-                    <span class="n">normalisation_run</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                 <span class="n">u</span><span class="p">,</span>
+                 <span class="n">cluster_resids</span><span class="p">,</span>
+                 <span class="n">cluster_atoms_positions</span><span class="p">,</span>
+                 <span class="n">core_sel_atoms_positions</span><span class="p">,</span>
+                 <span class="n">shell_sel_atoms_positions</span><span class="p">,</span>
+                 <span class="n">frame</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+                 <span class="n">no_bins</span><span class="o">=</span><span class="mi">31</span><span class="p">,</span>
+                 <span class="n">no_random_points</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                 <span class="n">normalisation_run</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">u</span> <span class="o">=</span> <span class="n">u</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">no_bins</span> <span class="o">=</span> <span class="n">no_bins</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cluster_resids</span> <span class="o">=</span> <span class="n">cluster_resids</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cluster_atoms_positions</span><span class="o">=</span><span class="n">cluster_atoms_positions</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">core_sel_atoms_positions</span><span class="o">=</span><span class="n">core_sel_atoms_positions</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">shell_sel_atoms_positions</span><span class="o">=</span><span class="n">shell_sel_atoms_positions</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">no_random_points</span><span class="o">=</span><span class="n">no_random_points</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">normalisation_run</span><span class="o">=</span><span class="n">normalisation_run</span>
-        
+        <span class="bp">self</span><span class="o">.</span><span class="n">cluster_atoms_positions</span> <span class="o">=</span> <span class="n">cluster_atoms_positions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">core_sel_atoms_positions</span> <span class="o">=</span> <span class="n">core_sel_atoms_positions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shell_sel_atoms_positions</span> <span class="o">=</span> <span class="n">shell_sel_atoms_positions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">no_random_points</span> <span class="o">=</span> <span class="n">no_random_points</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalisation_run</span> <span class="o">=</span> <span class="n">normalisation_run</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_spherical_intrinsic_density</span><span class="p">()</span>
-        
+
     <span class="k">def</span><span class="w"> </span><span class="nf">_spherical_intrinsic_density</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculates the spherical intrinsic density of the cluster.</span>
+<span class="sd">        Performs the core calculations for the **spherical intrinsic density (ISD)**.</span>
 
-<span class="sd">        This method performs the core calculations for the ISD, including:</span>
+<span class="sd">        This method encapsulates the multi-step process of computing the ISD,</span>
+<span class="sd">        including coordinate transformations, atom selections, 2D histogramming,</span>
+<span class="sd">        and the calculation of intrinsic and spherical radii. It also</span>
+<span class="sd">        handles the imputation of missing interface values and, optionally,</span>
+<span class="sd">        uses random points for normalization runs.</span>
 
-<span class="sd">        - Converting Cartesian coordinates to spherical coordinates.</span>
-<span class="sd">        - Selecting core and shell atoms.</span>
-<span class="sd">        - Calculating binned statistics for shell and interface positions.</span>
-<span class="sd">        - Calculating intrinsic radii.</span>
+<span class="sd">        The steps involved are:</span>
+<span class="sd">        1.  Loading the specified trajectory frame from the MDAnalysis Universe.</span>
+<span class="sd">        2.  Calculating the **center of mass (COM)** for the entire cluster.</span>
+<span class="sd">        3.  Translating all atomic positions to the COM.</span>
+<span class="sd">        4.  Converting Cartesian coordinates of both core and shell atoms</span>
+<span class="sd">            (or random points during a normalization run) to spherical coordinates (r, $\theta$, $\phi$).</span>
+<span class="sd">        5.  Performing 2D binning of shell atom positions (or random points)</span>
+<span class="sd">            and core atom positions in ($\cos(\theta)$, $\phi$) space to determine</span>
+<span class="sd">            `shell_pos` counts and `interface` values (max radial distance of core atoms).</span>
+<span class="sd">        6.  Iteratively filling any `NaN` (Not-a-Number) values in the `interface_vals`</span>
+<span class="sd">            array by averaging from valid neighboring bins, ensuring a smooth</span>
+<span class="sd">            interface definition.</span>
+<span class="sd">        7.  Calculating the `intrinsic_r` and `spherical_r` for each shell atom</span>
+<span class="sd">            based on its position relative to the calculated interface.</span>
 
+<span class="sd">        This method populates the `self.intrinsic_r`, `self.spherical_r`,</span>
+<span class="sd">        and `self.interface_vals` attributes of the class.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">            This method does not return any value directly. It updates the</span>
+<span class="sd">            instance attributes: `self.intrinsic_r`, `self.spherical_r`, and</span>
+<span class="sd">            `self.interface_vals`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        
+
         <span class="k">def</span><span class="w"> </span><span class="nf">cartesian_to_spherical</span><span class="p">(</span><span class="n">xyz</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            Converts Cartesian coordinates to spherical coordinates.</span>
+<span class="sd">            Converts a set of 3D Cartesian coordinates to spherical coordinates.</span>
 
-<span class="sd">            Args:</span>
-<span class="sd">                xyz: A 3D NumPy array of Cartesian coordinates.</span>
+<span class="sd">            The spherical coordinates are defined as:</span>
+<span class="sd">            - **r (radius)**: The Euclidean distance from the origin.</span>
+<span class="sd">            - **theta ($\theta$)**: The polar angle (inclination) from the positive Z-axis</span>
+<span class="sd">              (range: 0 to $\pi$ radians).</span>
+<span class="sd">            - **phi ($\phi$)**: The azimuthal angle in the XY-plane from the positive X-axis</span>
+<span class="sd">              (range: $-\pi$ to $\pi$ radians).</span>
 
-<span class="sd">            Returns:</span>
-<span class="sd">                A 3D NumPy array of spherical coordinates.</span>
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            xyz : numpy.ndarray</span>
+<span class="sd">                A **3D NumPy array** of shape `(N, 3)` where `N` is the number</span>
+<span class="sd">                of points, and each row contains the `[x, y, z]` Cartesian</span>
+<span class="sd">                coordinates.</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            numpy.ndarray</span>
+<span class="sd">                A **3D NumPy array** of shape `(N, 6)`. Each row contains</span>
+<span class="sd">                `[x, y, z, r, theta, phi]` where `r`, `theta`, and `phi` are</span>
+<span class="sd">                the calculated spherical coordinates.</span>
 <span class="sd">            &quot;&quot;&quot;</span>
             <span class="n">ptsnew</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">xyz</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">xyz</span><span class="o">.</span><span class="n">shape</span><span class="p">)))</span>
-            <span class="n">xy</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">xyz</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
-            <span class="n">ptsnew</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">xy</span> <span class="o">+</span> <span class="n">xyz</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-            <span class="n">ptsnew</span><span class="p">[:,</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">xy</span><span class="p">),</span> <span class="n">xyz</span><span class="p">[:,</span><span class="mi">2</span><span class="p">])</span> <span class="c1"># for elevation angle defined from Z-axis down</span>
+            <span class="n">xy</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">xyz</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">ptsnew</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">xy</span> <span class="o">+</span> <span class="n">xyz</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">ptsnew</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">xy</span><span class="p">),</span> <span class="n">xyz</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>  <span class="c1"># for elevation angle defined from Z-axis down</span>
             <span class="c1">#ptsnew[:,4] = np.arctan2(xyz[:,2], np.sqrt(xy)) # for elevation angle defined from XY-plane up</span>
-            <span class="n">ptsnew</span><span class="p">[:,</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">xyz</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">xyz</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">ptsnew</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">xyz</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">xyz</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
             <span class="k">return</span> <span class="n">ptsnew</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">]</span>
-        <span class="n">box_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">dimensions</span>
-        
-        <span class="n">cluster_sel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;resid &#39;</span><span class="o">+</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_resids</span><span class="p">]))</span>
-        <span class="n">com</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">cluster_sel</span><span class="o">.</span><span class="n">masses</span><span class="p">)))</span><span class="o">*</span><span class="n">cluster_sel</span><span class="o">.</span><span class="n">masses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cluster_atoms_positions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cluster_sel</span><span class="p">))])</span>
+        <span class="n">box_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">dimensions</span>
+
+        <span class="n">cluster_sel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;resid &#39;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_resids</span><span class="p">]))</span>
+        <span class="n">com</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">cluster_sel</span><span class="o">.</span><span class="n">masses</span><span class="p">)))</span> <span class="o">*</span> <span class="n">cluster_sel</span><span class="o">.</span><span class="n">masses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_atoms_positions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cluster_sel</span><span class="p">))])</span>
+
         <span class="c1">####calc spherical polars of core</span>
-        <span class="n">core_array</span> <span class="o">=</span> <span class="n">cartesian_to_spherical</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">core_sel_atoms_positions</span><span class="o">-</span><span class="n">com</span><span class="p">)</span>
-        <span class="n">r_core_tmp</span><span class="o">=</span><span class="n">core_array</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span>
-        <span class="n">theta_core_tmp</span><span class="o">=</span><span class="n">core_array</span><span class="p">[:,</span><span class="mi">4</span><span class="p">]</span>
-        <span class="n">phi_core_tmp</span><span class="o">=</span><span class="n">core_array</span><span class="p">[:,</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">core_array</span> <span class="o">=</span> <span class="n">cartesian_to_spherical</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">core_sel_atoms_positions</span> <span class="o">-</span> <span class="n">com</span><span class="p">)</span>
+        <span class="n">r_core_tmp</span> <span class="o">=</span> <span class="n">core_array</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="n">theta_core_tmp</span> <span class="o">=</span> <span class="n">core_array</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="n">phi_core_tmp</span> <span class="o">=</span> <span class="n">core_array</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]</span>
+
         <span class="c1">####calc spherical polars of shell</span>
-        
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalisation_run</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="n">shell_array</span> <span class="o">=</span> <span class="n">cartesian_to_spherical</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_sel_atoms_positions</span><span class="o">-</span><span class="n">com</span><span class="p">)</span>
+            <span class="n">shell_array</span> <span class="o">=</span> <span class="n">cartesian_to_spherical</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_sel_atoms_positions</span> <span class="o">-</span> <span class="n">com</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalisation_run</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">shell_array</span> <span class="o">=</span> <span class="n">cartesian_to_spherical</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">no_random_points</span><span class="p">,</span><span class="mi">3</span><span class="p">)))</span>
-        
-        <span class="n">r_shell_sphere_tmp</span><span class="o">=</span><span class="n">shell_array</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span>
-        <span class="n">theta_shell_sphere_tmp</span><span class="o">=</span><span class="n">shell_array</span><span class="p">[:,</span><span class="mi">4</span><span class="p">]</span>
-        <span class="n">phi_shell_sphere_tmp</span><span class="o">=</span><span class="n">shell_array</span><span class="p">[:,</span><span class="mi">5</span><span class="p">]</span>
+            <span class="n">shell_array</span> <span class="o">=</span> <span class="n">cartesian_to_spherical</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">no_random_points</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+
+        <span class="n">r_shell_sphere_tmp</span> <span class="o">=</span> <span class="n">shell_array</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="n">theta_shell_sphere_tmp</span> <span class="o">=</span> <span class="n">shell_array</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="n">phi_shell_sphere_tmp</span> <span class="o">=</span> <span class="n">shell_array</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]</span>
 
         <span class="c1">###calc shell bins</span>
-        
-        <span class="n">shell_pos</span><span class="o">=</span><span class="n">stats</span><span class="o">.</span><span class="n">binned_statistic_2d</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">theta_shell_sphere_tmp</span><span class="p">],</span><span class="n">phi_shell_sphere_tmp</span><span class="p">,</span><span class="n">r_shell_sphere_tmp</span><span class="p">,</span>
-                                            <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">no_bins</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">no_bins</span><span class="p">)],</span><span class="n">expand_binnumbers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">statistic</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
-    
-    
+
+        <span class="n">shell_pos</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">binned_statistic_2d</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">theta_shell_sphere_tmp</span><span class="p">],</span> <span class="n">phi_shell_sphere_tmp</span><span class="p">,</span> <span class="n">r_shell_sphere_tmp</span><span class="p">,</span>
+                                              <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_bins</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_bins</span><span class="p">)],</span> <span class="n">expand_binnumbers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">statistic</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+
         <span class="c1">####calc interface positions</span>
         <span class="c1">###np.max finds edge of core!</span>
-        <span class="n">interface</span><span class="o">=</span><span class="n">stats</span><span class="o">.</span><span class="n">binned_statistic_2d</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">theta_core_tmp</span><span class="p">],</span> <span class="n">phi_core_tmp</span><span class="p">,</span><span class="n">r_core_tmp</span><span class="p">,</span>
-                                            <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">no_bins</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">no_bins</span><span class="p">)],</span>
-                                            <span class="n">expand_binnumbers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">statistic</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">)</span>
+        <span class="n">interface</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">binned_statistic_2d</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">theta_core_tmp</span><span class="p">],</span> <span class="n">phi_core_tmp</span><span class="p">,</span> <span class="n">r_core_tmp</span><span class="p">,</span>
+                                              <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_bins</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_bins</span><span class="p">)],</span>
+                                              <span class="n">expand_binnumbers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">statistic</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">)</span>
 
-        <span class="n">interface_vals</span><span class="o">=</span><span class="n">interface</span><span class="o">.</span><span class="n">statistic</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>    
-    
-        <span class="k">while</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">interface_vals</span><span class="p">))</span><span class="o">!=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">box_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">no_bins</span><span class="p">))</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">box_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">no_bins</span><span class="p">))</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">interface_vals</span> <span class="o">=</span> <span class="n">interface</span><span class="o">.</span><span class="n">statistic</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">while</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">interface_vals</span><span class="p">))</span> <span class="o">!=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">box_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">no_bins</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">box_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">no_bins</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">interface_vals</span><span class="p">)):</span>
                 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">interface_vals</span><span class="p">)):</span>
-    
+
                     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">interface_vals</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]):</span>
-                        <span class="n">n_i</span><span class="o">=</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
-                        <span class="n">n_j</span><span class="o">=</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
-                        <span class="n">interface_vals</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">([</span><span class="n">interface_vals</span><span class="p">[</span><span class="nb">divmod</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">interface_vals</span><span class="p">))[</span><span class="mi">1</span><span class="p">]][</span><span class="nb">divmod</span><span class="p">(</span><span class="n">jp</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">interface_vals</span><span class="p">))[</span><span class="mi">1</span><span class="p">]]</span> <span class="k">for</span> <span class="n">ip</span><span class="p">,</span><span class="n">jp</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="n">n_i</span><span class="p">,</span><span class="n">n_j</span><span class="p">)])</span>
-    
-    
-        <span class="n">intrinsic_r</span><span class="p">,</span><span class="n">spherical_r</span> <span class="o">=</span> <span class="p">[],[]</span>
-    
+                        <span class="n">n_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                        <span class="n">n_j</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                        <span class="n">interface_vals</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">([</span><span class="n">interface_vals</span><span class="p">[</span><span class="nb">divmod</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">interface_vals</span><span class="p">))[</span><span class="mi">1</span><span class="p">]][</span><span class="nb">divmod</span><span class="p">(</span><span class="n">jp</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">interface_vals</span><span class="p">))[</span><span class="mi">1</span><span class="p">]]</span> <span class="k">for</span> <span class="n">ip</span><span class="p">,</span> <span class="n">jp</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="n">n_i</span><span class="p">,</span> <span class="n">n_j</span><span class="p">)])</span>
+
+        <span class="n">intrinsic_r</span><span class="p">,</span> <span class="n">spherical_r</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">r_shell_sphere_tmp</span><span class="p">)):</span>
-            <span class="n">bin_X</span><span class="o">=</span><span class="n">shell_pos</span><span class="o">.</span><span class="n">binnumber</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
-            <span class="n">bin_Y</span><span class="o">=</span><span class="n">shell_pos</span><span class="o">.</span><span class="n">binnumber</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
-    
-    
-            <span class="n">interface_pos</span><span class="o">=</span><span class="n">interface_vals</span><span class="p">[</span><span class="n">bin_X</span><span class="p">][</span><span class="n">bin_Y</span><span class="p">]</span>
-            <span class="n">intrinsic_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">interface_pos</span><span class="o">+</span><span class="n">r_shell_sphere_tmp</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">bin_X</span> <span class="o">=</span> <span class="n">shell_pos</span><span class="o">.</span><span class="n">binnumber</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">bin_Y</span> <span class="o">=</span> <span class="n">shell_pos</span><span class="o">.</span><span class="n">binnumber</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+
+            <span class="n">interface_pos</span> <span class="o">=</span> <span class="n">interface_vals</span><span class="p">[</span><span class="n">bin_X</span><span class="p">][</span><span class="n">bin_Y</span><span class="p">]</span>
+            <span class="n">intrinsic_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">interface_pos</span> <span class="o">+</span> <span class="n">r_shell_sphere_tmp</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="n">spherical_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r_shell_sphere_tmp</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-            
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">intrinsic_r</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">spherical_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface_vals</span> <span class="o">=</span> <span class="n">intrinsic_r</span><span class="p">,</span> <span class="n">spherical_r</span><span class="p">,</span> <span class="n">interface_vals</span>
-       
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">intrinsic_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spherical_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface_vals</span> <span class="o">=</span> <span class="n">intrinsic_r</span><span class="p">,</span> <span class="n">spherical_r</span><span class="p">,</span> <span class="n">interface_vals</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        .</span>
-<span class="sd">        &quot;&quot;&quot;</span>     
+<span class="sd">        Enables the `icsi` object to be called like a function, returning</span>
+<span class="sd">        the computed intrinsic radius, spherical radius, and interface values.</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">intrinsic_r</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">spherical_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface_vals</span></div>
+<span class="sd">        This magic method provides a convenient way to access the results</span>
+<span class="sd">        of the ISD calculation after the `icsi` object has been initialized</span>
+<span class="sd">        and its internal `_spherical_intrinsic_density` method has executed.</span>
 
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">            A tuple containing three elements:</span>
+<span class="sd">            - **intrinsic_r** (list of float): The calculated intrinsic radii.</span>
+<span class="sd">            - **spherical_r** (list of float): The calculated spherical radii.</span>
+<span class="sd">            - **interface_vals** (numpy.ndarray): The 2D NumPy array of interface values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">intrinsic_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spherical_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface_vals</span></div>
 
 </pre></div>
 

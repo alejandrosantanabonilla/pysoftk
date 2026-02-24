@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.topologies package &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -108,11 +108,34 @@
 <dt class="sig sig-object py" id="pysoftk.topologies.branched.Bd">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.branched.</span></span><span class="sig-name descname"><span class="pre">Bd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">core</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/branched.html#Bd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.branched.Bd" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A class for creating a branched polymer from given RDKit molecules.</p>
+<p>A class designed for the <strong>automated construction of branched polymers</strong>
+from user-defined molecular building blocks (a core and arm molecules).</p>
+<p>This class provides functionalities to attach multiple ‘arm’ molecules to a
+‘core’ molecule, forming a branched structure. It handles the bonding
+using a placeholder atom strategy and includes options for 3D embedding
+and force field optimization of the final branched polymer.</p>
 <p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.branched_polymers.branched_polymer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Bd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define a core molecule with placeholder atoms (e.g., [Au])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">core_smiles</span> <span class="o">=</span> <span class="s2">&quot;C([Au])C([Au])C&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">core_mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">core_smiles</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define an arm molecule with a placeholder atom</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">arm_smiles</span> <span class="o">=</span> <span class="s2">&quot;CC([Au])&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">arm_mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">arm_smiles</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Initialize the Bd class</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">branched_poly_builder</span> <span class="o">=</span> <span class="n">Bd</span><span class="p">(</span><span class="n">core</span><span class="o">=</span><span class="n">core_mol</span><span class="p">,</span> <span class="n">arm</span><span class="o">=</span><span class="n">arm_mol</span><span class="p">,</span> <span class="n">atom</span><span class="o">=</span><span class="s2">&quot;Au&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Build the branched polymer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">polymer_mol</span> <span class="o">=</span> <span class="n">branched_poly_builder</span><span class="o">.</span><span class="n">branched_polymer</span><span class="p">(</span><span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Branched polymer atoms: </span><span class="si">{</span><span class="n">polymer_mol</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Branched polymer bonds: </span><span class="si">{</span><span class="n">polymer_mol</span><span class="o">.</span><span class="n">GetNumBonds</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>RDKit package must be installed.</p>
+<p>The <strong>RDKit package must be installed</strong> in your Python environment for this
+class to function. Ensure that the placeholder atom specified (e.g., “Au”)
+is consistent across your core and arm molecules and is a valid RDKit atom.</p>
 </div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pysoftk.topologies.branched.Bd.arm">
@@ -127,23 +150,41 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.topologies.branched.Bd.branched_polymer">
 <span class="sig-name descname"><span class="pre">branched_polymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swap_H</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/branched.html#Bd.branched_polymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.branched.Bd.branched_polymer" title="Link to this definition"></a></dt>
-<dd><p>Function to create branched polymers</p>
+<dd><p>Constructs a complete <strong>branched polymer</strong> by iteratively attaching
+arm molecules to the core molecule, followed by 3D structure optimization.</p>
+<p>This is the main function for generating the final branched polymer.
+It first merges the initial arm to the core. Then, it repeatedly
+attaches additional arms to any remaining placeholder atoms on the
+growing structure. Finally, it performs a geometry optimization
+using the specified force field, with an option to replace the
+placeholder atoms with hydrogen atoms.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>force_field</strong> (<em>str</em>) – Selected force field between MMFF or UFF</p></li>
-<li><p><strong>relax_iterations</strong> (<em>int</em>) – <p>Number of iterations used for relaxing a molecular object.</p>
-<dl class="simple">
-<dt>swap_H: bool</dt><dd><p>Indicates if the user defined atomic place holder
-is changed to a Hydrogen atom or remain as the
-used species.</p>
-</dd>
-</dl>
+<li><p><strong>relax_iterations</strong> (<em>int</em><em>, </em><em>optional</em>) – The <strong>maximum number of iterations</strong> to use for the force field
+relaxation process. A higher number generally leads to more
+thorough minimization but increases computation time. Defaults to 100.</p></li>
+<li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The <strong>name of the force field</strong> to employ for geometry optimization.
+Currently supported options are “MMFF” (which defaults to MMFF94)
+and “UFF”. Defaults to “MMFF”.</p></li>
+<li><p><strong>swap_H</strong> (<em>bool</em><em>, </em><em>optional</em>) – <p>A flag indicating whether the placeholder atoms remaining in the
+final branched polymer structure should be <strong>replaced with hydrogen atoms</strong>.
+* If <cite>True</cite> (default), placeholder atoms will be substituted by hydrogens,</p>
+<blockquote>
+<div><p>and the molecule will be optimized.</p>
+</div></blockquote>
+<ul>
+<li><p>If <cite>False</cite>, the placeholder atoms will remain in the structure,
+and the molecule will be optimized without this substitution.</p></li>
+</ul>
 </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>newMol_H</strong> – RDKit Mol object</p>
+<dd class="field-even"><p><strong>newMol_H</strong> – An <strong>RDKit Mol object</strong> representing the fully constructed and
+geometry-optimized branched polymer. The structure will have
+either hydrogen atoms or the original placeholder atoms at the
+terminal points, depending on the <cite>swap_H</cite> parameter.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
@@ -159,21 +200,30 @@ used species.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.topologies.branched.Bd.merge_arms">
 <span class="sig-name descname"><span class="pre">merge_arms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">core</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/branched.html#Bd.merge_arms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.branched.Bd.merge_arms" title="Link to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to attach user defined molecules to a</dt><dd><p>provided molecular core using a placeholder.</p>
-</dd>
-</dl>
+<dd><p>Attaches a single <cite>arm</cite> molecule to a <cite>core</cite> molecule by identifying
+and forming a bond between their respective placeholder atoms, then
+removing these placeholders.</p>
+<p>This function performs the fundamental operation of merging a branch
+onto the growing polymer structure. It combines the molecules, embeds
+them in 3D space, identifies the placeholder atoms, creates a new bond
+between their connected atoms, and finally removes the placeholder atoms.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>core</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
-<li><p><strong>arm</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object.</p></li>
-<li><p><strong>atom</strong> (<em>str</em>) – The placeholder atom to combine the molecules
-and form a new monomer.</p></li>
+<li><p><strong>core</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The <strong>RDKit Mol object</strong> representing the current core structure
+(which could be the initial core or a partially built branched polymer)
+to which an arm molecule will be attached. It must contain at least
+one placeholder atom.</p></li>
+<li><p><strong>arm</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The <strong>RDKit Mol object</strong> representing the arm molecule to be attached.
+It must contain a placeholder atom.</p></li>
+<li><p><strong>atom</strong> (<em>str</em>) – The <strong>atomic symbol</strong> of the placeholder atom used in both the <cite>core</cite>
+and <cite>arm</cite> molecules that will be involved in the bonding.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>mol</strong> – RDKit Mol object.</p>
+<dd class="field-even"><p><strong>mol</strong> – A <strong>new RDKit Mol object</strong> representing the combined structure
+after the <cite>arm</cite> molecule has been successfully attached to the <cite>core</cite>,
+with the placeholder atoms removed and a new bond formed.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
@@ -184,20 +234,142 @@ and form a new monomer.</p></li>
 </dd></dl>
 
 </section>
+<section id="module-pysoftk.topologies.dend">
+<span id="pysoftk-topologies-dend-module"></span><h2>pysoftk.topologies.dend module<a class="headerlink" href="#module-pysoftk.topologies.dend" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.topologies.dend.CustomMonomer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.dend.</span></span><span class="sig-name descname"><span class="pre">CustomMonomer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smiles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_attachment_map_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">child_attachment_map_nums</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/dend.html#CustomMonomer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.dend.CustomMonomer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pysoftk.topologies.dend.Monomer" title="pysoftk.topologies.dend.Monomer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Monomer</span></code></a></p>
+<p>A specialized Monomer for dendrimer branching units.</p>
+<p>This class distinguishes between a single parent attachment point
+and multiple child attachment points, which is essential for
+building the directed graph of a dendrimer.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.topologies.dend.DendrimerBuilder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.dend.</span></span><span class="sig-name descname"><span class="pre">DendrimerBuilder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">core_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">branch_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/dend.html#DendrimerBuilder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.dend.DendrimerBuilder" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to construct, optimize, and manage dendrimer molecules.</p>
+<p>This class orchestrates the entire workflow, from processing
+monomer definitions to building the connectivity graph, constructing
+the 2D molecule, and finally optimizing the 3D structure using
+external libraries (pysoftk/Open Babel).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.topologies.dend.DendrimerBuilder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'UFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ff_thr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/dend.html#DendrimerBuilder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.dend.DendrimerBuilder.build" title="Link to this definition"></a></dt>
+<dd><p>Orchestrates the full dendrimer construction and optimization process.</p>
+<p>This is the main method to run the workflow. It calls internal
+methods to generate the graph, build the 2D molecule, and
+run the 3D optimization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The Open Babel force field to use for
+optimization (e.g., “UFF”, “MMFF94”).
+Defaults to “UFF”.</p></li>
+<li><p><strong>steps</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of optimization steps.
+Defaults to 1000.</p></li>
+<li><p><strong>ff_thr</strong> (<em>float</em><em>, </em><em>optional</em>) – The energy convergence threshold for the
+force field optimization. Defaults to 0.1.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.topologies.dend.DendrimerBuilder.get_optimized_mol">
+<span class="sig-name descname"><span class="pre">get_optimized_mol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Molecule</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pysoftk/topologies/dend.html#DendrimerBuilder.get_optimized_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.dend.DendrimerBuilder.get_optimized_mol" title="Link to this definition"></a></dt>
+<dd><p>Returns the final, optimized molecule as a Pybel object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>The 3D optimized Pybel molecule,</dt><dd><p>or <cite>None</cite> if the build process failed.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Optional[pb.Molecule]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.topologies.dend.DendrimerBuilder.plot_topology">
+<span class="sig-name descname"><span class="pre">plot_topology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dendrimer_topology.png'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/dend.html#DendrimerBuilder.plot_topology"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.dend.DendrimerBuilder.plot_topology" title="Link to this definition"></a></dt>
+<dd><p>Plots the abstract topological graph of the dendrimer using NetworkX.</p>
+<p>This visualization shows the monomer connectivity and generation,
+not the chemical structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>output_filename</strong> (<em>str</em><em>, </em><em>optional</em>) – The file path to save the
+plot image.
+Defaults to “dendrimer_topology.png”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.topologies.dend.Monomer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.dend.</span></span><span class="sig-name descname"><span class="pre">Monomer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smiles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attachment_map_numbers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/dend.html#Monomer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.dend.Monomer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for a monomer unit.</p>
+<p>Represents a single molecular building block, holding its RDKit
+molecule object and information about its connection points.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.topologies.dend.SurfaceMonomer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.dend.</span></span><span class="sig-name descname"><span class="pre">SurfaceMonomer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smiles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_attachment_map_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/dend.html#SurfaceMonomer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.dend.SurfaceMonomer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pysoftk.topologies.dend.Monomer" title="pysoftk.topologies.dend.Monomer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Monomer</span></code></a></p>
+<p>A specialized Monomer for terminal surface (capping) groups.</p>
+<p>This monomer only has a single parent connection and no child
+connections, effectively terminating a branch.</p>
+</dd></dl>
+
+</section>
 <section id="module-pysoftk.topologies.diblock">
 <span id="pysoftk-topologies-diblock-module"></span><h2>pysoftk.topologies.diblock module<a class="headerlink" href="#module-pysoftk.topologies.diblock" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pysoftk.topologies.diblock.Db">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.diblock.</span></span><span class="sig-name descname"><span class="pre">Db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/diblock.html#Db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.diblock.Db" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="simple">
-<dt>A class for creating a diblock copolymers from</dt><dd><p>given RDKit molecules.</p>
-</dd>
-</dl>
+<p>A class specifically designed for the <strong>computational construction of diblock copolymers</strong>
+from two distinct RDKit molecular monomers (Block A and Block B).</p>
+<p>This class provides a streamlined workflow to:
+1. Generate individual polymer blocks (Block A and Block B) of specified lengths.
+2. Concatenate these two blocks to form a single diblock copolymer structure.
+3. Perform subsequent 3D embedding and force field optimization to obtain a stable</p>
+<blockquote>
+<div><p>and chemically sensible molecular geometry.</p>
+</div></blockquote>
 <p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer.linear_polymer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.block_copolymers.diblock</span><span class="w"> </span><span class="kn">import</span> <span class="n">Db</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define monomer A and monomer B with placeholder atoms (e.g., [Pt])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">monomer_A</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;C([Pt])C&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">monomer_B</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;CC([Pt])C&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Initialize the Db class with the two monomers and the placeholder atom</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">diblock_builder</span> <span class="o">=</span> <span class="n">Db</span><span class="p">(</span><span class="n">ma</span><span class="o">=</span><span class="n">monomer_A</span><span class="p">,</span> <span class="n">mb</span><span class="o">=</span><span class="n">monomer_B</span><span class="p">,</span> <span class="n">atom</span><span class="o">=</span><span class="s2">&quot;Pt&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a diblock copolymer with 5 units of Block A and 3 units of Block B</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">final_diblock_mol</span> <span class="o">=</span> <span class="n">diblock_builder</span><span class="o">.</span><span class="n">diblock_copolymer</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">len_block_A</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">len_block_B</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Diblock copolymer atoms: </span><span class="si">{</span><span class="n">final_diblock_mol</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>RDKit package must be installed.</p>
+<p>The <strong>RDKit package must be installed</strong> in your Python environment for this
+class to function correctly. Ensure that the placeholder atom specified (e.g., “Pt”)
+is consistently used in both monomer A and monomer B. This class relies on
+functionalities from <cite>pysoftk.linear_polymer</cite> and <cite>pysoftk.tools</cite>.</p>
 </div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pysoftk.topologies.diblock.Db.atom">
@@ -207,23 +379,40 @@ and form a new monomer.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.topologies.diblock.Db.diblock_copolymer">
 <span class="sig-name descname"><span class="pre">diblock_copolymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">len_block_A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_block_B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rot_steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/diblock.html#Db.diblock_copolymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.diblock.Db.diblock_copolymer" title="Link to this definition"></a></dt>
-<dd><p>Function to create a diblock copolymer</p>
+<dd><p>Constructs a complete <strong>diblock copolymer</strong> by first synthesizing
+Block A and Block B independently to specified lengths, and then
+covalently linking them. The final copolymer undergoes 3D embedding
+and force field optimization to generate a stable conformation.</p>
+<p>This function orchestrates the entire diblock copolymer synthesis process,
+from individual block formation to the final optimized structure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>len_block_A</strong> (<em>int</em>) – Length of the molecular block A</p></li>
-<li><p><strong>len_block_B</strong> (<em>int</em>) – Length of the molecular block B</p></li>
-<li><p><strong>force_field</strong> (<em>str</em>) – Selected force field between MMFF or UFF</p></li>
-<li><p><strong>relax_iterations</strong> (<em>int</em>) – Number of iterations used for relaxing a
-molecular object.</p></li>
-<li><p><strong>rot_steps</strong> (<em>int</em>) – Number of rotational steps for finding conformations.</p></li>
+<li><p><strong>len_block_A</strong> (<em>int</em>) – The <strong>desired number of monomer A units</strong> that will comprise
+the first block (Block A) of the diblock copolymer.</p></li>
+<li><p><strong>len_block_B</strong> (<em>int</em>) – The <strong>desired number of monomer B units</strong> that will comprise
+the second block (Block B) of the diblock copolymer.</p></li>
+<li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The <strong>name of the force field</strong> to apply during the geometry
+optimization steps for both individual blocks and the final
+diblock copolymer. Common choices include “MMFF” (which defaults
+to MMFF94) or “UFF”. Defaults to “MMFF”.</p></li>
+<li><p><strong>relax_iterations</strong> (<em>int</em><em>, </em><em>optional</em>) – The <strong>maximum number of iterations</strong> for the force field relaxation
+algorithm. A higher value generally leads to better energy minimization
+but increases computation time. This value is applied to the
+optimization of both blocks and the final copolymer. Defaults to 100.</p></li>
+<li><p><strong>rot_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – The <strong>number of rotational steps</strong> to perform during conformational
+searching. This helps in exploring different low-energy conformers
+of the polymer. Defaults to 1.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>diblock</strong> – RDKit Mol object</p>
+<dd class="field-even"><p><strong>diblock</strong> – An <strong>OpenBabel Pybel Molecule object</strong> representing the
+fully constructed and geometry-optimized diblock copolymer.
+This object contains the 3D coordinates and bonding information
+of the final polymer.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
+<dd class="field-odd"><p>openbabel.pybel.Molecule</p>
 </dd>
 </dl>
 </dd></dl>
@@ -244,11 +433,40 @@ molecular object.</p></li>
 <dt class="sig sig-object py" id="pysoftk.topologies.diblock.Pt">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.diblock.</span></span><span class="sig-name descname"><span class="pre">Pt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/diblock.html#Pt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.diblock.Pt" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A class for creating a Patterned polymers from a list of RDKit molecules.</p>
+<p>A versatile class for creating <strong>patterned polymers</strong> based on a
+user-defined sequence of RDKit molecular building blocks.</p>
+<p>This class enables the construction of complex copolymers by
+allowing a specific sequence (pattern) of different monomers to be
+arranged into a linear chain. It supports 3D embedding and force field
+optimization of the resulting polymer.</p>
 <p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.block_copolymers.diblock</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define two distinct monomers (e.g., A and B) with a placeholder atom</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">monomer_A</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;C([Pt])C&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">monomer_B</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;N([Pt])N&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define a repeating pattern</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pattern</span> <span class="o">=</span> <span class="s2">&quot;ABABAB&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># List of molecules corresponding to the pattern&#39;s unique characters</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="n">monomer_A</span><span class="p">,</span> <span class="n">monomer_B</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Initialize the Pt class</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">patterned_poly_builder</span> <span class="o">=</span> <span class="n">Pt</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="n">pattern</span><span class="p">,</span> <span class="n">mols</span><span class="o">=</span><span class="n">molecules</span><span class="p">,</span> <span class="n">atom</span><span class="o">=</span><span class="s2">&quot;Pt&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Build the patterned polymer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">final_patterned_mol</span> <span class="o">=</span> <span class="n">patterned_poly_builder</span><span class="o">.</span><span class="n">pattern_block_poly</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;UFF&quot;</span><span class="p">,</span> <span class="n">swap_H</span><span class="o">=</span><span class="kc">True</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Patterned polymer atoms: </span><span class="si">{</span><span class="n">final_patterned_mol</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>RDKit package must be installed.</p>
+<p>The <strong>RDKit package must be installed</strong> in your Python environment.
+The <cite>pattern</cite> string should consist of characters that correspond to
+the order of molecules in the <cite>mols</cite> list (e.g., ‘A’ maps to <cite>mols[0]</cite>,
+‘B’ maps to <cite>mols[1]</cite>, etc.). Ensure consistency in the <cite>atom</cite> placeholder.</p>
 </div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pysoftk.topologies.diblock.Pt.atom">
@@ -268,24 +486,50 @@ molecular object.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.topologies.diblock.Pt.pattern_block_poly">
 <span class="sig-name descname"><span class="pre">pattern_block_poly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swap_H</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rot_steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">more_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/diblock.html#Pt.pattern_block_poly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.diblock.Pt.pattern_block_poly" title="Link to this definition"></a></dt>
-<dd><p>Function to create a polymer based on an alphabetic ordered pattern.</p>
+<dd><p>Constructs a <strong>linear polymer according to a defined alphabetical pattern</strong>
+of molecular building blocks, followed by geometry optimization.</p>
+<p>This function assembles the polymer by sequentially combining the
+specified monomers based on the input <cite>pattern</cite> string. It handles
+the creation of bonds between units, and then performs comprehensive
+3D structure optimization using a force field, with options for
+replacing placeholder atoms and further refinement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>relax_iterations</strong> (<em>int</em>) – Number of iterations used for relaxing a molecular object.</p></li>
-<li><p><strong>force_field</strong> (<em>str</em>) – Selected FF between MMFF or UFF</p></li>
-<li><p><strong>swap_H</strong> (<em>bool</em>) – Indicates if the user defined atomic place holder is changed to a
-Hydrogen atom or remain as the used species.</p></li>
-<li><p><strong>rot_steps</strong> (<em>int</em>) – Number of rotational steps for finding conformations.</p></li>
-<li><p><strong>more_iter</strong> (<em>int</em>) – Number of extra iterations for further optimising the molecular
-object.</p></li>
+<li><p><strong>relax_iterations</strong> (<em>int</em><em>, </em><em>optional</em>) – The <strong>maximum number of iterations</strong> for the force field relaxation
+procedure. A higher number typically leads to better convergence
+of the molecular geometry. Defaults to 100.</p></li>
+<li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The <strong>name of the force field</strong> to be used for molecular mechanics
+optimization. Supported options generally include “MMFF” (which maps
+to MMFF94) or “UFF”. Defaults to “MMFF”.</p></li>
+<li><p><strong>swap_H</strong> (<em>bool</em><em>, </em><em>optional</em>) – <p>A flag indicating whether the placeholder atoms (specified by <cite>self.atom</cite>)
+at the termini of the constructed polymer should be <strong>replaced with
+hydrogen atoms</strong>.
+* If <cite>True</cite> (default), placeholder atoms are converted to hydrogens</p>
+<blockquote>
+<div><p>before the final optimization.</p>
+</div></blockquote>
+<ul>
+<li><p>If <cite>False</cite>, the placeholder atoms remain in the structure.</p></li>
+</ul>
+</p></li>
+<li><p><strong>rot_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – The <strong>number of rotational steps</strong> to explore during conformational
+optimization. This parameter helps in finding different low-energy
+arrangements of the polymer chain by rotating around rotatable bonds.
+Defaults to 1.</p></li>
+<li><p><strong>more_iter</strong> (<em>int</em><em>, </em><em>optional</em>) – A <strong>multiplier for additional optimization iterations</strong>. The
+<cite>relax_iterations</cite> value will be multiplied by this number to perform
+a more extensive final geometry optimization, potentially leading
+to a more stable conformation. Defaults to 10.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>return</strong> – A molecular pysoftk object.</p>
+<dd class="field-even"><p><strong>mol</strong> – A <strong>PySoftK molecular object</strong> (which wraps an OpenBabel Pybel Molecule)
+representing the fully constructed and geometry-optimized patterned polymer.
+This object contains the 3D coordinates and bonding information of the final structure.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>mol</p>
+<dd class="field-odd"><p>openbabel.pybel.Molecule</p>
 </dd>
 </dl>
 </dd></dl>
@@ -295,53 +539,87 @@ object.</p></li>
 </section>
 <section id="module-pysoftk.topologies.ranpol">
 <span id="pysoftk-topologies-ranpol-module"></span><h2>pysoftk.topologies.ranpol module<a class="headerlink" href="#module-pysoftk.topologies.ranpol" title="Link to this heading"></a></h2>
+<p>Optimized Polymer Builder Module.</p>
+<p>This module provides the <cite>Rnp</cite> class for the computational synthesis of
+ultra-large random copolymers. It utilizes a highly efficient binary tree
+assembly algorithm for topology construction and integrates OpenBabel
+for realistic 3D spatial geometry optimization.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pysoftk.topologies.ranpol.Rnp">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.ranpol.</span></span><span class="sig-name descname"><span class="pre">Rnp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/ranpol.html#Rnp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.ranpol.</span></span><span class="sig-name descname"><span class="pre">Rnp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/ranpol.html#Rnp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A class for creating a random copolymer from given RDKit molecules.</p>
-<p class="rubric">Examples</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>RDKit package must be installed.</p>
-</div>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pysoftk.topologies.ranpol.Rnp.atom">
-<span class="sig-name descname"><span class="pre">atom</span></span><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp.atom" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
+<p>Optimized Polymer Builder for Ultra-Large Molecules.</p>
+<p>This class constructs A-B and A-B-C random copolymers. It prevents the
+typical O(N^2) scaling bottlenecks of linear polymer growth by using a
+binary tree assembly approach. It also delegates 3D coordinate generation
+to OpenBabel for physically realistic spatial accommodation.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pysoftk.topologies.ranpol.Rnp.ma">
 <span class="sig-name descname"><span class="pre">ma</span></span><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp.ma" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>RDKit Mol object representing monomer A.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pysoftk.topologies.ranpol.Rnp.mb">
 <span class="sig-name descname"><span class="pre">mb</span></span><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp.mb" title="Link to this definition"></a></dt>
+<dd><p>RDKit Mol object representing monomer B.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.topologies.ranpol.Rnp.atom">
+<span class="sig-name descname"><span class="pre">atom</span></span><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp.atom" title="Link to this definition"></a></dt>
+<dd><p>The placeholder atomic symbol (e.g., ‘Br’, ‘At’) used as the
+connection point between monomers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">atom</span></span><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">ma</span></span><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">mb</span></span><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.topologies.ranpol.Rnp.random_ab_copolymer">
-<span class="sig-name descname"><span class="pre">random_ab_copolymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">len_polymer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swap_H</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/ranpol.html#Rnp.random_ab_copolymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp.random_ab_copolymer" title="Link to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to build a random copolymer using an user provided</dt><dd><p>probability (pA) for merging the monomer ma and imposing
-the condition pB=1-pA.</p>
-</dd>
-</dl>
+<span class="sig-name descname"><span class="pre">random_ab_copolymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">len_polymer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pA</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'MMFF94'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swap_H</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rot_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">125</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ff_thr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Mol</span></span></span><a class="reference internal" href="_modules/pysoftk/topologies/ranpol.html#Rnp.random_ab_copolymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp.random_ab_copolymer" title="Link to this definition"></a></dt>
+<dd><p>Constructs a randomly sequenced two-component (A-B) copolymer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>len_polymer</strong> (<em>int</em>) – User defined length of the polymer.</p></li>
-<li><p><strong>pA</strong> (<em>float</em>) – User defined attaching probability of ma.</p></li>
-<li><p><strong>relax_iterations</strong> (<em>int</em>) – User defined iterations for a FF.</p></li>
-<li><p><strong>force_field</strong> (<em>str</em>) – User selected force field between “MMFF” or “UFF”.</p></li>
-<li><p><strong>swap_H</strong> (<em>bool</em>) – Indicates if the user defined atomic place holder
-is changed to a Hydrogen atom or remain as the
-used species.</p></li>
+<li><p><strong>len_polymer</strong> (<em>int</em>) – The total number of monomer units in the desired polymer chain.</p></li>
+<li><p><strong>pA</strong> (<em>float</em>) – The probability (0.0 to 1.0) of selecting monomer A at any position.</p></li>
+<li><p><strong>relax_iterations</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of iterations for geometry relaxation. Defaults to 100.</p></li>
+<li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The force field for 3D optimization. Defaults to ‘MMFF94’.</p></li>
+<li><p><strong>swap_H</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, caps terminal placeholders with Hydrogen. Defaults to True.</p></li>
+<li><p><strong>rot_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – Thoroughness of the OpenBabel rotor search. Defaults to 125.</p></li>
+<li><p><strong>ff_thr</strong> (<em>float</em><em>, </em><em>optional</em>) – Convergence threshold for optimization. Defaults to 1.0e-6.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>mol</strong> – RDKit Mol object</p>
+<dd class="field-even"><p>The synthesized and 3D-optimized A-B copolymer.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
@@ -351,29 +629,25 @@ used species.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.topologies.ranpol.Rnp.random_abc_copolymer">
-<span class="sig-name descname"><span class="pre">random_abc_copolymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_polymer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swap_H</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/ranpol.html#Rnp.random_abc_copolymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp.random_abc_copolymer" title="Link to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to build a random copolymer based on an user defined</dt><dd><p>probability (pA) of merging mA, pB for monomer mb, and the
-condition pC=1-pA-pB.</p>
-</dd>
-</dl>
+<span class="sig-name descname"><span class="pre">random_abc_copolymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_polymer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pA</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pB</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'MMFF94'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swap_H</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rot_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">125</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ff_thr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Mol</span></span></span><a class="reference internal" href="_modules/pysoftk/topologies/ranpol.html#Rnp.random_abc_copolymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ranpol.Rnp.random_abc_copolymer" title="Link to this definition"></a></dt>
+<dd><p>Constructs a randomly sequenced three-component (A-B-C) terpolymer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mc</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object #</p></li>
-<li><p><strong>len_polymer</strong> (<em>float</em>) – User defined length of the polymer.</p></li>
-<li><p><strong>pA</strong> (<em>float</em>) – User defined attaching probability of ma.</p></li>
-<li><p><strong>pB</strong> (<em>float</em>) – User defined attaching porbability of mb.</p></li>
-<li><p><strong>atom</strong> (<em>str</em>) – User defined atom used as place-holder.</p></li>
-<li><p><strong>relax_iterations</strong> (<em>int</em>) – User defined iterations for a FF.</p></li>
-<li><p><strong>force_field</strong> (<em>str</em>) – User selected FF.</p></li>
-<li><p><strong>swap_H</strong> (<em>bool</em>) – Indicates if the user defined atomic place holder
-is changed to a Hydrogen atom or remain as the
-used species.</p></li>
+<li><p><strong>mc</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object representing the third monomer, C.</p></li>
+<li><p><strong>len_polymer</strong> (<em>int</em>) – The total number of monomer units in the desired polymer chain.</p></li>
+<li><p><strong>pA</strong> (<em>float</em>) – The probability (0.0 to 1.0) of selecting monomer A.</p></li>
+<li><p><strong>pB</strong> (<em>float</em>) – The probability (0.0 to 1.0) of selecting monomer B.
+(Note: Probability of C is calculated as 1.0 - pA - pB).</p></li>
+<li><p><strong>relax_iterations</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of iterations for geometry relaxation. Defaults to 100.</p></li>
+<li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The force field for 3D optimization. Defaults to ‘MMFF94’.</p></li>
+<li><p><strong>swap_H</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, caps terminal placeholders with Hydrogen. Defaults to True.</p></li>
+<li><p><strong>rot_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – Thoroughness of the OpenBabel rotor search. Defaults to 125.</p></li>
+<li><p><strong>ff_thr</strong> (<em>float</em><em>, </em><em>optional</em>) – Convergence threshold for optimization. Defaults to 1.0e-6.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>mol</strong> – RDKit Mol object</p>
+<dd class="field-even"><p>The synthesized and 3D-optimized A-B-C terpolymer.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
@@ -390,14 +664,42 @@ used species.</p></li>
 <dt class="sig sig-object py" id="pysoftk.topologies.ring.Rn">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.ring.</span></span><span class="sig-name descname"><span class="pre">Rn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/ring.html#Rn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ring.Rn" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="simple">
-<dt>A class for creating a circular (ring-shaped) polymer</dt><dd><p>from given RDKit molecules.</p>
-</dd>
-</dl>
+<p>A class dedicated to the <strong>computational synthesis of circular (ring-shaped) polymers</strong>
+from a given RDKit monomer molecule.</p>
+<p>This class provides a robust method to:
+1. Construct a linear polymer chain of a specified length from a monomer.
+2. Identify the terminal placeholder atoms of this linear chain.
+3. Form a new bond between these terminal atoms to cyclize the polymer,</p>
+<blockquote>
+<div><p>thereby creating a ring structure.</p>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li><p>Perform subsequent 3D embedding and force field optimization to obtain a stable
+and chemically sensible cyclic molecular geometry.</p></li>
+</ol>
 <p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.topologies.ring</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define a monomer with placeholder atoms (e.g., [Pt])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">monomer_smiles</span> <span class="o">=</span> <span class="s2">&quot;C([Pt])C([Pt])&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">monomer</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">monomer_smiles</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Initialize the Rn class with the monomer and the placeholder atom</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ring_builder</span> <span class="o">=</span> <span class="n">Rn</span><span class="p">(</span><span class="n">mol</span><span class="o">=</span><span class="n">monomer</span><span class="p">,</span> <span class="n">atom</span><span class="o">=</span><span class="s2">&quot;Pt&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a ring polymer with 5 monomer units</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">final_ring_mol</span> <span class="o">=</span> <span class="n">ring_builder</span><span class="o">.</span><span class="n">pol_ring</span><span class="p">(</span><span class="n">len_polymer</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ring polymer atoms: </span><span class="si">{</span><span class="n">final_ring_mol</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ring polymer bonds: </span><span class="si">{</span><span class="n">final_ring_mol</span><span class="o">.</span><span class="n">GetNumBonds</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>RDKit package must be installed.</p>
+<p>The <strong>RDKit package must be installed</strong> in your Python environment for this
+class to function correctly. Ensure that the placeholder atom specified (e.g., “Pt”)
+is present at both ends of the monomer unit to allow for linear chain formation
+and subsequent cyclization. This class relies on functionalities from
+<cite>pysoftk.linear_polymer</cite> and <cite>pysoftk.tools</cite>.</p>
 </div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pysoftk.topologies.ring.Rn.atom">
@@ -412,25 +714,47 @@ used species.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.topologies.ring.Rn.pol_ring">
 <span class="sig-name descname"><span class="pre">pol_ring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">len_polymer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">more_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/ring.html#Rn.pol_ring"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ring.Rn.pol_ring" title="Link to this definition"></a></dt>
-<dd><p>Function to create a polymer with ring structure (circular)</p>
+<dd><p>Constructs a <strong>circular (ring-shaped) polymer</strong> from the specified
+monomer by first creating a linear chain and then closing it into a ring.
+The resulting cyclic polymer undergoes comprehensive 3D embedding and
+force field optimization to achieve a stable conformation.</p>
+<p>This function orchestrates the entire ring polymer synthesis process,
+from linear chain formation to the final optimized cyclic structure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
-<li><p><strong>atom</strong> (<em>str</em>) – The placeholder atom to combine the molecules and
-form a new monomer</p></li>
-<li><p><strong>len_polymer</strong> (<em>int</em>) – Extension of the polymer</p></li>
-<li><p><strong>force_field</strong> (<em>str</em>) – Selected FF to perform a relaxation</p></li>
-<li><p><strong>relax_iterations</strong> (<em>int</em>) – Number of iterations to perform a FF geometry optimisation.</p></li>
-<li><p><strong>shift</strong> (<em>float</em>) – User defined shift for spacing the monomers using the LP function.</p></li>
-<li><p><strong>more_iter</strong> (<em>int</em>) – User defined variable to perform more iterations using the selected FF.</p></li>
+<li><p><strong>len_polymer</strong> (<em>int</em><em>, </em><em>optional</em>) – The <strong>number of monomer units</strong> that will comprise the linear chain
+before cyclization. This directly determines the size of the resulting
+ring polymer. Defaults to 2.</p></li>
+<li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The <strong>name of the force field</strong> to apply during the geometry
+optimization steps. Valid options are “MMFF” (which defaults to MMFF94)
+or “UFF”. Defaults to “MMFF”.</p></li>
+<li><p><strong>relax_iterations</strong> (<em>int</em><em>, </em><em>optional</em>) – The <strong>maximum number of iterations</strong> for the force field relaxation
+algorithm during the initial linear polymer formation and the final
+ring optimization. A higher value generally leads to better energy
+minimization. Defaults to 100.</p></li>
+<li><p><strong>shift</strong> (<em>float</em><em>, </em><em>optional</em>) – The <strong>X-axis translation distance</strong> (in Ångstroms) applied to each
+subsequent monomer copy during the initial linear polymer formation.
+This value influences the initial spacing between monomer units.
+Defaults to 1.25.</p></li>
+<li><p><strong>more_iter</strong> (<em>int</em><em>, </em><em>optional</em>) – A <strong>multiplier for additional optimization iterations</strong> during the
+final force field relaxation of the ring polymer. The <cite>relax_iterations</cite>
+value will be multiplied by this number to perform a more extensive
+final geometry optimization, potentially leading to a more stable
+conformation. Defaults to 10.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>pol_ring</strong> – RDKit Mol object</p>
+<dd class="field-even"><p><strong>pol_ring</strong> – An <strong>OpenBabel Pybel Molecule object</strong> representing the fully
+constructed and geometry-optimized circular (ring) polymer.
+This object contains the 3D coordinates and bonding information
+of the final cyclic structure.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
+<dd class="field-odd"><p>openbabel.pybel.Molecule</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If an invalid <cite>force_field</cite> is provided (i.e., not “MMFF” or “UFF”).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -440,28 +764,60 @@ form a new monomer</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.topologies.ring.apply_force_field">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.ring.</span></span><span class="sig-name descname"><span class="pre">apply_force_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pysoftk/topologies/ring.html#apply_force_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ring.apply_force_field" title="Link to this definition"></a></dt>
-<dd><p>Applies the specified force field to the molecule.</p>
+<dd><p>Applies the specified force field (MMFF or UFF) to an RDKit molecule
+to perform geometry relaxation.</p>
+<p>This helper function is used internally to minimize the energy of a
+molecular conformation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>molecule</strong> (<em>rdkit.Chem.Mol</em>) – The RDKit Mol object whose geometry needs to be optimized.</p></li>
+<li><p><strong>force_field</strong> (<em>str</em>) – The name of the force field to apply (“MMFF” or “UFF”).</p></li>
+<li><p><strong>relax_iterations</strong> (<em>int</em>) – The maximum number of iterations for the force field minimization algorithm.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function modifies the input <cite>molecule</cite> in place by updating
+its conformer with the optimized coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.topologies.ring.check_proto">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.topologies.ring.</span></span><span class="sig-name descname"><span class="pre">check_proto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rot_steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ff_thr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/topologies/ring.html#check_proto"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.topologies.ring.check_proto" title="Link to this definition"></a></dt>
-<dd><p>Function to check the proto polymer creation.</p>
+<dd><p>Performs a final, comprehensive geometry optimization and conformational
+search on a proto-polymer or any RDKit molecule using OpenBabel’s
+force field capabilities.</p>
+<p>This function is crucial for refining the 3D structure of the generated
+polymer, ensuring it reaches a stable, low-energy conformation. It
+converts the RDKit molecule to an OpenBabel object, applies the chosen
+force field, and can perform a global optimization to explore multiple
+conformers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
-<li><p><strong>force_field</strong> (<em>str</em>) – Selected FF to perform a relaxation</p></li>
-<li><p><strong>relax_iterations</strong> (<em>int</em>) – Number of iterations to perform a FF geometry optimisation.</p></li>
-<li><p><strong>rot_steps</strong> (<em>int</em>) – Number of possible confomers to search after optimisation.</p></li>
-<li><p><strong>ff_thr</strong> (<em>force field convergence threshold</em>) – Force convergence criteria.</p></li>
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The RDKit Mol object representing the proto-polymer or molecule
+to be optimized.</p></li>
+<li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the force field to use for relaxation. Accepted values
+are “MMFF” (which maps to MMFF94 in OpenBabel) or “UFF”. Defaults to “MMFF”.</p></li>
+<li><p><strong>relax_iterations</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of iterations for the force field relaxation
+algorithm. Defaults to 100.</p></li>
+<li><p><strong>rot_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of rotational steps to explore during global optimization
+to find different low-energy conformers. Defaults to 1.</p></li>
+<li><p><strong>ff_thr</strong> (<em>float</em><em>, </em><em>optional</em>) – The force field convergence threshold. The optimization will stop
+when the forces on atoms fall below this value. Defaults to 1.0e-6.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>newMol_H</strong> – RDKit Mol object</p>
+<dd class="field-even"><p><strong>newMol_H</strong> – An <strong>OpenBabel Pybel Molecule object</strong> representing the
+geometry-optimized molecule.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
+<dd class="field-odd"><p>openbabel.pybel.Molecule</p>
 </dd>
 </dl>
 </dd></dl>

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.tools.utils_func &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
@@ -76,11 +76,7 @@
              
   <h1>Source code for pysoftk.tools.utils_func</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">rdkit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">RDLogger</span>
 <span class="n">RDLogger</span><span class="o">.</span><span class="n">DisableLog</span><span class="p">(</span><span class="s1">&#39;rdApp.*&#39;</span><span class="p">)</span>
 
@@ -88,230 +84,299 @@
 <div class="viewcode-block" id="get_file_extension">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.get_file_extension">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_file_extension</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets the extension of a file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extracts the filename and extension from a given path.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        path (str): The path to the file.</span>
+<span class="sd">        path (str): The full path to the file.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        str: The extension of the file.</span>
+<span class="sd">        tuple[str, str]: A tuple containing two strings:</span>
+<span class="sd">            - The filename without the extension.</span>
+<span class="sd">            - The file extension (including the dot, e.g., &quot;.txt&quot;). </span>
+<span class="sd">              If the path has no extension, this will be an empty string.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">file_name</span><span class="p">,</span> <span class="n">file_extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">file_name</span><span class="p">,</span><span class="n">file_extension</span></div>
+    <span class="k">return</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">file_extension</span></div>
 
 
 
 <div class="viewcode-block" id="pattern_recon">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.pattern_recon">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">pattern_recon</span><span class="p">(</span><span class="n">pattern</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to find unique values from a string pattern.</span>
-<span class="sd">    </span>
-<span class="sd">    Parameters</span>
-<span class="sd">    ------------  </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Identifies unique characters in a string pattern and sorts them.</span>
 
-<span class="sd">    pattern: str</span>
-<span class="sd">        Variable containing the pattern written in a string.</span>
-<span class="sd">    </span>
-<span class="sd">    Returns</span>
-<span class="sd">    ---------</span>
+<span class="sd">    The sorting is case-insensitive alphabetical. For example, &quot;aBcAb&quot;</span>
+<span class="sd">    would result in [&#39;A&#39;, &#39;B&#39;, &#39;c&#39;] (or [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;] depending on</span>
+<span class="sd">    which case is preserved by `set` for mixed-case duplicates, then sorted</span>
+<span class="sd">    alphabetically based on their uppercase representation).</span>
 
-<span class="sd">    result: list    </span>
-<span class="sd">        Returns the unique values of the pattern in alphabetic order.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        pattern (str): The input string pattern (e.g., &quot;ABCA&quot;).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[str]: A list of unique characters from the pattern, sorted</span>
+<span class="sd">                   alphabetically (case-insensitively, preserving the original case</span>
+<span class="sd">                   of the first occurrence encountered by set for each character).</span>
+<span class="sd">                   For &quot;bBaAcC&quot;, output could be [&#39;A&#39;, &#39;a&#39;, &#39;B&#39;, &#39;b&#39;, &#39;C&#39;, &#39;c&#39;] if all are unique,</span>
+<span class="sd">                   or [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;] if &#39;a&#39; is treated as &#39;A&#39; by set (which it isn&#39;t).</span>
+<span class="sd">                   Actually, `set` is case-sensitive. So &quot;bBaAcC&quot; -&gt; {&#39;b&#39;, &#39;B&#39;, &#39;a&#39;, &#39;A&#39;, &#39;c&#39;, &#39;C&#39;}.</span>
+<span class="sd">                   `sorted(..., key=str.upper)` then sorts these as A,a,B,b,C,c.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">pattern</span><span class="p">)),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span><span class="n">c</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span></div>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">pattern</span><span class="p">)),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span></div>
 
 
 <div class="viewcode-block" id="pattern_repl">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.pattern_repl">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">pattern_repl</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">tup_repl</span><span class="p">):</span>
-<span class="w">   </span><span class="sd">&quot;&quot;&quot;Function to perform a pattern replacement using tuples generated </span>
-<span class="sd">      by pattern and molecular names.</span>
-<span class="sd">   </span>
-<span class="sd">   Parameters</span>
-<span class="sd">   ------------  </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Replaces characters in a pattern string based on a list of replacement tuples.</span>
 
-<span class="sd">   pattern: str</span>
-<span class="sd">        Variable containing the pattern written in a string</span>
+<span class="sd">    The function iterates through each tuple in `tup_repl`. Each tuple is</span>
+<span class="sd">    expected to contain an old character (or substring) to be replaced and a new string</span>
+<span class="sd">    (the replacement). After all replacements, the modified pattern string is</span>
+<span class="sd">    split by the &quot;+&quot; delimiter, and any empty strings resulting from the split</span>
+<span class="sd">    are removed.</span>
 
-<span class="sd">   </span>
-<span class="sd">   Return</span>
-<span class="sd">   ---------</span>
+<span class="sd">    Args:</span>
+<span class="sd">        pattern (str): The initial string pattern (e.g., &quot;A+B+A&quot;).</span>
+<span class="sd">        tup_repl (list[tuple[str, str]]): A list of tuples, where each tuple</span>
+<span class="sd">            contains two strings: (substring_to_replace, replacement_string).</span>
+<span class="sd">            Example: [(&#39;A&#39;, &#39;mol1&#39;), (&#39;B&#39;, &#39;mol2&#39;)]</span>
 
-<span class="sd">   return: list    </span>
-<span class="sd">        Returns the names of the molecules as provided </span>
-<span class="sd">        by the string pattern.</span>
-<span class="sd">   &quot;&quot;&quot;</span>
-   
-   <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">tup_repl</span><span class="p">:</span>
-      <span class="n">pattern</span><span class="o">=</span><span class="n">pattern</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">*</span><span class="n">r</span><span class="p">)</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        list[str]: A list of strings derived from the modified pattern after</span>
+<span class="sd">                   replacements and splitting by &quot;+&quot;. Empty strings are filtered out.</span>
+<span class="sd">                   For pattern=&quot;A+B+A&quot; and tup_repl=[(&#39;A&#39;,&#39;X&#39;),(&#39;B&#39;,&#39;Y&#39;)],</span>
+<span class="sd">                   it becomes &quot;X+Y+X&quot;, then returns [&#39;X&#39;, &#39;Y&#39;, &#39;X&#39;].</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">old_val</span><span class="p">,</span> <span class="n">new_val</span> <span class="ow">in</span> <span class="n">tup_repl</span><span class="p">:</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">old_val</span><span class="p">,</span> <span class="n">new_val</span><span class="p">)</span>
 
-   <span class="n">valid_seq</span><span class="o">=</span><span class="n">pattern</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">)</span>
-   <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">valid_seq</span><span class="p">))</span></div>
+    <span class="n">valid_seq</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">valid_seq</span><span class="p">))</span></div>
 
 
 
 <div class="viewcode-block" id="pattern_mol_seq">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.pattern_mol_seq">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">pattern_mol_seq</span><span class="p">(</span><span class="n">mols</span><span class="p">,</span> <span class="n">pattern</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to create a list of molecules based on a user </span>
-<span class="sd">       provided pattern.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generates a sequence of molecule names based on a pattern string and a list of molecule names.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ------------</span>
-<span class="sd">  </span>
-<span class="sd">    pattern: class.str</span>
-<span class="sd">         A string value containing the desired pattern.</span>
+<span class="sd">    It first identifies unique characters in the `pattern` (e.g., &quot;A&quot;, &quot;B&quot; from &quot;A+B+A&quot;).</span>
+<span class="sd">    Then, it creates replacement tuples by pairing these unique characters (sorted)</span>
+<span class="sd">    with the molecule names provided in the `mols` list, in their respective orders.</span>
+<span class="sd">    Finally, it uses `pattern_repl` to substitute these characters in the</span>
+<span class="sd">    `pattern` with their corresponding molecule names and splits the result.</span>
 
-<span class="sd">    mols: class.list</span>
-<span class="sd">        List containing the names of the molecules to form a </span>
-<span class="sd">        polymer with a given pattern.</span>
+<span class="sd">    Example:</span>
+<span class="sd">        mols = [&quot;water&quot;, &quot;ethanol&quot;]</span>
+<span class="sd">        pattern = &quot;A+B+A&quot;</span>
+<span class="sd">        Unique chars in pattern (sorted alphabetically, case-insensitively): [&#39;A&#39;, &#39;B&#39;]</span>
+<span class="sd">        Replacement tuples: [(&#39;A&#39;, &quot;water&quot;), (&#39;B&#39;, &quot;ethanol&quot;)]</span>
+<span class="sd">        Resulting sequence: [&quot;water&quot;, &quot;ethanol&quot;, &quot;water&quot;]</span>
 
-<span class="sd">    Returns</span>
-<span class="sd">    ---------</span>
+<span class="sd">    Args:</span>
+<span class="sd">        mols (list[str]): A list of molecule names. The order should correspond to the</span>
+<span class="sd">                          alphabetically sorted unique characters from the `pattern`.</span>
+<span class="sd">        pattern (str): A string defining the sequence pattern, using characters</span>
+<span class="sd">                       as placeholders for molecules (e.g., &quot;A+B+A&quot;).</span>
 
-<span class="sd">    return: class.list</span>
-<span class="sd">      List with the correct sequence of molecular fragments </span>
-<span class="sd">      to be merged. </span>
-<span class="sd">  </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        list[str]: A list of molecule names arranged according to the pattern.</span>
+<span class="sd">                   Returns an empty list or partially resolved list if `mols`</span>
+<span class="sd">                   and unique characters in `pattern` do not align as expected.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">unq_val</span><span class="o">=</span><span class="n">pattern_recon</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
-    <span class="n">tup_repl</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">unq_val</span><span class="p">,</span><span class="n">mols</span><span class="p">))</span>
+    <span class="n">unq_val</span> <span class="o">=</span> <span class="n">pattern_recon</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span> <span class="c1"># e.g., [&#39;A&#39;, &#39;B&#39;] for &quot;A+B+A&quot;</span>
+    
+    <span class="c1"># The zip function will stop when the shortest iterable is exhausted.</span>
+    <span class="c1"># If len(unq_val) != len(mols), the pairing might be incomplete.</span>
+    <span class="c1"># Consider adding a check or warning if lengths do not match.</span>
+    <span class="c1"># For example:</span>
+    <span class="c1"># if len(unq_val) &gt; len(mols):</span>
+    <span class="c1">#     print(f&quot;Warning: Pattern requires {len(unq_val)} unique molecule types, but only {len(mols)} provided.&quot;)</span>
+    <span class="c1"># elif len(unq_val) &lt; len(mols):</span>
+    <span class="c1">#     print(f&quot;Warning: More molecules provided ({len(mols)}) than unique types in pattern ({len(unq_val)}).&quot;)</span>
+
+    <span class="n">tup_repl</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">unq_val</span><span class="p">,</span> <span class="n">mols</span><span class="p">))</span> <span class="c1"># e.g., ((&#39;A&#39;, &#39;mol1&#39;), (&#39;B&#39;, &#39;mol2&#39;))</span>
 
     <span class="k">return</span> <span class="n">pattern_repl</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">tup_repl</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="count_plholder">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.count_plholder">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">count_plholder</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to count the number of user defined </span>
-<span class="sd">       atomic placeholders.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Counts the occurrences of a specific placeholder atom type in an RDKit molecule.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    -----------</span>
+<span class="sd">    Args:</span>
+<span class="sd">        mol (rdkit.Chem.rdchem.Mol): The RDKit molecule object to inspect.</span>
+<span class="sd">        atom (str): The atomic symbol of the placeholder atom to count (e.g., &quot;Br&quot;, &quot;*&quot;).</span>
 
-<span class="sd">    mol: rdkit.Chem.rdchem.Mol</span>
-<span class="sd">          RDKit Mol object</span>
-
-<span class="sd">    atom: class.str</span>
-<span class="sd">         The placeholder atom</span>
-<span class="sd">    </span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-
-<span class="sd">    num_br: class.int</span>
-<span class="sd">        Number of atomic place holders inside a molecule.</span>
-
+<span class="sd">    Returns:</span>
+<span class="sd">        int: The total number of placeholder atoms of the specified type found</span>
+<span class="sd">             in the molecule.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">num_br</span><span class="o">=</span><span class="mi">0</span>
-    
-    <span class="k">for</span> <span class="n">atoms</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">():</span>
-         <span class="k">if</span> <span class="n">atoms</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">):</span>
-                <span class="n">num_br</span><span class="o">=</span><span class="n">num_br</span><span class="o">+</span><span class="mi">1</span>
-
+    <span class="n">num_br</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># Iterate through each atom in the molecule</span>
+    <span class="k">for</span> <span class="n">atm_obj</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">():</span> <span class="c1"># Renamed &#39;atoms&#39; to &#39;atm_obj&#39; for clarity</span>
+        <span class="c1"># Check if the atom&#39;s symbol matches the specified placeholder symbol</span>
+        <span class="k">if</span> <span class="n">atm_obj</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">):</span>
+            <span class="n">num_br</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">num_br</span></div>
+
 
 
 <div class="viewcode-block" id="atom_neigh">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.atom_neigh">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">atom_neigh</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
-<span class="w">   </span><span class="sd">&quot;&quot;&quot;Find the neighbours from an atoms inside a molecule. </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Identifies all placeholder atoms of a given type and their direct neighbors.</span>
 
-<span class="sd">   Parameters</span>
-<span class="sd">   -----------</span>
+<span class="sd">    For each atom in the molecule that matches the specified placeholder `atom` symbol,</span>
+<span class="sd">    this function finds all its neighboring atoms. It returns a flat list of tuples,</span>
+<span class="sd">    where each tuple contains the index of a placeholder atom and the index of one</span>
+<span class="sd">    of its neighbors. If a placeholder has multiple neighbors, multiple tuples will</span>
+<span class="sd">    be generated for that placeholder, one for each neighbor.</span>
 
-<span class="sd">   mol : rdkit.Chem.rdchem.Mol</span>
-<span class="sd">          RDKit Mol object</span>
+<span class="sd">    Args:</span>
+<span class="sd">        mol (rdkit.Chem.rdchem.Mol): The RDKit molecule object.</span>
+<span class="sd">        atom (str): The atomic symbol of the placeholder atom (e.g., &quot;Br&quot;, &quot;*&quot;).</span>
 
-<span class="sd">   atom : str</span>
-<span class="sd">         The placeholder atom</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        list[tuple[int, int]]: A list of (placeholder_atom_index, neighbor_atom_index)</span>
+<span class="sd">                               tuples. The list is flattened.</span>
+<span class="sd">                               Example: If P1 is a placeholder bonded to N1a and N1b, and</span>
+<span class="sd">                               P2 is a placeholder bonded to N2a, the result could be</span>
+<span class="sd">                               [(idx_P1, idx_N1a), (idx_P1, idx_N1b), (idx_P2, idx_N2a)].</span>
+<span class="sd">                               The order depends on RDKit&#39;s internal atom iteration.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">neigh</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Using RWMol is not necessary if the molecule is not modified in this function.</span>
+    <span class="c1"># Iterating directly on &#39;mol&#39; is sufficient for read-only operations.</span>
+    <span class="k">for</span> <span class="n">atm_obj</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">():</span> <span class="c1"># Renamed &#39;atoms&#39; to &#39;atm_obj&#39; for clarity</span>
+        <span class="k">if</span> <span class="n">atm_obj</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">):</span>
+            <span class="c1"># For each neighbor of the current placeholder atom</span>
+            <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">atm_obj</span><span class="o">.</span><span class="n">GetNeighbors</span><span class="p">():</span>
+                <span class="n">neigh</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">atm_obj</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">(),</span> <span class="n">nbr</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">()))</span>
+    <span class="k">return</span> <span class="n">neigh</span></div>
 
-<span class="sd">   Returns</span>
-<span class="sd">   --------</span>
-
-<span class="sd">   neigh: list</span>
-<span class="sd">         List of neighbors</span>
-
-<span class="sd">   &quot;&quot;&quot;</span>
-
-   <span class="n">neigh</span><span class="o">=</span><span class="p">[]</span>
-   <span class="n">rwmol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">RWMol</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
-   <span class="k">for</span> <span class="n">atoms</span> <span class="ow">in</span> <span class="n">rwmol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">():</span>
-       <span class="k">if</span> <span class="n">atoms</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">):</span>
-             <span class="n">neigh</span><span class="o">.</span><span class="n">append</span><span class="p">([(</span><span class="n">atoms</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">(),</span><span class="n">nbr</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">())</span>
-                           <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">atoms</span><span class="o">.</span><span class="n">GetNeighbors</span><span class="p">()])</span>
-
-   <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">neigh</span><span class="p">,</span> <span class="p">[])</span></div>
 
 
 <div class="viewcode-block" id="tuple_bonds">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.tuple_bonds">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">tuple_bonds</span><span class="p">(</span><span class="n">lst_atm_neigh</span><span class="p">):</span>
-<span class="w">   </span><span class="sd">&quot;&quot;&quot;Function to seek atomic neighbours</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generates pairs of atom indices for creating new bonds from a list of placeholder-neighbor pairs.</span>
 
-<span class="sd">   Parameters</span>
-<span class="sd">   -----------</span>
+<span class="sd">    This function processes an ordered list of (placeholder_atom_index,</span>
+<span class="sd">    neighbor_atom_index) tuples. It extracts the neighbor indices from the &quot;internal&quot;</span>
+<span class="sd">    tuples in this list (i.e., excluding the first and the last tuple from `lst_atm_neigh`</span>
+<span class="sd">    when collecting neighbor indices) and then pairs these collected neighbor indices</span>
+<span class="sd">    sequentially. This is typically used to define new bonds that will connect</span>
+<span class="sd">    monomers in a polymer chain.</span>
 
-<span class="sd">   lst_atm_neigh: class.list</span>
-<span class="sd">                  List containing atoms for getting neighbors.</span>
+<span class="sd">    The function assumes `lst_atm_neigh` is appropriately ordered (e.g., by</span>
+<span class="sd">    placeholder index along a chain) for the desired connectivity.</span>
 
-<span class="sd">   Return</span>
-<span class="sd">   -------</span>
+<span class="sd">    Example:</span>
+<span class="sd">        If `lst_atm_neigh` = `[(P0,N0), (P1,N1), (P2,N2), (P3,N3), (P4,N4)]`.</span>
+<span class="sd">        - It considers internal elements for neighbor collection: `(P1,N1)`, `(P2,N2)`, `(P3,N3)`.</span>
+<span class="sd">        - It extracts their neighbor indices: `bond_idx` becomes `[N1, N2, N3]`.</span>
+<span class="sd">        - It then pairs them: `[(N1, N2)]`. The last element `N3` is unpaired if `bond_idx` has odd length.</span>
 
-<span class="sd">   return: class.list</span>
-<span class="sd">           A list of tuples with the neighbors of the parsed atoms. </span>
-<span class="sd">   </span>
-<span class="sd">   &quot;&quot;&quot;</span>
+<span class="sd">    Args:</span>
+<span class="sd">        lst_atm_neigh (list[tuple[int, int]]): An ordered list of tuples, where</span>
+<span class="sd">            each tuple is (placeholder_atom_index, neighbor_atom_index).</span>
+<span class="sd">            This list might be generated from `atom_neigh` and subsequently sorted/ordered.</span>
 
-   <span class="n">bond_idx</span><span class="o">=</span><span class="p">[]</span>
-   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">lst_atm_neigh</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-       <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">lst_atm_neigh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-       <span class="n">bond_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        list[tuple[int, int]]: A list of tuples, where each tuple contains two</span>
+<span class="sd">            neighbor_atom_indices that are intended to be bonded together.</span>
+<span class="sd">            For example, `[(neighbor_idx1, neighbor_idx2), (neighbor_idx3, neighbor_idx4)]`.</span>
+<span class="sd">            Returns an empty list if `bond_idx` has fewer than two elements.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bond_idx</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># The loop `range(1, len(lst_atm_neigh) - 1)` processes elements from index 1 up to index len-2.</span>
+    <span class="c1"># This means it requires at least 3 elements in lst_atm_neigh for the loop to execute.</span>
+    <span class="c1"># If len(lst_atm_neigh) &lt; 3, bond_idx remains empty.</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst_atm_neigh</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">_placeholder_idx</span><span class="p">,</span> <span class="n">neighbor_idx</span> <span class="o">=</span> <span class="n">lst_atm_neigh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="c1"># Original: a,b = lst_atm_neigh[i]</span>
+        <span class="n">bond_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">neighbor_idx</span><span class="p">)</span> <span class="c1"># Original: bond_idx.append(b)</span>
 
-   <span class="k">return</span> <span class="p">[(</span><span class="n">bond_idx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">bond_idx</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
-           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">bond_idx</span><span class="p">),</span><span class="mi">2</span><span class="p">)]</span></div>
+    <span class="c1"># This pairs consecutive elements from bond_idx.</span>
+    <span class="c1"># e.g., if bond_idx = [N1, N2, N3, N4], result is [(N1,N2), (N3,N4)].</span>
+    <span class="c1"># If bond_idx = [N1, N2, N3], result is [(N1,N2)].</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">bond_idx</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">bond_idx</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">bond_idx</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bond_idx</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="p">)]</span></div>
+
 
 
 <div class="viewcode-block" id="create_pol">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_func.create_pol">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">create_pol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">tpb</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to create polymers.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates specified bonds in a molecule and removes internal placeholder atoms.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    -----------</span>
+<span class="sd">    This function modifies the input RDKit molecule `mol` by:</span>
+<span class="sd">    1. Converting `mol` to an `RWMol` object to allow modifications.</span>
+<span class="sd">    2. Adding new single bonds between atom pairs specified in `tpb`.</span>
+<span class="sd">    3. Identifying all atoms matching the placeholder `atom` symbol (e.g., &quot;Br&quot;, &quot;*&quot;).</span>
+<span class="sd">    4. Removing all occurrences of these placeholder atoms *except* for those</span>
+<span class="sd">       that are effectively terminal (i.e., the ones with the smallest and</span>
+<span class="sd">       largest atom indices among all identified placeholders, after sorting).</span>
 
-<span class="sd">    mol: rdkit.Chem.rdchem.Mol</span>
-<span class="sd">          RDKit Mol object</span>
+<span class="sd">    This is typically used in polymer construction to form bonds between monomer</span>
+<span class="sd">    units (connected via placeholders) and then remove the (now internal) placeholder</span>
+<span class="sd">    atoms. Terminal placeholders might be retained.</span>
 
-<span class="sd">    atom: str</span>
-<span class="sd">          The placeholder atom</span>
+<span class="sd">    Args:</span>
+<span class="sd">        mol (rdkit.Chem.rdchem.Mol): The RDKit molecule object. This is often</span>
+<span class="sd">            a single `Mol` object containing disconnected fragments or monomers</span>
+<span class="sd">            linked by placeholders. It will be modified.</span>
+<span class="sd">        atom (str): The atomic symbol of the placeholder atom (e.g., &quot;Br&quot;, &quot;*&quot;).</span>
+<span class="sd">                    This symbol is used to identify atoms for removal.</span>
+<span class="sd">        tpb (list[tuple[int, int]]): A list of tuples, where each tuple</span>
+<span class="sd">            `(idx1, idx2)` specifies the atom indices to be connected by a</span>
+<span class="sd">            new single bond.</span>
 
-<span class="sd">    </span>
-<span class="sd">    tpb: list</span>
-<span class="sd">         List of tuples with atoms to be connected</span>
-
-
-<span class="sd">    Returns</span>
-<span class="sd">    --------</span>
-
-<span class="sd">    rmwol1: rdkit.Chem.rdchem.Mol</span>
-<span class="sd">          RDKit Mol object</span>
-<span class="sd">    </span>
-
+<span class="sd">    Returns:</span>
+<span class="sd">        rdkit.Chem.rdchem.RWMol: The modified RDKit molecule object (as an RWMol)</span>
+<span class="sd">                                 with new bonds added and specified internal</span>
+<span class="sd">                                 placeholders removed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rwmol1</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">RWMol</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span> <span class="c1"># Create an editable version of the molecule</span>
 
-    <span class="n">rwmol1</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">RWMol</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="c1"># Add specified bonds</span>
     <span class="k">for</span> <span class="n">ini</span><span class="p">,</span> <span class="n">fin</span> <span class="ow">in</span> <span class="n">tpb</span><span class="p">:</span>
         <span class="n">rwmol1</span><span class="o">.</span><span class="n">AddBond</span><span class="p">(</span><span class="n">ini</span><span class="p">,</span> <span class="n">fin</span><span class="p">,</span> <span class="n">Chem</span><span class="o">.</span><span class="n">BondType</span><span class="o">.</span><span class="n">SINGLE</span><span class="p">)</span>
 
-    <span class="c1">#Reading Place holder as SMILES</span>
-    <span class="n">plc</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
-    <span class="n">new_conn</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">rwmol1</span><span class="o">.</span><span class="n">GetSubstructMatches</span><span class="p">(</span><span class="n">plc</span><span class="p">),())</span>
+    <span class="c1"># Prepare query for placeholder atom</span>
+    <span class="c1"># For generic wildcards like &#39;*&#39;, MolFromSmarts is more robust.</span>
+    <span class="k">if</span> <span class="n">atom</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">:</span>
+        <span class="n">plc_query</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s2">&quot;[*]&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># For specific elements like &quot;Br&quot;, &quot;Cl&quot;, MolFromSmiles is usually fine.</span>
+        <span class="n">plc_query</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">new_conn</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-         <span class="n">rwmol1</span><span class="o">.</span><span class="n">RemoveAtom</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-         
+    <span class="k">if</span> <span class="n">plc_query</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># If the placeholder symbol is invalid and a query molecule cannot be created.</span>
+        <span class="c1"># Depending on desired behavior, could raise an error or return rwmol1 as is.</span>
+        <span class="c1"># For now, printing a warning.</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: Could not create query molecule from placeholder symbol: </span><span class="si">{</span><span class="n">atom</span><span class="si">}</span><span class="s2">. No atoms will be removed.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rwmol1</span> <span class="c1"># Or raise ValueError(f&quot;Invalid placeholder atom symbol: {atom}&quot;)</span>
+
+    <span class="c1"># Find all occurrences of the placeholder atom</span>
+    <span class="c1"># GetSubstructMatches returns a tuple of tuples; sum with an empty tuple flattens it.</span>
+    <span class="c1"># Convert to list and sort by atom index.</span>
+    <span class="n">placeholder_indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">rwmol1</span><span class="o">.</span><span class="n">GetSubstructMatches</span><span class="p">(</span><span class="n">plc_query</span><span class="p">),</span> <span class="p">())))</span>
+
+    <span class="c1"># Remove &quot;internal&quot; placeholder atoms.</span>
+    <span class="c1"># &quot;Internal&quot; are those not at the ends of the sorted list of placeholder indices.</span>
+    <span class="c1"># This means if there are 2 or fewer placeholders, none are considered &quot;internal&quot; by this logic.</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">placeholder_indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c1"># Indices to remove are all placeholder indices except the first and the last one.</span>
+        <span class="c1"># Atoms must be removed in reverse order of their indices to avoid re-indexing issues</span>
+        <span class="c1"># during removal.</span>
+        <span class="n">indices_to_remove</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">placeholder_indices</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices_to_remove</span><span class="p">:</span>
+            <span class="n">rwmol1</span><span class="o">.</span><span class="n">RemoveAtom</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            
     <span class="k">return</span> <span class="n">rwmol1</span></div>
 
 </pre></div>

@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.torsional package &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -101,29 +101,222 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 </section>
+<section id="module-pysoftk.torsional.mol_conformer">
+<span id="pysoftk-torsional-mol-conformer-module"></span><h2>pysoftk.torsional.mol_conformer module<a class="headerlink" href="#module-pysoftk.torsional.mol_conformer" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.torsional.mol_conformer.ConformerGenerator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.torsional.mol_conformer.</span></span><span class="sig-name descname"><span class="pre">ConformerGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_conformers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forcefield</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mmff94'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make3D_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convergence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/mol_conformer.html#ConformerGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.mol_conformer.ConformerGenerator" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to generate and save molecular conformers using Open Babel.
+Includes methods for genetic algorithm (GA) based conformer generation
+(modified from the original ‘generate_conformers’),
+diversity-based conformer generation (confab), and saving conformers
+to separate files.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.torsional.mol_conformer.ConformerGenerator.confab_generate_conformers">
+<span class="sig-name descname"><span class="pre">confab_generate_conformers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'xyz'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forcefield</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nconfs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmsd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_gap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_opt_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/pysoftk/torsional/mol_conformer.html#ConformerGenerator.confab_generate_conformers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.mol_conformer.ConformerGenerator.confab_generate_conformers" title="Link to this definition"></a></dt>
+<dd><p>Generates diverse conformers using a method similar to Confab.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>molecule_input</strong> – A SMILES string representing the molecule.</p></li>
+<li><p><strong>output_dir</strong> – The directory to save the generated conformers.</p></li>
+<li><p><strong>output_format</strong> – The file format for saving (default: ‘xyz’).</p></li>
+<li><p><strong>base_filename</strong> – The base name for the output files.</p></li>
+<li><p><strong>forcefield</strong> – The force field to use for initial 3D generation (default: initialized value).</p></li>
+<li><p><strong>nconfs</strong> – The maximum number of diverse conformers to generate (default: 10000).</p></li>
+<li><p><strong>rmsd</strong> – The RMSD threshold for considering conformers as distinct (default: 0.5).</p></li>
+<li><p><strong>energy_gap</strong> – The energy window (in kJ/mol) to consider for diverse conformers (default: 50.0).</p></li>
+<li><p><strong>initial_opt_steps</strong> – The number of optimization steps for the initial 3D structure (default: 50).</p></li>
+<li><p><strong>verbose</strong> – A boolean to control the verbosity (default: False).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of conformers successfully generated and saved.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.torsional.mol_conformer.ConformerGenerator.ga_generate_conformers">
+<span class="sig-name descname"><span class="pre">ga_generate_conformers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smiles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'xyz'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_conformers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forcefield</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make3D_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutability</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convergence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_children</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/pysoftk/torsional/mol_conformer.html#ConformerGenerator.ga_generate_conformers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.mol_conformer.ConformerGenerator.ga_generate_conformers" title="Link to this definition"></a></dt>
+<dd><p>Generates conformers using Open Babel’s weighted rotor search (GA).
+Saves conformers to separate files in a specified directory.
+Returns the number of generated conformers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.torsional.mol_conformer.ConformerGenerator.save_conformers_to_separate_files">
+<span class="sig-name descname"><span class="pre">save_conformers_to_separate_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule_with_conformers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'xyz'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/mol_conformer.html#ConformerGenerator.save_conformers_to_separate_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.mol_conformer.ConformerGenerator.save_conformers_to_separate_files" title="Link to this definition"></a></dt>
+<dd><p>Splits a pybel.Molecule object containing multiple conformers into
+separate files, one for each conformer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>molecule_with_conformers</strong> – A pybel.Molecule object that contains
+multiple conformers (e.g., the output
+from generate_conformers()).</p></li>
+<li><p><strong>base_name</strong> – The base name to use for the output filenames
+(e.g., “propanol”).</p></li>
+<li><p><strong>output_dir</strong> – The directory where the individual conformer files
+will be saved. If None, a directory named
+“{base_name}_conformers” will be created in the
+current working directory (default: None).</p></li>
+<li><p><strong>file_format</strong> – The file format to use for saving the conformers
+(default: “xyz”). Common options include “mol”, “pdb”, “xyz”.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.torsional.mol_conformer.Mcon">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.torsional.mol_conformer.</span></span><span class="sig-name descname"><span class="pre">Mcon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_conf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/mol_conformer.html#Mcon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.mol_conformer.Mcon" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class designed to <strong>generate and manage molecular conformers</strong> for a
+given RDKit molecule.</p>
+<p>This class provides functionality to compute a specified number of 3D
+conformers (different spatial arrangements) for a molecule, leveraging
+RDKit’s conformer generation algorithms. The generated conformers,
+along with their calculated energies, can then be saved to a common
+chemical file format (SDF).</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.conformer.conformer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mcon</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create an RDKit molecule from a SMILES string</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;CCCC&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span> <span class="c1"># Add hydrogens for more realistic conformers</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Initialize the Mcon class to compute 10 conformers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">conformer_generator</span> <span class="o">=</span> <span class="n">Mcon</span><span class="p">(</span><span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span> <span class="n">num_conf</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Generate and save the conformers to an SDF file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">conformer_generator</span><span class="o">.</span><span class="n">conformer</span><span class="p">(</span><span class="n">output_name</span><span class="o">=</span><span class="s2">&quot;butane_conformers&quot;</span><span class="p">)</span>
+<span class="go">Number of conformers created: 10</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This class <strong>requires the RDKit package to be installed</strong> in your Python
+environment. The quality and diversity of the generated conformers
+depend on the underlying RDKit algorithms and the complexity of the
+molecule.</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.torsional.mol_conformer.Mcon.conformer">
+<span class="sig-name descname"><span class="pre">conformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/mol_conformer.html#Mcon.conformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.mol_conformer.Mcon.conformer" title="Link to this definition"></a></dt>
+<dd><p>Generates molecular conformers for the initialized molecule using
+RDKit’s ETKDGv3 algorithm and saves them to an SDF (Structure-Data File)
+file.</p>
+<p>This method orchestrates the conformer generation process, including
+the calculation of energies for each conformer. It then writes
+all generated conformers into a single SDF file, making them
+accessible for further analysis or visualization. By default, it returns
+all generated conformers, including the highest-energy ones, allowing
+for a comprehensive conformational analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>output_name</strong> (<em>str</em>) – The <strong>base name</strong> for the output SDF file. The file will be saved
+as <cite>&lt;output_name&gt;.sdf</cite> in the current working directory.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function doesn’t explicitly return a list of molecules directly.
+Instead, it <strong>writes the conformers to an SDF file</strong>.
+The SDF file contains all generated conformers as separate entries,
+each representing an <cite>rdkit.Chem.Mol</cite> object with 3D coordinates.
+A message indicating the number of created conformers is printed
+to the console.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of rdkit.Chem.Mol objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.torsional.mol_conformer.Mcon.mol">
+<span class="sig-name descname"><span class="pre">mol</span></span><a class="headerlink" href="#pysoftk.torsional.mol_conformer.Mcon.mol" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.torsional.mol_conformer.Mcon.num_conf">
+<span class="sig-name descname"><span class="pre">num_conf</span></span><a class="headerlink" href="#pysoftk.torsional.mol_conformer.Mcon.num_conf" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-pysoftk.torsional.torsional">
 <span id="pysoftk-torsional-torsional-module"></span><h2>pysoftk.torsional.torsional module<a class="headerlink" href="#module-pysoftk.torsional.torsional" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pysoftk.torsional.torsional.Torsional">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.torsional.torsional.</span></span><span class="sig-name descname"><span class="pre">Torsional</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A class for detecting torsional angles in a linear conjugated polymer.</p>
+<p>A class dedicated to <strong>detecting and visualizing torsional angles</strong> within
+molecular structures, particularly useful for understanding the conformational
+flexibility of linear conjugated polymers.</p>
+<p>This class provides tools to:
+1. Validate RDKit molecular objects.
+2. Convert RDKit molecules into NetworkX graphs for topological analysis.
+3. Identify and list atoms involved in rotatable bonds, which contribute to</p>
+<blockquote>
+<div><p>torsional angles.</p>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li><p>Handle complex ring systems to accurately identify relevant torsional angles.</p></li>
+<li><p>Visualize the molecule with highlighted torsional angles by generating PNG images.</p></li>
+</ol>
 <p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.torsional.torsional</span><span class="w"> </span><span class="kn">import</span> <span class="n">Torsional</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a simple molecule (e.g., a short polymer segment)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;c1ccccc1-c2ccccc2-c3ccccc3&quot;</span><span class="p">)</span> <span class="c1"># Biphenyl trimer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span> <span class="c1"># Add hydrogens for correct atom degrees</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Initialize the Torsional class</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">torsional_analyzer</span> <span class="o">=</span> <span class="n">Torsional</span><span class="p">(</span><span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get the list of atoms involved in torsional angles</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">torsional_atoms</span> <span class="o">=</span> <span class="n">torsional_analyzer</span><span class="o">.</span><span class="n">seek_angles</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Identified torsional angles (atom indices): </span><span class="si">{</span><span class="n">torsional_atoms</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Plot and save images highlighting these torsional angles</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">torsional_analyzer</span><span class="o">.</span><span class="n">plot_trs_ang</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;biphenyl_trimer_torsions&quot;</span><span class="p">)</span>
+<span class="go">3 figures have been printed (example output)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This class <strong>requires the RDKit and NetworkX packages to be installed</strong>
+in your Python environment. It is particularly designed for linear-like
+polymer structures where the concept of “torsional angles” between repeating
+units or significant backbone bonds is relevant.</p>
+</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.torsional.torsional.Torsional.draw_molecule">
 <span class="sig-name descname"><span class="pre">draw_molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_pic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.draw_molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.draw_molecule" title="Link to this definition"></a></dt>
-<dd><p>Function to print a molecule into a PNG file.</p>
+<dd><p>Generates and saves a PNG image of the RDKit molecule, with specific
+atoms highlighted and atom numbers displayed.</p>
+<p>This function provides a visual representation of the molecule,
+emphasizing the atoms involved in the detected torsional angles.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
-<li><p><strong>name_pic</strong> (<em>str</em>) – Name of the created PNG object</p></li>
-<li><p><strong>atoms_idx</strong> (<em>List</em><em>[</em><em>tup int</em><em>]</em>) – List of tuples of atomic indexes to
-be highligthed.</p></li>
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The RDKit Mol object to be drawn.</p></li>
+<li><p><strong>name_pic</strong> (<em>str</em>) – The <strong>base name</strong> for the output PNG file. The file will be saved
+as <cite>&lt;name_pic&gt;.png</cite> in the current working directory.</p></li>
+<li><p><strong>atoms_idx</strong> (<em>List</em><em>[</em><em>int</em><em>] or </em><em>List</em><em>[</em><em>Tuple</em><em>[</em><em>int</em><em>, </em><em>...</em><em>]</em><em>]</em>) – A <strong>list of atom indices</strong> to be highlighted in the generated
+image. This list can contain individual atom indices or tuples
+of atom indices (e.g., representing the four atoms of a dihedral).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>rdkit.Draw.MolToFile Object</p>
+<dd class="field-even"><p>This function does not return any value; it generates a PNG file
+as a side effect.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
@@ -134,13 +327,21 @@ be highligthed.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.torsional.torsional.Torsional.list_dhdl_atoms">
 <span class="sig-name descname"><span class="pre">list_dhdl_atoms</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.list_dhdl_atoms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.list_dhdl_atoms" title="Link to this definition"></a></dt>
-<dd><p>Function to compute all dihedral atoms</p>
+<dd><p>Computes and returns the final list of valid torsional angles
+(defined by four atom indices) by excluding those that are part
+of ring systems.</p>
+<p>This method combines the results from <cite>__prbm_cases</cite> and
+<cite>__comb_dihedral_atoms</cite> to provide the definitive list of
+rotatable torsional angles in the molecule.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>List</strong> – List of atomic indexes for dihedral atoms</p>
+<dd class="field-odd"><p><strong>List</strong> – A <strong>sorted list of lists</strong>, where each inner list contains four
+integer atom indices representing a distinct rotatable torsional angle.
+These angles are typically associated with bonds that can undergo
+conformational changes.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
+<dd class="field-even"><p>List[List[int]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -148,13 +349,19 @@ be highligthed.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.torsional.torsional.Torsional.mol_graph">
 <span class="sig-name descname"><span class="pre">mol_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.mol_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.mol_graph" title="Link to this definition"></a></dt>
-<dd><p>Function to create a NetworkX graph based on an RDKit molecule.</p>
+<dd><p>Converts the RDKit molecule into a NetworkX graph representation.</p>
+<p>This method facilitates graph-based algorithms for analyzing molecular
+topology, such as finding paths and atom degrees, which are essential
+for identifying dihedral angles. Atom and bond properties from RDKit
+are stored as node and edge attributes in the NetworkX graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>G</strong> – A networkx graph object updated with an RDKit Mol object.</p>
+<dd class="field-odd"><p><strong>G</strong> – A <strong>NetworkX graph object</strong> where nodes represent atoms (with
+attributes like atomic number, formal charge, etc.) and edges
+represent bonds (with attributes like bond type).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Networkx.Graph</p>
+<dd class="field-even"><p>networkx.Graph</p>
 </dd>
 </dl>
 </dd></dl>
@@ -162,13 +369,23 @@ be highligthed.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.torsional.torsional.Torsional.mol_graph_neigh">
 <span class="sig-name descname"><span class="pre">mol_graph_neigh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.mol_graph_neigh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.mol_graph_neigh" title="Link to this definition"></a></dt>
-<dd><p>Function to compute adjacency matrix from an RDKit Mol object.</p>
+<dd><p>Computes the adjacency matrix (with atomic numbers on the diagonal)
+from an RDKit Mol object and converts it into a NetworkX graph.</p>
+<p>This function creates a graph representation where nodes are atoms
+and edges represent bonds, useful for various graph-based analyses,
+including those involving connectivity and neighborhoods.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mol</strong> – RDKit Mol object</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The RDKit Mol object for which the adjacency matrix and graph
+are to be computed.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>rdkit.Chem.rdchem.Mol</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>G</strong> – A <strong>NetworkX graph object</strong> representing the molecular connectivity.
+Node attributes include atomic numbers (on the diagonal of the adjacency
+matrix used to construct the graph).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>networkx.Graph</p>
 </dd>
 </dl>
 </dd></dl>
@@ -176,16 +393,24 @@ be highligthed.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.torsional.torsional.Torsional.plot_trs_ang">
 <span class="sig-name descname"><span class="pre">plot_trs_ang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.plot_trs_ang"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.plot_trs_ang" title="Link to this definition"></a></dt>
-<dd><p>Function to plot torsional atoms from an RDKit Mol Object.</p>
+<dd><p>Plots and saves PNG images for each detected torsional angle in the
+molecule, highlighting the atoms involved in each angle.</p>
+<p>This method iterates through all identified torsional angles and generates
+a separate image for each, providing a detailed visualization of the
+conformational points of interest.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – Name of the RDKit Mol object</p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – The <strong>base name</strong> for the output PNG files. Each file will be named
+as <cite>&lt;name&gt;_mol_&lt;index&gt;.png</cite>, where <cite>&lt;index&gt;</cite> corresponds to the
+sequence of the torsional angle.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>draw_molecule</strong> – A PNG RDKit Mol object</p>
+<dd class="field-even"><p>This function does not return any value; it generates multiple PNG
+files as a side effect. A message indicating the number of generated
+figures is printed to the console.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>PNG</p>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -193,13 +418,22 @@ be highligthed.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.torsional.torsional.Torsional.seek_angles">
 <span class="sig-name descname"><span class="pre">seek_angles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.seek_angles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.seek_angles" title="Link to this definition"></a></dt>
-<dd><p>List of torsional angles in a planar polymer.</p>
+<dd><p>Identifies and returns a list of atom indices that define the
+torsional angles within the molecule, specifically focusing on
+rotatable bonds in a planar or linear polymer context.</p>
+<p>This is the primary public method to obtain the identified torsional angles.
+It orchestrates several internal methods to first identify potential
+dihedral atoms, then filter out those involved in problematic (e.g., ring)
+environments, to provide a clean list of relevant torsional angles.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>List</strong> – List of atomic indexes for torsional angles</p>
+<dd class="field-odd"><p><strong>List</strong> – A <strong>list of lists</strong>, where each inner list contains four integer
+atom indices <cite>[i, j, k, l]</cite> that define a torsional angle. The
+torsional angle is the angle between the planes defined by
+atoms <cite>(i, j, k)</cite> and <cite>(j, k, l)</cite>.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
+<dd class="field-even"><p>List[int]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -207,17 +441,23 @@ be highligthed.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.torsional.torsional.Torsional.show_atom_number">
 <span class="sig-name descname"><span class="pre">show_atom_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.show_atom_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.show_atom_number" title="Link to this definition"></a></dt>
-<dd><p>Function to set atomic numbers to an RDKit Mol object.</p>
+<dd><p>Adds atom index labels as a property to each atom in an RDKit molecule,
+making them visible when drawing the molecule.</p>
+<p>This utility function is essential for visualizing the atom indices
+on the molecular diagram, which is crucial for interpreting the
+results of torsional angle detection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>str</em>) – Added Atomic Property to an
-RDKit Mol Object</p></li>
-<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The RDKit Mol object to which atom index labels will be added.</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – The <strong>name of the atomic property</strong> to set for displaying atom
+numbers (e.g., ‘molAtomMapNumber’ is commonly used by RDKit drawing functions).
+The value of this property will be the string representation of the atom’s index.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>mol</strong> – RDKit Mol object</p>
+<dd class="field-even"><p><strong>mol</strong> – The <strong>modified RDKit Mol object</strong> with the atom map numbers set
+as an atomic property.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
@@ -228,16 +468,22 @@ RDKit Mol Object</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.torsional.torsional.Torsional.validate_mol">
 <span class="sig-name descname"><span class="pre">validate_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/torsional/torsional.html#Torsional.validate_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.torsional.torsional.Torsional.validate_mol" title="Link to this definition"></a></dt>
-<dd><p>Function that validates an object as RDKit Mol object.</p>
+<dd><p>Validates whether the input object is a valid RDKit Mol object.</p>
+<p>This internal helper function ensures that subsequent operations
+are performed on a proper RDKit molecular structure, preventing
+potential errors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p>
+<dd class="field-odd"><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The object to be validated as an RDKit Mol object.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>mol</strong> – RDKit Mol object</p>
+<dd class="field-even"><p><strong>mol</strong> – The <strong>validated RDKit Mol object</strong> if the input is valid.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If the input <cite>mol</cite> is not an instance of <cite>rdkit.Chem.rdchem.Mol</cite>.</p>
 </dd>
 </dl>
 </dd></dl>

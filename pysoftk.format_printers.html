@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.format_printers package &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -108,10 +108,12 @@
 <dt class="sig sig-object py" id="pysoftk.format_printers.format_mol.Cnv">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.format_printers.format_mol.</span></span><span class="sig-name descname"><span class="pre">Cnv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/format_printers/format_mol.html#Cnv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.format_printers.format_mol.Cnv" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class for converting files from X to Y format.</p>
+<p>A class for converting molecular files from one format to another using OpenBabel.</p>
+<p>This class provides a utility to convert a molecule stored in a file of a
+given format (e.g., PDB, SDF, MOL2) to a different specified format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>file</strong> – A file with the provided molecule in a chosen format.</p>
+<dd class="field-odd"><p><strong>file</strong> – A new file containing the provided molecule in the chosen output format.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
@@ -120,14 +122,20 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.format_printers.format_mol.Cnv.file_in_out">
 <span class="sig-name descname"><span class="pre">file_in_out</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mol2'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/format_printers/format_mol.html#Cnv.file_in_out"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.format_printers.format_mol.Cnv.file_in_out" title="Link to this definition"></a></dt>
-<dd><p>Function to convert an user-provided file
-with X format to an user-provided Y format.</p>
+<dd><p>Converts a molecular file from its current format to a specified output format.</p>
+<p>This function leverages OpenBabel to perform the file conversion. It
+automatically detects the input file format from its extension and
+converts it to the format specified by the <cite>fmt</cite> parameter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>fmt</strong> (<em>class.str</em>) – Format requested to convert.</p>
+<dd class="field-odd"><p><strong>fmt</strong> (<em>str</em><em>, </em><em>optional</em>) – The desired output format for the converted file (e.g., “pdb”, “xyz”, “sdf”).
+Defaults to “mol2”.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>New file with the provided format.</p>
+<dd class="field-even"><p>This function does not return any value. It creates a new file
+in the same directory as the input file, with the converted format
+and the original filename (before its extension) appended with the
+new format’s extension.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
@@ -141,10 +149,12 @@ with X format to an user-provided Y format.</p>
 <dt class="sig sig-object py" id="pysoftk.format_printers.format_mol.Fmt">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.format_printers.format_mol.</span></span><span class="sig-name descname"><span class="pre">Fmt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/format_printers/format_mol.html#Fmt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.format_printers.format_mol.Fmt" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class printing RDkit Mol Object in different formats</p>
+<p>A class designed for printing RDKit Mol objects into various molecular file formats.</p>
+<p>This class provides methods to convert an RDKit Mol object into common chemical file
+formats such as XYZ, PDB, and MOL, as well as a more general format conversion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>file</strong> – A file with the provided molecule in a chosen format.</p>
+<dd class="field-odd"><p><strong>file</strong> – A file containing the provided molecule in the chosen format.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
@@ -153,15 +163,21 @@ with X format to an user-provided Y format.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.format_printers.format_mol.Fmt.format_print">
 <span class="sig-name descname"><span class="pre">format_print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/format_printers/format_mol.html#Fmt.format_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.format_printers.format_mol.Fmt.format_print" title="Link to this definition"></a></dt>
-<dd><p>Function to print a pysoftk.object into an user
-provided output_format.</p>
+<dd><p>Prints the molecule into a user-provided file format.</p>
+<p>This function attempts to convert and write the molecule to a file
+based on the extension provided in <cite>output_name</cite>. It handles both RDKit
+Mol objects and Pybel Molecule objects. If an RDKit Mol is provided,
+it’s first converted to a PDB block and then read by Pybel to facilitate
+writing to the desired format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>fmt</strong> (<em>class.str</em>) – An user-provided valid format in which the pysoftk.object
-can be printed. Default is MOL2 format.</p></li>
-<li><p><strong>output_name</strong> (<em>class.str</em>) – A provided name for a file. Default is molecule.mol2</p></li>
-</ul>
+<dd class="field-odd"><p><strong>output_name</strong> (<em>str</em>) – The desired name for the output file, including the file extension
+(e.g., “molecule.mol2”, “compound.smi”). The extension determines
+the output format.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If the input <cite>mol</cite> is neither an RDKit Mol object nor a Pybel Molecule
+    object, indicating an invalid molecule type.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -169,13 +185,18 @@ can be printed. Default is MOL2 format.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.format_printers.format_mol.Fmt.mol_print">
 <span class="sig-name descname"><span class="pre">mol_print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/format_printers/format_mol.html#Fmt.mol_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.format_printers.format_mol.Fmt.mol_print" title="Link to this definition"></a></dt>
-<dd><p>Function to print in MOL format</p>
+<dd><p>Prints the molecule to a MOL file format.</p>
+<p>This method handles both RDKit Mol objects and Pybel Molecule objects.
+For RDKit Mol objects, it utilizes <cite>Chem.MolToMolFile</cite>. For Pybel Molecule
+objects, it ensures bond orders are perceived and hydrogens are added
+before writing the file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>output_name</strong> (<em>str</em>) – A provided name for a file.</p>
+<dd class="field-odd"><p><strong>output_name</strong> (<em>str</em>) – The desired name for the output MOL file.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError:</strong> – If not an RDKit Mol Object raises TypeError as invalid molecule.</p>
+<dd class="field-even"><p><strong>TypeError</strong> – If the input <cite>mol</cite> is neither an RDKit Mol object nor a Pybel Molecule
+    object, indicating an invalid molecule type.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -183,13 +204,18 @@ can be printed. Default is MOL2 format.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.format_printers.format_mol.Fmt.pdb_print">
 <span class="sig-name descname"><span class="pre">pdb_print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/format_printers/format_mol.html#Fmt.pdb_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.format_printers.format_mol.Fmt.pdb_print" title="Link to this definition"></a></dt>
-<dd><p>Function to print in PDB format</p>
+<dd><p>Prints the molecule to a PDB file format.</p>
+<p>This method supports both RDKit Mol objects and Pybel Molecule objects.
+For RDKit Mol objects, it uses <cite>Chem.MolToPDBFile</cite>. For Pybel Molecule
+objects, it ensures bond orders are perceived and hydrogens are added
+before writing the file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>output_name</strong> (<em>str</em>) – A provided name for a file.</p>
+<dd class="field-odd"><p><strong>output_name</strong> (<em>str</em>) – The desired name for the output PDB file.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError:</strong> – If not an RDKit Mol Object raises TypeError as invalid molecule.</p>
+<dd class="field-even"><p><strong>TypeError</strong> – If the input <cite>mol</cite> is neither an RDKit Mol object nor a Pybel Molecule
+    object, indicating an invalid molecule type.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -197,13 +223,18 @@ can be printed. Default is MOL2 format.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.format_printers.format_mol.Fmt.xyz_print">
 <span class="sig-name descname"><span class="pre">xyz_print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/format_printers/format_mol.html#Fmt.xyz_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.format_printers.format_mol.Fmt.xyz_print" title="Link to this definition"></a></dt>
-<dd><p>Function to print in XYZ format</p>
+<dd><p>Prints the molecule to an XYZ file format.</p>
+<p>This method handles both RDKit Mol objects and Pybel Molecule objects.
+For RDKit Mol objects, it uses <cite>Chem.MolToXYZFile</cite>. For Pybel Molecule
+objects, it ensures bond orders are perceived and hydrogens are added
+before writing the file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>output_name</strong> (<em>str</em>) – A provided name for an output file.</p>
+<dd class="field-odd"><p><strong>output_name</strong> (<em>str</em>) – The desired name for the output XYZ file.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError:</strong> – If not an RDKit Mol Object raises TypeError as invalid molecule.</p>
+<dd class="field-even"><p><strong>TypeError</strong> – If the input <cite>mol</cite> is neither an RDKit Mol object nor a Pybel Molecule
+    object, indicating an invalid molecule type.</p>
 </dd>
 </dl>
 </dd></dl>

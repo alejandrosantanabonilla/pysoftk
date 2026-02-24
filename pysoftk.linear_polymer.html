@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.linear_polymer package &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -108,22 +108,51 @@
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.calculators.Opt">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.calculators.</span></span><span class="sig-name descname"><span class="pre">Opt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyz_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/calculators.html#Opt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.calculators.Opt" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Geometrical optimization tools using GFN-XTB2 and PySCF as engines.</p>
+<p>Provides tools for performing <strong>geometrical optimizations</strong> of molecular structures.
+This class leverages external computational chemistry engines, specifically
+<strong>GFN-XTB2</strong> and <strong>PySCF</strong> (with its semiempirical implementations), to minimize
+the energy of a given molecular geometry.</p>
+<p>The primary use case for this class is to find stable 3D conformations of molecules
+by iteratively adjusting atomic positions until a local energy minimum is reached.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This class requires a GFN-XTB executable and/or a PYSCF semiempirical installation to be used.</p>
+<p>Successful execution of the optimization methods within this class requires
+the prior installation and correct configuration of the chosen computational
+engine:
+* <strong>GFN-XTB</strong>: The <cite>xtb</cite> executable must be accessible in your system’s PATH.</p>
+<blockquote>
+<div><p>You can typically install it via conda or by compiling from source.</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>PySCF Semiempirical</strong>: The <cite>pyscf</cite> Python package, including its</dt><dd><p>semiempirical modules, must be installed in your Python environment.
+Installation is usually done via pip (<cite>pip install pyscf</cite>).</p>
+</dd>
+</dl>
+</li>
+</ul>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.calculators.Opt.pyscf_semi">
 <span class="sig-name descname"><span class="pre">pyscf_semi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">steps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/calculators.html#Opt.pyscf_semi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.calculators.Opt.pyscf_semi" title="Link to this definition"></a></dt>
-<dd><p>Function invoking PYSCF semiempirical implementation for geometry optimization.</p>
+<dd><p>Performs a <strong>geometry optimization</strong> using the <strong>PySCF semiempirical</strong>
+implementation, specifically the <strong>MINDO/3</strong> method.</p>
+<p>This function sets up a PySCF molecular object from the provided XYZ file,
+configures a semiempirical calculation, and then applies a geometry
+optimization algorithm (Berny solver) to find the equilibrium structure.
+The optimized coordinates are then printed to an XYZ file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>steps</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of steps which PYSCF code will perform the optimization routine.</p>
+<dd class="field-odd"><p><strong>steps</strong> (<em>int</em><em>, </em><em>optional</em>) – The <strong>maximum number of steps</strong> the PySCF optimization routine
+will attempt to converge the geometry. The optimization may
+terminate earlier if convergence criteria are met.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Print the file pyscf_final.xyz reporting
-the results from a PYSCF calculation.</p>
+<dd class="field-even"><p>This method does not return any value. Instead, it <strong>generates an output file</strong>
+named <cite>pyscf_final.xyz</cite> in the current working directory, which
+contains the optimized Cartesian coordinates of the molecule.
+A confirmation message will be printed to the console upon successful
+file creation.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
@@ -137,21 +166,34 @@ the results from a PYSCF calculation.</p>
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.calculators.Pyscf_print">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.calculators.</span></span><span class="sig-name descname"><span class="pre">Pyscf_print</span></span><a class="reference internal" href="_modules/pysoftk/linear_polymer/calculators.html#Pyscf_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.calculators.Pyscf_print" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Print a PYSCF object into cartesian
-coordinates.</p>
+<p>A utility class designed to <strong>convert and save</strong> the results of a PySCF
+geometry optimization into a standard <strong>Cartesian coordinate (XYZ)</strong> file format.</p>
+<p>This class acts as a bridge between PySCF’s internal molecular object
+representation and a widely recognized format for molecular structures,
+making the optimized geometries easily shareable and viewable with
+molecular visualization software.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.calculators.Pyscf_print.xyz">
 <span class="sig-name descname"><span class="pre">xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/calculators.html#Pyscf_print.xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.calculators.Pyscf_print.xyz" title="Link to this definition"></a></dt>
-<dd><p>Function to print a file with Cartesian coordinates from a PYSCF geometry optimization calculation.</p>
+<dd><p>Writes the <strong>optimized Cartesian coordinates</strong> from a PySCF molecular
+object to a new <cite>.xyz</cite> file named <cite>pyscf_final.xyz</cite>.</p>
+<p>This function takes the atomic symbols and their optimized coordinates
+from a PySCF <cite>Mole</cite> object, converts the coordinates from Bohr to Angstroms,
+and formats them into the XYZ file standard.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mol</strong> (<em>pyscf.gto.mole.Mole</em>) – A PySCF gto mole Mole object.</p>
+<dd class="field-odd"><p><strong>mol</strong> (<em>pyscf.gto.mole.Mole</em>) – A <strong>PySCF `gto.Mole` object</strong> containing the optimized molecular geometry,
+typically obtained from a PySCF geometry optimization calculation.
+This object holds information about atomic symbols and their Cartesian coordinates.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>pysfc_final</strong> – An xyz file containing the optimized coordinates of the provided PYSCF Mole object.</p>
+<dd class="field-even"><p>This method does not return any value. It <strong>creates a file</strong> named
+<cite>pyscf_final.xyz</cite> in the current working directory, which contains
+the optimized molecular structure. A confirmation message
+<cite>“File pyscf_final.xyz has been created.”</cite> is printed to standard output.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -165,11 +207,32 @@ coordinates.</p>
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.linear_polymer.</span></span><span class="sig-name descname"><span class="pre">Lp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_copies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A class for creating a linear polymer from given RdKit molecules.</p>
+<p>A class for constructing linear polymers from individual molecular units (monomers)
+using RDKit functionalities.</p>
+<p>This class facilitates the creation of polymeric structures by taking a monomer
+RDKit molecule, replicating it a specified number of times, and then combining
+these copies into a linear chain. It handles the spatial arrangement and bonding
+of the monomer units, including the removal of placeholder atoms and subsequent
+geometry optimization using force fields.</p>
 <p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymers.linear_polymer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example: Create a simple monomer with a placeholder atom (e.g., [Pt])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">monomer_smiles</span> <span class="o">=</span> <span class="s2">&quot;C([Pt])C&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">monomer</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">monomer_smiles</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Initialize Lp with the monomer, placeholder atom, number of copies, and shift</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">linear_poly_builder</span> <span class="o">=</span> <span class="n">Lp</span><span class="p">(</span><span class="n">mol</span><span class="o">=</span><span class="n">monomer</span><span class="p">,</span> <span class="n">atom</span><span class="o">=</span><span class="s2">&quot;Pt&quot;</span><span class="p">,</span> <span class="n">n_copies</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Generate the linear polymer with MMFF force field</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">polymer_mol</span> <span class="o">=</span> <span class="n">linear_poly_builder</span><span class="o">.</span><span class="n">linear_polymer</span><span class="p">(</span><span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Polymer atoms: </span><span class="si">{</span><span class="n">polymer_mol</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Polymer bonds: </span><span class="si">{</span><span class="n">polymer_mol</span><span class="o">.</span><span class="n">GetNumBonds</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>RDKit package must be installed.</p>
+<p>The RDKit and OpenBabel Python packages must be installed for this class to function
+correctly. Ensure that any placeholder atoms used in the monomer SMILES
+(e.g., “[Pt]”) are consistent with the <cite>atom</cite> parameter.</p>
 </div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.atom">
@@ -179,18 +242,31 @@ coordinates.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.bond_conn">
 <span class="sig-name descname"><span class="pre">bond_conn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outmol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lp.bond_conn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.bond_conn" title="Link to this definition"></a></dt>
-<dd><p>Function to peruse the bonds and connections of place-hold
-atom within a super_monomer object.</p>
+<dd><p>Identifies and processes the bonding information related to the placeholder
+atom within the combined super-monomer structure (<cite>outmol</cite>).</p>
+<p>This method extracts information about the atoms that are bonded to the
+placeholder atom, which is crucial for forming new bonds between monomers
+and subsequently removing the placeholder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>outmol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p>
+<dd class="field-odd"><p><strong>outmol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The RDKit Mol object representing the partially formed polymer
+(combined super-monomer), containing the placeholder atoms.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>Tuple</strong> – A tuple of lists containing connections and
-neighbours of the place-holder atom.</p>
+<dd class="field-even"><p><p><strong>Tuple</strong> – A tuple containing two lists:
+- The first list (<cite>all_conn</cite>) contains tuples of atom indices</p>
+<blockquote>
+<div><p>that represent the connections to be made between the monomers
+after the placeholder atoms are removed.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>The second list (<cite>erase_br</cite>) contains the indices of the
+placeholder atoms that need to be removed from the molecule.</p></li>
+</ul>
+</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><cite>list</cite></p>
+<dd class="field-odd"><p>(list[tuple], list[int])</p>
 </dd>
 </dl>
 </dd></dl>
@@ -198,16 +274,20 @@ neighbours of the place-holder atom.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.copy_mol">
 <span class="sig-name descname"><span class="pre">copy_mol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lp.copy_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.copy_mol" title="Link to this definition"></a></dt>
-<dd><p>Function to replicate super_monomers.</p>
+<dd><p>Generates a list of identical RDKit molecular objects, each representing
+a copy of the initial monomer.</p>
+<p>Before replication, the conformer of the original molecule is canonicalized
+to ensure consistent orientation for all copies.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p>
+<dd class="field-odd"><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The RDKit Mol object (self.mol) that will be replicated.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>fragments</strong> – List of RDKit Mol objects</p>
+<dd class="field-even"><p><strong>fragments</strong> – A list containing <cite>n_copies</cite> identical RDKit Mol objects, each
+ready to be incorporated into the polymer chain.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><cite>list</cite></p>
+<dd class="field-odd"><p>list[rdkit.Chem.rdchem.Mol]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -215,23 +295,41 @@ neighbours of the place-holder atom.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.linear_polymer">
 <span class="sig-name descname"><span class="pre">linear_polymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">350</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rot_steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">125</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_att</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lp.linear_polymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.linear_polymer" title="Link to this definition"></a></dt>
-<dd><p>Function to create a linear polymer from a
-given super_monomer object.</p>
+<dd><p>Generates and optimizes the 3D structure of a linear polymer from the
+provided monomer unit.</p>
+<p>This is the main method for creating the final polymer. It first constructs
+a “proto-polymer” by combining monomers and forming initial bonds. Then,
+it can optionally remove any remaining placeholder atoms. Finally, it
+applies a specified force field to relax the geometry and performs
+rotor optimization to refine the polymer’s conformation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>force_field</strong> (<em>str</em>) – Selected Force-Field from RDKit options, i.e.,
-UFF, MMFF, or MMFF94.</p></li>
-<li><p><strong>relax_iterations</strong> (<em>int</em>) – The maximum number of iterations used for the FF.</p></li>
-<li><p><strong>rot_steps</strong> (<em>int</em>) – Number of steps for rotor optimization.</p></li>
-<li><p><strong>no_att</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, remove placeholder atoms. Defaults to True.</p></li>
+<li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the force field to use for geometry optimization.
+Accepted values are “MMFF”, “UFF”, or “MMFF94”. “MMFF” will
+automatically default to “MMFF94”. Defaults to “MMFF”.</p></li>
+<li><p><strong>relax_iterations</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of iterations to use during the force field
+relaxation step. A higher number generally leads to better
+minimization but takes longer. Defaults to 350.</p></li>
+<li><p><strong>rot_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of steps for rotor optimization, which involves
+optimizing dihedral angles to find low-energy conformers.
+Defaults to 125.</p></li>
+<li><p><strong>no_att</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <cite>True</cite>, any remaining placeholder atoms (as defined by <cite>self.atom</cite>)
+will be removed from the polymer structure before force field
+optimization. If <cite>False</cite>, placeholder atoms will be retained.
+Defaults to <cite>True</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>newMol_H</strong> – RDKit Mol object</p>
+<dd class="field-even"><p><strong>newMol_H</strong> – An OpenBabel Molecule object representing the optimized 3D structure
+of the linear polymer.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
+<dd class="field-odd"><p>openbabel.pybel.Molecule</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If an invalid <cite>force_field</cite> is provided or if <cite>relax_iterations</cite>
+    or <cite>rot_steps</cite> are not integers.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -239,10 +337,15 @@ UFF, MMFF, or MMFF94.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.max_dist_mol">
 <span class="sig-name descname"><span class="pre">max_dist_mol</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lp.max_dist_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.max_dist_mol" title="Link to this definition"></a></dt>
-<dd><p>Returns the maximum distance between atoms from an RDKit Mol Object.</p>
+<dd><p>Calculates and returns the maximum interatomic distance within the
+initial RDKit monomer molecule (<cite>self.mol</cite>).</p>
+<p>This distance is crucial for determining the appropriate spacing
+between repeated monomer units to avoid steric clashes during the
+initial polymer assembly.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>maximum value from a Molecule Bound Matrix</p>
+<dd class="field-odd"><p>The largest distance (in Ångstroms) found between any two atoms
+in the monomer’s conformational representation.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>np.float</p>
@@ -263,13 +366,19 @@ UFF, MMFF, or MMFF94.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.polimerisation">
 <span class="sig-name descname"><span class="pre">polimerisation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragments</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lp.polimerisation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.polimerisation" title="Link to this definition"></a></dt>
-<dd><p>Function to produce a polymer in a recursive manner.</p>
+<dd><p>Recursively combines a list of RDKit monomer fragments into a single
+linear polymer RDKit molecule.</p>
+<p>Each subsequent fragment is combined with the growing polymer chain,
+with a calculated X-axis offset to maintain linearity and avoid overlap.
+The atoms in the resulting molecule are then renumbered for canonical ordering.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>fragments</strong> (<em>list</em>) – A list of RDKit objects.</p>
+<dd class="field-odd"><p><strong>fragments</strong> (<em>list</em><em>[</em><em>rdkit.Chem.rdchem.Mol</em><em>]</em>) – A list of RDKit Mol objects, each representing a monomer unit
+to be joined to form the polymer.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>outmol</strong> – RDKit Mol object</p>
+<dd class="field-even"><p><strong>outmol</strong> – A single RDKit Mol object representing the combined linear polymer
+with all monomer units spatially arranged and canonically ordered.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
@@ -280,13 +389,17 @@ UFF, MMFF, or MMFF94.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.proto_polymer">
 <span class="sig-name descname"><span class="pre">proto_polymer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lp.proto_polymer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.proto_polymer" title="Link to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to create a linear polymer from a given</dt><dd><p>super_monomer object.</p>
-</dd>
-</dl>
+<dd><p>Constructs the initial “proto-polymer” by combining monomer units,
+forming new bonds, and removing the placeholder atoms.</p>
+<p>This method orchestrates the steps of copying monomers, spatially
+arranging them, identifying and creating new bonds between them,
+and finally removing the temporary placeholder atoms used for connection.
+Hydrogen atoms are also added to the resulting molecule.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>newMol_H</strong> – RDKit Mol object</p>
+<dd class="field-odd"><p><strong>newMol_H</strong> – A new RDKit Mol object representing the raw linear polymer structure,
+with placeholder atoms removed and new bonds formed, and explicit
+hydrogen atoms added with their coordinates.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>rdkit.Chem.rdchem.Mol</p>
@@ -302,13 +415,18 @@ UFF, MMFF, or MMFF94.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lp.x_shift">
 <span class="sig-name descname"><span class="pre">x_shift</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lp.x_shift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lp.x_shift" title="Link to this definition"></a></dt>
-<dd><p>Re-calibrate distance between monomers</p>
+<dd><p>Computes the refined X-axis translation value for positioning
+subsequent monomer units during polymer construction.</p>
+<p>This method adjusts the initial <cite>shift</cite> value based on the maximum
+distance between atoms in the monomer, aiming to create a more
+realistic and physically sound initial arrangement of the polymer chain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>shift_final</strong> – Value to translates the unit repetitions</p>
+<dd class="field-odd"><p><strong>shift_final</strong> – The calculated X-axis translation value (in Ångstroms) that will be
+applied to each repeating unit to properly space them in the linear polymer.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>‘float’</p>
+<dd class="field-even"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -319,7 +437,13 @@ UFF, MMFF, or MMFF94.</p></li>
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lpr">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.linear_polymer.</span></span><span class="sig-name descname"><span class="pre">Lpr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacements</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_repetitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">final_replacement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'*'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lpr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lpr" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Generates a recursive SMILES string with a stopping condition and a final replacement.</p>
+<p>Facilitates the generation of complex chemical structures by recursively
+substituting placeholders within a SMILES string, with a defined stopping
+condition and a final replacement for any remaining placeholders.</p>
+<p>This class is particularly useful for building polymeric or dendritic
+structures where a repeating unit needs to be expanded multiple times.
+It integrates with OpenBabel for 3D structure generation and force field
+optimization of the final molecule.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lpr.final_replacement">
 <span class="sig-name descname"><span class="pre">final_replacement</span></span><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lpr.final_replacement" title="Link to this definition"></a></dt>
@@ -328,10 +452,40 @@ UFF, MMFF, or MMFF94.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.linear_polymer.Lpr.generate_recursive_smiles">
 <span class="sig-name descname"><span class="pre">generate_recursive_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">350</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rot_steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">125</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/linear_polymer.html#Lpr.generate_recursive_smiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.linear_polymer.Lpr.generate_recursive_smiles" title="Link to this definition"></a></dt>
-<dd><p>Performs the recursive SMILES generation.</p>
+<dd><p>Executes the recursive SMILES generation process, followed by 3D structure
+generation and optimization using OpenBabel.</p>
+<p>The method iteratively substitutes placeholders in the SMILES string until
+either no more substitutions can be made or <cite>max_repetitions</cite> is reached.
+After generating the final SMILES string, it converts it to a 3D molecule,
+applies a force field for geometry relaxation, and performs rotor optimization.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A fully resolved SMILES string.</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the force field to use for geometry optimization.
+Accepted values are “MMFF”, “UFF”, or “MMFF94”. “MMFF” will
+automatically default to “MMFF94”. Defaults to “MMFF”.</p></li>
+<li><p><strong>relax_iterations</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of iterations to use during the force field
+relaxation step. A higher number generally leads to better
+minimization but takes longer. Defaults to 350.</p></li>
+<li><p><strong>rot_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of steps for rotor optimization, which involves
+optimizing dihedral angles to find low-energy conformers.
+Defaults to 125.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An OpenBabel Molecule object representing the optimized 3D structure
+of the generated molecule.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>openbabel.pybel.Molecule</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>KeyError</strong> – If a placeholder specified in the SMILES string is not found in the
+    <cite>replacements</cite> dictionary.</p></li>
+<li><p><strong>ValueError</strong> – If an invalid <cite>force_field</cite> is provided or if <cite>relax_iterations</cite>
+    or <cite>rot_steps</cite> are not integers.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -354,94 +508,71 @@ UFF, MMFF, or MMFF94.</p></li>
 </dd></dl>
 
 </section>
-<section id="module-pysoftk.linear_polymer.mol_conformer">
-<span id="pysoftk-linear-polymer-mol-conformer-module"></span><h2>pysoftk.linear_polymer.mol_conformer module<a class="headerlink" href="#module-pysoftk.linear_polymer.mol_conformer" title="Link to this heading"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="pysoftk.linear_polymer.mol_conformer.Mcon">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.mol_conformer.</span></span><span class="sig-name descname"><span class="pre">Mcon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_conf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/mol_conformer.html#Mcon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.mol_conformer.Mcon" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Calculates molecular conformers</p>
-<p class="rubric">Example</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This class requires RDKit to be installed.</p>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="pysoftk.linear_polymer.mol_conformer.Mcon.conformer">
-<span class="sig-name descname"><span class="pre">conformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/mol_conformer.html#Mcon.conformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.mol_conformer.Mcon.conformer" title="Link to this definition"></a></dt>
-<dd><p>Calculate a molecular conformer for a given molecule. If
-enabled the highest-energy conformer is returned.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>list of molecules</strong> – SDWriter Mol object</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>rdkit.Chem.Mol</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pysoftk.linear_polymer.mol_conformer.Mcon.mol">
-<span class="sig-name descname"><span class="pre">mol</span></span><a class="headerlink" href="#pysoftk.linear_polymer.mol_conformer.Mcon.mol" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pysoftk.linear_polymer.mol_conformer.Mcon.num_conf">
-<span class="sig-name descname"><span class="pre">num_conf</span></span><a class="headerlink" href="#pysoftk.linear_polymer.mol_conformer.Mcon.num_conf" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</section>
 <section id="module-pysoftk.linear_polymer.super_monomer">
 <span id="pysoftk-linear-polymer-super-monomer-module"></span><h2>pysoftk.linear_polymer.super_monomer module<a class="headerlink" href="#module-pysoftk.linear_polymer.super_monomer" title="Link to this heading"></a></h2>
+<p>Super Monomer Module.</p>
+<p>This module provides the <cite>Sm</cite> class, which handles the chemical linking
+of two RDKit molecules via a designated placeholder atom. It includes
+methods for full 3D monomer generation, as well as highly optimized 2D
+topological merging for ultra-large polymer assemblies.</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Emb">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.super_monomer.</span></span><span class="sig-name descname"><span class="pre">Emb</span></span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Emb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Emb" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.super_monomer.</span></span><span class="sig-name descname"><span class="pre">Sm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Sm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class created to use the ETKDGV3 method provided in RDKit for 3D Geometry embedding.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Emb.etkdgv3">
-<span class="sig-name descname"><span class="pre">etkdgv3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Emb.etkdgv3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Emb.etkdgv3" title="Link to this definition"></a></dt>
-<dd><p>Function to perform Geometry embedding.</p>
+<p>Class to create a new combined molecule (dimer/monomer) from two provided
+RDKit Mol objects by linking them at specified placeholder atoms.</p>
+<p>This class supports standard SMARTS-based reactions with 3D embedding,
+as well as ultra-fast direct 2D graph manipulation for large-scale
+polymerization algorithms.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.mol_1">
+<span class="sig-name descname"><span class="pre">mol_1</span></span><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.mol_1" title="Link to this definition"></a></dt>
+<dd><p>The first RDKit molecule object, containing the placeholder atom.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The resulting combined molecule as RDKit Mol Object.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>mol</strong> – The resulting embedded molecule as RDKit Mol Object.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
 </dd>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.mol_2">
+<span class="sig-name descname"><span class="pre">mol_2</span></span><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.mol_2" title="Link to this definition"></a></dt>
+<dd><p>The second RDKit molecule object, also containing the placeholder atom.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.linear_polymer.super_monomer.</span></span><span class="sig-name descname"><span class="pre">Sm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Sm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class to create a new combined molecule from two provided RDKit Mol objects.</p>
-<p class="rubric">Example</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This class requires RDKit to be installed.</p>
-</div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.atom">
 <span class="sig-name descname"><span class="pre">atom</span></span><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.atom" title="Link to this definition"></a></dt>
+<dd><p>The atomic symbol of the placeholder atom (e.g., ‘Br’, ‘At’, ‘X’)
+indicating the connection points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">atom</span></span><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.constructor">
-<span class="sig-name descname"><span class="pre">constructor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Sm.constructor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.constructor" title="Link to this definition"></a></dt>
-<dd><p>Function to combine two molecules using an atom placeholder.</p>
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.build_topology_only">
+<span class="sig-name descname"><span class="pre">build_topology_only</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Mol</span></span></span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Sm.build_topology_only"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.build_topology_only" title="Link to this definition"></a></dt>
+<dd><p>Highly optimized method to connect molecules via direct 2D graph manipulation.</p>
+<p>Bypasses the RDKit reaction engine and SMILES conversion, allowing
+instantaneous merging of large polymer chains. It strictly skips 3D
+embedding and Hydrogen addition to maintain O(1) performance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mol_4</strong> – The resulting combined molecule as RDKit Mol Object.</p>
+<dd class="field-odd"><p>The cleanly connected 2D RDKit Mol object.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>rdkit.Chem.rdchem.Mol</p>
@@ -449,23 +580,44 @@ enabled the highest-energy conformer is returned.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.constructor">
+<span class="sig-name descname"><span class="pre">constructor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Mol</span></span></span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Sm.constructor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.constructor" title="Link to this definition"></a></dt>
+<dd><p>Combines the two input molecules using a SMARTS-defined chemical reaction.</p>
+<p>The reaction replaces the placeholder atoms and joins the molecules.
+It converts the resulting products to SMILES and back to a Mol object
+to naturally sanitize and standardize the chemical graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The resulting combined molecule as an RDKit Mol object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>rdkit.Chem.rdchem.Mol</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the reaction fails to yield valid products or SMILES strings.</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.mol_1">
-<span class="sig-name descname"><span class="pre">mol_1</span></span><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.mol_1" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">mol_1</span></span><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.mol_2">
-<span class="sig-name descname"><span class="pre">mol_2</span></span><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.mol_2" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">mol_2</span></span><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.mon_to_poly">
-<span class="sig-name descname"><span class="pre">mon_to_poly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Sm.mon_to_poly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.mon_to_poly" title="Link to this definition"></a></dt>
-<dd><p>Function to create a RDKit Mol object to prepare for x-axis translation.</p>
+<span class="sig-name descname"><span class="pre">mon_to_poly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Mol</span></span></span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Sm.mon_to_poly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.mon_to_poly" title="Link to this definition"></a></dt>
+<dd><p>Prepares a single monomer unit by performing the chemical reaction,
+adding Hydrogens, assigning bond orders, and embedding into 3D space.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mol</strong> – The resulting combined molecule as RDKit Mol Object.</p>
+<dd class="field-odd"><p>The processed 3D RDKit Mol object, ready for legacy polymerization.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>rdkit.Chem.rdchem.Mol</p>
@@ -475,15 +627,16 @@ enabled the highest-energy conformer is returned.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.linear_polymer.super_monomer.Sm.monomer">
-<span class="sig-name descname"><span class="pre">monomer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Sm.monomer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.monomer" title="Link to this definition"></a></dt>
-<dd><p>Function to produce a single polymer unit as an RDKit Mol Object.</p>
+<span class="sig-name descname"><span class="pre">monomer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Mol</span></span></span><a class="reference internal" href="_modules/pysoftk/linear_polymer/super_monomer.html#Sm.monomer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.linear_polymer.super_monomer.Sm.monomer" title="Link to this definition"></a></dt>
+<dd><p>Produces the final capped monomer unit.</p>
+<p>This method generates the 3D monomer and dynamically replaces any
+unreacted terminal placeholder atoms with Hydrogen atoms.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><ul class="simple">
-<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>)</p></li>
-<li><p><em>The resulting combined molecule as RDKit Mol Object.</em></p></li>
-</ul>
-</p>
+<dd class="field-odd"><p>The final, Hydrogen-capped 3D monomer object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>rdkit.Chem.rdchem.Mol</p>
 </dd>
 </dl>
 </dd></dl>

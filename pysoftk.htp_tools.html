@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.htp_tools package &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -106,17 +106,35 @@
 <span id="pysoftk-htp-tools-calculator-htp-module"></span><h2>pysoftk.htp_tools.calculator_htp module<a class="headerlink" href="#module-pysoftk.htp_tools.calculator_htp" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pysoftk.htp_tools.calculator_htp.Htp">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.htp_tools.calculator_htp.</span></span><span class="sig-name descname"><span class="pre">Htp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ending</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/htp_tools/calculator_htp.html#Htp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.htp_tools.calculator_htp.</span></span><span class="sig-name descname"><span class="pre">Htp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xtb_command</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xtb'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.xyz'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/htp_tools/calculator_htp.html#Htp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="simple">
-<dt>Class enabling High-throughput calculations in different</dt><dd><p>created folders for provided molecules.</p>
+<p>Class enabling High-throughput quantum chemistry calculations using xtb.</p>
+<p>This class facilitates running xtb calculations (like geometry optimizations)
+on multiple molecular structures organized in subdirectories. It automatically
+scans a specified main directory for subdirectories, checks if each contains
+a single geometry file (‘.xyz’ by default), and then runs the requested xtb
+calculation method (GFN or GFN-FF) in parallel within each valid subdirectory.</p>
+<p>It intelligently locates the ‘xtb’ executable, either by searching the system’s
+PATH environment variable (common for Conda installations) or by using a
+direct path provided during initialization.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.htp_tools.calculator_htp.Htp.xtb_executable_path">
+<span class="sig-name descname"><span class="pre">xtb_executable_path</span></span><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.xtb_executable_path" title="Link to this definition"></a></dt>
+<dd><p>The absolute path to the ‘xtb’ executable that was found and verified
+during initialization. This path is used for all subsequent calculation calls.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pysoftk.htp_tools.calculator_htp.Htp.ending">
 <span class="sig-name descname"><span class="pre">ending</span></span><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.ending" title="Link to this definition"></a></dt>
-<dd><p>Extension of the molecular format used to perform a
-search within many directories.</p>
+<dd><p>The default file extension (e.g., ‘.xyz’) used when searching for geometry
+files within subdirectories. This can be customized during initialization
+but defaults to ‘.xyz’ as used by the primary methods.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
@@ -124,82 +142,43 @@ search within many directories.</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pysoftk.htp_tools.calculator_htp.Htp.xtb_path">
-<span class="sig-name descname"><span class="pre">xtb_path</span></span><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.xtb_path" title="Link to this definition"></a></dt>
-<dd><p>Path where the xtb executable is located.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>FileNotFoundError</strong> – During initialization (__init__) if the specified ‘xtb_command’ cannot be
+    found as an executable in the system PATH, nor resolved as a direct
+    valid file path.</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pysoftk.htp_tools.calculator_htp.Htp.xyz_geom">
-<span class="sig-name descname"><span class="pre">xyz_geom</span></span><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.xyz_geom" title="Link to this definition"></a></dt>
-<dd><p>Name of the supplied molecule in .xyz format</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pysoftk.htp_tools.calculator_htp.Htp.init_dir">
-<span class="sig-name descname"><span class="pre">init_dir</span></span><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.init_dir" title="Link to this definition"></a></dt>
-<dd><p>Path where the calculation is starting (optional)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pysoftk.htp_tools.calculator_htp.Htp.num_cores">
-<span class="sig-name descname"><span class="pre">num_cores</span></span><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.num_cores" title="Link to this definition"></a></dt>
-<dd><p>Number of cores which the GFN-XTB2 code
-will use.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int, optional</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pysoftk.htp_tools.calculator_htp.Htp.threshold">
-<span class="sig-name descname"><span class="pre">threshold</span></span><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.threshold" title="Link to this definition"></a></dt>
-<dd><p>Level of geometry optimization required
-as defined in GFN-XTB2 code.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str, optional</p>
-</dd>
-</dl>
-</dd></dl>
-
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This class requires tqdm, GFN-XTB and/or PYSCF semiempirical installation to be used.</p>
+<ul class="simple">
+<li><p>Requires the ‘tqdm’ library for progress bars (<cite>pip install tqdm</cite>).</p></li>
+<li><p>Requires a working installation of ‘xtb’ accessible either via the system
+PATH or by providing a direct path to the executable.</p></li>
+<li><p>Assumes a directory structure where each calculation is contained within
+its own subdirectory under a main directory, and each calculation
+subdirectory contains exactly one input geometry file with the expected
+ending (e.g., ‘molecule.xyz’).</p></li>
+</ul>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.htp_tools.calculator_htp.Htp.htp_xtb_ff">
-<span class="sig-name descname"><span class="pre">htp_xtb_ff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_xtb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_work</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cores</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'crude'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/htp_tools/calculator_htp.html#Htp.htp_xtb_ff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.htp_xtb_ff" title="Link to this definition"></a></dt>
-<dd><p>Function to perform a parallel concurrent calculation at the gfn-ff level of theory.</p>
+<span class="sig-name descname"><span class="pre">htp_xtb_ff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_work</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cores</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'crude'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/htp_tools/calculator_htp.html#Htp.htp_xtb_ff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.htp_xtb_ff" title="Link to this definition"></a></dt>
+<dd><p>Runs parallel GFN-FF optimizations on structures in subdirectories.</p>
+<p>This method orchestrates high-throughput GFN-FF calculations. It mirrors
+the functionality of <cite>htp_xtb_gfn</cite> but schedules <cite>xtb_ff</cite> tasks instead,
+utilizing the GFN-FF force field method in xtb.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path_xtb</strong> (<em>str</em>) – Path where the xtb executable is located.</p></li>
-<li><p><strong>max_work</strong> (<em>int</em>) – Number of maximum amount of workers in a concurrent job default is 1.</p></li>
-<li><p><strong>num_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of cores which the GFN-XTB2 code will use.</p></li>
-<li><p><strong>threshold</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of geometry optimization required as defined in GFN-XTB2 code.</p></li>
+<li><p><strong>directory</strong> (<em>str</em>) – Path to the main directory containing subdirectories for calculations.</p></li>
+<li><p><strong>max_work</strong> (<em>int</em>) – Maximum number of concurrent <cite>xtb</cite> processes (worker threads).</p></li>
+<li><p><strong>num_cores</strong> (<em>int</em>) – Number of CPU cores for <em>each individual</em> <cite>xtb</cite> GFN-FF process.</p></li>
+<li><p><strong>threshold</strong> (<em>str</em><em>, </em><em>optional</em>) – Optimization convergence threshold passed to <cite>xtb_ff</cite>. Defaults to “crude”.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A relaxed structure as produced by the GFN-XTB2 code.</p>
+<dd class="field-even"><p>Executes calculations and prints progress; does not return a value.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
@@ -209,19 +188,30 @@ as defined in GFN-XTB2 code.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.htp_tools.calculator_htp.Htp.htp_xtb_gfn">
-<span class="sig-name descname"><span class="pre">htp_xtb_gfn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_xtb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_work</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cores</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'crude'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/htp_tools/calculator_htp.html#Htp.htp_xtb_gfn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.htp_xtb_gfn" title="Link to this definition"></a></dt>
-<dd><p>Function to perform a parallel concurrent calculation at the gfn-xtb level of theory.</p>
+<span class="sig-name descname"><span class="pre">htp_xtb_gfn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_work</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cores</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'crude'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/htp_tools/calculator_htp.html#Htp.htp_xtb_gfn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.htp_xtb_gfn" title="Link to this definition"></a></dt>
+<dd><p>Runs parallel GFN-XTB optimizations on structures in subdirectories.</p>
+<p>This method orchestrates the high-throughput process. It scans the
+specified <cite>directory</cite> for immediate subdirectories. For each subdirectory
+that contains exactly one ‘.xyz’ file, it schedules an <cite>xtb_gfn</cite>
+calculation using a <cite>ThreadPoolExecutor</cite> for parallel execution.
+Progress is displayed using <cite>tqdm</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path_xtb</strong> (<em>str</em>) – Path where the xtb executable is located.</p></li>
-<li><p><strong>max_work</strong> (<em>int</em>) – Number of maximum amount of workers in a concurrent job default is 1.</p></li>
-<li><p><strong>num_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of cores which the GFN-XTB2 code will use.</p></li>
-<li><p><strong>threshold</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of geometry optimization required as defined in GFN-XTB2 code.</p></li>
+<li><p><strong>directory</strong> (<em>str</em>) – The path to the main directory. This directory should contain
+subdirectories, each holding one calculation setup (specifically,
+one ‘.xyz’ file).</p></li>
+<li><p><strong>max_work</strong> (<em>int</em>) – The maximum number of concurrent <cite>xtb</cite> processes to run in parallel.
+This corresponds to the number of worker threads in the pool.</p></li>
+<li><p><strong>num_cores</strong> (<em>int</em>) – The number of CPU cores allocated to <em>each individual</em> <cite>xtb</cite> process
+(passed via the <cite>–parallel</cite> flag to <cite>xtb_gfn</cite>).</p></li>
+<li><p><strong>threshold</strong> (<em>str</em><em>, </em><em>optional</em>) – The geometry optimization convergence threshold level passed down to
+each <cite>xtb_gfn</cite> call. Defaults to “crude”.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A relaxed structure as produced by the GFN-XTB2 code.</p>
+<dd class="field-even"><p>This method primarily executes side effects (running calculations,
+printing output, creating files) and does not return a value.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
@@ -231,47 +221,92 @@ as defined in GFN-XTB2 code.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.htp_tools.calculator_htp.Htp.xtb_ff">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xtb_ff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xtb_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_geom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/htp_tools/calculator_htp.html#Htp.xtb_ff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.xtb_ff" title="Link to this definition"></a></dt>
-<dd><p>Function invoking GFN-XTB Force-Field implementation for geometry optimization.</p>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xtb_ff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xtb_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/htp_tools/calculator_htp.html#Htp.xtb_ff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.xtb_ff" title="Link to this definition"></a></dt>
+<dd><p>Executes a single GFN-FF geometry optimization via subprocess.</p>
+<p>Similar to <cite>xtb_gfn</cite>, but performs a GFN-FF (force field) optimization
+by adding the <cite>–gfnff</cite> flag to the xtb command line. Output is
+redirected to ‘output_ff.log’ within the <cite>target_dir</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>xtb_path</strong> (<em>str</em>) – Path where the GFN-XTB2 executable is located</p></li>
-<li><p><strong>num_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of cores used by the GFN-XTB code.</p></li>
-<li><p><strong>threshold</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of geometry optimization required as defined in GFN-XTB2 code.</p></li>
-<li><p><strong>xyz_geom</strong> (<em>str</em>) – Provided geometry to be relaxed.</p></li>
-<li><p><strong>init_dir</strong> (<em>str</em>) – Root path directory where folders containing the structures are found.</p></li>
+<li><p><strong>xtb_path</strong> (<em>str</em>) – The absolute path to the verified xtb executable.</p></li>
+<li><p><strong>xyz_filename</strong> (<em>str</em>) – The filename (basename) of the input geometry file within <cite>target_dir</cite>.</p></li>
+<li><p><strong>target_dir</strong> (<em>str</em>) – The absolute path to the directory where the calculation should run (cwd).</p></li>
+<li><p><strong>num_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of processor cores for xtb (<cite>–parallel</cite>). Defaults to 1.</p></li>
+<li><p><strong>threshold</strong> (<em>str</em><em>, </em><em>optional</em>) – Convergence threshold for optimization (<cite>–opt</cite>). Defaults to “crude”.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>output</strong> – File name output.log containing the optimization process carried out by GFN-XTB2.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>str</em> – The absolute path to the output log file ‘output_ff.log’ within
+<cite>target_dir</cite>.</p></li>
+<li><p><em>Side Effects</em></p></li>
+<li><p><em>————</em></p></li>
+<li><ul>
+<li><p>Creates or overwrites the file “output_ff.log” in <cite>target_dir</cite>.</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>Runs an external <cite>xtb</cite> process with the <cite>–gfnff</cite> flag.</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>Prints warnings/errors similar to <cite>xtb_gfn</cite>.</p></li>
+</ul>
+</li>
+<li><p><em>- Appends error details to “output_ff.log” upon failure.</em></p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.htp_tools.calculator_htp.Htp.xtb_gfn">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xtb_gfn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xtb_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_geom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/htp_tools/calculator_htp.html#Htp.xtb_gfn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.xtb_gfn" title="Link to this definition"></a></dt>
-<dd><p>Function invoking GFN-XTB Force-Field implementation for geometry optimization.</p>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xtb_gfn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xtb_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/htp_tools/calculator_htp.html#Htp.xtb_gfn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.htp_tools.calculator_htp.Htp.xtb_gfn" title="Link to this definition"></a></dt>
+<dd><p>Executes a single GFN-XTB geometry optimization via subprocess.</p>
+<p>This static method is designed to be called as a target function, often
+in parallel (e.g., via ThreadPoolExecutor). It constructs and runs the
+xtb command line for a GFN-XTB optimization (<cite>–opt</cite>) within the specified
+<cite>target_dir</cite>. Output is redirected to ‘output.log’ within that directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>xtb_path</strong> (<em>str</em>) – Path where the GFN-XTB2 executable is located</p></li>
-<li><p><strong>num_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of cores which the GFN-XTB2 code will use.</p></li>
-<li><p><strong>threshold</strong> (<em>str</em><em>, </em><em>optional</em>) – Level of geometry optimization required as defined in
-GFN-XTB2 code.</p></li>
-<li><p><strong>xyz_geom</strong> (<em>str</em>) – Provided geometry to be relaxed.</p></li>
-<li><p><strong>init_dir</strong> (<em>str</em>) – Root path directory where folders containing the structures are found.</p></li>
+<li><p><strong>xtb_path</strong> (<em>str</em>) – The absolute path to the verified xtb executable.</p></li>
+<li><p><strong>xyz_filename</strong> (<em>str</em>) – The filename (basename, e.g., “molecule.xyz”) of the input geometry
+file. This file is expected to exist within <cite>target_dir</cite>.</p></li>
+<li><p><strong>target_dir</strong> (<em>str</em>) – The absolute path to the directory where the calculation should run.
+The xtb command will be executed with this directory as its current
+working directory (<cite>cwd</cite>).</p></li>
+<li><p><strong>num_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of processor cores the xtb calculation should use
+(<cite>–parallel</cite> flag). If None, defaults to 1.</p></li>
+<li><p><strong>threshold</strong> (<em>str</em><em>, </em><em>optional</em>) – The convergence threshold level for the geometry optimization
+(<cite>–opt</cite> flag value, e.g., “crude”, “normal”, “tight”). If None,
+defaults to “crude”.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>output</strong> – File name output.log containing the optimization process carried out by GFN-XTB2.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-even"><p><ul>
+<li><p><em>str</em> – The absolute path to the output log file created within <cite>target_dir</cite>
+(e.g., “/path/to/target_dir/output.log”).</p></li>
+<li><p><em>Side Effects</em></p></li>
+<li><p><em>————</em></p></li>
+<li><ul class="simple">
+<li><p>Creates or overwrites the file “output.log” in <cite>target_dir</cite>.</p></li>
+</ul>
+</li>
+<li><ul class="simple">
+<li><p>Runs an external <cite>xtb</cite> process.</p></li>
+</ul>
+</li>
+<li><ul class="simple">
+<li><p>Prints warning messages to standard output if the <cite>xtb</cite> process – returns a non-zero exit code or if a Python exception occurs during</p></li>
+</ul>
+<p>the subprocess execution.</p>
+</li>
+<li><p><em>- Appends error details (Python exception, stderr from xtb) to the</em> – “output.log” file upon failure.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>

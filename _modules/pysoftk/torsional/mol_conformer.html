@@ -1,0 +1,520 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pysoftk.torsional.mol_conformer &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PySoftK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/tutorials.html">Tutorials: Modelling Polymers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/tutorialspol.html">Tutorials: Analysis Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pysoftk</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PySoftK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pysoftk.torsional.mol_conformer</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pysoftk.torsional.mol_conformer</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">rdDistGeom</span> <span class="k">as</span> <span class="n">molDG</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">TorsionFingerprints</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.tools.utils_rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openbabel</span><span class="w"> </span><span class="kn">import</span> <span class="n">pybel</span><span class="p">,</span> <span class="n">openbabel</span> <span class="k">as</span> <span class="n">ob</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openbabel</span><span class="w"> </span><span class="kn">import</span> <span class="n">pybel</span><span class="p">,</span> <span class="n">openbabel</span> <span class="k">as</span> <span class="n">ob</span>
+
+<div class="viewcode-block" id="ConformerGenerator">
+<a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.mol_conformer.ConformerGenerator">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConformerGenerator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to generate and save molecular conformers using Open Babel.</span>
+<span class="sd">    Includes methods for genetic algorithm (GA) based conformer generation</span>
+<span class="sd">    (modified from the original &#39;generate_conformers&#39;),</span>
+<span class="sd">    diversity-based conformer generation (confab), and saving conformers</span>
+<span class="sd">    to separate files.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_conformers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">forcefield</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mmff94&quot;</span><span class="p">,</span> <span class="n">make3D_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">convergence</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the ConformerGenerator with default parameters for conformer generation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_num_conformers</span> <span class="o">=</span> <span class="n">num_conformers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_forcefield</span> <span class="o">=</span> <span class="n">forcefield</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_make3D_steps</span> <span class="o">=</span> <span class="n">make3D_steps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_convergence</span> <span class="o">=</span> <span class="n">convergence</span>
+
+<div class="viewcode-block" id="ConformerGenerator.ga_generate_conformers">
+<a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.mol_conformer.ConformerGenerator.ga_generate_conformers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ga_generate_conformers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                               <span class="n">smiles</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                               <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                               <span class="n">output_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;xyz&#39;</span><span class="p">,</span>
+                               <span class="n">base_filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                               <span class="n">num_conformers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                               <span class="n">forcefield</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                               <span class="n">make3D_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                               <span class="n">mutability</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+                               <span class="n">convergence</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                               <span class="n">num_children</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates conformers using Open Babel&#39;s weighted rotor search (GA).</span>
+<span class="sd">        Saves conformers to separate files in a specified directory.</span>
+<span class="sd">        Returns the number of generated conformers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_conformers</span> <span class="o">=</span> <span class="n">num_conformers</span> <span class="k">if</span> <span class="n">num_conformers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_num_conformers</span>
+        <span class="n">forcefield</span> <span class="o">=</span> <span class="n">forcefield</span> <span class="k">if</span> <span class="n">forcefield</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_forcefield</span>
+        <span class="n">make3D_steps</span> <span class="o">=</span> <span class="n">make3D_steps</span> <span class="k">if</span> <span class="n">make3D_steps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_make3D_steps</span>
+        <span class="n">convergence</span> <span class="o">=</span> <span class="n">convergence</span> <span class="k">if</span> <span class="n">convergence</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_convergence</span>
+
+        <span class="k">if</span> <span class="n">num_conformers</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of conformers (num_conformers) must be at least 1.&quot;</span><span class="p">)</span>
+
+        <span class="n">molecule</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">input_file</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">input_file</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input file not found: </span><span class="si">{</span><span class="n">input_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">molecule</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">pybel</span><span class="o">.</span><span class="n">readfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">input_file</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:],</span> <span class="n">input_file</span><span class="p">))</span>
+                <span class="n">base_name</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">input_file</span><span class="p">))</span>
+                <span class="n">molecule</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">base_name</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded molecule from: </span><span class="si">{</span><span class="n">input_file</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">molecule</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading input file &#39;</span><span class="si">{</span><span class="n">input_file</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+                <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">smiles</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">molecule</span> <span class="o">=</span> <span class="n">pybel</span><span class="o">.</span><span class="n">readstring</span><span class="p">(</span><span class="s2">&quot;smi&quot;</span><span class="p">,</span> <span class="n">smiles</span><span class="p">)</span>
+                <span class="n">molecule</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Untitled&quot;</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded molecule from SMILES: </span><span class="si">{</span><span class="n">smiles</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading SMILES string &#39;</span><span class="si">{</span><span class="n">smiles</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+                <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either &#39;input_file&#39; or &#39;smiles&#39; must be provided.&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">molecule</span><span class="o">.</span><span class="n">addh</span><span class="p">()</span>
+            <span class="n">molecule</span><span class="o">.</span><span class="n">make3D</span><span class="p">(</span><span class="n">forcefield</span><span class="o">=</span><span class="n">forcefield</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="n">make3D_steps</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">molecule</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">Has3D</span><span class="p">():</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: Failed to generate 3D coordinates for molecule. Check your SMILES or force field.&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+                <span class="k">return</span> <span class="mi">0</span>
+            
+            <span class="n">ff</span> <span class="o">=</span> <span class="n">pybel</span><span class="o">.</span><span class="n">_forcefields</span><span class="p">[</span><span class="n">forcefield</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ff</span><span class="o">.</span><span class="n">Setup</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">OBMol</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: Force field &#39;</span><span class="si">{</span><span class="n">forcefield</span><span class="si">}</span><span class="s2">&#39; setup failed on the molecule. This can cause the conformer search to fail.&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+                <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error during molecule preparation (3D coords or FF setup): </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="n">mol_clone</span> <span class="o">=</span> <span class="n">pybel</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">OBMol</span><span class="p">)</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="n">num_children</span> <span class="k">if</span> <span class="n">num_children</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">num_conformers</span> <span class="o">*</span> <span class="mi">2</span>
+        <span class="n">cs</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">OBConformerSearch</span><span class="p">()</span>
+        
+        <span class="n">setup_successful</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">Setup</span><span class="p">(</span><span class="n">mol_clone</span><span class="o">.</span><span class="n">OBMol</span><span class="p">,</span>
+                                     <span class="n">num_conformers</span><span class="p">,</span>
+                                     <span class="n">children</span><span class="p">,</span>
+                                     <span class="n">mutability</span><span class="p">,</span>
+                                     <span class="n">convergence</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">setup_successful</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: OBConformerSearch setup failed for molecule: </span><span class="si">{</span><span class="n">molecule</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">. This is likely due to the molecule having no rotatable bonds or an invalid state.&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting GA conformer search for </span><span class="si">{</span><span class="n">molecule</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">Search</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GA conformer search finished.&quot;</span><span class="p">)</span>
+        <span class="n">cs</span><span class="o">.</span><span class="n">GetConformers</span><span class="p">(</span><span class="n">mol_clone</span><span class="o">.</span><span class="n">OBMol</span><span class="p">)</span>
+        <span class="n">actual_conformers</span> <span class="o">=</span> <span class="n">mol_clone</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">NumConformers</span><span class="p">()</span>
+        
+        <span class="c1"># --- NEW LOGIC: Call the helper method to save to separate files ---</span>
+        <span class="k">if</span> <span class="n">actual_conformers</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="n">base_filename</span> <span class="k">if</span> <span class="n">base_filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;molecule&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_conformers_to_separate_files</span><span class="p">(</span><span class="n">mol_clone</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">output_format</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully generated and saved </span><span class="si">{</span><span class="n">actual_conformers</span><span class="si">}</span><span class="s2"> conformers.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">actual_conformers</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No conformers found.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+        <span class="c1"># --- END OF NEW LOGIC ---</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_conformers_to_separate_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule_with_conformers</span><span class="p">:</span> <span class="n">pybel</span><span class="o">.</span><span class="n">Molecule</span><span class="p">,</span>
+                                          <span class="n">base_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                          <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                                          <span class="n">file_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Splits a pybel.Molecule object containing multiple conformers into</span>
+<span class="sd">        separate files, one for each conformer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">molecule_with_conformers</span> <span class="ow">or</span> <span class="n">molecule_with_conformers</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">NumConformers</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No conformers found in the input molecule, nothing to save.&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">num_found</span> <span class="o">=</span> <span class="n">molecule_with_conformers</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">NumConformers</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Saving </span><span class="si">{</span><span class="n">num_found</span><span class="si">}</span><span class="s2"> conformers for </span><span class="si">{</span><span class="n">molecule_with_conformers</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2"> to separate files.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">output_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">output_dir</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_name</span><span class="si">}</span><span class="s2">_conformers&quot;</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving individual conformers into directory: &#39;</span><span class="si">{</span><span class="n">output_dir</span><span class="si">}</span><span class="s2">/&#39;&quot;</span><span class="p">)</span>
+
+        <span class="n">padding</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">num_found</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_found</span><span class="p">):</span>
+            <span class="n">molecule_with_conformers</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">SetConformer</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">single_conformer_mol</span> <span class="o">=</span> <span class="n">pybel</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="n">molecule_with_conformers</span><span class="o">.</span><span class="n">OBMol</span><span class="p">)</span>
+            <span class="n">single_conformer_mol</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">molecule_with_conformers</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">_conformer_</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">output_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">output_dir</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_name</span><span class="si">}</span><span class="s2">_conf_</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="n">padding</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">file_format</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">single_conformer_mol</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">file_format</span><span class="p">,</span> <span class="n">output_filename</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Saved: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">output_filename</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Error saving conformer </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> to file &#39;</span><span class="si">{</span><span class="n">output_filename</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Finished saving all conformers to separate files.&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ConformerGenerator.confab_generate_conformers">
+<a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.mol_conformer.ConformerGenerator.confab_generate_conformers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">confab_generate_conformers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule_input</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                       <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                       <span class="n">output_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;xyz&#39;</span><span class="p">,</span>
+                                       <span class="n">base_filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                                       <span class="n">forcefield</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                                       <span class="n">nconfs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span>
+                                       <span class="n">rmsd</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+                                       <span class="n">energy_gap</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">50.0</span><span class="p">,</span>
+                                       <span class="n">initial_opt_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+                                       <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates diverse conformers using a method similar to Confab.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            molecule_input: A SMILES string representing the molecule.</span>
+<span class="sd">            output_dir: The directory to save the generated conformers.</span>
+<span class="sd">            output_format: The file format for saving (default: &#39;xyz&#39;).</span>
+<span class="sd">            base_filename: The base name for the output files.</span>
+<span class="sd">            forcefield: The force field to use for initial 3D generation (default: initialized value).</span>
+<span class="sd">            nconfs: The maximum number of diverse conformers to generate (default: 10000).</span>
+<span class="sd">            rmsd: The RMSD threshold for considering conformers as distinct (default: 0.5).</span>
+<span class="sd">            energy_gap: The energy window (in kJ/mol) to consider for diverse conformers (default: 50.0).</span>
+<span class="sd">            initial_opt_steps: The number of optimization steps for the initial 3D structure (default: 50).</span>
+<span class="sd">            verbose: A boolean to control the verbosity (default: False).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The number of conformers successfully generated and saved.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">forcefield</span> <span class="o">=</span> <span class="n">forcefield</span> <span class="k">if</span> <span class="n">forcefield</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_forcefield</span>
+
+        <span class="n">mol</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">mol</span> <span class="o">=</span> <span class="n">pybel</span><span class="o">.</span><span class="n">readstring</span><span class="p">(</span><span class="s2">&quot;smi&quot;</span><span class="p">,</span> <span class="n">molecule_input</span><span class="p">)</span>
+            <span class="n">mol</span><span class="o">.</span><span class="n">addh</span><span class="p">()</span>
+            <span class="n">mol</span><span class="o">.</span><span class="n">make3D</span><span class="p">(</span><span class="n">forcefield</span><span class="o">=</span><span class="n">forcefield</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="n">initial_opt_steps</span><span class="p">)</span>
+            <span class="n">ff</span> <span class="o">=</span> <span class="n">pybel</span><span class="o">.</span><span class="n">_forcefields</span><span class="p">[</span><span class="n">forcefield</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ff</span><span class="o">.</span><span class="n">Setup</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: Force field &#39;</span><span class="si">{</span><span class="n">forcefield</span><span class="si">}</span><span class="s2">&#39; setup failed.&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="mi">0</span>
+            <span class="n">ff</span><span class="o">.</span><span class="n">DiverseConfGen</span><span class="p">(</span><span class="n">rmsd</span><span class="p">,</span> <span class="n">nconfs</span><span class="p">,</span> <span class="n">energy_gap</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+            <span class="n">ff</span><span class="o">.</span><span class="n">GetConformers</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="p">)</span>
+            <span class="n">num_conformers</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">NumConformers</span><span class="p">()</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="n">base_filename</span> <span class="k">if</span> <span class="n">base_filename</span> <span class="k">else</span> <span class="s2">&quot;molecule&quot;</span>
+
+            <span class="c1"># Use the save_conformers_to_separate_files method</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_conformers_to_separate_files</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">output_format</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully generated and saved </span><span class="si">{</span><span class="n">num_conformers</span><span class="si">}</span><span class="s2"> conformers.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">num_conformers</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;An unexpected error occurred: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="ConformerGenerator.save_conformers_to_separate_files">
+<a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.mol_conformer.ConformerGenerator.save_conformers_to_separate_files">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_conformers_to_separate_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule_with_conformers</span><span class="p">:</span> <span class="n">pybel</span><span class="o">.</span><span class="n">Molecule</span><span class="p">,</span>
+                                               <span class="n">base_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                               <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                                               <span class="n">file_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;xyz&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Splits a pybel.Molecule object containing multiple conformers into</span>
+<span class="sd">        separate files, one for each conformer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            molecule_with_conformers: A pybel.Molecule object that contains</span>
+<span class="sd">                                      multiple conformers (e.g., the output</span>
+<span class="sd">                                      from generate_conformers()).</span>
+<span class="sd">            base_name: The base name to use for the output filenames</span>
+<span class="sd">                       (e.g., &quot;propanol&quot;).</span>
+<span class="sd">            output_dir: The directory where the individual conformer files</span>
+<span class="sd">                        will be saved. If None, a directory named</span>
+<span class="sd">                        &quot;{base_name}_conformers&quot; will be created in the</span>
+<span class="sd">                        current working directory (default: None).</span>
+<span class="sd">            file_format: The file format to use for saving the conformers</span>
+<span class="sd">                         (default: &quot;xyz&quot;). Common options include &quot;mol&quot;, &quot;pdb&quot;, &quot;xyz&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">molecule_with_conformers</span> <span class="ow">or</span> <span class="n">molecule_with_conformers</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">NumConformers</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No conformers found in the input molecule, nothing to save.&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">num_found</span> <span class="o">=</span> <span class="n">molecule_with_conformers</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">NumConformers</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Saving </span><span class="si">{</span><span class="n">num_found</span><span class="si">}</span><span class="s2"> conformers for </span><span class="si">{</span><span class="n">molecule_with_conformers</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2"> to separate files.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Determine the output directory</span>
+        <span class="k">if</span> <span class="n">output_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">output_dir</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_name</span><span class="si">}</span><span class="s2">_conformers&quot;</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving individual conformers into directory: &#39;</span><span class="si">{</span><span class="n">output_dir</span><span class="si">}</span><span class="s2">/&#39;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Determine padding for filenames</span>
+        <span class="n">padding</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">num_found</span><span class="p">))</span>
+
+        <span class="c1"># Loop through each found conformer index</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_found</span><span class="p">):</span>
+            <span class="c1"># Set the molecule&#39;s coordinates to the i-th conformer</span>
+            <span class="n">molecule_with_conformers</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">SetConformer</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+            <span class="c1"># Create a *new* molecule object containing ONLY the current conformer</span>
+            <span class="n">single_conformer_mol</span> <span class="o">=</span> <span class="n">pybel</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="n">molecule_with_conformers</span><span class="o">.</span><span class="n">OBMol</span><span class="p">)</span>
+
+            <span class="c1"># Optional: Set a unique title for the individual conformer file</span>
+            <span class="n">single_conformer_mol</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">molecule_with_conformers</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">_conformer_</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+
+            <span class="c1"># Define the output filename</span>
+            <span class="n">output_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">output_dir</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_name</span><span class="si">}</span><span class="s2">_conf_</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="n">padding</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">file_format</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Save the single-conformer molecule to its own file</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">single_conformer_mol</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">file_format</span><span class="p">,</span> <span class="n">output_filename</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Saved: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">output_filename</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Error saving conformer </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> to file &#39;</span><span class="si">{</span><span class="n">output_filename</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Finished saving all conformers to separate files.&quot;</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="Mcon">
+<a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.mol_conformer.Mcon">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Mcon</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class designed to **generate and manage molecular conformers** for a</span>
+<span class="sd">    given RDKit molecule.</span>
+
+<span class="sd">    This class provides functionality to compute a specified number of 3D</span>
+<span class="sd">    conformers (different spatial arrangements) for a molecule, leveraging</span>
+<span class="sd">    RDKit&#39;s conformer generation algorithms. The generated conformers,</span>
+<span class="sd">    along with their calculated energies, can then be saved to a common</span>
+<span class="sd">    chemical file format (SDF).</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from rdkit import Chem</span>
+<span class="sd">    &gt;&gt;&gt; from pysoftk.conformer.conformer import Mcon</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Create an RDKit molecule from a SMILES string</span>
+<span class="sd">    &gt;&gt;&gt; mol = Chem.MolFromSmiles(&quot;CCCC&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; mol = Chem.AddHs(mol) # Add hydrogens for more realistic conformers</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Initialize the Mcon class to compute 10 conformers</span>
+<span class="sd">    &gt;&gt;&gt; conformer_generator = Mcon(mol=mol, num_conf=10)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Generate and save the conformers to an SDF file</span>
+<span class="sd">    &gt;&gt;&gt; conformer_generator.conformer(output_name=&quot;butane_conformers&quot;)</span>
+<span class="sd">    Number of conformers created: 10</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    -----</span>
+<span class="sd">    This class **requires the RDKit package to be installed** in your Python</span>
+<span class="sd">    environment. The quality and diversity of the generated conformers</span>
+<span class="sd">    depend on the underlying RDKit algorithms and the complexity of the</span>
+<span class="sd">    molecule.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mol&#39;</span><span class="p">,</span> <span class="s1">&#39;num_conf&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">num_conf</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the `Mcon` class with the molecule for which conformers</span>
+<span class="sd">        are to be generated and the desired number of conformers.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mol : rdkit.Chem.rdchem.Mol</span>
+<span class="sd">            The **RDKit Mol object** representing the molecule for which</span>
+<span class="sd">            conformers will be calculated. It&#39;s often beneficial to add</span>
+<span class="sd">            hydrogens to the molecule (`Chem.AddHs(mol)`) before passing</span>
+<span class="sd">            it to this class for more accurate conformer generation.</span>
+
+<span class="sd">        num_conf : int</span>
+<span class="sd">            The **total number of conformers** requested to be computed</span>
+<span class="sd">            for the provided molecule. The actual number of conformers</span>
+<span class="sd">            generated might be less if the algorithm cannot find the</span>
+<span class="sd">            requested amount within its internal limits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">mol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_conf</span> <span class="o">=</span> <span class="n">num_conf</span>
+
+<div class="viewcode-block" id="Mcon.conformer">
+<a class="viewcode-back" href="../../../pysoftk.torsional.html#pysoftk.torsional.mol_conformer.Mcon.conformer">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">conformer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates molecular conformers for the initialized molecule using</span>
+<span class="sd">        RDKit&#39;s ETKDGv3 algorithm and saves them to an SDF (Structure-Data File)</span>
+<span class="sd">        file.</span>
+
+<span class="sd">        This method orchestrates the conformer generation process, including</span>
+<span class="sd">        the calculation of energies for each conformer. It then writes</span>
+<span class="sd">        all generated conformers into a single SDF file, making them</span>
+<span class="sd">        accessible for further analysis or visualization. By default, it returns</span>
+<span class="sd">        all generated conformers, including the highest-energy ones, allowing</span>
+<span class="sd">        for a comprehensive conformational analysis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        output_name : str</span>
+<span class="sd">            The **base name** for the output SDF file. The file will be saved</span>
+<span class="sd">            as `&lt;output_name&gt;.sdf` in the current working directory.</span>
+
+<span class="sd">        Return</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of rdkit.Chem.Mol objects</span>
+<span class="sd">            This function doesn&#39;t explicitly return a list of molecules directly.</span>
+<span class="sd">            Instead, it **writes the conformers to an SDF file**.</span>
+<span class="sd">            The SDF file contains all generated conformers as separate entries,</span>
+<span class="sd">            each representing an `rdkit.Chem.Mol` object with 3D coordinates.</span>
+<span class="sd">            A message indicating the number of created conformers is printed</span>
+<span class="sd">            to the console.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
+        <span class="n">num_conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_conf</span>
+
+        <span class="n">mol</span><span class="p">,</span> <span class="n">cids</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="n">etkdgv3_energies</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">num_conf</span><span class="p">)</span>
+
+        <span class="n">full_name</span> <span class="o">=</span> <span class="p">[</span><span class="n">output_name</span><span class="p">,</span> <span class="s2">&quot;.sdf&quot;</span><span class="p">]</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">AllChem</span><span class="o">.</span><span class="n">SDWriter</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">full_name</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">cid</span> <span class="ow">in</span> <span class="n">cids</span><span class="p">:</span>
+            <span class="n">w</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">confId</span><span class="o">=</span><span class="n">cid</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of conformers created: </span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cids</span><span class="p">)))</span></div>
+</div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, Rob Ziolek, and Chris Lorenz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

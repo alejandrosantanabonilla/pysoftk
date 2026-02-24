@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.linear_polymer.calculators &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
@@ -85,51 +85,77 @@
 <div class="viewcode-block" id="Opt">
 <a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Opt">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Opt</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Geometrical optimization tools using GFN-XTB2 and PySCF as engines.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides tools for performing **geometrical optimizations** of molecular structures.</span>
+<span class="sd">    This class leverages external computational chemistry engines, specifically</span>
+<span class="sd">    **GFN-XTB2** and **PySCF** (with its semiempirical implementations), to minimize</span>
+<span class="sd">    the energy of a given molecular geometry.</span>
 
+<span class="sd">    The primary use case for this class is to find stable 3D conformations of molecules</span>
+<span class="sd">    by iteratively adjusting atomic positions until a local energy minimum is reached.</span>
 
 <span class="sd">    Note</span>
 <span class="sd">    -----</span>
-
-<span class="sd">    This class requires a GFN-XTB executable and/or a PYSCF semiempirical installation to be used.</span>
+<span class="sd">    Successful execution of the optimization methods within this class requires</span>
+<span class="sd">    the prior installation and correct configuration of the chosen computational</span>
+<span class="sd">    engine:</span>
+<span class="sd">    * **GFN-XTB**: The `xtb` executable must be accessible in your system&#39;s PATH.</span>
+<span class="sd">        You can typically install it via conda or by compiling from source.</span>
+<span class="sd">    * **PySCF Semiempirical**: The `pyscf` Python package, including its</span>
+<span class="sd">        semiempirical modules, must be installed in your Python environment.</span>
+<span class="sd">        Installation is usually done via pip (`pip install pyscf`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz_file</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up cartesian coordinates</span>
-<span class="sd">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the `Opt` class by setting the path to the input</span>
+<span class="sd">        Cartesian coordinate file. This file serves as the starting</span>
+<span class="sd">        geometry for all subsequent optimization routines.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-
 <span class="sd">        xyz_file : str</span>
-<span class="sd">            Name of the external cartesian coordinate file used for geometry optimization. </span>
-
+<span class="sd">            The **name or path** of the external file containing the</span>
+<span class="sd">            Cartesian coordinates of the molecular structure to be optimized.</span>
+<span class="sd">            This file should typically be in the `.xyz` format.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="bp">self</span><span class="o">.</span><span class="n">xyz_file</span> <span class="o">=</span> <span class="n">xyz_file</span>
 
 <div class="viewcode-block" id="Opt.pyscf_semi">
 <a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Opt.pyscf_semi">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">pyscf_semi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function invoking PYSCF semiempirical implementation for geometry optimization.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Performs a **geometry optimization** using the **PySCF semiempirical**</span>
+<span class="sd">        implementation, specifically the **MINDO/3** method.</span>
+
+<span class="sd">        This function sets up a PySCF molecular object from the provided XYZ file,</span>
+<span class="sd">        configures a semiempirical calculation, and then applies a geometry</span>
+<span class="sd">        optimization algorithm (Berny solver) to find the equilibrium structure.</span>
+<span class="sd">        The optimized coordinates are then printed to an XYZ file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-
 <span class="sd">        steps : int, optional</span>
-<span class="sd">           Number of steps which PYSCF code will perform the optimization routine.</span>
+<span class="sd">            The **maximum number of steps** the PySCF optimization routine</span>
+<span class="sd">            will attempt to converge the geometry. The optimization may</span>
+<span class="sd">            terminate earlier if convergence criteria are met.</span>
 
-
-<span class="sd">        Return</span>
+<span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-
-<span class="sd">        None :</span>
-<span class="sd">            Print the file pyscf_final.xyz reporting </span>
-<span class="sd">            the results from a PYSCF calculation.</span>
+<span class="sd">        None</span>
+<span class="sd">            This method does not return any value. Instead, it **generates an output file**</span>
+<span class="sd">            named `pyscf_final.xyz` in the current working directory, which</span>
+<span class="sd">            contains the optimized Cartesian coordinates of the molecule.</span>
+<span class="sd">            A confirmation message will be printed to the console upon successful</span>
+<span class="sd">            file creation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="kn">import</span><span class="w"> </span><span class="nn">pyscf</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">pyscf</span><span class="w"> </span><span class="kn">import</span> <span class="n">gto</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">pyscf</span><span class="w"> </span><span class="kn">import</span> <span class="n">semiempirical</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">pyscf.geomopt.berny_solver</span><span class="w"> </span><span class="kn">import</span> <span class="n">optimize</span>
-    
+
         <span class="n">mol</span><span class="o">=</span><span class="n">gto</span><span class="o">.</span><span class="n">M</span><span class="p">(</span><span class="n">atom</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz_file</span><span class="p">))</span>
         <span class="n">mf</span><span class="o">=</span><span class="n">semiempirical</span><span class="o">.</span><span class="n">RMINDO3</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
         <span class="n">mol_eq</span><span class="o">=</span><span class="n">optimize</span><span class="p">(</span><span class="n">mf</span><span class="p">,</span><span class="n">maxsteps</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">steps</span><span class="p">))</span>
@@ -140,44 +166,57 @@
 <div class="viewcode-block" id="Pyscf_print">
 <a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Pyscf_print">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Pyscf_print</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Print a PYSCF object into cartesian </span>
-<span class="sd">        coordinates.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A utility class designed to **convert and save** the results of a PySCF</span>
+<span class="sd">    geometry optimization into a standard **Cartesian coordinate (XYZ)** file format.</span>
+
+<span class="sd">    This class acts as a bridge between PySCF&#39;s internal molecular object</span>
+<span class="sd">    representation and a widely recognized format for molecular structures,</span>
+<span class="sd">    making the optimized geometries easily shareable and viewable with</span>
+<span class="sd">    molecular visualization software.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Pyscf_print.xyz">
 <a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.calculators.Pyscf_print.xyz">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to print a file with Cartesian coordinates from a PYSCF geometry optimization calculation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Writes the **optimized Cartesian coordinates** from a PySCF molecular</span>
+<span class="sd">        object to a new `.xyz` file named `pyscf_final.xyz`.</span>
+
+<span class="sd">        This function takes the atomic symbols and their optimized coordinates</span>
+<span class="sd">        from a PySCF `Mole` object, converts the coordinates from Bohr to Angstroms,</span>
+<span class="sd">        and formats them into the XYZ file standard.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">       </span>
 <span class="sd">        mol : pyscf.gto.mole.Mole</span>
-<span class="sd">            A PySCF gto mole Mole object.</span>
+<span class="sd">            A **PySCF `gto.Mole` object** containing the optimized molecular geometry,</span>
+<span class="sd">            typically obtained from a PySCF geometry optimization calculation.</span>
+<span class="sd">            This object holds information about atomic symbols and their Cartesian coordinates.</span>
 
-<span class="sd">        Return</span>
-<span class="sd">        ------</span>
-
-<span class="sd">        pysfc_final: str</span>
-<span class="sd">          An xyz file containing the optimized coordinates of the provided PYSCF Mole object.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">            This method does not return any value. It **creates a file** named</span>
+<span class="sd">            `pyscf_final.xyz` in the current working directory, which contains</span>
+<span class="sd">            the optimized molecular structure. A confirmation message</span>
+<span class="sd">            `&quot;File pyscf_final.xyz has been created.&quot;` is printed to standard output.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="n">bohr2angs</span><span class="o">=</span><span class="mf">0.529177</span>
         <span class="n">coords</span> <span class="o">=</span> <span class="n">bohr2angs</span><span class="o">*</span><span class="n">mol</span><span class="o">.</span><span class="n">atom_coords</span><span class="p">()</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;pyscf_final.xyz&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
-             <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">))))</span>
-             <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-             <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">atom</span><span class="p">)):</span>
-                 <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{:.8f}</span><span class="s1"> </span><span class="si">{:.8f}</span><span class="s1"> </span><span class="si">{:.8f}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">atom</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">))))</span>
+            <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">atom</span><span class="p">)):</span>
+                <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{:.8f}</span><span class="s1"> </span><span class="si">{:.8f}</span><span class="s1"> </span><span class="si">{:.8f}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">atom</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
                                                                  <span class="nb">float</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
                                                                  <span class="nb">float</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
                                                                  <span class="nb">float</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">])))</span>
-             <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;File pyscf_final.xyz has been created.&quot;</span><span class="p">)</span></div>
 </div>
-
-
-
 
 </pre></div>
 

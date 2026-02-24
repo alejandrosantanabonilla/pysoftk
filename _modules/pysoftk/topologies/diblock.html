@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.topologies.diblock &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
@@ -88,12 +88,11 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer</span><span class="w"> </span><span class="kn">import</span> <span class="n">linear_polymer</span> <span class="k">as</span> <span class="n">lp</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer</span><span class="w"> </span><span class="kn">import</span> <span class="n">super_monomer</span>  <span class="k">as</span> <span class="n">sm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.linear_polymer</span><span class="w"> </span><span class="kn">import</span> <span class="n">super_monomer</span> <span class="k">as</span> <span class="n">sm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.topologies.ring</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.tools.utils_rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.tools.utils_func</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.topologies.ring</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">openbabel</span><span class="w"> </span><span class="kn">import</span> <span class="n">openbabel</span> <span class="k">as</span> <span class="n">ob</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">openbabel</span><span class="w"> </span><span class="kn">import</span> <span class="n">pybel</span> <span class="k">as</span> <span class="n">pb</span>
@@ -101,205 +100,307 @@
 <div class="viewcode-block" id="Db">
 <a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.diblock.Db">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Db</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for creating a diblock copolymers from </span>
-<span class="sd">       given RDKit molecules.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class specifically designed for the **computational construction of diblock copolymers**</span>
+<span class="sd">    from two distinct RDKit molecular monomers (Block A and Block B).</span>
+
+<span class="sd">    This class provides a streamlined workflow to:</span>
+<span class="sd">    1. Generate individual polymer blocks (Block A and Block B) of specified lengths.</span>
+<span class="sd">    2. Concatenate these two blocks to form a single diblock copolymer structure.</span>
+<span class="sd">    3. Perform subsequent 3D embedding and force field optimization to obtain a stable</span>
+<span class="sd">       and chemically sensible molecular geometry.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    ---------</span>
+<span class="sd">    &gt;&gt;&gt; from rdkit import Chem</span>
+<span class="sd">    &gt;&gt;&gt; from pysoftk.linear_polymer.linear_polymer import Lp</span>
+<span class="sd">    &gt;&gt;&gt; from pysoftk.block_copolymers.diblock import Db</span>
+<span class="sd">    &gt;&gt;&gt; # Define monomer A and monomer B with placeholder atoms (e.g., [Pt])</span>
+<span class="sd">    &gt;&gt;&gt; monomer_A = Chem.MolFromSmiles(&quot;C([Pt])C&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; monomer_B = Chem.MolFromSmiles(&quot;CC([Pt])C&quot;)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Initialize the Db class with the two monomers and the placeholder atom</span>
+<span class="sd">    &gt;&gt;&gt; diblock_builder = Db(ma=monomer_A, mb=monomer_B, atom=&quot;Pt&quot;)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Create a diblock copolymer with 5 units of Block A and 3 units of Block B</span>
+<span class="sd">    &gt;&gt;&gt; final_diblock_mol = diblock_builder.diblock_copolymer(</span>
+<span class="sd">    ...     len_block_A=5, len_block_B=3, force_field=&quot;MMFF&quot;</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;Diblock copolymer atoms: {final_diblock_mol.GetNumAtoms()}&quot;)</span>
 
 <span class="sd">    Note</span>
 <span class="sd">    -----</span>
-
-<span class="sd">    RDKit package must be installed.</span>
+<span class="sd">    The **RDKit package must be installed** in your Python environment for this</span>
+<span class="sd">    class to function correctly. Ensure that the placeholder atom specified (e.g., &quot;Pt&quot;)</span>
+<span class="sd">    is consistently used in both monomer A and monomer B. This class relies on</span>
+<span class="sd">    functionalities from `pysoftk.linear_polymer` and `pysoftk.tools`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ma&#39;</span><span class="p">,</span> <span class="s1">&#39;mb&#39;</span><span class="p">,</span> <span class="s1">&#39;atom&#39;</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ma</span><span class="p">,</span> <span class="n">mb</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
-<span class="w">       </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">       Initialize this class.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the `Db` class by defining the two distinct monomer RDKit</span>
+<span class="sd">        molecules (monomer A and monomer B) and the common placeholder atom</span>
+<span class="sd">        used for linking them.</span>
 
-<span class="sd">       Parameters</span>
-<span class="sd">       -----------</span>
-
-<span class="sd">       ma : rdkit.Chem.rdchem.Mol</span>
-<span class="sd">            RDKit Mol object</span>
-
-<span class="sd">       mb : rdkit.Chem.rdchem.Mol</span>
-<span class="sd">            RDKit Mol object</span>
-<span class="sd"> </span>
-<span class="sd">       atom : str</span>
-<span class="sd">            The placeholder atom to combine the molecules </span>
-<span class="sd">            and form a new monomer</span>
-<span class="sd">       </span>
-<span class="sd">          </span>
-<span class="sd">       &quot;&quot;&quot;</span>
-       
-       <span class="bp">self</span><span class="o">.</span><span class="n">ma</span> <span class="o">=</span> <span class="n">ma</span>
-       <span class="bp">self</span><span class="o">.</span><span class="n">mb</span> <span class="o">=</span> <span class="n">mb</span>
-       <span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">atom</span> 
-
-       
-<div class="viewcode-block" id="Db.diblock_copolymer">
-<a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.diblock.Db.diblock_copolymer">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">diblock_copolymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">len_block_A</span><span class="p">,</span> <span class="n">len_block_B</span><span class="p">,</span>
-                             <span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to create a diblock copolymer </span>
-
+<span class="sd">        These input molecules serve as the fundamental repeating units for</span>
+<span class="sd">        the respective blocks within the diblock copolymer.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        -----------</span>
-<span class="sd">           </span>
-<span class="sd">        len_block_A: int </span>
-<span class="sd">            Length of the molecular block A</span>
+<span class="sd">        ma : rdkit.Chem.rdchem.Mol</span>
+<span class="sd">            The **RDKit Mol object** representing **monomer A**, which will</span>
+<span class="sd">            form the first block of the diblock copolymer. This molecule</span>
+<span class="sd">            must contain a designated placeholder atom.</span>
 
-<span class="sd">        len_block_B: int</span>
-<span class="sd">            Length of the molecular block B</span>
+<span class="sd">        mb : rdkit.Chem.rdchem.Mol</span>
+<span class="sd">            The **RDKit Mol object** representing **monomer B**, which will</span>
+<span class="sd">            form the second block of the diblock copolymer. This molecule</span>
+<span class="sd">            must also contain a designated placeholder atom.</span>
 
-<span class="sd">        force_field: str</span>
-<span class="sd">            Selected force field between MMFF or UFF</span>
+<span class="sd">        atom : str</span>
+<span class="sd">            The **atomic symbol** (e.g., &quot;Pt&quot;, &quot;Au&quot;) of the placeholder atom.</span>
+<span class="sd">            This specific atom type must be present in both `ma` and `mb`</span>
+<span class="sd">            and will be used to establish bonds during the polymerization</span>
+<span class="sd">            process, connecting individual monomers within each block and</span>
+<span class="sd">            then connecting Block A to Block B.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="sd">        relax_iterations: int  </span>
-<span class="sd">            Number of iterations used for relaxing a </span>
-<span class="sd">            molecular object.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ma</span> <span class="o">=</span> <span class="n">ma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mb</span> <span class="o">=</span> <span class="n">mb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">atom</span>
 
-<span class="sd">        rot_steps: int</span>
-<span class="sd">             Number of rotational steps for finding conformations.</span>
+<div class="viewcode-block" id="Db.diblock_copolymer">
+<a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.diblock.Db.diblock_copolymer">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">diblock_copolymer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">len_block_A</span><span class="p">,</span> <span class="n">len_block_B</span><span class="p">,</span>
+                          <span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructs a complete **diblock copolymer** by first synthesizing</span>
+<span class="sd">        Block A and Block B independently to specified lengths, and then</span>
+<span class="sd">        covalently linking them. The final copolymer undergoes 3D embedding</span>
+<span class="sd">        and force field optimization to generate a stable conformation.</span>
+
+<span class="sd">        This function orchestrates the entire diblock copolymer synthesis process,</span>
+<span class="sd">        from individual block formation to the final optimized structure.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -----------</span>
+<span class="sd">        len_block_A : int</span>
+<span class="sd">            The **desired number of monomer A units** that will comprise</span>
+<span class="sd">            the first block (Block A) of the diblock copolymer.</span>
+
+<span class="sd">        len_block_B : int</span>
+<span class="sd">            The **desired number of monomer B units** that will comprise</span>
+<span class="sd">            the second block (Block B) of the diblock copolymer.</span>
+
+<span class="sd">        force_field : str, optional</span>
+<span class="sd">            The **name of the force field** to apply during the geometry</span>
+<span class="sd">            optimization steps for both individual blocks and the final</span>
+<span class="sd">            diblock copolymer. Common choices include &quot;MMFF&quot; (which defaults</span>
+<span class="sd">            to MMFF94) or &quot;UFF&quot;. Defaults to &quot;MMFF&quot;.</span>
+
+<span class="sd">        relax_iterations : int, optional</span>
+<span class="sd">            The **maximum number of iterations** for the force field relaxation</span>
+<span class="sd">            algorithm. A higher value generally leads to better energy minimization</span>
+<span class="sd">            but increases computation time. This value is applied to the</span>
+<span class="sd">            optimization of both blocks and the final copolymer. Defaults to 100.</span>
+
+<span class="sd">        rot_steps : int, optional</span>
+<span class="sd">            The **number of rotational steps** to perform during conformational</span>
+<span class="sd">            searching. This helps in exploring different low-energy conformers</span>
+<span class="sd">            of the polymer. Defaults to 1.</span>
 
 <span class="sd">        Return</span>
 <span class="sd">        -------</span>
-
-<span class="sd">        diblock : rdkit.Chem.rdchem.Mol</span>
-<span class="sd">             RDKit Mol object</span>
+<span class="sd">        diblock : openbabel.pybel.Molecule</span>
+<span class="sd">            An **OpenBabel Pybel Molecule object** representing the</span>
+<span class="sd">            fully constructed and geometry-optimized diblock copolymer.</span>
+<span class="sd">            This object contains the 3D coordinates and bonding information</span>
+<span class="sd">            of the final polymer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">ma</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ma</span>
-        <span class="n">mb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mb</span>
-        <span class="n">atom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span>
+        <span class="n">ma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ma</span>
+        <span class="n">mb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mb</span>
+        <span class="n">atom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom</span>
 
-        <span class="n">string_1</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="o">*</span><span class="n">len_block_A</span>
-        <span class="n">monomer</span><span class="o">=</span><span class="n">Pt</span><span class="p">(</span><span class="n">string_1</span><span class="p">,</span> <span class="p">[</span><span class="n">ma</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span><span class="o">.</span><span class="n">pattern_block_poly</span><span class="p">(</span><span class="n">relax_iterations</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">force_field</span><span class="p">),</span> <span class="n">swap_H</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        
+        <span class="n">string_1</span> <span class="o">=</span> <span class="s1">&#39;A&#39;</span> <span class="o">*</span> <span class="n">len_block_A</span>
+        <span class="n">monomer</span> <span class="o">=</span> <span class="n">Pt</span><span class="p">(</span><span class="n">string_1</span><span class="p">,</span> <span class="p">[</span><span class="n">ma</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span><span class="o">.</span><span class="n">pattern_block_poly</span><span class="p">(</span><span class="n">relax_iterations</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">force_field</span><span class="p">),</span> <span class="n">swap_H</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="n">string_2</span><span class="o">=</span><span class="s1">&#39;B&#39;</span><span class="o">*</span><span class="n">len_block_B</span>
-        <span class="n">monomer2</span><span class="o">=</span><span class="n">Pt</span><span class="p">(</span><span class="n">string_2</span><span class="p">,</span> <span class="p">[</span><span class="n">mb</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span><span class="o">.</span><span class="n">pattern_block_poly</span><span class="p">(</span><span class="n">relax_iterations</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">force_field</span><span class="p">),</span> <span class="n">swap_H</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="n">mon_temp</span><span class="o">=</span><span class="n">monomer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;mol&quot;</span><span class="p">)</span>
-        <span class="n">mon2_temp</span><span class="o">=</span><span class="n">monomer2</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;mol&quot;</span><span class="p">)</span>
+        <span class="n">string_2</span> <span class="o">=</span> <span class="s1">&#39;B&#39;</span> <span class="o">*</span> <span class="n">len_block_B</span>
+        <span class="n">monomer2</span> <span class="o">=</span> <span class="n">Pt</span><span class="p">(</span><span class="n">string_2</span><span class="p">,</span> <span class="p">[</span><span class="n">mb</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span><span class="o">.</span><span class="n">pattern_block_poly</span><span class="p">(</span><span class="n">relax_iterations</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">force_field</span><span class="p">),</span> <span class="n">swap_H</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="n">mon</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromMolBlock</span><span class="p">(</span><span class="n">mon_temp</span><span class="p">)</span>
-        <span class="n">mon2</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromMolBlock</span><span class="p">(</span><span class="n">mon2_temp</span><span class="p">)</span>
-        
-        <span class="n">diblock</span><span class="o">=</span><span class="n">sm</span><span class="o">.</span><span class="n">Sm</span><span class="p">(</span><span class="n">mon</span><span class="p">,</span> <span class="n">mon2</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span><span class="o">.</span><span class="n">monomer</span><span class="p">()</span>
+        <span class="n">mon_temp</span> <span class="o">=</span> <span class="n">monomer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;mol&quot;</span><span class="p">)</span>
+        <span class="n">mon2_temp</span> <span class="o">=</span> <span class="n">monomer2</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;mol&quot;</span><span class="p">)</span>
 
-        <span class="n">last_mol</span><span class="o">=</span><span class="n">check_proto</span><span class="p">(</span><span class="n">diblock</span><span class="p">,</span> <span class="n">force_field</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">,</span> <span class="n">rot_steps</span><span class="p">)</span>
-            
+        <span class="n">mon</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromMolBlock</span><span class="p">(</span><span class="n">mon_temp</span><span class="p">)</span>
+        <span class="n">mon2</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromMolBlock</span><span class="p">(</span><span class="n">mon2_temp</span><span class="p">)</span>
+
+        <span class="n">diblock</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Sm</span><span class="p">(</span><span class="n">mon</span><span class="p">,</span> <span class="n">mon2</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span><span class="o">.</span><span class="n">monomer</span><span class="p">()</span>
+
+        <span class="n">last_mol</span> <span class="o">=</span> <span class="n">check_proto</span><span class="p">(</span><span class="n">diblock</span><span class="p">,</span> <span class="n">force_field</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">,</span> <span class="n">rot_steps</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">last_mol</span></div>
 </div>
-
 
 
 <div class="viewcode-block" id="Pt">
 <a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.diblock.Pt">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Pt</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for creating a Patterned polymers from a list of RDKit molecules.</span>
-<span class="sd">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A versatile class for creating **patterned polymers** based on a</span>
+<span class="sd">    user-defined sequence of RDKit molecular building blocks.</span>
+
+<span class="sd">    This class enables the construction of complex copolymers by</span>
+<span class="sd">    allowing a specific sequence (pattern) of different monomers to be</span>
+<span class="sd">    arranged into a linear chain. It supports 3D embedding and force field</span>
+<span class="sd">    optimization of the resulting polymer.</span>
+
 <span class="sd">    Examples</span>
 <span class="sd">    ---------</span>
+<span class="sd">    &gt;&gt;&gt; from rdkit import Chem</span>
+<span class="sd">    &gt;&gt;&gt; from pysoftk.block_copolymers.diblock import Pt</span>
+<span class="sd">    &gt;&gt;&gt; # Define two distinct monomers (e.g., A and B) with a placeholder atom</span>
+<span class="sd">    &gt;&gt;&gt; monomer_A = Chem.MolFromSmiles(&quot;C([Pt])C&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; monomer_B = Chem.MolFromSmiles(&quot;N([Pt])N&quot;)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Define a repeating pattern</span>
+<span class="sd">    &gt;&gt;&gt; pattern = &quot;ABABAB&quot;</span>
+<span class="sd">    &gt;&gt;&gt; # List of molecules corresponding to the pattern&#39;s unique characters</span>
+<span class="sd">    &gt;&gt;&gt; molecules = [monomer_A, monomer_B]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Initialize the Pt class</span>
+<span class="sd">    &gt;&gt;&gt; patterned_poly_builder = Pt(pattern=pattern, mols=molecules, atom=&quot;Pt&quot;)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Build the patterned polymer</span>
+<span class="sd">    &gt;&gt;&gt; final_patterned_mol = patterned_poly_builder.pattern_block_poly(</span>
+<span class="sd">    ...     relax_iterations=200, force_field=&quot;UFF&quot;, swap_H=True</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;Patterned polymer atoms: {final_patterned_mol.GetNumAtoms()}&quot;)</span>
 
 <span class="sd">    Note</span>
 <span class="sd">    -----</span>
-
-<span class="sd">    RDKit package must be installed.</span>
+<span class="sd">    The **RDKit package must be installed** in your Python environment.</span>
+<span class="sd">    The `pattern` string should consist of characters that correspond to</span>
+<span class="sd">    the order of molecules in the `mols` list (e.g., &#39;A&#39; maps to `mols[0]`,</span>
+<span class="sd">    &#39;B&#39; maps to `mols[1]`, etc.). Ensure consistency in the `atom` placeholder.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pattern&#39;</span><span class="p">,</span> <span class="s1">&#39;mols&#39;</span><span class="p">,</span> <span class="s1">&#39;atom&#39;</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">mols</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
-<span class="w">       </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">       Initialize this class.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the `Pt` class with the desired polymerization pattern,</span>
+<span class="sd">        the list of RDKit molecular building blocks, and the placeholder atom.</span>
 
-<span class="sd">       Parameters</span>
-<span class="sd">       -----------</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        -----------</span>
+<span class="sd">        pattern : str</span>
+<span class="sd">            A **string representing the sequence** in which the molecular</span>
+<span class="sd">            building blocks should be arranged to form the polymer. Each</span>
+<span class="sd">            character in the string corresponds to a specific molecule in</span>
+<span class="sd">            the `mols` list (e.g., &quot;ABAB&quot; or &quot;AAABBB&quot;).</span>
 
-<span class="sd">       pattern : str</span>
-<span class="sd">            Variable containing the desired pattern written in a string.</span>
+<span class="sd">        mols : list[rdkit.Chem.rdchem.Mol]</span>
+<span class="sd">            A **list of RDKit Mol objects**, where each object represents a</span>
+<span class="sd">            unique monomer type. The order of molecules in this list should</span>
+<span class="sd">            correspond to the alphabetical order of characters used in the `pattern`</span>
+<span class="sd">            string (e.g., `mols[0]` for &#39;A&#39;, `mols[1]` for &#39;B&#39;, and so on).</span>
+<span class="sd">            Each monomer must contain the specified `atom` as a placeholder.</span>
 
-<span class="sd">       mols : list</span>
-<span class="sd">            List containing RDKit molecular objects.</span>
+<span class="sd">        atom : str</span>
+<span class="sd">            The **atomic symbol** (e.g., &quot;Au&quot;, &quot;Sn&quot;) of the placeholder atom</span>
+<span class="sd">            present in all the molecular objects within the `mols` list. This</span>
+<span class="sd">            atom facilitates the merging and bonding of the different monomer</span>
+<span class="sd">            units according to the `pattern`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="sd">       atom : str</span>
-<span class="sd">            Variable containing the atomic place holder for merging the molecules.</span>
-<span class="sd">          </span>
-<span class="sd">       &quot;&quot;&quot;</span>
-       
-       <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span>
-       <span class="bp">self</span><span class="o">.</span><span class="n">mols</span> <span class="o">=</span> <span class="n">mols</span> 
-       <span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">atom</span>
-       
+        <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mols</span> <span class="o">=</span> <span class="n">mols</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">atom</span>
+
 <div class="viewcode-block" id="Pt.pattern_block_poly">
 <a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.diblock.Pt.pattern_block_poly">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">pattern_block_poly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s2">&quot;MMFF&quot;</span><span class="p">,</span> <span class="n">swap_H</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">more_iter</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to create a polymer based on an alphabetic ordered pattern.</span>
-<span class="sd">    </span>
+<span class="sd">        Constructs a **linear polymer according to a defined alphabetical pattern**</span>
+<span class="sd">        of molecular building blocks, followed by geometry optimization.</span>
+
+<span class="sd">        This function assembles the polymer by sequentially combining the</span>
+<span class="sd">        specified monomers based on the input `pattern` string. It handles</span>
+<span class="sd">        the creation of bonds between units, and then performs comprehensive</span>
+<span class="sd">        3D structure optimization using a force field, with options for</span>
+<span class="sd">        replacing placeholder atoms and further refinement.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        -----------</span>
+<span class="sd">        relax_iterations : int, optional</span>
+<span class="sd">            The **maximum number of iterations** for the force field relaxation</span>
+<span class="sd">            procedure. A higher number typically leads to better convergence</span>
+<span class="sd">            of the molecular geometry. Defaults to 100.</span>
 
-<span class="sd">        relax_iterations: int  </span>
-<span class="sd">            Number of iterations used for relaxing a molecular object.</span>
+<span class="sd">        force_field : str, optional</span>
+<span class="sd">            The **name of the force field** to be used for molecular mechanics</span>
+<span class="sd">            optimization. Supported options generally include &quot;MMFF&quot; (which maps</span>
+<span class="sd">            to MMFF94) or &quot;UFF&quot;. Defaults to &quot;MMFF&quot;.</span>
 
-<span class="sd">        force_field: str</span>
-<span class="sd">            Selected FF between MMFF or UFF</span>
+<span class="sd">        swap_H : bool, optional</span>
+<span class="sd">            A flag indicating whether the placeholder atoms (specified by `self.atom`)</span>
+<span class="sd">            at the termini of the constructed polymer should be **replaced with</span>
+<span class="sd">            hydrogen atoms**.</span>
+<span class="sd">            * If `True` (default), placeholder atoms are converted to hydrogens</span>
+<span class="sd">              before the final optimization.</span>
+<span class="sd">            * If `False`, the placeholder atoms remain in the structure.</span>
 
-<span class="sd">        swap_H: bool</span>
-<span class="sd">             Indicates if the user defined atomic place holder is changed to a </span>
-<span class="sd">             Hydrogen atom or remain as the used species. </span>
+<span class="sd">        rot_steps : int, optional</span>
+<span class="sd">            The **number of rotational steps** to explore during conformational</span>
+<span class="sd">            optimization. This parameter helps in finding different low-energy</span>
+<span class="sd">            arrangements of the polymer chain by rotating around rotatable bonds.</span>
+<span class="sd">            Defaults to 1.</span>
 
-<span class="sd">        rot_steps: int</span>
-<span class="sd">             Number of rotational steps for finding conformations.</span>
-
-<span class="sd">        more_iter: int</span>
-<span class="sd">             Number of extra iterations for further optimising the molecular </span>
-<span class="sd">             object.</span>
+<span class="sd">        more_iter : int, optional</span>
+<span class="sd">            A **multiplier for additional optimization iterations**. The</span>
+<span class="sd">            `relax_iterations` value will be multiplied by this number to perform</span>
+<span class="sd">            a more extensive final geometry optimization, potentially leading</span>
+<span class="sd">            to a more stable conformation. Defaults to 10.</span>
 
 <span class="sd">        Return</span>
 <span class="sd">        --------</span>
-
-<span class="sd">        return : mol</span>
-<span class="sd">             A molecular pysoftk object.      </span>
-
+<span class="sd">        mol : openbabel.pybel.Molecule</span>
+<span class="sd">            A **PySoftK molecular object** (which wraps an OpenBabel Pybel Molecule)</span>
+<span class="sd">            representing the fully constructed and geometry-optimized patterned polymer.</span>
+<span class="sd">            This object contains the 3D coordinates and bonding information of the final structure.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">pattern</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span>
-        <span class="n">mols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mols</span>
-        <span class="n">atom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span>
-
-        <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mol_</span><span class="si">{}</span><span class="s1">+&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">mols</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
-        <span class="n">seq</span><span class="o">=</span><span class="n">pattern_mol_seq</span><span class="p">(</span><span class="n">names</span><span class="p">,</span><span class="n">pattern</span><span class="p">)</span>
-   
-        <span class="n">numbers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mol_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">mols</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
-        <span class="n">od_mols</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">numbers</span><span class="p">,</span><span class="n">mols</span><span class="p">)))</span>
- 
-        <span class="n">list_mol</span><span class="o">=</span><span class="p">[</span><span class="n">od_mols</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">]</span>
-        <span class="n">outmol</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">CombineMols</span><span class="p">(</span><span class="n">list_mol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">list_mol</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">list_mol</span><span class="p">)):</span>
-            <span class="n">outmol</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">CombineMols</span><span class="p">(</span><span class="n">outmol</span><span class="p">,</span><span class="n">list_mol</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-
-        <span class="n">lst_ngh</span><span class="o">=</span><span class="n">atom_neigh</span><span class="p">(</span><span class="n">outmol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
-        <span class="n">tpb</span><span class="o">=</span><span class="n">tuple_bonds</span><span class="p">(</span><span class="n">lst_ngh</span><span class="p">)</span>
-        <span class="n">proto_pol</span><span class="o">=</span><span class="n">create_pol</span><span class="p">(</span><span class="n">outmol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">tpb</span><span class="p">)</span>
         
+        <span class="n">pattern</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span>
+        <span class="n">mols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mols</span>
+        <span class="n">atom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom</span>
+
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mol_</span><span class="si">{}</span><span class="s1">+&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">mols</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+        <span class="n">seq</span> <span class="o">=</span> <span class="n">pattern_mol_seq</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
+
+        <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mol_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">mols</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+        <span class="n">od_mols</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">numbers</span><span class="p">,</span> <span class="n">mols</span><span class="p">)))</span>
+
+        <span class="n">list_mol</span> <span class="o">=</span> <span class="p">[</span><span class="n">od_mols</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">]</span>
+        <span class="n">outmol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">CombineMols</span><span class="p">(</span><span class="n">list_mol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">list_mol</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_mol</span><span class="p">)):</span>
+            <span class="n">outmol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">CombineMols</span><span class="p">(</span><span class="n">outmol</span><span class="p">,</span> <span class="n">list_mol</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+        <span class="n">lst_ngh</span> <span class="o">=</span> <span class="n">atom_neigh</span><span class="p">(</span><span class="n">outmol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
+        <span class="n">tpb</span> <span class="o">=</span> <span class="n">tuple_bonds</span><span class="p">(</span><span class="n">lst_ngh</span><span class="p">)</span>
+        <span class="n">proto_pol</span> <span class="o">=</span> <span class="n">create_pol</span><span class="p">(</span><span class="n">outmol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">tpb</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">swap_H</span><span class="p">:</span>
-            <span class="n">newMol_H</span><span class="o">=</span><span class="n">swap_hyd</span><span class="p">(</span><span class="n">proto_pol</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">force_field</span><span class="p">)</span>
+            <span class="n">newMol_H</span> <span class="o">=</span> <span class="n">swap_hyd</span><span class="p">(</span><span class="n">proto_pol</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span> <span class="n">force_field</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">swap_H</span><span class="p">:</span>
-            <span class="n">newMol_H</span><span class="o">=</span><span class="n">no_swap</span><span class="p">(</span><span class="n">proto_pol</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">,</span> <span class="n">force_field</span><span class="p">)</span>
+            <span class="n">newMol_H</span> <span class="o">=</span> <span class="n">no_swap</span><span class="p">(</span><span class="n">proto_pol</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="p">,</span> <span class="n">force_field</span><span class="p">)</span>
 
+        <span class="n">last_mol</span> <span class="o">=</span> <span class="n">check_proto</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">,</span> <span class="n">force_field</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">*</span><span class="n">more_iter</span><span class="p">,</span> <span class="n">rot_steps</span><span class="p">)</span>
 
-        <span class="n">last_mol</span><span class="o">=</span><span class="n">check_proto</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">,</span> <span class="n">force_field</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">*</span><span class="n">more_iter</span><span class="p">,</span> <span class="n">rot_steps</span><span class="p">)</span>
-            
         <span class="k">return</span> <span class="n">last_mol</span></div>
 </div>
 

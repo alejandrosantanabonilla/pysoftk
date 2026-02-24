@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.format_printers.format_mol &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
@@ -87,212 +87,243 @@
 <div class="viewcode-block" id="Fmt">
 <a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Fmt</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class printing RDkit Mol Object in different formats</span>
-<span class="sd">          </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class designed for printing RDKit Mol objects into various molecular file formats.</span>
+
+<span class="sd">    This class provides methods to convert an RDKit Mol object into common chemical file</span>
+<span class="sd">    formats such as XYZ, PDB, and MOL, as well as a more general format conversion.</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-
 <span class="sd">    file : str</span>
-<span class="sd">            A file with the provided molecule in a chosen format.</span>
+<span class="sd">        A file containing the provided molecule in the chosen format.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
-<span class="w">       </span><span class="sd">&quot;&quot;&quot; Initialise the class Fmt</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the Fmt class with an RDKit Mol object.</span>
 
-<span class="sd">       Parameters</span>
-<span class="sd">       ----------</span>
-
-<span class="sd">       mol : Chem.rdchem.Mol</span>
-<span class="sd">           An RDKit Mol object Molecule to be printed in a given format.</span>
-<span class="sd">       &quot;&quot;&quot;</span>
-       <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">mol</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mol : Chem.rdchem.Mol or pybel.Molecule</span>
+<span class="sd">            The molecule to be processed. This can be an RDKit Mol object or a</span>
+<span class="sd">            Pybel Molecule object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">mol</span>
     
 <div class="viewcode-block" id="Fmt.xyz_print">
 <a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt.xyz_print">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">xyz_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to print in XYZ format</span>
-<span class="sd">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prints the molecule to an XYZ file format.</span>
+
+<span class="sd">        This method handles both RDKit Mol objects and Pybel Molecule objects.</span>
+<span class="sd">        For RDKit Mol objects, it uses `Chem.MolToXYZFile`. For Pybel Molecule</span>
+<span class="sd">        objects, it ensures bond orders are perceived and hydrogens are added</span>
+<span class="sd">        before writing the file.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-
-<span class="sd">        output_name : str </span>
-<span class="sd">           A provided name for an output file.</span>
-<span class="sd">     </span>
+<span class="sd">        output_name : str</span>
+<span class="sd">            The desired name for the output XYZ file.</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-
-<span class="sd">        ValueError:</span>
-<span class="sd">            If not an RDKit Mol Object raises TypeError as invalid molecule.</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            If the input `mol` is neither an RDKit Mol object nor a Pybel Molecule</span>
+<span class="sd">            object, indicating an invalid molecule type.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
         
         <span class="k">try</span><span class="p">:</span>
-           <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
-               <span class="n">Chem</span><span class="o">.</span><span class="n">MolToXYZFile</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">))</span>
-
-           <span class="k">else</span><span class="p">:</span>
-               <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">PerceiveBondOrders</span><span class="p">()</span>
-               <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">AddHydrogens</span><span class="p">()</span>
-               <span class="n">mol</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;xyz&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">),</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-               
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
+                <span class="n">Chem</span><span class="o">.</span><span class="n">MolToXYZFile</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">PerceiveBondOrders</span><span class="p">()</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">AddHydrogens</span><span class="p">()</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;xyz&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">),</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-          <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> is an invalid molecule&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span></div>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mol</span><span class="si">}</span><span class="s2"> is an invalid molecule&quot;</span><span class="p">)</span></div>
 
-
-        
-          
 
 <div class="viewcode-block" id="Fmt.pdb_print">
 <a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt.pdb_print">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">pdb_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to print in PDB format</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prints the molecule to a PDB file format.</span>
+
+<span class="sd">        This method supports both RDKit Mol objects and Pybel Molecule objects.</span>
+<span class="sd">        For RDKit Mol objects, it uses `Chem.MolToPDBFile`. For Pybel Molecule</span>
+<span class="sd">        objects, it ensures bond orders are perceived and hydrogens are added</span>
+<span class="sd">        before writing the file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        output_name : str</span>
+<span class="sd">            The desired name for the output PDB file.</span>
 
-<span class="sd">        output_name : str </span>
-<span class="sd">           A provided name for a file.</span>
-<span class="sd"> </span>
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-
-<span class="sd">        ValueError:</span>
-<span class="sd">            If not an RDKit Mol Object raises TypeError as invalid molecule.</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            If the input `mol` is neither an RDKit Mol object nor a Pybel Molecule</span>
+<span class="sd">            object, indicating an invalid molecule type.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
         
         <span class="k">try</span><span class="p">:</span>
-           <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
-               <span class="n">Chem</span><span class="o">.</span><span class="n">MolToPDBFile</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">))</span>
-
-           <span class="k">else</span><span class="p">:</span>
-               <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">PerceiveBondOrders</span><span class="p">()</span>
-               <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">AddHydrogens</span><span class="p">()</span>
-               <span class="n">mol</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;pdb&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">),</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-               
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
+                <span class="n">Chem</span><span class="o">.</span><span class="n">MolToPDBFile</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">PerceiveBondOrders</span><span class="p">()</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">AddHydrogens</span><span class="p">()</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;pdb&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">),</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-          <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> is an invalid molecule&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span></div>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mol</span><span class="si">}</span><span class="s2"> is an invalid molecule&quot;</span><span class="p">)</span></div>
 
             
-          
 <div class="viewcode-block" id="Fmt.mol_print">
 <a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt.mol_print">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">mol_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to print in MOL format</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prints the molecule to a MOL file format.</span>
+
+<span class="sd">        This method handles both RDKit Mol objects and Pybel Molecule objects.</span>
+<span class="sd">        For RDKit Mol objects, it utilizes `Chem.MolToMolFile`. For Pybel Molecule</span>
+<span class="sd">        objects, it ensures bond orders are perceived and hydrogens are added</span>
+<span class="sd">        before writing the file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        output_name : str</span>
+<span class="sd">            The desired name for the output MOL file.</span>
 
-<span class="sd">        output_name : str </span>
-<span class="sd">           A provided name for a file.</span>
-<span class="sd"> </span>
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-<span class="sd">        ValueError:</span>
-<span class="sd">            If not an RDKit Mol Object raises TypeError as invalid molecule.</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            If the input `mol` is neither an RDKit Mol object nor a Pybel Molecule</span>
+<span class="sd">            object, indicating an invalid molecule type.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
 
         <span class="k">try</span><span class="p">:</span>
-           <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
-               <span class="n">Chem</span><span class="o">.</span><span class="n">MolToMolFile</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">))</span>
-
-           <span class="k">else</span><span class="p">:</span>
-               <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">PerceiveBondOrders</span><span class="p">()</span>
-               <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">AddHydrogens</span><span class="p">()</span>
-               <span class="n">mol</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;mol&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">),</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-               
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
+                <span class="n">Chem</span><span class="o">.</span><span class="n">MolToMolFile</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">PerceiveBondOrders</span><span class="p">()</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">AddHydrogens</span><span class="p">()</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;mol&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">),</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-          <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> is an invalid molecule&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span></div>
-
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mol</span><span class="si">}</span><span class="s2"> is an invalid molecule&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Fmt.format_print">
 <a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Fmt.format_print">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_name</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to print a pysoftk.object into an user </span>
-<span class="sd">        provided output_format.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prints the molecule into a user-provided file format.</span>
+
+<span class="sd">        This function attempts to convert and write the molecule to a file</span>
+<span class="sd">        based on the extension provided in `output_name`. It handles both RDKit</span>
+<span class="sd">        Mol objects and Pybel Molecule objects. If an RDKit Mol is provided,</span>
+<span class="sd">        it&#39;s first converted to a PDB block and then read by Pybel to facilitate</span>
+<span class="sd">        writing to the desired format.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        output_name : str</span>
+<span class="sd">            The desired name for the output file, including the file extension</span>
+<span class="sd">            (e.g., &quot;molecule.mol2&quot;, &quot;compound.smi&quot;). The extension determines</span>
+<span class="sd">            the output format.</span>
 
-<span class="sd">        fmt: class.str</span>
-<span class="sd">           An user-provided valid format in which the pysoftk.object</span>
-<span class="sd">           can be printed. Default is MOL2 format.</span>
-<span class="sd"> </span>
-<span class="sd">        output_name : class.str </span>
-<span class="sd">           A provided name for a file. Default is molecule.mol2 </span>
-<span class="sd"> </span>
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            If the input `mol` is neither an RDKit Mol object nor a Pybel Molecule</span>
+<span class="sd">            object, indicating an invalid molecule type.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
         <span class="n">ext</span><span class="o">=</span><span class="n">output_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         
         <span class="k">try</span><span class="p">:</span>
-           <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
-              <span class="n">last_rdkit</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToPDBBlock</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
-              <span class="n">mol2</span><span class="o">=</span><span class="n">pb</span><span class="o">.</span><span class="n">readstring</span><span class="p">(</span><span class="s1">&#39;pdb&#39;</span><span class="p">,</span> <span class="n">last_rdkit</span><span class="p">)</span>
-              <span class="n">mol2</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">PerceiveBondOrders</span><span class="p">()</span>
-              <span class="n">mol2</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">AddHydrogens</span><span class="p">()</span>
-              <span class="n">mol2</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ext</span><span class="p">),</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">),</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdchem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
+                <span class="n">last_rdkit</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToPDBBlock</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+                <span class="n">mol2</span><span class="o">=</span><span class="n">pb</span><span class="o">.</span><span class="n">readstring</span><span class="p">(</span><span class="s1">&#39;pdb&#39;</span><span class="p">,</span> <span class="n">last_rdkit</span><span class="p">)</span>
+                <span class="n">mol2</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">PerceiveBondOrders</span><span class="p">()</span>
+                <span class="n">mol2</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">AddHydrogens</span><span class="p">()</span>
+                <span class="n">mol2</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ext</span><span class="p">),</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">),</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-           <span class="k">else</span><span class="p">:</span>
-              <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">PerceiveBondOrders</span><span class="p">()</span>
-              <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">AddHydrogens</span><span class="p">()</span>
-              <span class="n">mol</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ext</span><span class="p">),</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">),</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-               
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">PerceiveBondOrders</span><span class="p">()</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">AddHydrogens</span><span class="p">()</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ext</span><span class="p">),</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">),</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-          <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> is an invalid molecule&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span></div>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mol</span><span class="si">}</span><span class="s2"> is an invalid molecule&quot;</span><span class="p">)</span></div>
 </div>
 
-     
+    
 
 <div class="viewcode-block" id="Cnv">
 <a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Cnv">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Cnv</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for converting files from X to Y format. </span>
-<span class="sd">          </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for converting molecular files from one format to another using OpenBabel.</span>
+
+<span class="sd">    This class provides a utility to convert a molecule stored in a file of a</span>
+<span class="sd">    given format (e.g., PDB, SDF, MOL2) to a different specified format.</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-
 <span class="sd">    file : str</span>
-<span class="sd">            A file with the provided molecule in a chosen format.</span>
+<span class="sd">        A new file containing the provided molecule in the chosen output format.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_mol</span><span class="p">):</span>
-<span class="w">       </span><span class="sd">&quot;&quot;&quot; Initialise the class Fmt</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the Cnv class with the path to a molecular file.</span>
 
-<span class="sd">       Parameters</span>
-<span class="sd">       ----------</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        file_mol : str</span>
+<span class="sd">            The path to the input molecular file that needs to be converted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="sd">       file_mol : class.str</span>
-<span class="sd">          User-provided file name. </span>
-<span class="sd">       </span>
-<span class="sd">       &quot;&quot;&quot;</span>
-
-       <span class="bp">self</span><span class="o">.</span><span class="n">file_mol</span> <span class="o">=</span> <span class="n">file_mol</span>
-       
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_mol</span> <span class="o">=</span> <span class="n">file_mol</span>
+        
 <div class="viewcode-block" id="Cnv.file_in_out">
 <a class="viewcode-back" href="../../../pysoftk.format_printers.html#pysoftk.format_printers.format_mol.Cnv.file_in_out">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">file_in_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;mol2&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to convert an user-provided file </span>
-<span class="sd">           with X format to an user-provided Y format.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts a molecular file from its current format to a specified output format.</span>
 
-<span class="sd">           Parameters</span>
-<span class="sd">           ------------</span>
+<span class="sd">        This function leverages OpenBabel to perform the file conversion. It</span>
+<span class="sd">        automatically detects the input file format from its extension and</span>
+<span class="sd">        converts it to the format specified by the `fmt` parameter.</span>
 
-<span class="sd">           fmt: class.str</span>
-<span class="sd">             Format requested to convert.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fmt : str, optional</span>
+<span class="sd">            The desired output format for the converted file (e.g., &quot;pdb&quot;, &quot;xyz&quot;, &quot;sdf&quot;).</span>
+<span class="sd">            Defaults to &quot;mol2&quot;.</span>
 
-<span class="sd">           Return</span>
-<span class="sd">           -------</span>
-
-<span class="sd">           None:</span>
-<span class="sd">             New file with the provided format.</span>
-
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">            This function does not return any value. It creates a new file</span>
+<span class="sd">            in the same directory as the input file, with the converted format</span>
+<span class="sd">            and the original filename (before its extension) appended with the</span>
+<span class="sd">            new format&#39;s extension.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="n">file_mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">file_mol</span> 
         <span class="n">name</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="n">get_file_extension</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_mol</span><span class="p">))</span>
         

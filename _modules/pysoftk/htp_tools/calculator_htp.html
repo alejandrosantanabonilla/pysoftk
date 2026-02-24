@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.htp_tools.calculator_htp &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
@@ -77,308 +77,512 @@
   <h1>Source code for pysoftk.htp_tools.calculator_htp</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
-<span class="kn">from</span><span class="w">   </span><span class="nn">subprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">call</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ThreadPoolExecutor</span><span class="p">,</span> <span class="n">as_completed</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">fnmatch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">fnmatch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
 
 <div class="viewcode-block" id="Htp">
 <a class="viewcode-back" href="../../../pysoftk.htp_tools.html#pysoftk.htp_tools.calculator_htp.Htp">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Htp</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class enabling High-throughput calculations in different </span>
-<span class="sd">       created folders for provided molecules.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class enabling High-throughput quantum chemistry calculations using xtb.</span>
 
-<span class="sd">    Attributes </span>
+<span class="sd">    This class facilitates running xtb calculations (like geometry optimizations)</span>
+<span class="sd">    on multiple molecular structures organized in subdirectories. It automatically</span>
+<span class="sd">    scans a specified main directory for subdirectories, checks if each contains</span>
+<span class="sd">    a single geometry file (&#39;.xyz&#39; by default), and then runs the requested xtb</span>
+<span class="sd">    calculation method (GFN or GFN-FF) in parallel within each valid subdirectory.</span>
+
+<span class="sd">    It intelligently locates the &#39;xtb&#39; executable, either by searching the system&#39;s</span>
+<span class="sd">    PATH environment variable (common for Conda installations) or by using a</span>
+<span class="sd">    direct path provided during initialization.</span>
+
+<span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-
+<span class="sd">    xtb_executable_path : str</span>
+<span class="sd">        The absolute path to the &#39;xtb&#39; executable that was found and verified</span>
+<span class="sd">        during initialization. This path is used for all subsequent calculation calls.</span>
 <span class="sd">    ending : str</span>
-<span class="sd">       Extension of the molecular format used to perform a</span>
-<span class="sd">       search within many directories.</span>
+<span class="sd">        The default file extension (e.g., &#39;.xyz&#39;) used when searching for geometry</span>
+<span class="sd">        files within subdirectories. This can be customized during initialization</span>
+<span class="sd">        but defaults to &#39;.xyz&#39; as used by the primary methods.</span>
 
-<span class="sd">    xtb_path : str</span>
-<span class="sd">          Path where the xtb executable is located. </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    FileNotFoundError</span>
+<span class="sd">        During initialization (__init__) if the specified &#39;xtb_command&#39; cannot be</span>
+<span class="sd">        found as an executable in the system PATH, nor resolved as a direct</span>
+<span class="sd">        valid file path.</span>
 
-<span class="sd">    xyz_geom : str</span>
-<span class="sd">          Name of the supplied molecule in .xyz format</span>
-
-<span class="sd">    init_dir : str</span>
-<span class="sd">          Path where the calculation is starting (optional)</span>
-
-<span class="sd">    num_cores : int, optional</span>
-<span class="sd">          Number of cores which the GFN-XTB2 code</span>
-<span class="sd">          will use.</span>
-
-<span class="sd">    threshold: str, optional</span>
-<span class="sd">          Level of geometry optimization required </span>
-<span class="sd">          as defined in GFN-XTB2 code. </span>
-<span class="sd">        </span>
 <span class="sd">    Note</span>
-<span class="sd">    -----</span>
+<span class="sd">    ----</span>
+<span class="sd">    - Requires the &#39;tqdm&#39; library for progress bars (`pip install tqdm`).</span>
+<span class="sd">    - Requires a working installation of &#39;xtb&#39; accessible either via the system</span>
+<span class="sd">      PATH or by providing a direct path to the executable.</span>
+<span class="sd">    - Assumes a directory structure where each calculation is contained within</span>
+<span class="sd">      its own subdirectory under a main directory, and each calculation</span>
+<span class="sd">      subdirectory contains exactly one input geometry file with the expected</span>
+<span class="sd">      ending (e.g., &#39;molecule.xyz&#39;).</span>
 
-<span class="sd">    This class requires tqdm, GFN-XTB and/or PYSCF semiempirical installation to be used.</span>
-<span class="sd"> </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ending</span><span class="p">):</span>
-<span class="w">      </span><span class="sd">&quot;&quot;&quot;Parameters to initialize the HTP process</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xtb_command</span><span class="o">=</span><span class="s2">&quot;xtb&quot;</span><span class="p">,</span> <span class="n">ending</span><span class="o">=</span><span class="s2">&quot;.xyz&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the Htp class and locates the xtb executable.</span>
+
+<span class="sd">        Sets up the instance by determining the default file ending for geometry</span>
+<span class="sd">        files and, crucially, finding the absolute path to the &#39;xtb&#39; executable.</span>
+<span class="sd">        It searches the system&#39;s PATH first (using `shutil.which`) and, if not</span>
+<span class="sd">        found there, checks if the provided `xtb_command` string is a direct</span>
+<span class="sd">        path to an existing file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        xtb_command : str, optional</span>
+<span class="sd">            The command name used to invoke the xtb executable (e.g., &quot;xtb&quot;)</span>
+<span class="sd">            which will be searched for in the system PATH, OR the full, direct</span>
+<span class="sd">            path to the xtb executable file. Defaults to &quot;xtb&quot;.</span>
+<span class="sd">        ending : str, optional</span>
+<span class="sd">            The default file extension (including the dot) to be associated with</span>
+<span class="sd">            molecular geometry files for methods that might use it. The primary</span>
+<span class="sd">            methods currently hardcode &#39;.xyz&#39;. Defaults to &quot;.xyz&quot;.</span>
 
-<span class="sd">        ending : str</span>
-<span class="sd">           Name of the extension to be browsed in a provided folder. </span>
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        FileNotFoundError</span>
+<span class="sd">            If the `xtb_command` cannot be resolved to an actual executable file</span>
+<span class="sd">            either by searching the PATH or by interpreting it as a direct path.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Standardize the file ending format (ensure it starts with &#39;.&#39;)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ending</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ending</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">ending</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ending</span> <span class="o">=</span> <span class="n">ending</span>
 
-<span class="sd">      &quot;&quot;&quot;</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">ending</span> <span class="o">=</span> <span class="n">ending</span>
+        <span class="c1"># Use shutil.which to find the command in PATH</span>
+        <span class="n">resolved_path</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="n">xtb_command</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">resolved_path</span><span class="p">:</span>
+            <span class="c1"># Found executable in PATH</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xtb_executable_path</span> <span class="o">=</span> <span class="n">resolved_path</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using xtb executable found at: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">xtb_executable_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Not found in PATH, check if the input string is a direct file path</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xtb_command</span><span class="p">):</span>
+                <span class="c1"># Input is a valid file path</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">xtb_executable_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">xtb_command</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using xtb executable provided at: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">xtb_executable_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Cannot find the executable by either method</span>
+                <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Could not find the specified xtb command &#39;</span><span class="si">{</span><span class="n">xtb_command</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;in PATH, nor does it seem to be a valid file path.&quot;</span>
+                <span class="p">)</span>
 
 <div class="viewcode-block" id="Htp.xtb_gfn">
 <a class="viewcode-back" href="../../../pysoftk.htp_tools.html#pysoftk.htp_tools.calculator_htp.Htp.xtb_gfn">[docs]</a>
-    <span class="nd">@staticmethod</span>   
-    <span class="k">def</span><span class="w"> </span><span class="nf">xtb_gfn</span><span class="p">(</span><span class="n">xtb_path</span><span class="p">,</span> <span class="n">xyz_geom</span><span class="p">,</span> <span class="n">init_dir</span><span class="p">,</span> <span class="n">num_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">       </span><span class="sd">&quot;&quot;&quot;Function invoking GFN-XTB Force-Field implementation for geometry optimization.</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">xtb_gfn</span><span class="p">(</span><span class="n">xtb_path</span><span class="p">,</span> <span class="n">xyz_filename</span><span class="p">,</span> <span class="n">target_dir</span><span class="p">,</span> <span class="n">num_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes a single GFN-XTB geometry optimization via subprocess.</span>
 
-<span class="sd">       Parameters</span>
-<span class="sd">       -----------</span>
+<span class="sd">        This static method is designed to be called as a target function, often</span>
+<span class="sd">        in parallel (e.g., via ThreadPoolExecutor). It constructs and runs the</span>
+<span class="sd">        xtb command line for a GFN-XTB optimization (`--opt`) within the specified</span>
+<span class="sd">        `target_dir`. Output is redirected to &#39;output.log&#39; within that directory.</span>
 
-<span class="sd">       xtb_path : str</span>
-<span class="sd">           Path where the GFN-XTB2 executable is located</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        xtb_path : str</span>
+<span class="sd">            The absolute path to the verified xtb executable.</span>
+<span class="sd">        xyz_filename : str</span>
+<span class="sd">            The filename (basename, e.g., &quot;molecule.xyz&quot;) of the input geometry</span>
+<span class="sd">            file. This file is expected to exist within `target_dir`.</span>
+<span class="sd">        target_dir : str</span>
+<span class="sd">            The absolute path to the directory where the calculation should run.</span>
+<span class="sd">            The xtb command will be executed with this directory as its current</span>
+<span class="sd">            working directory (`cwd`).</span>
+<span class="sd">        num_cores : int, optional</span>
+<span class="sd">            The number of processor cores the xtb calculation should use</span>
+<span class="sd">            (`--parallel` flag). If None, defaults to 1.</span>
+<span class="sd">        threshold : str, optional</span>
+<span class="sd">            The convergence threshold level for the geometry optimization</span>
+<span class="sd">            (`--opt` flag value, e.g., &quot;crude&quot;, &quot;normal&quot;, &quot;tight&quot;). If None,</span>
+<span class="sd">            defaults to &quot;crude&quot;.</span>
 
-<span class="sd">       num_cores : int, optional</span>
-<span class="sd">             Number of cores which the GFN-XTB2 code will use.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The absolute path to the output log file created within `target_dir`</span>
+<span class="sd">            (e.g., &quot;/path/to/target_dir/output.log&quot;).</span>
 
-<span class="sd">       threshold : str, optional</span>
-<span class="sd">             Level of geometry optimization required as defined in </span>
-<span class="sd">             GFN-XTB2 code.</span>
-
-<span class="sd">       xyz_geom : str </span>
-<span class="sd">             Provided geometry to be relaxed.</span>
-
-<span class="sd">       init_dir : str</span>
-<span class="sd">             Root path directory where folders containing the structures are found.</span>
-<span class="sd"> </span>
-<span class="sd">       Returns</span>
-<span class="sd">       -------</span>
-
-<span class="sd">       output : str</span>
-<span class="sd">          File name output.log containing the optimization process carried out by GFN-XTB2.</span>
-<span class="sd">       &quot;&quot;&quot;</span>
-    
-       <span class="n">num_cores</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">num_cores</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_cores</span><span class="p">)</span>
-       <span class="n">threshold</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;crude&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">threshold</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">threshold</span><span class="p">)</span>
-    
-       <span class="n">out_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">init_dir</span><span class="p">,</span><span class="s2">&quot;output.log&quot;</span><span class="p">)</span>
-
-       <span class="n">cmd</span> <span class="o">=</span> <span class="p">(</span>
-              <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">xtb_path</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">xyz_geom</span><span class="si">}</span><span class="s1"> &#39;</span>            
-              <span class="sa">f</span><span class="s1">&#39;--parallel </span><span class="si">{</span><span class="n">num_cores</span><span class="si">}</span><span class="s1"> &#39;</span>
-              <span class="sa">f</span><span class="s1">&#39;--opt </span><span class="si">{</span><span class="n">threshold</span><span class="si">}</span><span class="s1"> &#39;</span>
-             <span class="p">)</span>
-
-          <span class="c1"># Note that sp.call will hold the program until completion</span>
-          <span class="c1"># of the calculation.</span>
-
-       <span class="k">try</span><span class="p">:</span>
-          <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">result</span><span class="p">:</span>
-            <span class="n">sp</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
-               <span class="n">cmd</span><span class="p">,</span>
-               <span class="n">stdin</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
-               <span class="n">stdout</span><span class="o">=</span><span class="n">result</span><span class="p">,</span>
-               <span class="n">stderr</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
-               <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-               <span class="n">cwd</span><span class="o">=</span><span class="n">init_dir</span>
-              <span class="p">)</span>
-       <span class="k">finally</span><span class="p">:</span>
-           <span class="k">pass</span></div>
-
-
+<span class="sd">        Side Effects</span>
+<span class="sd">        ------------</span>
+<span class="sd">        - Creates or overwrites the file &quot;output.log&quot; in `target_dir`.</span>
+<span class="sd">        - Runs an external `xtb` process.</span>
+<span class="sd">        - Prints warning messages to standard output if the `xtb` process</span>
+<span class="sd">          returns a non-zero exit code or if a Python exception occurs during</span>
+<span class="sd">          the subprocess execution.</span>
+<span class="sd">        - Appends error details (Python exception, stderr from xtb) to the</span>
+<span class="sd">          &quot;output.log&quot; file upon failure.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         
+        <span class="c1"># Set default values if None</span>
+        <span class="n">num_cores</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">num_cores</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_cores</span><span class="p">)</span>
+        <span class="n">threshold</span> <span class="o">=</span> <span class="s2">&quot;crude&quot;</span> <span class="k">if</span> <span class="n">threshold</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">threshold</span><span class="p">)</span>
+
+        <span class="c1"># Define the output log file path</span>
+        <span class="n">out_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target_dir</span><span class="p">,</span> <span class="s2">&quot;output.log&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Construct the command line arguments, quoting paths/filenames</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">xtb_path</span><span class="si">}</span><span class="s1">&quot; &quot;</span><span class="si">{</span><span class="n">xyz_filename</span><span class="si">}</span><span class="s1">&quot; &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;--parallel </span><span class="si">{</span><span class="n">num_cores</span><span class="si">}</span><span class="s1"> &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;--opt </span><span class="si">{</span><span class="n">threshold</span><span class="si">}</span><span class="s1"> &#39;</span>
+        <span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Open the output file and run the subprocess</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">result_file</span><span class="p">:</span>
+                <span class="n">process</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
+                    <span class="n">cmd</span><span class="p">,</span>
+                    <span class="n">stdin</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>       <span class="c1"># Standard input pipe (not used by xtb opt)</span>
+                    <span class="n">stdout</span><span class="o">=</span><span class="n">result_file</span><span class="p">,</span>  <span class="c1"># Redirect standard output to log file</span>
+                    <span class="n">stderr</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>      <span class="c1"># Capture standard error</span>
+                    <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>          <span class="c1"># Use shell (allows command interpretation, use carefully)</span>
+                    <span class="n">cwd</span><span class="o">=</span><span class="n">target_dir</span>       <span class="c1"># Set working directory for xtb</span>
+                <span class="p">)</span>
+                <span class="c1"># Wait for process to finish and capture stderr</span>
+                <span class="n">stderr_output</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">communicate</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="c1"># Check if the process exited with an error code</span>
+                <span class="k">if</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: xtb calculation in </span><span class="si">{</span><span class="n">target_dir</span><span class="si">}</span><span class="s2"> failed.&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stderr:</span><span class="se">\n</span><span class="si">{</span><span class="n">stderr_output</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="c1"># Decode stderr</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># Handle Python exceptions during subprocess execution</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error running xtb in </span><span class="si">{</span><span class="n">target_dir</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># Append Python error and potentially stderr to the log file</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_file</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">error_file</span><span class="p">:</span>
+                <span class="n">error_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- PYTHON ERROR ---</span><span class="se">\n</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s1">&#39;stderr_output&#39;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span> <span class="c1"># Check if stderr was captured</span>
+                    <span class="n">error_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- STDERR ---</span><span class="se">\n</span><span class="si">{</span><span class="n">stderr_output</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Return the path to the log file, regardless of success/failure</span>
+        <span class="k">return</span> <span class="n">out_file</span></div>
+
+
+
 <div class="viewcode-block" id="Htp.xtb_ff">
 <a class="viewcode-back" href="../../../pysoftk.htp_tools.html#pysoftk.htp_tools.calculator_htp.Htp.xtb_ff">[docs]</a>
-    <span class="nd">@staticmethod</span>   
-    <span class="k">def</span><span class="w"> </span><span class="nf">xtb_ff</span><span class="p">(</span><span class="n">xtb_path</span><span class="p">,</span> <span class="n">xyz_geom</span><span class="p">,</span> <span class="n">init_dir</span><span class="p">,</span> <span class="n">num_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">       </span><span class="sd">&quot;&quot;&quot;Function invoking GFN-XTB Force-Field implementation for geometry optimization.</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">xtb_ff</span><span class="p">(</span><span class="n">xtb_path</span><span class="p">,</span> <span class="n">xyz_filename</span><span class="p">,</span> <span class="n">target_dir</span><span class="p">,</span> <span class="n">num_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes a single GFN-FF geometry optimization via subprocess.</span>
 
-<span class="sd">       Parameters</span>
-<span class="sd">       -----------</span>
-
-<span class="sd">       xtb_path : str</span>
-<span class="sd">           Path where the GFN-XTB2 executable is located</span>
-
-<span class="sd">       num_cores : int, optional</span>
-<span class="sd">           Number of cores used by the GFN-XTB code.</span>
-
-<span class="sd">       threshold : str, optional</span>
-<span class="sd">           Level of geometry optimization required as defined in GFN-XTB2 code.</span>
-<span class="sd"> </span>
-<span class="sd">       xyz_geom : str </span>
-<span class="sd">           Provided geometry to be relaxed.</span>
-
-<span class="sd">       init_dir : str</span>
-<span class="sd">           Root path directory where folders containing the structures are found.</span>
-<span class="sd"> </span>
-<span class="sd">       Returns</span>
-<span class="sd">       --------</span>
-
-<span class="sd">       output : str</span>
-<span class="sd">           File name output.log containing the optimization process carried out by GFN-XTB2.</span>
-<span class="sd">       &quot;&quot;&quot;</span>
-    
-       <span class="n">num_cores</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">num_cores</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_cores</span><span class="p">)</span>
-       <span class="n">threshold</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;crude&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">threshold</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">threshold</span><span class="p">)</span>
-    
-       <span class="n">out_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">init_dir</span><span class="p">,</span><span class="s2">&quot;output.log&quot;</span><span class="p">)</span>
-
-       <span class="n">cmd</span> <span class="o">=</span> <span class="p">(</span>
-              <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">xtb_path</span><span class="si">}</span><span class="s1"> --gfnff </span><span class="si">{</span><span class="n">xyz_geom</span><span class="si">}</span><span class="s1"> &#39;</span>            
-              <span class="sa">f</span><span class="s1">&#39;--parallel </span><span class="si">{</span><span class="n">num_cores</span><span class="si">}</span><span class="s1"> &#39;</span>
-              <span class="sa">f</span><span class="s1">&#39;--opt </span><span class="si">{</span><span class="n">threshold</span><span class="si">}</span><span class="s1"> &#39;</span>
-             <span class="p">)</span>
-
-          <span class="c1"># Note that sp.call will hold the program until completion</span>
-          <span class="c1"># of the calculation.</span>
-
-       <span class="k">try</span><span class="p">:</span>
-          <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">result</span><span class="p">:</span>
-            <span class="n">sp</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
-               <span class="n">cmd</span><span class="p">,</span>
-               <span class="n">stdin</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
-               <span class="n">stdout</span><span class="o">=</span><span class="n">result</span><span class="p">,</span>
-               <span class="n">stderr</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
-               <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-               <span class="n">cwd</span><span class="o">=</span><span class="n">init_dir</span>
-              <span class="p">)</span>
-       <span class="k">finally</span><span class="p">:</span>
-           <span class="k">pass</span></div>
-
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_find_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">pattern</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to find files within a given directory based on a provided pattern.</span>
+<span class="sd">        Similar to `xtb_gfn`, but performs a GFN-FF (force field) optimization</span>
+<span class="sd">        by adding the `--gfnff` flag to the xtb command line. Output is</span>
+<span class="sd">        redirected to &#39;output_ff.log&#39; within the `target_dir`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        xtb_path : str</span>
+<span class="sd">            The absolute path to the verified xtb executable.</span>
+<span class="sd">        xyz_filename : str</span>
+<span class="sd">            The filename (basename) of the input geometry file within `target_dir`.</span>
+<span class="sd">        target_dir : str</span>
+<span class="sd">            The absolute path to the directory where the calculation should run (cwd).</span>
+<span class="sd">        num_cores : int, optional</span>
+<span class="sd">            Number of processor cores for xtb (`--parallel`). Defaults to 1.</span>
+<span class="sd">        threshold : str, optional</span>
+<span class="sd">            Convergence threshold for optimization (`--opt`). Defaults to &quot;crude&quot;.</span>
 
-<span class="sd">        directory : str</span>
-<span class="sd">           Path of the main directory where the search will be carried out. </span>
-
-<span class="sd">        pattern : str</span>
-<span class="sd">           Provided Alpha-pattern (extension of the molecular file) which will be used to perform the search.</span>
-
-<span class="sd">        Results</span>
-<span class="sd">        --------</span>
-
-<span class="sd">        None :</span>
-<span class="sd">            The results of the search as a string</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">basename</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">basename</span><span class="p">,</span> <span class="n">pattern</span><span class="p">):</span>
-                    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">basename</span><span class="p">)</span>
-                    <span class="k">yield</span> <span class="n">filename</span>
-       
-    <span class="k">def</span><span class="w"> </span><span class="nf">_seek_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_ending</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to seek files within the current working directory based on a provided pattern.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-
-<span class="sd">        file_ending : str</span>
-<span class="sd">           Extension of the provided pattern to perform the search.</span>
-
-<span class="sd">        Results</span>
+<span class="sd">        Returns</span>
 <span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The absolute path to the output log file &#39;output_ff.log&#39; within</span>
+<span class="sd">            `target_dir`.</span>
 
-<span class="sd">        gmts : list</span>
-<span class="sd">           A list of the resulting files within the current working directory with the provided extension (ending). </span>
-
+<span class="sd">        Side Effects</span>
+<span class="sd">        ------------</span>
+<span class="sd">        - Creates or overwrites the file &quot;output_ff.log&quot; in `target_dir`.</span>
+<span class="sd">        - Runs an external `xtb` process with the `--gfnff` flag.</span>
+<span class="sd">        - Prints warnings/errors similar to `xtb_gfn`.</span>
+<span class="sd">        - Appends error details to &quot;output_ff.log&quot; upon failure.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">seek_file</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s2">&quot;*&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">file_ending</span><span class="p">)))</span>
-        <span class="n">gmts</span> <span class="o">=</span> <span class="p">[</span><span class="n">filename</span> <span class="k">for</span> <span class="n">filename</span>
-                <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_files</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="nb">str</span><span class="p">(</span><span class="n">seek_file</span><span class="p">))]</span>
-        <span class="k">return</span> <span class="n">gmts</span>
+        
+        <span class="c1"># Set default values if None</span>
+        <span class="n">num_cores</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">num_cores</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_cores</span><span class="p">)</span>
+        <span class="n">threshold</span> <span class="o">=</span> <span class="s2">&quot;crude&quot;</span> <span class="k">if</span> <span class="n">threshold</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">threshold</span><span class="p">)</span>
+
+        <span class="c1"># Define the specific output log file path for GFN-FF</span>
+        <span class="n">out_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target_dir</span><span class="p">,</span> <span class="s2">&quot;output_ff.log&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Construct the command line, including the --gfnff flag</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">xtb_path</span><span class="si">}</span><span class="s1">&quot; --gfnff &quot;</span><span class="si">{</span><span class="n">xyz_filename</span><span class="si">}</span><span class="s1">&quot; &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;--parallel </span><span class="si">{</span><span class="n">num_cores</span><span class="si">}</span><span class="s1"> &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;--opt </span><span class="si">{</span><span class="n">threshold</span><span class="si">}</span><span class="s1"> &#39;</span>
+        <span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Open the output file and run the subprocess</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">result_file</span><span class="p">:</span>
+                <span class="n">process</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
+                    <span class="n">cmd</span><span class="p">,</span>
+                    <span class="n">stdin</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                    <span class="n">stdout</span><span class="o">=</span><span class="n">result_file</span><span class="p">,</span>
+                    <span class="n">stderr</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                    <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">cwd</span><span class="o">=</span><span class="n">target_dir</span>
+                <span class="p">)</span>
+                <span class="c1"># Wait for process and capture stderr</span>
+                <span class="n">stderr_output</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">communicate</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="c1"># Check for non-zero exit code</span>
+                <span class="k">if</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: xtb (gfnff) calculation in </span><span class="si">{</span><span class="n">target_dir</span><span class="si">}</span><span class="s2"> failed.&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stderr:</span><span class="se">\n</span><span class="si">{</span><span class="n">stderr_output</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># Handle Python exceptions</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error running xtb (gfnff) in </span><span class="si">{</span><span class="n">target_dir</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># Append error details to the log file</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_file</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">error_file</span><span class="p">:</span>
+                <span class="n">error_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- PYTHON ERROR ---</span><span class="se">\n</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s1">&#39;stderr_output&#39;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span>
+                    <span class="n">error_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- STDERR ---</span><span class="se">\n</span><span class="si">{</span><span class="n">stderr_output</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Return the path to the GFN-FF log file</span>
+        <span class="k">return</span> <span class="n">out_file</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_find_xyz_in_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Finds all files ending with &#39;.xyz&#39; within a specific directory.</span>
+
+<span class="sd">        This is a helper method that performs a non-recursive search for files</span>
+<span class="sd">        matching the pattern &#39;*.xyz&#39; directly inside the given `directory`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        directory : str</span>
+<span class="sd">            The path to the directory to search within.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[str]</span>
+<span class="sd">            A list containing the absolute paths of all found &#39;.xyz&#39; files.</span>
+<span class="sd">            Returns an empty list if no matching files are found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c1"># Use glob to find files matching the pattern in the specified directory</span>
+        <span class="n">xyz_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s1">&#39;*.xyz&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">xyz_files</span>
+
+<div class="viewcode-block" id="Htp.htp_xtb_gfn">
+<a class="viewcode-back" href="../../../pysoftk.htp_tools.html#pysoftk.htp_tools.calculator_htp.Htp.htp_xtb_gfn">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">htp_xtb_gfn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">max_work</span><span class="p">,</span> <span class="n">num_cores</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="s2">&quot;crude&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs parallel GFN-XTB optimizations on structures in subdirectories.</span>
+
+<span class="sd">        This method orchestrates the high-throughput process. It scans the</span>
+<span class="sd">        specified `directory` for immediate subdirectories. For each subdirectory</span>
+<span class="sd">        that contains exactly one &#39;.xyz&#39; file, it schedules an `xtb_gfn`</span>
+<span class="sd">        calculation using a `ThreadPoolExecutor` for parallel execution.</span>
+<span class="sd">        Progress is displayed using `tqdm`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        directory : str</span>
+<span class="sd">            The path to the main directory. This directory should contain</span>
+<span class="sd">            subdirectories, each holding one calculation setup (specifically,</span>
+<span class="sd">            one &#39;.xyz&#39; file).</span>
+<span class="sd">        max_work : int</span>
+<span class="sd">            The maximum number of concurrent `xtb` processes to run in parallel.</span>
+<span class="sd">            This corresponds to the number of worker threads in the pool.</span>
+<span class="sd">        num_cores : int</span>
+<span class="sd">            The number of CPU cores allocated to *each individual* `xtb` process</span>
+<span class="sd">            (passed via the `--parallel` flag to `xtb_gfn`).</span>
+<span class="sd">        threshold : str, optional</span>
+<span class="sd">            The geometry optimization convergence threshold level passed down to</span>
+<span class="sd">            each `xtb_gfn` call. Defaults to &quot;crude&quot;.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">            This method primarily executes side effects (running calculations,</span>
+<span class="sd">            printing output, creating files) and does not return a value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c1"># --- Scan for Suitable Subdirectories ---</span>
+        <span class="n">subdirs_to_process</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># List to hold paths of valid subdirectories</span>
+        <span class="n">xyz_files_map</span> <span class="o">=</span> <span class="p">{}</span>      <span class="c1"># Dictionary mapping subdir path to its .xyz file path</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scanning directory &#39;</span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2">&#39; for subfolders with .xyz files...&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Iterate over items (files and directories) in the main directory</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+                <span class="n">item_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                <span class="c1"># Check if the item is a directory</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">item_path</span><span class="p">):</span>
+                    <span class="c1"># Find .xyz files specifically within this subdirectory</span>
+                    <span class="n">xyz_files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_xyz_in_directory</span><span class="p">(</span><span class="n">item_path</span><span class="p">)</span>
+
+                    <span class="c1"># Check if exactly one .xyz file was found</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz_files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">subdirs_to_process</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_path</span><span class="p">)</span>
+                        <span class="c1"># Store the mapping from directory path to the xyz file path</span>
+                        <span class="n">xyz_files_map</span><span class="p">[</span><span class="n">item_path</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz_files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="c1"># Skip directory if no .xyz file found</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - Skipping &#39;</span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">&#39;: No .xyz file found.&quot;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># Skip directory if multiple .xyz files found</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - Skipping &#39;</span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">&#39;: Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">xyz_files</span><span class="p">)</span><span class="si">}</span><span class="s2"> .xyz files (expected 1).&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+            <span class="c1"># Handle case where the main directory doesn&#39;t exist</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: Main directory &#39;</span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2">&#39; not found.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="c1"># Stop execution</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># Handle other potential errors during scanning (e.g., permissions)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error scanning directory &#39;</span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="c1"># Stop execution</span>
+
+        <span class="c1"># Check if any suitable subdirectories were found</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">subdirs_to_process</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No suitable subdirectories found to process.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="c1"># Stop execution</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">subdirs_to_process</span><span class="p">)</span><span class="si">}</span><span class="s2"> subdirectories to process.&quot;</span><span class="p">)</span>
+        <span class="c1"># --- End of Directory Scanning ---</span>
+
+
+        <span class="c1"># --- Parallel Execution using ThreadPoolExecutor ---</span>
+        <span class="c1"># Create a thread pool with the specified maximum number of workers</span>
+        <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">max_work</span><span class="p">))</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+            <span class="n">futures</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># List to hold Future objects representing submitted tasks</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Submitting GFN-XTB jobs using up to </span><span class="si">{</span><span class="n">max_work</span><span class="si">}</span><span class="s2"> workers...&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Iterate through the valid subdirectories found earlier</span>
+            <span class="k">for</span> <span class="n">subdir_path</span> <span class="ow">in</span> <span class="n">subdirs_to_process</span><span class="p">:</span>
+                <span class="c1"># Retrieve the full path to the .xyz file for this subdir</span>
+                <span class="n">xyz_full_path</span> <span class="o">=</span> <span class="n">xyz_files_map</span><span class="p">[</span><span class="n">subdir_path</span><span class="p">]</span>
+                <span class="c1"># Extract just the filename (basename) from the full path</span>
+                <span class="n">xyz_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">xyz_full_path</span><span class="p">)</span>
+
+                <span class="c1"># Submit the static xtb_gfn method as a task to the executor</span>
+                <span class="c1"># Pass necessary arguments, including the stored executable path</span>
+                <span class="n">futures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+                    <span class="n">Htp</span><span class="o">.</span><span class="n">xtb_gfn</span><span class="p">,</span>                      <span class="c1"># The function to execute</span>
+                    <span class="n">xtb_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xtb_executable_path</span><span class="p">,</span> <span class="c1"># Use stored path from __init__</span>
+                    <span class="n">xyz_filename</span><span class="o">=</span><span class="n">xyz_filename</span><span class="p">,</span>        <span class="c1"># Pass only the filename</span>
+                    <span class="n">target_dir</span><span class="o">=</span><span class="n">subdir_path</span><span class="p">,</span>           <span class="c1"># Directory to run in</span>
+                    <span class="n">num_cores</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">num_cores</span><span class="p">),</span>         <span class="c1"># Cores per job</span>
+                    <span class="n">threshold</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">threshold</span><span class="p">)</span>          <span class="c1"># Optimization threshold</span>
+                <span class="p">))</span>
+
+            <span class="c1"># --- Monitor Progress ---</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running calculations...&quot;</span><span class="p">)</span>
+            <span class="c1"># Use tqdm to iterate over the futures, showing a progress bar</span>
+            <span class="c1"># as tasks complete (or raise exceptions).</span>
+            <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">futures</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">futures</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Systems relaxed (GFN)&quot;</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c1"># future.result() will wait for the task to complete</span>
+                    <span class="c1"># and return its result (the log file path from xtb_gfn).</span>
+                    <span class="c1"># It also re-raises any exception that occurred within the task.</span>
+                    <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="c1"># Check for exceptions raised by the task</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="c1"># Catch exceptions from within the xtb_gfn function itself</span>
+                    <span class="c1"># (though xtb_gfn has its own internal error handling too).</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">An error occurred processing a task: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># --- End of Progress Monitoring ---</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;All GFN-XTB calculations submitted (or attempted).&quot;</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="Htp.htp_xtb_ff">
 <a class="viewcode-back" href="../../../pysoftk.htp_tools.html#pysoftk.htp_tools.calculator_htp.Htp.htp_xtb_ff">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">htp_xtb_ff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_xtb</span><span class="p">,</span> <span class="n">max_work</span><span class="p">,</span> <span class="n">cores</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="s2">&quot;crude&quot;</span><span class="p">):</span>
-<span class="w">       </span><span class="sd">&quot;&quot;&quot;Function to perform a parallel concurrent calculation at the gfn-ff level of theory.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">htp_xtb_ff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">max_work</span><span class="p">,</span> <span class="n">num_cores</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="s2">&quot;crude&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs parallel GFN-FF optimizations on structures in subdirectories.</span>
 
-<span class="sd">       Parameters</span>
-<span class="sd">       ----------</span>
+<span class="sd">        This method orchestrates high-throughput GFN-FF calculations. It mirrors</span>
+<span class="sd">        the functionality of `htp_xtb_gfn` but schedules `xtb_ff` tasks instead,</span>
+<span class="sd">        utilizing the GFN-FF force field method in xtb.</span>
 
-<span class="sd">       path_xtb : str</span>
-<span class="sd">          Path where the xtb executable is located. </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        directory : str</span>
+<span class="sd">            Path to the main directory containing subdirectories for calculations.</span>
+<span class="sd">        max_work : int</span>
+<span class="sd">            Maximum number of concurrent `xtb` processes (worker threads).</span>
+<span class="sd">        num_cores : int</span>
+<span class="sd">            Number of CPU cores for *each individual* `xtb` GFN-FF process.</span>
+<span class="sd">        threshold : str, optional</span>
+<span class="sd">            Optimization convergence threshold passed to `xtb_ff`. Defaults to &quot;crude&quot;.</span>
 
-<span class="sd">       max_work : int</span>
-<span class="sd">          Number of maximum amount of workers in a concurrent job default is 1.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">            Executes calculations and prints progress; does not return a value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c1"># --- Scan for Suitable Subdirectories (Identical to htp_xtb_gfn) ---</span>
+        <span class="n">subdirs_to_process</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">xyz_files_map</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scanning directory &#39;</span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2">&#39; for subfolders with .xyz files (for GFN-FF)...&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+                <span class="n">item_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">item_path</span><span class="p">):</span>
+                    <span class="n">xyz_files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_xyz_in_directory</span><span class="p">(</span><span class="n">item_path</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz_files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">subdirs_to_process</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_path</span><span class="p">)</span>
+                        <span class="n">xyz_files_map</span><span class="p">[</span><span class="n">item_path</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz_files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - Skipping &#39;</span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">&#39;: No .xyz file found.&quot;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - Skipping &#39;</span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">&#39;: Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">xyz_files</span><span class="p">)</span><span class="si">}</span><span class="s2"> .xyz files (expected 1).&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: Main directory &#39;</span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2">&#39; not found.&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error scanning directory &#39;</span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
 
-<span class="sd">       num_cores : int, optional</span>
-<span class="sd">          Number of cores which the GFN-XTB2 code will use.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">subdirs_to_process</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No suitable subdirectories found to process.&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">subdirs_to_process</span><span class="p">)</span><span class="si">}</span><span class="s2"> subdirectories to process for GFN-FF.&quot;</span><span class="p">)</span>
+        <span class="c1"># --- End of Directory Scanning ---</span>
 
-<span class="sd">       threshold: str, optional</span>
-<span class="sd">          Level of geometry optimization required as defined in GFN-XTB2 code. </span>
+        <span class="c1"># --- Parallel Execution using ThreadPoolExecutor ---</span>
+        <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">max_work</span><span class="p">))</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+            <span class="n">futures</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Submitting GFN-FF jobs using up to </span><span class="si">{</span><span class="n">max_work</span><span class="si">}</span><span class="s2"> workers...&quot;</span><span class="p">)</span>
 
-<span class="sd">       Return</span>
-<span class="sd">       ------</span>
+            <span class="c1"># Iterate through the valid subdirectories</span>
+            <span class="k">for</span> <span class="n">subdir_path</span> <span class="ow">in</span> <span class="n">subdirs_to_process</span><span class="p">:</span>
+                <span class="n">xyz_full_path</span> <span class="o">=</span> <span class="n">xyz_files_map</span><span class="p">[</span><span class="n">subdir_path</span><span class="p">]</span>
+                <span class="n">xyz_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">xyz_full_path</span><span class="p">)</span>
 
-<span class="sd">       None : </span>
-<span class="sd">          A relaxed structure as produced by the GFN-XTB2 code.</span>
+                <span class="c1"># Submit the static xtb_ff method as a task</span>
+                <span class="n">futures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+                    <span class="n">Htp</span><span class="o">.</span><span class="n">xtb_ff</span><span class="p">,</span>                       <span class="c1"># Target function for GFN-FF</span>
+                    <span class="n">xtb_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xtb_executable_path</span><span class="p">,</span> <span class="c1"># Use stored path</span>
+                    <span class="n">xyz_filename</span><span class="o">=</span><span class="n">xyz_filename</span><span class="p">,</span>
+                    <span class="n">target_dir</span><span class="o">=</span><span class="n">subdir_path</span><span class="p">,</span>
+                    <span class="n">num_cores</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">num_cores</span><span class="p">),</span>
+                    <span class="n">threshold</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">threshold</span><span class="p">)</span>
+                <span class="p">))</span>
 
-<span class="sd">       &quot;&quot;&quot;</span>
-       
-       <span class="n">ending</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ending</span>
-       <span class="n">gmts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seek_files</span><span class="p">(</span><span class="n">ending</span><span class="p">)</span>
+            <span class="c1"># --- Monitor Progress (Identical structure to htp_xtb_gfn) ---</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running GFN-FF calculations...&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">futures</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">futures</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Systems relaxed (GFN-FF)&quot;</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="c1"># Wait for completion and check for exceptions</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">An error occurred processing a GFN-FF task: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># --- End of Progress Monitoring ---</span>
 
-       
-       <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">max_work</span><span class="p">))</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
-           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">gmts</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Systems relaxed&quot;</span><span class="p">):</span>
-               <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">Htp</span><span class="o">.</span><span class="n">xtb_ff</span><span class="p">,</span> <span class="n">xtb_path</span><span class="o">=</span><span class="n">path_xtb</span><span class="p">,</span> <span class="n">xyz_geom</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
-                               <span class="n">init_dir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
-                               <span class="n">num_cores</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">cores</span><span class="p">),</span>
-                               <span class="n">threshold</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">threshold</span><span class="p">))</span></div>
-
-
-
-<div class="viewcode-block" id="Htp.htp_xtb_gfn">
-<a class="viewcode-back" href="../../../pysoftk.htp_tools.html#pysoftk.htp_tools.calculator_htp.Htp.htp_xtb_gfn">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">htp_xtb_gfn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_xtb</span><span class="p">,</span> <span class="n">max_work</span><span class="p">,</span> <span class="n">cores</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="s2">&quot;crude&quot;</span><span class="p">):</span>
-<span class="w">       </span><span class="sd">&quot;&quot;&quot;Function to perform a parallel concurrent calculation at the gfn-xtb level of theory.</span>
-
-<span class="sd">       Parameters</span>
-<span class="sd">       ----------</span>
-
-<span class="sd">       path_xtb : str</span>
-<span class="sd">          Path where the xtb executable is located. </span>
-
-<span class="sd">       max_work : int</span>
-<span class="sd">          Number of maximum amount of workers in a concurrent job default is 1.</span>
-
-<span class="sd">       num_cores : int, optional</span>
-<span class="sd">          Number of cores which the GFN-XTB2 code will use.</span>
-
-<span class="sd">       threshold: str, optional</span>
-<span class="sd">          Level of geometry optimization required as defined in GFN-XTB2 code. </span>
-
-<span class="sd">       Return</span>
-<span class="sd">       ------</span>
-
-<span class="sd">       None : </span>
-<span class="sd">          A relaxed structure as produced by the GFN-XTB2 code.</span>
-<span class="sd">       &quot;&quot;&quot;</span>
-       
-       <span class="n">ending</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ending</span>
-       <span class="n">gmts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seek_files</span><span class="p">(</span><span class="n">ending</span><span class="p">)</span>
-
-       
-       <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">max_work</span><span class="p">))</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
-           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">gmts</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Systems relaxed&quot;</span><span class="p">):</span>
-               <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">Htp</span><span class="o">.</span><span class="n">xtb_gfn</span><span class="p">,</span> <span class="n">xtb_path</span><span class="o">=</span><span class="n">path_xtb</span><span class="p">,</span> <span class="n">xyz_geom</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
-                               <span class="n">init_dir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
-                               <span class="n">num_cores</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">cores</span><span class="p">),</span>
-                               <span class="n">threshold</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">threshold</span><span class="p">))</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;All GFN-FF calculations submitted (or attempted).&quot;</span><span class="p">)</span></div>
 </div>
+
+
 
 </pre></div>
 

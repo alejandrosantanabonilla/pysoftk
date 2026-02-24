@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.linear_polymer.super_monomer &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
@@ -75,180 +75,240 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pysoftk.linear_polymer.super_monomer</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">rdDistGeom</span> <span class="k">as</span> <span class="n">molDG</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Super Monomer Module.</span>
 
-<span class="c1">#Disable the unnecessary RDKit warnings</span>
+<span class="sd">This module provides the `Sm` class, which handles the chemical linking</span>
+<span class="sd">of two RDKit molecules via a designated placeholder atom. It includes</span>
+<span class="sd">methods for full 3D monomer generation, as well as highly optimized 2D</span>
+<span class="sd">topological merging for ultra-large polymer assemblies.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span> 
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>  
 <span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">RDLogger</span>
-<span class="n">RDLogger</span><span class="o">.</span><span class="n">DisableLog</span><span class="p">(</span><span class="s1">&#39;rdApp.*&#39;</span><span class="p">)</span>
+
+<span class="c1"># Disable unnecessary RDKit warnings to keep the console output clean</span>
+<span class="n">RDLogger</span><span class="o">.</span><span class="n">DisableLog</span><span class="p">(</span><span class="s1">&#39;rdApp.*&#39;</span><span class="p">)</span> 
 
 <div class="viewcode-block" id="Sm">
 <a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Sm">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Sm</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Class to create a new combined molecule from two provided RDKit Mol objects.</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Sm</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to create a new combined molecule (dimer/monomer) from two provided </span>
+<span class="sd">    RDKit Mol objects by linking them at specified placeholder atoms.</span>
+<span class="sd">    </span>
 
-<span class="sd">    Example</span>
-<span class="sd">    -------</span>
+<span class="sd">    This class supports standard SMARTS-based reactions with 3D embedding, </span>
+<span class="sd">    as well as ultra-fast direct 2D graph manipulation for large-scale </span>
+<span class="sd">    polymerization algorithms.</span>
 
-
-<span class="sd">    Note</span>
-<span class="sd">    ----</span>
-<span class="sd">    This class requires RDKit to be installed.</span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mol_1 : rdkit.Chem.rdchem.Mol</span>
+<span class="sd">        The first RDKit molecule object, containing the placeholder atom.</span>
+<span class="sd">    mol_2 : rdkit.Chem.rdchem.Mol</span>
+<span class="sd">        The second RDKit molecule object, also containing the placeholder atom.</span>
+<span class="sd">    atom : str</span>
+<span class="sd">        The atomic symbol of the placeholder atom (e.g., &#39;Br&#39;, &#39;At&#39;, &#39;X&#39;) </span>
+<span class="sd">        indicating the connection points.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mol_1&#39;</span><span class="p">,</span> <span class="s1">&#39;mol_2&#39;</span> <span class="p">,</span> <span class="s1">&#39;atom&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol_1</span><span class="p">,</span> <span class="n">mol_2</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
-<span class="w">       </span><span class="sd">&quot;&quot;&quot;Initializes the class Sm.</span>
-<span class="sd">          </span>
-<span class="sd">       Parameters</span>
-<span class="sd">       ----------</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mol_1&#39;</span><span class="p">,</span> <span class="s1">&#39;mol_2&#39;</span><span class="p">,</span> <span class="s1">&#39;atom&#39;</span><span class="p">]</span>
 
-<span class="sd">       mol_1 : rdkit.Chem.rdchem.Mol</span>
-<span class="sd">          First molecule for the new monomer</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol_1</span><span class="p">:</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">,</span> <span class="n">mol_2</span><span class="p">:</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">,</span> <span class="n">atom</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the Sm class with two molecules and a placeholder atom.</span>
 
-<span class="sd">       mol_2 : rdkit.Chem.rdchem.Mol</span>
-<span class="sd">          Second molecule for the new monomer</span>
-<span class="sd">       </span>
-<span class="sd">       atom : `str`</span>
-<span class="sd">          The placeholder atom to combine the molecules and form a new monomer</span>
-<span class="sd">       &quot;&quot;&quot;</span>
-       <span class="bp">self</span><span class="o">.</span><span class="n">mol_1</span> <span class="o">=</span> <span class="n">mol_1</span>
-       <span class="bp">self</span><span class="o">.</span><span class="n">mol_2</span> <span class="o">=</span> <span class="n">mol_2</span>
-       <span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">atom</span>
-       
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mol_1 : rdkit.Chem.rdchem.Mol</span>
+<span class="sd">            The first reactant molecule.</span>
+<span class="sd">        mol_2 : rdkit.Chem.rdchem.Mol</span>
+<span class="sd">            The second reactant molecule.</span>
+<span class="sd">        atom : str</span>
+<span class="sd">            The atomic symbol used as the reactive placeholder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mol_1</span> <span class="o">=</span> <span class="n">mol_1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mol_2</span> <span class="o">=</span> <span class="n">mol_2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">atom</span>
+
 <div class="viewcode-block" id="Sm.constructor">
 <a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Sm.constructor">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">constructor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to combine two molecules using an atom placeholder.</span>
-<span class="sd">        </span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">constructor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Combines the two input molecules using a SMARTS-defined chemical reaction.</span>
+
+<span class="sd">        The reaction replaces the placeholder atoms and joins the molecules.</span>
+<span class="sd">        It converts the resulting products to SMILES and back to a Mol object </span>
+<span class="sd">        to naturally sanitize and standardize the chemical graph.</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
+<span class="sd">        rdkit.Chem.rdchem.Mol</span>
+<span class="sd">            The resulting combined molecule as an RDKit Mol object.</span>
 
-<span class="sd">        mol_4 : rdkit.Chem.rdchem.Mol</span>
-<span class="sd">          The resulting combined molecule as RDKit Mol Object.</span>
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the reaction fails to yield valid products or SMILES strings.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mol_1</span><span class="p">,</span> <span class="n">mol_2</span><span class="p">,</span> <span class="n">atom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol_1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol_2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom</span>
+        <span class="c1"># Construct the SMARTS reaction string cleanly using an f-string</span>
+        <span class="n">react</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[*:1][</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span><span class="si">}</span><span class="s2">].[*:2][</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span><span class="si">}</span><span class="s2">]&gt;&gt;[*:1][*:2]&quot;</span>
+        
+        <span class="c1"># Create a reaction object from the SMARTS string</span>
+        <span class="n">rxn</span> <span class="o">=</span> <span class="n">AllChem</span><span class="o">.</span><span class="n">ReactionFromSmarts</span><span class="p">(</span><span class="n">react</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">rxn</span><span class="o">.</span><span class="n">RunReactants</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">mol_1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol_2</span><span class="p">])</span>
 
-        <span class="n">patt</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;[*:1]&#39;</span><span class="p">,</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span><span class="s1">&#39;]&#39;</span><span class="p">,</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="s1">&#39;[*:2]&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">),</span><span class="s1">&#39;]&#39;</span><span class="p">,</span><span class="s1">&#39;&gt;&gt;&#39;</span><span class="p">,</span><span class="s1">&#39;[*:1]&#39;</span><span class="p">,</span><span class="s1">&#39;[*:2]&#39;</span><span class="p">]</span>
-        <span class="n">react</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">patt</span><span class="p">)</span>
-        <span class="n">rxn</span> <span class="o">=</span> <span class="n">AllChem</span><span class="o">.</span><span class="n">ReactionFromSmarts</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">react</span><span class="p">))</span>
+        <span class="n">m3_smiles_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">results</span><span class="p">:</span> 
+            <span class="k">for</span> <span class="n">products_tuple</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">product_mol</span> <span class="ow">in</span> <span class="n">products_tuple</span><span class="p">:</span>
+                    <span class="n">m3_smiles_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">product_mol</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reaction failed. Ensure &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span><span class="si">}</span><span class="s2">&#39; exists in both monomers.&quot;</span><span class="p">)</span>
 
-        <span class="n">m3</span><span class="o">=</span><span class="p">[]</span>
-        <span class="n">results</span> <span class="o">=</span> <span class="n">rxn</span><span class="o">.</span><span class="n">RunReactants</span><span class="p">([</span><span class="n">mol_1</span><span class="p">,</span> <span class="n">mol_2</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">m3_smiles_list</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No product SMILES generated.&quot;</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">products</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">products</span><span class="p">:</span>
-                <span class="n">m3</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span>
-
-        <span class="n">mol4</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">m3</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">mol4</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">m3_smiles_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">mol4</span><span class="p">:</span>
+            <span class="n">Chem</span><span class="o">.</span><span class="n">SanitizeMol</span><span class="p">(</span><span class="n">mol4</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not create molecule from SMILES: </span><span class="si">{</span><span class="n">m3_smiles_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">mol4</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_bond_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
-<span class="w">       </span><span class="sd">&quot;&quot;&quot;Function to create bond template for Hydrogen atoms addition.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bond_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">:</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Assigns bond orders to a molecule based on its own template and </span>
+<span class="sd">        adds explicit hydrogen atoms.</span>
 
-<span class="sd">       Parameters</span>
-<span class="sd">       ----------</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mol : rdkit.Chem.rdchem.Mol</span>
+<span class="sd">            An RDKit molecule object requiring bond order assignment.</span>
 
-<span class="sd">       mol : rdkit.Chem.rdchem.Mol</span>
-<span class="sd">          First molecule for the new monomer</span>
-<span class="sd">       </span>
-<span class="sd">       Returns</span>
-<span class="sd">       -------</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        rdkit.Chem.rdchem.Mol</span>
+<span class="sd">            The molecule with assigned bond orders and explicit hydrogens.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_mol</span> <span class="o">=</span> <span class="n">AllChem</span><span class="o">.</span><span class="n">AssignBondOrdersFromTemplate</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span> 
+        <span class="n">new_mol_h</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">new_mol</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_mol_h</span>
 
-<span class="sd">       mol : rdkit.Chem.rdchem.Mol</span>
-<span class="sd">          The resulting combined molecule as RDKit Mol Object.</span>
-<span class="sd">       </span>
-<span class="sd">       &quot;&quot;&quot;</span>
-       
-       <span class="n">newMol</span> <span class="o">=</span> <span class="n">AllChem</span><span class="o">.</span><span class="n">AssignBondOrdersFromTemplate</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
-       <span class="n">newMol_H</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">newMol</span><span class="p">)</span>
-       
-       <span class="k">return</span> <span class="n">newMol_H</span>
-       
+<div class="viewcode-block" id="Sm.build_topology_only">
+<a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Sm.build_topology_only">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_topology_only</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Highly optimized method to connect molecules via direct 2D graph manipulation.</span>
+<span class="sd">        </span>
+
+<span class="sd">        Bypasses the RDKit reaction engine and SMILES conversion, allowing </span>
+<span class="sd">        instantaneous merging of large polymer chains. It strictly skips 3D </span>
+<span class="sd">        embedding and Hydrogen addition to maintain O(1) performance.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        rdkit.Chem.rdchem.Mol</span>
+<span class="sd">            The cleanly connected 2D RDKit Mol object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># 1. Combine into one container (disconnected)</span>
+        <span class="n">combined</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">CombineMols</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mol_1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol_2</span><span class="p">)</span>
+        <span class="n">rw_mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">RWMol</span><span class="p">(</span><span class="n">combined</span><span class="p">)</span>
+        
+        <span class="c1"># 2. Foolproof placeholder search using atom symbols</span>
+        <span class="n">matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">rw_mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">()</span> <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom</span><span class="p">]</span>
+        
+        <span class="c1"># 3. Sort placeholders by their original fragment</span>
+        <span class="n">num_atoms_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol_1</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">()</span>
+        <span class="n">placeholders_a</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">matches</span> <span class="k">if</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="n">num_atoms_a</span><span class="p">]</span>
+        <span class="n">placeholders_b</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">matches</span> <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="n">num_atoms_a</span><span class="p">]</span>
+        
+        <span class="c1"># Fallback to the traditional constructor if placeholders are missing</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">placeholders_a</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">placeholders_b</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">constructor</span><span class="p">()</span>
+
+        <span class="c1"># 4. Connect A to B (Connects the last placeholder of A to the first of B)</span>
+        <span class="n">idx_p_a</span> <span class="o">=</span> <span class="n">placeholders_a</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> 
+        <span class="n">idx_p_b</span> <span class="o">=</span> <span class="n">placeholders_b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+        <span class="n">neighbor_a</span> <span class="o">=</span> <span class="n">rw_mol</span><span class="o">.</span><span class="n">GetAtomWithIdx</span><span class="p">(</span><span class="n">idx_p_a</span><span class="p">)</span><span class="o">.</span><span class="n">GetNeighbors</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">neighbor_b</span> <span class="o">=</span> <span class="n">rw_mol</span><span class="o">.</span><span class="n">GetAtomWithIdx</span><span class="p">(</span><span class="n">idx_p_b</span><span class="p">)</span><span class="o">.</span><span class="n">GetNeighbors</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        
+        <span class="c1"># 5. Add Bond and Remove Placeholders safely</span>
+        <span class="n">rw_mol</span><span class="o">.</span><span class="n">AddBond</span><span class="p">(</span><span class="n">neighbor_a</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">(),</span> <span class="n">neighbor_b</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">(),</span> <span class="n">Chem</span><span class="o">.</span><span class="n">BondType</span><span class="o">.</span><span class="n">SINGLE</span><span class="p">)</span>
+        <span class="n">rw_mol</span><span class="o">.</span><span class="n">RemoveAtom</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">idx_p_a</span><span class="p">,</span> <span class="n">idx_p_b</span><span class="p">))</span>
+        <span class="n">rw_mol</span><span class="o">.</span><span class="n">RemoveAtom</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">idx_p_a</span><span class="p">,</span> <span class="n">idx_p_b</span><span class="p">))</span>
+        
+        <span class="c1"># 6. Sanitize graph so RDKit updates its internal valency tables</span>
+        <span class="n">Chem</span><span class="o">.</span><span class="n">SanitizeMol</span><span class="p">(</span><span class="n">rw_mol</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">rw_mol</span><span class="o">.</span><span class="n">GetMol</span><span class="p">()</span></div>
+
+
 <div class="viewcode-block" id="Sm.mon_to_poly">
 <a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Sm.mon_to_poly">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">mon_to_poly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">       </span><span class="sd">&quot;&quot;&quot; Function to create a RDKit Mol object to prepare for x-axis translation.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mon_to_poly</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prepares a single monomer unit by performing the chemical reaction, </span>
+<span class="sd">        adding Hydrogens, assigning bond orders, and embedding into 3D space.</span>
 
-<span class="sd">       Returns</span>
-<span class="sd">       -------</span>
-
-<span class="sd">       mol : rdkit.Chem.rdchem.Mol</span>
-<span class="sd">          The resulting combined molecule as RDKit Mol Object.</span>
-<span class="sd">       &quot;&quot;&quot;</span>
-       <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">constructor</span><span class="p">()</span>
-       <span class="n">newMol_H</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_bond_order</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
-       <span class="n">AllChem</span><span class="o">.</span><span class="n">EmbedMolecule</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">)</span>
-       <span class="c1">#Emb().etkdgv3(newMol_H)</span>
-       <span class="k">return</span> <span class="n">newMol_H</span></div>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        rdkit.Chem.rdchem.Mol</span>
+<span class="sd">            The processed 3D RDKit Mol object, ready for legacy polymerization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">constructor</span><span class="p">()</span>
+        <span class="n">new_mol_h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bond_order</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        
+        <span class="n">status</span> <span class="o">=</span> <span class="n">AllChem</span><span class="o">.</span><span class="n">EmbedMolecule</span><span class="p">(</span><span class="n">new_mol_h</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">AllChem</span><span class="o">.</span><span class="n">EmbedMolecule</span><span class="p">(</span><span class="n">new_mol_h</span><span class="p">,</span> <span class="n">useRandomCoords</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            
+        <span class="k">return</span> <span class="n">new_mol_h</span></div>
 
 
 <div class="viewcode-block" id="Sm.monomer">
 <a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Sm.monomer">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">monomer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Function to produce a single polymer unit as an RDKit Mol Object.</span>
-<span class="sd">        </span>
-<span class="sd">       Returns</span>
-<span class="sd">       -------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">monomer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Produces the final capped monomer unit.</span>
 
-<span class="sd">          mol : rdkit.Chem.rdchem.Mol</span>
-<span class="sd">          The resulting combined molecule as RDKit Mol Object.</span>
+<span class="sd">        This method generates the 3D monomer and dynamically replaces any </span>
+<span class="sd">        unreacted terminal placeholder atoms with Hydrogen atoms.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        rdkit.Chem.rdchem.Mol</span>
+<span class="sd">            The final, Hydrogen-capped 3D monomer object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">atom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span>
-        <span class="n">mol</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">RWMol</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mon_to_poly</span><span class="p">())</span>
+        <span class="n">mol_intermediate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mon_to_poly</span><span class="p">()</span>
+        <span class="n">rw_mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">RWMol</span><span class="p">(</span><span class="n">mol_intermediate</span><span class="p">)</span>
         
-        <span class="k">for</span> <span class="n">atoms</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">atoms</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="p">):</span>
-               <span class="n">mol</span><span class="o">.</span><span class="n">GetAtomWithIdx</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">())</span><span class="o">.</span><span class="n">SetAtomicNum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Identify remaining placeholder atoms</span>
+        <span class="n">atoms_to_modify</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">a</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">rw_mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">()</span> <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom</span>
+        <span class="p">]</span>
 
-        <span class="n">mol2</span><span class="o">=</span><span class="n">mol</span><span class="o">.</span><span class="n">GetMol</span><span class="p">()</span>
-        <span class="n">newMol_H</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_bond_order</span><span class="p">(</span><span class="n">mol2</span><span class="p">)</span>
-        <span class="n">AllChem</span><span class="o">.</span><span class="n">EmbedMolecule</span><span class="p">(</span><span class="n">newMol_H</span><span class="p">)</span>
-        <span class="c1">#Emb().etkdgv3(newMol_H)</span>
+        <span class="c1"># Convert placeholders to Hydrogen (Atomic Number 1)</span>
+        <span class="k">for</span> <span class="n">atom_idx</span> <span class="ow">in</span> <span class="n">atoms_to_modify</span><span class="p">:</span>
+            <span class="n">rw_mol</span><span class="o">.</span><span class="n">GetAtomWithIdx</span><span class="p">(</span><span class="n">atom_idx</span><span class="p">)</span><span class="o">.</span><span class="n">SetAtomicNum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> 
 
-        <span class="k">return</span> <span class="n">newMol_H</span></div>
+        <span class="n">mol_after_replacement</span> <span class="o">=</span> <span class="n">rw_mol</span><span class="o">.</span><span class="n">GetMol</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">mol_after_replacement</span><span class="p">:</span>
+            <span class="n">Chem</span><span class="o">.</span><span class="n">SanitizeMol</span><span class="p">(</span><span class="n">mol_after_replacement</span><span class="p">)</span>
+
+        <span class="c1"># Re-apply bond orders and re-embed to account for geometric changes</span>
+        <span class="n">final_mol_processed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bond_order</span><span class="p">(</span><span class="n">mol_after_replacement</span><span class="p">)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">AllChem</span><span class="o">.</span><span class="n">EmbedMolecule</span><span class="p">(</span><span class="n">final_mol_processed</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">AllChem</span><span class="o">.</span><span class="n">EmbedMolecule</span><span class="p">(</span><span class="n">final_mol_processed</span><span class="p">,</span> <span class="n">useRandomCoords</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">final_mol_processed</span></div>
 </div>
-
-
-   
-<div class="viewcode-block" id="Emb">
-<a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Emb">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Emb</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Class created to use the ETKDGV3 method provided in RDKit for 3D Geometry embedding.  </span>
-<span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="Emb.etkdgv3">
-<a class="viewcode-back" href="../../../pysoftk.linear_polymer.html#pysoftk.linear_polymer.super_monomer.Emb.etkdgv3">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">etkdgv3</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">):</span>
-<span class="w">      </span><span class="sd">&quot;&quot;&quot;Function to perform Geometry embedding.</span>
-
-<span class="sd">      Parameters</span>
-<span class="sd">      ----------</span>
-
-<span class="sd">      mol : rdkit.Chem.rdchem.Mol</span>
-<span class="sd">          The resulting combined molecule as RDKit Mol Object.</span>
-
-<span class="sd">      Returns</span>
-<span class="sd">      -------</span>
-
-<span class="sd">      mol : rdkit.Chem.rdchem.Mol</span>
-<span class="sd">          The resulting embedded molecule as RDKit Mol Object.</span>
-<span class="sd">      &quot;&quot;&quot;</span>
-      <span class="n">ps</span><span class="o">=</span><span class="n">molDG</span><span class="o">.</span><span class="n">ETKDGv3</span><span class="p">()</span>
-      <span class="n">ps</span><span class="o">.</span><span class="n">useExpTorsionAnglePrefs</span> <span class="o">=</span> <span class="kc">True</span>
-      <span class="n">ps</span><span class="o">.</span><span class="n">useBasicKnowledge</span> <span class="o">=</span> <span class="kc">True</span>
-      <span class="n">ps</span><span class="o">.</span><span class="n">enforceChirality</span> <span class="o">=</span> <span class="kc">True</span>
-      <span class="n">ps</span><span class="o">.</span><span class="n">randomSeed</span> <span class="o">=</span> <span class="mi">1</span>
-      
-      <span class="n">molDG</span><span class="o">.</span><span class="n">EmbedMolecule</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">ps</span><span class="p">)</span>
-
-      <span class="k">return</span> <span class="n">mol</span> </div>
-</div>
-
 
 </pre></div>
 

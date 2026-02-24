@@ -12,6 +12,14 @@ pysoftk.topologies.branched module
    :undoc-members:
    :show-inheritance:
 
+pysoftk.topologies.dend module
+------------------------------
+
+.. automodule:: pysoftk.topologies.dend
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pysoftk.topologies.diblock module
 ---------------------------------
 

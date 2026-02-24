@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.pysoftwhere package &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -108,44 +108,122 @@
 <dt class="sig sig-object py" id="pysoftk.pysoftwhere.icsi.icsi">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.pysoftwhere.icsi.</span></span><span class="sig-name descname"><span class="pre">icsi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_resids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_atoms_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_sel_atoms_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell_sel_atoms_positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">31</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_random_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalisation_run</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pysoftwhere/icsi.html#icsi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pysoftwhere.icsi.icsi" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Calculates the intrinsic surface density (ISD) of a cluster in a molecular
-simulation.</p>
-<p>This class implements the Intrinsic Surface Density (ISD) calculation as
-described in [Reference]. It takes a universe (<cite>u</cite>), cluster definition
-information, and options for frame and binning as input and returns the
-intrinsic radius, spherical radius, and interface values.</p>
+<p>Calculates the <strong>Intrinsic Surface Density (ISD)</strong> of a defined cluster
+within a molecular dynamics simulation.</p>
+<p>The Intrinsic Surface Density (ISD) provides a quantitative measure of
+the local density fluctuations at the interface of a molecular cluster.
+This class implements the ISD calculation, as described in scientific
+literature, to characterize the roughness or compactness of a cluster’s
+surface. It processes molecular positions, converts them to spherical
+coordinates, and performs binning to determine the intrinsic radius,
+spherical radius, and interface values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> – An MDAnalysis universe object.</p></li>
-<li><p><strong>cluster_resids</strong> – A list of residue indices that define the cluster.</p></li>
-<li><p><strong>cluster_atoms_positions</strong> – A 3D NumPy array of atomic positions in the
-cluster across all frames.</p></li>
-<li><p><strong>core_sel_atoms_positions</strong> – A 3D NumPy array of atomic positions for the
-core region of the cluster.</p></li>
-<li><p><strong>shell_sel_atoms_positions</strong> – A 3D NumPy array of atomic positions for the
-shell region of the cluster.</p></li>
-<li><p><strong>frame</strong> – The frame index to use for the calculation (default: -1 for
-the last frame).</p></li>
-<li><p><strong>no_bins</strong> – The number of bins for the 2D histogram (default: 31).</p></li>
-<li><p><strong>no_random_points</strong> – The number of random points to use for
-normalization (default: 10000).</p></li>
-<li><p><strong>normalisation_run</strong> – Whether to use random points for normalization
-(default: False).</p></li>
+<li><p><strong>u</strong> (<em>MDAnalysis.Universe</em>) – An <strong>MDAnalysis Universe object</strong> containing the trajectory and
+topology information of the molecular system. This universe provides
+the context for atom selections and positions.</p></li>
+<li><p><strong>cluster_resids</strong> (<em>list</em><em> of </em><em>int</em>) – A <strong>list of residue IDs</strong> (integers) that collectively define the
+cluster of interest. All atoms belonging to these residues will be
+considered part of the cluster.</p></li>
+<li><p><strong>cluster_atoms_positions</strong> (<em>numpy.ndarray</em>) – A <strong>3D NumPy array</strong> of shape <cite>(n_atoms, 3)</cite> representing the Cartesian
+coordinates (x, y, z) of all atoms within the <cite>cluster_resids</cite>
+for a specific frame.</p></li>
+<li><p><strong>core_sel_atoms_positions</strong> (<em>numpy.ndarray</em>) – A <strong>3D NumPy array</strong> of shape <cite>(n_core_atoms, 3)</cite> representing the
+Cartesian coordinates (x, y, z) of atoms defined as the <strong>core region</strong>
+of the cluster. These atoms are used to establish the “inner” boundary
+for the intrinsic radius calculation.</p></li>
+<li><p><strong>shell_sel_atoms_positions</strong> (<em>numpy.ndarray</em>) – A <strong>3D NumPy array</strong> of shape <cite>(n_shell_atoms, 3)</cite> representing the
+Cartesian coordinates (x, y, z) of atoms defined as the <strong>shell region</strong>
+of the cluster. These atoms represent the “outer” boundary and are
+used to probe the surface.</p></li>
+<li><p><strong>frame</strong> (<em>int</em><em>, </em><em>optional</em>) – The <strong>index of the trajectory frame</strong> to use for the ISD calculation.
+A value of -1 (default) indicates the last frame of the trajectory.</p></li>
+<li><p><strong>no_bins</strong> (<em>int</em><em>, </em><em>optional</em>) – The <strong>number of bins</strong> to use for constructing the 2D histogram in
+spherical coordinate space ($cos(      heta)$ and $phi$). A higher
+number of bins provides finer resolution but may lead to sparser data.
+Defaults to 31.</p></li>
+<li><p><strong>no_random_points</strong> (<em>int</em><em>, </em><em>optional</em>) – The <strong>number of random points</strong> to generate for normalization purposes
+when <cite>normalisation_run</cite> is set to <cite>True</cite>. These points are uniformly
+distributed within the simulation box. Defaults to 10000.</p></li>
+<li><p><strong>normalisation_run</strong> (<em>bool</em><em>, </em><em>optional</em>) – A flag indicating whether the calculation should use <strong>randomly
+generated points for normalization</strong> instead of the actual <cite>shell_sel_atoms_positions</cite>.
+Set to <cite>True</cite> for normalization runs, <cite>False</cite> (default) for actual
+ISD calculation.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of intrinsic radii.
-spherical_r: A list of spherical radii.
-interface_vals: A 2D NumPy array of interface values.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>intrinsic_r</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If an invalid frame index is provided.</p>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.pysoftwhere.icsi.icsi.intrinsic_r">
+<span class="sig-name descname"><span class="pre">intrinsic_r</span></span><a class="headerlink" href="#pysoftk.pysoftwhere.icsi.icsi.intrinsic_r" title="Link to this definition"></a></dt>
+<dd><p>A list containing the <strong>calculated intrinsic radii</strong> for each shell atom.
+The intrinsic radius represents the distance from the cluster’s effective
+surface to the shell atom.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of float</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.pysoftwhere.icsi.icsi.spherical_r">
+<span class="sig-name descname"><span class="pre">spherical_r</span></span><a class="headerlink" href="#pysoftk.pysoftwhere.icsi.icsi.spherical_r" title="Link to this definition"></a></dt>
+<dd><p>A list containing the <strong>calculated spherical radii</strong> for each shell atom.
+The spherical radius is the radial distance of the shell atom from the
+center of mass of the cluster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.pysoftwhere.icsi.icsi.interface_vals">
+<span class="sig-name descname"><span class="pre">interface_vals</span></span><a class="headerlink" href="#pysoftk.pysoftwhere.icsi.icsi.interface_vals" title="Link to this definition"></a></dt>
+<dd><p>A <strong>2D NumPy array</strong> representing the calculated interface values
+across the binned spherical coordinate space. This array effectively
+maps the “edge” of the core region in different angular directions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If an invalid <cite>frame</cite> index is provided (e.g., out of trajectory bounds).</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">MDAnalysis.Universe</span></code></dt><dd><p>For details on the MDAnalysis Universe object.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.stats.binned_statistic_2d</span></code></dt><dd><p>For details on the 2D histogramming function.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>The calculation of the intrinsic surface density involves:
+1.  Defining a cluster, its core, and its shell regions.
+2.  Translating all atomic coordinates to the center of mass of the cluster.
+3.  Converting Cartesian coordinates of core and shell atoms to spherical</p>
+<blockquote>
+<div><p>coordinates (r, $       heta$, $phi$).</p>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li><p>Binning the spherical coordinates to create a 2D histogram.</p></li>
+<li><p>Determining the “interface” position, typically by finding the maximum
+radial distance of core atoms within each angular bin.</p></li>
+<li><p>Calculating the intrinsic radius for each shell atom as the difference
+between its spherical radius and the interface position in its
+corresponding angular bin.</p></li>
+</ol>
+<p>The method handles missing data (NaNs) in the interface values by
+averaging from neighboring bins, ensuring a continuous interface definition.</p>
 </dd></dl>
 
 </section>

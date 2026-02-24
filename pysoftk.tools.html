@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.tools package &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -107,19 +107,32 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.tools.utils_func.atom_neigh">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.tools.utils_func.</span></span><span class="sig-name descname"><span class="pre">atom_neigh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_func.html#atom_neigh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.utils_func.atom_neigh" title="Link to this definition"></a></dt>
-<dd><p>Find the neighbours from an atoms inside a molecule.</p>
+<dd><p>Identifies all placeholder atoms of a given type and their direct neighbors.</p>
+<p>For each atom in the molecule that matches the specified placeholder <cite>atom</cite> symbol,
+this function finds all its neighboring atoms. It returns a flat list of tuples,
+where each tuple contains the index of a placeholder atom and the index of one
+of its neighbors. If a placeholder has multiple neighbors, multiple tuples will
+be generated for that placeholder, one for each neighbor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
-<li><p><strong>atom</strong> (<em>str</em>) – The placeholder atom</p></li>
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The RDKit molecule object.</p></li>
+<li><p><strong>atom</strong> (<em>str</em>) – The atomic symbol of the placeholder atom (e.g., “Br”, “*”).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>neigh</strong> – List of neighbors</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>A list of (placeholder_atom_index, neighbor_atom_index)</dt><dd><p>tuples. The list is flattened.
+Example: If P1 is a placeholder bonded to N1a and N1b, and
+P2 is a placeholder bonded to N2a, the result could be
+[(idx_P1, idx_N1a), (idx_P1, idx_N1b), (idx_P2, idx_N2a)].
+The order depends on RDKit’s internal atom iteration.</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
+<dd class="field-odd"><p>list[tuple[int, int]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -127,22 +140,23 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.tools.utils_func.count_plholder">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.tools.utils_func.</span></span><span class="sig-name descname"><span class="pre">count_plholder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_func.html#count_plholder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.utils_func.count_plholder" title="Link to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to count the number of user defined</dt><dd><p>atomic placeholders.</p>
-</dd>
-</dl>
+<dd><p>Counts the occurrences of a specific placeholder atom type in an RDKit molecule.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
-<li><p><strong>atom</strong> (<em>class.str</em>) – The placeholder atom</p></li>
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The RDKit molecule object to inspect.</p></li>
+<li><p><strong>atom</strong> (<em>str</em>) – The atomic symbol of the placeholder atom to count (e.g., “Br”, “*”).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>num_br</strong> – Number of atomic place holders inside a molecule.</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>The total number of placeholder atoms of the specified type found</dt><dd><p>in the molecule.</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>class.int</p>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -150,25 +164,42 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.tools.utils_func.create_pol">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.tools.utils_func.</span></span><span class="sig-name descname"><span class="pre">create_pol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tpb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_func.html#create_pol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.utils_func.create_pol" title="Link to this definition"></a></dt>
-<dd><p>Function to create polymers.</p>
+<dd><p>Creates specified bonds in a molecule and removes internal placeholder atoms.</p>
+<p>This function modifies the input RDKit molecule <cite>mol</cite> by:
+1. Converting <cite>mol</cite> to an <cite>RWMol</cite> object to allow modifications.
+2. Adding new single bonds between atom pairs specified in <cite>tpb</cite>.
+3. Identifying all atoms matching the placeholder <cite>atom</cite> symbol (e.g., “Br”, “*”).
+4. Removing all occurrences of these placeholder atoms <em>except</em> for those</p>
+<blockquote>
+<div><p>that are effectively terminal (i.e., the ones with the smallest and
+largest atom indices among all identified placeholders, after sorting).</p>
+</div></blockquote>
+<p>This is typically used in polymer construction to form bonds between monomer
+units (connected via placeholders) and then remove the (now internal) placeholder
+atoms. Terminal placeholders might be retained.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
-<li><p><strong>atom</strong> (<em>str</em>) – The placeholder atom</p></li>
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The RDKit molecule object. This is often
+a single <cite>Mol</cite> object containing disconnected fragments or monomers
+linked by placeholders. It will be modified.</p></li>
+<li><p><strong>atom</strong> (<em>str</em>) – The atomic symbol of the placeholder atom (e.g., “Br”, “*”).
+This symbol is used to identify atoms for removal.</p></li>
+<li><p><strong>tpb</strong> (<em>list</em><em>[</em><em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em><em>]</em>) – A list of tuples, where each tuple
+<cite>(idx1, idx2)</cite> specifies the atom indices to be connected by a
+new single bond.</p></li>
 </ul>
 </dd>
-</dl>
-<dl class="simple">
-<dt>tpb: list</dt><dd><p>List of tuples with atoms to be connected</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The modified RDKit molecule object (as an RWMol)</dt><dd><p>with new bonds added and specified internal
+placeholders removed.</p>
 </dd>
 </dl>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>rmwol1</strong> – RDKit Mol object</p>
+</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>rdkit.Chem.rdchem.Mol</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rdkit.Chem.rdchem.RWMol</p>
 </dd>
 </dl>
 </dd></dl>
@@ -176,16 +207,24 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.tools.utils_func.get_file_extension">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.tools.utils_func.</span></span><span class="sig-name descname"><span class="pre">get_file_extension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_func.html#get_file_extension"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.utils_func.get_file_extension" title="Link to this definition"></a></dt>
-<dd><p>Gets the extension of a file.</p>
+<dd><p>Extracts the filename and extension from a given path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The path to the file.</p>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The full path to the file.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The extension of the file.</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>A tuple containing two strings:</dt><dd><ul class="simple">
+<li><p>The filename without the extension.</p></li>
+<li><p>The file extension (including the dot, e.g., “.txt”).
+If the path has no extension, this will be an empty string.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p>tuple[str, str]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -193,24 +232,37 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.tools.utils_func.pattern_mol_seq">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.tools.utils_func.</span></span><span class="sig-name descname"><span class="pre">pattern_mol_seq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_func.html#pattern_mol_seq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.utils_func.pattern_mol_seq" title="Link to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to create a list of molecules based on a user</dt><dd><p>provided pattern.</p>
-</dd>
-</dl>
+<dd><p>Generates a sequence of molecule names based on a pattern string and a list of molecule names.</p>
+<p>It first identifies unique characters in the <cite>pattern</cite> (e.g., “A”, “B” from “A+B+A”).
+Then, it creates replacement tuples by pairing these unique characters (sorted)
+with the molecule names provided in the <cite>mols</cite> list, in their respective orders.
+Finally, it uses <cite>pattern_repl</cite> to substitute these characters in the
+<cite>pattern</cite> with their corresponding molecule names and splits the result.</p>
+<p class="rubric">Example</p>
+<p>mols = [“water”, “ethanol”]
+pattern = “A+B+A”
+Unique chars in pattern (sorted alphabetically, case-insensitively): [‘A’, ‘B’]
+Replacement tuples: [(‘A’, “water”), (‘B’, “ethanol”)]
+Resulting sequence: [“water”, “ethanol”, “water”]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pattern</strong> (<em>class.str</em>) – A string value containing the desired pattern.</p></li>
-<li><p><strong>mols</strong> (<em>class.list</em>) – List containing the names of the molecules to form a
-polymer with a given pattern.</p></li>
+<li><p><strong>mols</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – A list of molecule names. The order should correspond to the
+alphabetically sorted unique characters from the <cite>pattern</cite>.</p></li>
+<li><p><strong>pattern</strong> (<em>str</em>) – A string defining the sequence pattern, using characters
+as placeholders for molecules (e.g., “A+B+A”).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>return</strong> – List with the correct sequence of molecular fragments
-to be merged.</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>A list of molecule names arranged according to the pattern.</dt><dd><p>Returns an empty list or partially resolved list if <cite>mols</cite>
+and unique characters in <cite>pattern</cite> do not align as expected.</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>class.list</p>
+<dd class="field-odd"><p>list[str]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -218,16 +270,29 @@ to be merged.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.tools.utils_func.pattern_recon">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.tools.utils_func.</span></span><span class="sig-name descname"><span class="pre">pattern_recon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_func.html#pattern_recon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.utils_func.pattern_recon" title="Link to this definition"></a></dt>
-<dd><p>Function to find unique values from a string pattern.</p>
+<dd><p>Identifies unique characters in a string pattern and sorts them.</p>
+<p>The sorting is case-insensitive alphabetical. For example, “aBcAb”
+would result in [‘A’, ‘B’, ‘c’] (or [‘a’, ‘b’, ‘c’] depending on
+which case is preserved by <cite>set</cite> for mixed-case duplicates, then sorted
+alphabetically based on their uppercase representation).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>pattern</strong> (<em>str</em>) – Variable containing the pattern written in a string.</p>
+<dd class="field-odd"><p><strong>pattern</strong> (<em>str</em>) – The input string pattern (e.g., “ABCA”).</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>result</strong> – Returns the unique values of the pattern in alphabetic order.</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>A list of unique characters from the pattern, sorted</dt><dd><p>alphabetically (case-insensitively, preserving the original case
+of the first occurrence encountered by set for each character).
+For “bBaAcC”, output could be [‘A’, ‘a’, ‘B’, ‘b’, ‘C’, ‘c’] if all are unique,
+or [‘A’, ‘B’, ‘C’] if ‘a’ is treated as ‘A’ by set (which it isn’t).
+Actually, <cite>set</cite> is case-sensitive. So “bBaAcC” -&gt; {‘b’, ‘B’, ‘a’, ‘A’, ‘c’, ‘C’}.
+<cite>sorted(…, key=str.upper)</cite> then sorts these as A,a,B,b,C,c.</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
+<dd class="field-odd"><p>list[str]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -235,20 +300,32 @@ to be merged.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.tools.utils_func.pattern_repl">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.tools.utils_func.</span></span><span class="sig-name descname"><span class="pre">pattern_repl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tup_repl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_func.html#pattern_repl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.utils_func.pattern_repl" title="Link to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to perform a pattern replacement using tuples generated</dt><dd><p>by pattern and molecular names.</p>
-</dd>
-</dl>
+<dd><p>Replaces characters in a pattern string based on a list of replacement tuples.</p>
+<p>The function iterates through each tuple in <cite>tup_repl</cite>. Each tuple is
+expected to contain an old character (or substring) to be replaced and a new string
+(the replacement). After all replacements, the modified pattern string is
+split by the “+” delimiter, and any empty strings resulting from the split
+are removed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>pattern</strong> (<em>str</em>) – Variable containing the pattern written in a string</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pattern</strong> (<em>str</em>) – The initial string pattern (e.g., “A+B+A”).</p></li>
+<li><p><strong>tup_repl</strong> (<em>list</em><em>[</em><em>tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – A list of tuples, where each tuple
+contains two strings: (substring_to_replace, replacement_string).
+Example: [(‘A’, ‘mol1’), (‘B’, ‘mol2’)]</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>return</strong> – Returns the names of the molecules as provided
-by the string pattern.</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>A list of strings derived from the modified pattern after</dt><dd><p>replacements and splitting by “+”. Empty strings are filtered out.
+For pattern=”A+B+A” and tup_repl=[(‘A’,’X’),(‘B’,’Y’)],
+it becomes “X+Y+X”, then returns [‘X’, ‘Y’, ‘X’].</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
+<dd class="field-odd"><p>list[str]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -256,16 +333,37 @@ by the string pattern.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.tools.utils_func.tuple_bonds">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.tools.utils_func.</span></span><span class="sig-name descname"><span class="pre">tuple_bonds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst_atm_neigh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_func.html#tuple_bonds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.utils_func.tuple_bonds" title="Link to this definition"></a></dt>
-<dd><p>Function to seek atomic neighbours</p>
+<dd><p>Generates pairs of atom indices for creating new bonds from a list of placeholder-neighbor pairs.</p>
+<p>This function processes an ordered list of (placeholder_atom_index,
+neighbor_atom_index) tuples. It extracts the neighbor indices from the “internal”
+tuples in this list (i.e., excluding the first and the last tuple from <cite>lst_atm_neigh</cite>
+when collecting neighbor indices) and then pairs these collected neighbor indices
+sequentially. This is typically used to define new bonds that will connect
+monomers in a polymer chain.</p>
+<p>The function assumes <cite>lst_atm_neigh</cite> is appropriately ordered (e.g., by
+placeholder index along a chain) for the desired connectivity.</p>
+<p class="rubric">Example</p>
+<p>If <cite>lst_atm_neigh</cite> = <cite>[(P0,N0), (P1,N1), (P2,N2), (P3,N3), (P4,N4)]</cite>.
+- It considers internal elements for neighbor collection: <cite>(P1,N1)</cite>, <cite>(P2,N2)</cite>, <cite>(P3,N3)</cite>.
+- It extracts their neighbor indices: <cite>bond_idx</cite> becomes <cite>[N1, N2, N3]</cite>.
+- It then pairs them: <cite>[(N1, N2)]</cite>. The last element <cite>N3</cite> is unpaired if <cite>bond_idx</cite> has odd length.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>lst_atm_neigh</strong> (<em>class.list</em>) – List containing atoms for getting neighbors.</p>
+<dd class="field-odd"><p><strong>lst_atm_neigh</strong> (<em>list</em><em>[</em><em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em><em>]</em>) – An ordered list of tuples, where
+each tuple is (placeholder_atom_index, neighbor_atom_index).
+This list might be generated from <cite>atom_neigh</cite> and subsequently sorted/ordered.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>return</strong> – A list of tuples with the neighbors of the parsed atoms.</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>A list of tuples, where each tuple contains two</dt><dd><p>neighbor_atom_indices that are intended to be bonded together.
+For example, <cite>[(neighbor_idx1, neighbor_idx2), (neighbor_idx3, neighbor_idx4)]</cite>.
+Returns an empty list if <cite>bond_idx</cite> has fewer than two elements.</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>class.list</p>
+<dd class="field-odd"><p>list[tuple[int, int]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -276,16 +374,19 @@ by the string pattern.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.tools.utils_ob.check_bond_order">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.tools.utils_ob.</span></span><span class="sig-name descname"><span class="pre">check_bond_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_ob.html#check_bond_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.utils_ob.check_bond_order" title="Link to this definition"></a></dt>
-<dd><p>Function to check and correct the bonds
-of a given file.</p>
+<dd><p>Checks and corrects bond orders for a molecule in a given file.</p>
+<p>This function reads a molecule from a file, removes existing hydrogens,
+attempts to connect disconnected parts (if any), perceives bond orders,
+and then re-adds hydrogens. The modified molecule is written to a new
+file with “_new” appended to its original base name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>file_name</strong> (<em>class.str</em>) – An user-provided file containing a molecule
-in an accepted openbabel format.</p>
+<dd class="field-odd"><p><strong>file_name</strong> (<em>str</em>) – The path to the input molecular file. The file format is inferred
+from its extension and must be supported by Open Babel.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new file containing checked bond and bond order
-molecular system.</p>
+<dd class="field-even"><p>This function does not return a value but writes a new molecular file
+(e.g., if <cite>file_name</cite> is “molecule.mol”, output is “molecule_new.mol”).</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
@@ -296,23 +397,28 @@ molecular system.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.tools.utils_ob.ff_ob_relaxation">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.tools.utils_ob.</span></span><span class="sig-name descname"><span class="pre">ff_ob_relaxation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF94'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ff_thr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_ob.html#ff_ob_relaxation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.utils_ob.ff_ob_relaxation" title="Link to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Setting up an openbabel FF for</dt><dd><p>geometry optimization.</p>
-</dd>
-</dl>
+<dd><p>Performs geometry optimization on an Open Babel molecule using a specified force field.</p>
+<p>The molecule’s coordinates are updated in place.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mol</strong> (<em>OBabel.Mol</em>) – An user-provided OpenBabel moelcule.</p></li>
-<li><p><strong>FF</strong> (<em>class.str</em>) – Selected Force Field. Options are MMFF94, UFF, GAFF.</p></li>
-<li><p><strong>iter</strong> (<em>class.int</em>) – Number of iterations to be used for the FF.</p></li>
+<li><p><strong>mol</strong> (<em>pybel.Molecule</em>) – The Open Babel molecule (as a Pybel Molecule object) to be optimized.
+The <cite>OBMol</cite> attribute of this object will be used.</p></li>
+<li><p><strong>FF</strong> (<em>str</em><em>, </em><em>optional</em>) – The force field to be used for optimization.
+Supported options include “MMFF94”, “UFF”, “GAFF”.
+Defaults to “MMFF94”.</p></li>
+<li><p><strong>relax_iterations</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of iterations for the conjugate gradients algorithm.
+Defaults to 100.</p></li>
+<li><p><strong>ff_thr</strong> (<em>float</em><em>, </em><em>optional</em>) – The convergence criterion (e.g., energy difference or RMS gradient)
+for the force field optimization. Defaults to 1.0e-6.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>mol_new</strong> – Open Babel Molecule with optmised Geometry.</p>
+<dd class="field-even"><p>The input molecule with its geometry optimized. The modification is
+done in-place, and the same molecule object is returned.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Mol.OBabel.Mol</p>
+<dd class="field-odd"><p>pybel.Molecule</p>
 </dd>
 </dl>
 </dd></dl>
@@ -320,22 +426,31 @@ molecular system.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.tools.utils_ob.global_opt">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.tools.utils_ob.</span></span><span class="sig-name descname"><span class="pre">global_opt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF94'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">150</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rot_steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">125</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ff_thr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_ob.html#global_opt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.utils_ob.global_opt" title="Link to this definition"></a></dt>
-<dd><p>Setting up an openbabel FF for rotor
-optimization.</p>
+<dd><p>Performs a global geometry optimization on an Open Babel molecule.</p>
+<p>This typically involves a combination of conformational searching (rotor search)
+and local geometry minimizations (e.g., conjugate gradients) to find a
+low-energy structure. The molecule’s coordinates are updated in place.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mol</strong> (<em>OBabel.Mol</em>) – An user-provided OpenBabel moelcule.</p></li>
-<li><p><strong>FF</strong> (<em>class.str</em>) – Selected Force Field. Options are MMFF94, UFF, GAFF.</p></li>
-<li><p><strong>rot_steps</strong> (<em>class.int</em>) – Number of iterations to be used for the rotational
-optimization.</p></li>
+<li><p><strong>mol</strong> (<em>pybel.Molecule</em>) – The Open Babel molecule (as a Pybel Molecule object) to be optimized.</p></li>
+<li><p><strong>FF</strong> (<em>str</em><em>, </em><em>optional</em>) – The force field to be used. Options include “MMFF94”, “UFF”, “GAFF”.
+Defaults to “MMFF94”.</p></li>
+<li><p><strong>relax_iterations</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of iterations for conjugate gradients steps.
+Defaults to 150.</p></li>
+<li><p><strong>rot_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of iterations for the weighted rotor search.
+Defaults to 125.</p></li>
+<li><p><strong>ff_thr</strong> (<em>float</em><em>, </em><em>optional</em>) – The convergence criterion for the final conjugate gradients optimization.
+Defaults to 1.0e-6. A less strict criterion (ff_thr * 100) is used
+for the initial relaxation.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>mol_new</strong> – Open Babel Molecule with optmised Geometry.</p>
+<dd class="field-even"><p>The input molecule with its geometry globally optimized.
+The modification is done in-place.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Mol.OBabel.Mol</p>
+<dd class="field-odd"><p>pybel.Molecule</p>
 </dd>
 </dl>
 </dd></dl>
@@ -343,22 +458,28 @@ optimization.</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.tools.utils_ob.rotor_opt">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.tools.utils_ob.</span></span><span class="sig-name descname"><span class="pre">rotor_opt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF94'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rot_steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">125</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_ob.html#rotor_opt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.utils_ob.rotor_opt" title="Link to this definition"></a></dt>
-<dd><p>Setting up an openbabel FF for rotor
-optimization.</p>
+<dd><p>Performs a rotor search (conformational search) on an Open Babel molecule.</p>
+<p>This function attempts to find low-energy conformations by rotating
+rotatable bonds. The molecule’s coordinates are updated in place to
+reflect the best conformation found.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mol</strong> (<em>OBabel.Mol</em>) – An user-provided OpenBabel moelcule.</p></li>
-<li><p><strong>FF</strong> (<em>class.str</em>) – Selected Force Field. Options are MMFF94, UFF, GAFF.</p></li>
-<li><p><strong>rot_steps</strong> (<em>class.int</em>) – Number of iterations to be used for the rotational
-optimization.</p></li>
+<li><p><strong>mol</strong> (<em>pybel.Molecule</em>) – The Open Babel molecule (as a Pybel Molecule object) for which
+to perform the rotor search.</p></li>
+<li><p><strong>FF</strong> (<em>str</em><em>, </em><em>optional</em>) – The force field to be used during the rotor search.
+Supported options include “MMFF94”, “UFF”, “GAFF”.
+Defaults to “MMFF94”.</p></li>
+<li><p><strong>rot_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of steps or iterations for the weighted rotor search.
+This influences the thoroughness of the search. Defaults to 125.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>mol_new</strong> – Open Babel Molecule with optmised Geometry.</p>
+<dd class="field-even"><p>The input molecule with its conformation optimized by the rotor search.
+The modification is done in-place.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Mol.OBabel.Mol</p>
+<dd class="field-odd"><p>pybel.Molecule</p>
 </dd>
 </dl>
 </dd></dl>
@@ -517,6 +638,531 @@ optimization.</p></li>
 </section>
 <section id="module-pysoftk.tools">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pysoftk.tools" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.MMFF_rel">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">MMFF_rel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vdw_par</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_rdkit.html#MMFF_rel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.MMFF_rel" title="Link to this definition"></a></dt>
+<dd><p>Function to employ a MMFF molecular mechanics FF.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
+<li><p><strong>relax_iterations</strong> (<em>int</em>) – Number of iterations to perform a FF geometry optimization.</p></li>
+<li><p><strong>vdw_par</strong> (<em>float</em>) – Extension of the vdW interaction range.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>mol</strong> – RDKit Mol object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.UFF_rel">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">UFF_rel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vdw_par</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_rdkit.html#UFF_rel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.UFF_rel" title="Link to this definition"></a></dt>
+<dd><p>Function to employ an UFF molecular mechanics FF.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
+<li><p><strong>relax_iterations</strong> (<em>int</em>) – Number of iterations to perform a FF geometry optimization.</p></li>
+<li><p><strong>vdw_par</strong> (<em>float</em>) – Extension of the vdW interaction range.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>mol</strong> – RDKit Mol object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.atom_neigh">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">atom_neigh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_func.html#atom_neigh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.atom_neigh" title="Link to this definition"></a></dt>
+<dd><p>Identifies all placeholder atoms of a given type and their direct neighbors.</p>
+<p>For each atom in the molecule that matches the specified placeholder <cite>atom</cite> symbol,
+this function finds all its neighboring atoms. It returns a flat list of tuples,
+where each tuple contains the index of a placeholder atom and the index of one
+of its neighbors. If a placeholder has multiple neighbors, multiple tuples will
+be generated for that placeholder, one for each neighbor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The RDKit molecule object.</p></li>
+<li><p><strong>atom</strong> (<em>str</em>) – The atomic symbol of the placeholder atom (e.g., “Br”, “*”).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A list of (placeholder_atom_index, neighbor_atom_index)</dt><dd><p>tuples. The list is flattened.
+Example: If P1 is a placeholder bonded to N1a and N1b, and
+P2 is a placeholder bonded to N2a, the result could be
+[(idx_P1, idx_N1a), (idx_P1, idx_N1b), (idx_P2, idx_N2a)].
+The order depends on RDKit’s internal atom iteration.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[tuple[int, int]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.check_bond_order">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">check_bond_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_ob.html#check_bond_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.check_bond_order" title="Link to this definition"></a></dt>
+<dd><p>Checks and corrects bond orders for a molecule in a given file.</p>
+<p>This function reads a molecule from a file, removes existing hydrogens,
+attempts to connect disconnected parts (if any), perceives bond orders,
+and then re-adds hydrogens. The modified molecule is written to a new
+file with “_new” appended to its original base name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_name</strong> (<em>str</em>) – The path to the input molecular file. The file format is inferred
+from its extension and must be supported by Open Babel.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value but writes a new molecular file
+(e.g., if <cite>file_name</cite> is “molecule.mol”, output is “molecule_new.mol”).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.count_plholder">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">count_plholder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_func.html#count_plholder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.count_plholder" title="Link to this definition"></a></dt>
+<dd><p>Counts the occurrences of a specific placeholder atom type in an RDKit molecule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The RDKit molecule object to inspect.</p></li>
+<li><p><strong>atom</strong> (<em>str</em>) – The atomic symbol of the placeholder atom to count (e.g., “Br”, “*”).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The total number of placeholder atoms of the specified type found</dt><dd><p>in the molecule.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.create_pol">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">create_pol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tpb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_func.html#create_pol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.create_pol" title="Link to this definition"></a></dt>
+<dd><p>Creates specified bonds in a molecule and removes internal placeholder atoms.</p>
+<p>This function modifies the input RDKit molecule <cite>mol</cite> by:
+1. Converting <cite>mol</cite> to an <cite>RWMol</cite> object to allow modifications.
+2. Adding new single bonds between atom pairs specified in <cite>tpb</cite>.
+3. Identifying all atoms matching the placeholder <cite>atom</cite> symbol (e.g., “Br”, “*”).
+4. Removing all occurrences of these placeholder atoms <em>except</em> for those</p>
+<blockquote>
+<div><p>that are effectively terminal (i.e., the ones with the smallest and
+largest atom indices among all identified placeholders, after sorting).</p>
+</div></blockquote>
+<p>This is typically used in polymer construction to form bonds between monomer
+units (connected via placeholders) and then remove the (now internal) placeholder
+atoms. Terminal placeholders might be retained.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – The RDKit molecule object. This is often
+a single <cite>Mol</cite> object containing disconnected fragments or monomers
+linked by placeholders. It will be modified.</p></li>
+<li><p><strong>atom</strong> (<em>str</em>) – The atomic symbol of the placeholder atom (e.g., “Br”, “*”).
+This symbol is used to identify atoms for removal.</p></li>
+<li><p><strong>tpb</strong> (<em>list</em><em>[</em><em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em><em>]</em>) – A list of tuples, where each tuple
+<cite>(idx1, idx2)</cite> specifies the atom indices to be connected by a
+new single bond.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The modified RDKit molecule object (as an RWMol)</dt><dd><p>with new bonds added and specified internal
+placeholders removed.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rdkit.Chem.rdchem.RWMol</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.etkdgv3_energies">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">etkdgv3_energies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_conf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_rdkit.html#etkdgv3_energies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.etkdgv3_energies" title="Link to this definition"></a></dt>
+<dd><p>Calculate molecular configurations using the RDKit-ETKDG3 method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.Mol</em>) – RDKit Mol object</p></li>
+<li><p><strong>num_conf</strong> (<em>int</em>) – The number of configurations requested to be computed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>datapoint</strong> – RDKit Mol object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rdkit.Chem.rdistGeom.EmbedMultipleConfs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.ff_ob_relaxation">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">ff_ob_relaxation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF94'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ff_thr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_ob.html#ff_ob_relaxation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.ff_ob_relaxation" title="Link to this definition"></a></dt>
+<dd><p>Performs geometry optimization on an Open Babel molecule using a specified force field.</p>
+<p>The molecule’s coordinates are updated in place.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>pybel.Molecule</em>) – The Open Babel molecule (as a Pybel Molecule object) to be optimized.
+The <cite>OBMol</cite> attribute of this object will be used.</p></li>
+<li><p><strong>FF</strong> (<em>str</em><em>, </em><em>optional</em>) – The force field to be used for optimization.
+Supported options include “MMFF94”, “UFF”, “GAFF”.
+Defaults to “MMFF94”.</p></li>
+<li><p><strong>relax_iterations</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of iterations for the conjugate gradients algorithm.
+Defaults to 100.</p></li>
+<li><p><strong>ff_thr</strong> (<em>float</em><em>, </em><em>optional</em>) – The convergence criterion (e.g., energy difference or RMS gradient)
+for the force field optimization. Defaults to 1.0e-6.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The input molecule with its geometry optimized. The modification is
+done in-place, and the same molecule object is returned.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pybel.Molecule</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.get_file_extension">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">get_file_extension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_func.html#get_file_extension"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.get_file_extension" title="Link to this definition"></a></dt>
+<dd><p>Extracts the filename and extension from a given path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The full path to the file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A tuple containing two strings:</dt><dd><ul class="simple">
+<li><p>The filename without the extension.</p></li>
+<li><p>The file extension (including the dot, e.g., “.txt”).
+If the path has no extension, this will be an empty string.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[str, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.global_opt">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">global_opt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF94'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">150</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rot_steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">125</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ff_thr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_ob.html#global_opt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.global_opt" title="Link to this definition"></a></dt>
+<dd><p>Performs a global geometry optimization on an Open Babel molecule.</p>
+<p>This typically involves a combination of conformational searching (rotor search)
+and local geometry minimizations (e.g., conjugate gradients) to find a
+low-energy structure. The molecule’s coordinates are updated in place.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>pybel.Molecule</em>) – The Open Babel molecule (as a Pybel Molecule object) to be optimized.</p></li>
+<li><p><strong>FF</strong> (<em>str</em><em>, </em><em>optional</em>) – The force field to be used. Options include “MMFF94”, “UFF”, “GAFF”.
+Defaults to “MMFF94”.</p></li>
+<li><p><strong>relax_iterations</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of iterations for conjugate gradients steps.
+Defaults to 150.</p></li>
+<li><p><strong>rot_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of iterations for the weighted rotor search.
+Defaults to 125.</p></li>
+<li><p><strong>ff_thr</strong> (<em>float</em><em>, </em><em>optional</em>) – The convergence criterion for the final conjugate gradients optimization.
+Defaults to 1.0e-6. A less strict criterion (ff_thr * 100) is used
+for the initial relaxation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The input molecule with its geometry globally optimized.
+The modification is done in-place.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pybel.Molecule</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.no_swap">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">no_swap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_rdkit.html#no_swap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.no_swap" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Function to sanitize a molecule with Hydrogens</dt><dd><p>and the user defined atomic place holder.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
+<li><p><strong>force_field</strong> (<em>str</em>) – Selected FF to perform a relaxation</p></li>
+<li><p><strong>relax_iterations</strong> (<em>int</em>) – Number of iterations to perform a FF geometry optimization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>newMol_H</strong> – RDKit Mol object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.pattern_mol_seq">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">pattern_mol_seq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_func.html#pattern_mol_seq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.pattern_mol_seq" title="Link to this definition"></a></dt>
+<dd><p>Generates a sequence of molecule names based on a pattern string and a list of molecule names.</p>
+<p>It first identifies unique characters in the <cite>pattern</cite> (e.g., “A”, “B” from “A+B+A”).
+Then, it creates replacement tuples by pairing these unique characters (sorted)
+with the molecule names provided in the <cite>mols</cite> list, in their respective orders.
+Finally, it uses <cite>pattern_repl</cite> to substitute these characters in the
+<cite>pattern</cite> with their corresponding molecule names and splits the result.</p>
+<p class="rubric">Example</p>
+<p>mols = [“water”, “ethanol”]
+pattern = “A+B+A”
+Unique chars in pattern (sorted alphabetically, case-insensitively): [‘A’, ‘B’]
+Replacement tuples: [(‘A’, “water”), (‘B’, “ethanol”)]
+Resulting sequence: [“water”, “ethanol”, “water”]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mols</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – A list of molecule names. The order should correspond to the
+alphabetically sorted unique characters from the <cite>pattern</cite>.</p></li>
+<li><p><strong>pattern</strong> (<em>str</em>) – A string defining the sequence pattern, using characters
+as placeholders for molecules (e.g., “A+B+A”).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A list of molecule names arranged according to the pattern.</dt><dd><p>Returns an empty list or partially resolved list if <cite>mols</cite>
+and unique characters in <cite>pattern</cite> do not align as expected.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.pattern_recon">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">pattern_recon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_func.html#pattern_recon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.pattern_recon" title="Link to this definition"></a></dt>
+<dd><p>Identifies unique characters in a string pattern and sorts them.</p>
+<p>The sorting is case-insensitive alphabetical. For example, “aBcAb”
+would result in [‘A’, ‘B’, ‘c’] (or [‘a’, ‘b’, ‘c’] depending on
+which case is preserved by <cite>set</cite> for mixed-case duplicates, then sorted
+alphabetically based on their uppercase representation).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pattern</strong> (<em>str</em>) – The input string pattern (e.g., “ABCA”).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A list of unique characters from the pattern, sorted</dt><dd><p>alphabetically (case-insensitively, preserving the original case
+of the first occurrence encountered by set for each character).
+For “bBaAcC”, output could be [‘A’, ‘a’, ‘B’, ‘b’, ‘C’, ‘c’] if all are unique,
+or [‘A’, ‘B’, ‘C’] if ‘a’ is treated as ‘A’ by set (which it isn’t).
+Actually, <cite>set</cite> is case-sensitive. So “bBaAcC” -&gt; {‘b’, ‘B’, ‘a’, ‘A’, ‘c’, ‘C’}.
+<cite>sorted(…, key=str.upper)</cite> then sorts these as A,a,B,b,C,c.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.pattern_repl">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">pattern_repl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tup_repl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_func.html#pattern_repl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.pattern_repl" title="Link to this definition"></a></dt>
+<dd><p>Replaces characters in a pattern string based on a list of replacement tuples.</p>
+<p>The function iterates through each tuple in <cite>tup_repl</cite>. Each tuple is
+expected to contain an old character (or substring) to be replaced and a new string
+(the replacement). After all replacements, the modified pattern string is
+split by the “+” delimiter, and any empty strings resulting from the split
+are removed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pattern</strong> (<em>str</em>) – The initial string pattern (e.g., “A+B+A”).</p></li>
+<li><p><strong>tup_repl</strong> (<em>list</em><em>[</em><em>tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – A list of tuples, where each tuple
+contains two strings: (substring_to_replace, replacement_string).
+Example: [(‘A’, ‘mol1’), (‘B’, ‘mol2’)]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A list of strings derived from the modified pattern after</dt><dd><p>replacements and splitting by “+”. Empty strings are filtered out.
+For pattern=”A+B+A” and tup_repl=[(‘A’,’X’),(‘B’,’Y’)],
+it becomes “X+Y+X”, then returns [‘X’, ‘Y’, ‘X’].</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.plc_holder">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">plc_holder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_rdkit.html#plc_holder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.plc_holder" title="Link to this definition"></a></dt>
+<dd><p>Function Seeking for a specific placeholder atom.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
+<li><p><strong>atom</strong> (<em>str</em>) – The placeholder atom</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>return</strong> – List of neighbors from the place holder atom.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.remove_plcholder">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">remove_plcholder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_rdkit.html#remove_plcholder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.remove_plcholder" title="Link to this definition"></a></dt>
+<dd><p>Function to remove atom placeholder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
+<li><p><strong>atom</strong> (<em>str</em>) – The placeholder atom</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>return</strong> – RDKit mol object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RDKit.object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.rotor_opt">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">rotor_opt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF94'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rot_steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">125</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_ob.html#rotor_opt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.rotor_opt" title="Link to this definition"></a></dt>
+<dd><p>Performs a rotor search (conformational search) on an Open Babel molecule.</p>
+<p>This function attempts to find low-energy conformations by rotating
+rotatable bonds. The molecule’s coordinates are updated in place to
+reflect the best conformation found.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>pybel.Molecule</em>) – The Open Babel molecule (as a Pybel Molecule object) for which
+to perform the rotor search.</p></li>
+<li><p><strong>FF</strong> (<em>str</em><em>, </em><em>optional</em>) – The force field to be used during the rotor search.
+Supported options include “MMFF94”, “UFF”, “GAFF”.
+Defaults to “MMFF94”.</p></li>
+<li><p><strong>rot_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of steps or iterations for the weighted rotor search.
+This influences the thoroughness of the search. Defaults to 125.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The input molecule with its conformation optimized by the rotor search.
+The modification is done in-place.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pybel.Molecule</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.swap_hyd">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">swap_hyd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relax_iterations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_rdkit.html#swap_hyd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.swap_hyd" title="Link to this definition"></a></dt>
+<dd><p>Function to swap atomic place holders to Hydrogen atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.rdchem.Mol</em>) – RDKit Mol object</p></li>
+<li><p><strong>relax_iterations</strong> (<em>int</em>) – Number of iterations to perform a FF geometry optimization.</p></li>
+<li><p><strong>atom</strong> (<em>str</em>) – The placeholder atom to combine the molecules and form a new monomer.</p></li>
+<li><p><strong>force_field</strong> (<em>str</em>) – Selected FF to perform a geometry optimization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>newMol_H</strong> – RDKit Mol object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rdkit.Chem.rdchem.Mol</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.tools.tuple_bonds">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.tools.</span></span><span class="sig-name descname"><span class="pre">tuple_bonds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst_atm_neigh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/tools/utils_func.html#tuple_bonds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.tools.tuple_bonds" title="Link to this definition"></a></dt>
+<dd><p>Generates pairs of atom indices for creating new bonds from a list of placeholder-neighbor pairs.</p>
+<p>This function processes an ordered list of (placeholder_atom_index,
+neighbor_atom_index) tuples. It extracts the neighbor indices from the “internal”
+tuples in this list (i.e., excluding the first and the last tuple from <cite>lst_atm_neigh</cite>
+when collecting neighbor indices) and then pairs these collected neighbor indices
+sequentially. This is typically used to define new bonds that will connect
+monomers in a polymer chain.</p>
+<p>The function assumes <cite>lst_atm_neigh</cite> is appropriately ordered (e.g., by
+placeholder index along a chain) for the desired connectivity.</p>
+<p class="rubric">Example</p>
+<p>If <cite>lst_atm_neigh</cite> = <cite>[(P0,N0), (P1,N1), (P2,N2), (P3,N3), (P4,N4)]</cite>.
+- It considers internal elements for neighbor collection: <cite>(P1,N1)</cite>, <cite>(P2,N2)</cite>, <cite>(P3,N3)</cite>.
+- It extracts their neighbor indices: <cite>bond_idx</cite> becomes <cite>[N1, N2, N3]</cite>.
+- It then pairs them: <cite>[(N1, N2)]</cite>. The last element <cite>N3</cite> is unpaired if <cite>bond_idx</cite> has odd length.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lst_atm_neigh</strong> (<em>list</em><em>[</em><em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em><em>]</em>) – An ordered list of tuples, where
+each tuple is (placeholder_atom_index, neighbor_atom_index).
+This list might be generated from <cite>atom_neigh</cite> and subsequently sorted/ordered.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A list of tuples, where each tuple contains two</dt><dd><p>neighbor_atom_indices that are intended to be bonded together.
+For example, <cite>[(neighbor_idx1, neighbor_idx2), (neighbor_idx3, neighbor_idx4)]</cite>.
+Returns an empty list if <cite>bond_idx</cite> has fewer than two elements.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[tuple[int, int]]</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 

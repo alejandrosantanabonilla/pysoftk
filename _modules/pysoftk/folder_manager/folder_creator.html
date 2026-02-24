@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.folder_manager.folder_creator &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
@@ -88,48 +88,73 @@
 <a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Fld</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create folders automatically to be used as stand-alone </span>
-<span class="sd">    application or along PySoftK.</span>
+<span class="sd">    A utility class for automated folder and file management.</span>
+
+<span class="sd">    This class provides methods to create, organize, and manipulate folders</span>
+<span class="sd">    and files within the current working directory. It can be used as a</span>
+<span class="sd">    stand-alone application or integrated with other Python projects like PySoftK.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the Fld class.</span>
+
+<span class="sd">        This constructor currently performs no specific actions but is included</span>
+<span class="sd">        for future extensibility.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="k">pass</span>
 
 <div class="viewcode-block" id="Fld.fxd_name">
 <a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.fxd_name">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fxd_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">testname</span><span class="p">,</span> <span class="n">times</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create an array of fixed names for folders.</span>
+<span class="sd">        Generates an array of sequentially numbered folder names based on a base name.</span>
+
+<span class="sd">        This method is useful for creating a series of folders with a consistent</span>
+<span class="sd">        naming convention, such as &#39;experiment_1&#39;, &#39;experiment_2&#39;, etc.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        testname: str</span>
-<span class="sd">            Base name to be used as name</span>
-<span class="sd">        times: int</span>
-<span class="sd">            Number of folders to create</span>
+<span class="sd">        testname : str</span>
+<span class="sd">            The base name to be used for the folders (e.g., &quot;my_experiment&quot;).</span>
+<span class="sd">        times : int</span>
+<span class="sd">            The number of folder names to generate.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        np.ndarray</span>
-<span class="sd">            An array of names for folders</span>
+<span class="sd">            An array of strings, where each string is a unique folder name</span>
+<span class="sd">            (e.g., [&quot;my_experiment_0&quot;, &quot;my_experiment_1&quot;, ...]).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">testname</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">times</span><span class="p">)])</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_make_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dir_names</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to create a folder in the current working directory.</span>
+<span class="sd">        Creates a single folder in the current working directory.</span>
+
+<span class="sd">        This is a private helper method called by other functions within the class</span>
+<span class="sd">        to perform the actual directory creation.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        dir_names : str</span>
-<span class="sd">            Name of the folder that will be created.</span>
+<span class="sd">            The name of the folder to be created.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
-<span class="sd">            Creates a folder with a provided name.</span>
+<span class="sd">            This method creates a folder at the specified path and does not return a value.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        OSError</span>
+<span class="sd">            If the directory cannot be created (e.g., due to insufficient permissions,</span>
+<span class="sd">            or if a file with the same name already exists).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="n">dir_cwd</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
         <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">dir_cwd</span><span class="p">),</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">dir_names</span><span class="p">)))</span>
 
@@ -137,22 +162,35 @@
 <a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.create">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fixed_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to create folders in the current working directory.</span>
+<span class="sd">        Creates one or more folders in the current working directory.</span>
+
+<span class="sd">        You can either specify the number of folders to create (which will be</span>
+<span class="sd">        assigned unique random names) or provide a pre-defined array of names.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        times : int, optional</span>
-<span class="sd">            Number of times that a folder will be created</span>
+<span class="sd">            The number of folders to create. If provided, unique random names</span>
+<span class="sd">            will be generated for each folder. Cannot be used with `fixed_names`.</span>
 <span class="sd">        fixed_names : np.ndarray, optional</span>
-<span class="sd">            Array of fixed names for the folders</span>
+<span class="sd">            An array of strings, where each string is a desired name for a folder.</span>
+<span class="sd">            If provided, `times` will be ignored. Cannot be used with `times`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
-<span class="sd">            Creates folders with provided names.</span>
+<span class="sd">            This method creates folders and prints a success message to the console.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If neither `times` nor `fixed_names` is provided, or if both are provided.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="k">if</span> <span class="n">times</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fixed_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either &#39;times&#39; or &#39;fixed_names&#39; must be provided.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">times</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fixed_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only one of &#39;times&#39; or &#39;fixed_names&#39; can be provided.&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">fixed_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dir_names</span> <span class="o">=</span> <span class="n">fixed_names</span>
@@ -166,13 +204,17 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_unique_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to create a unique name</span>
+<span class="sd">        Generates a globally unique hexadecimal string.</span>
+
+<span class="sd">        This private helper method is used to create unique names for folders</span>
+<span class="sd">        when `create` is called without `fixed_names`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        name : str</span>
-<span class="sd">            Creates a folder with a random name.</span>
+<span class="sd">        str</span>
+<span class="sd">            A 32-character hexadecimal string representing a unique UUID.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="n">name</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span>
         <span class="k">return</span> <span class="n">name</span>
 
@@ -180,32 +222,40 @@
 <a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.seek_files">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">seek_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_extension</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to seek files in the current working directory.</span>
+<span class="sd">        Searches for files with a specific extension in the current working directory.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        format_extension : str</span>
-<span class="sd">            Extension used to seek in the current working directory</span>
+<span class="sd">            The file extension to search for (e.g., &quot;txt&quot;, &quot;csv&quot;, &quot;pdf&quot;).</span>
+<span class="sd">            The leading dot is optional (e.g., both &quot;txt&quot; and &quot;.txt&quot; are valid).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        inp_name : str</span>
+<span class="sd">        list[pathlib.Path]</span>
+<span class="sd">            A list of `pathlib.Path` objects, each representing a file that matches</span>
+<span class="sd">            the specified extension in the current directory.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">format_extension</span><span class="p">)))</span>
+        
+        <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">format_extension</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)))</span>
         <span class="n">inp_name</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">inp_name</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_seek_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to seek and list directories in the current working directory.</span>
+<span class="sd">        Identifies and lists all subdirectories within the current working directory.</span>
+
+<span class="sd">        This private helper method is used to get a list of existing directories,</span>
+<span class="sd">        excluding the &#39;__pycache__&#39; directory.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        folder_dir : List[n str]</span>
-<span class="sd">            Sorted list of folders inside the current working directory.</span>
+<span class="sd">        List[str]</span>
+<span class="sd">            A sorted list of absolute paths to all subdirectories found in the</span>
+<span class="sd">            current working directory, excluding &#39;__pycache__&#39;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+        
         <span class="n">directory</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
         <span class="n">folder_dir</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">path</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()]</span>
         <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">folder_dir</span><span class="p">)</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;__pycache__&#39;</span><span class="p">)]</span>
@@ -217,20 +267,30 @@
 <a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.copy_dir">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">copy_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to copy files to directories.</span>
+<span class="sd">        Moves a file or directory from a source path to a destination path.</span>
+
+<span class="sd">        Note: Despite the name `copy_dir`, this function performs a move operation,</span>
+<span class="sd">        renaming the source to the destination. If you intend to copy, use `shutil.copy`</span>
+<span class="sd">        or `shutil.copytree` directly.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        source : str</span>
-<span class="sd">            Source path where the files is located.</span>
+<span class="sd">            The path to the file or directory to be moved.</span>
 <span class="sd">        destination : str</span>
-<span class="sd">            Source path where the directory is located.</span>
+<span class="sd">            The new path, including the desired new name, for the moved file or directory.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
-<span class="sd">            Creates a folder with a provided name.</span>
+<span class="sd">            This method moves the specified item and does not return a value.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        OSError</span>
+<span class="sd">            If the move operation fails (e.g., file not found, permission denied).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
         <span class="n">Path</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span></div>
 
@@ -239,30 +299,44 @@
 <a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.file_to_dir">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">file_to_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_extension</span><span class="p">,</span> <span class="n">num_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fixed_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to move files to directories in parallel</span>
+<span class="sd">        Moves files with a specific extension into newly created or existing directories</span>
+<span class="sd">        in a parallelized manner.</span>
+
+<span class="sd">        This method first identifies all files matching the given `format_extension`.</span>
+<span class="sd">        Then, it either creates new uniquely named folders (if `fixed_names` is not</span>
+<span class="sd">        provided) or uses the `fixed_names` to create folders. Finally, it moves</span>
+<span class="sd">        each identified file into a corresponding folder, distributing the work</span>
+<span class="sd">        across multiple CPU cores for efficiency.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        format_extension : str</span>
-<span class="sd">            Format extension used to seek.</span>
+<span class="sd">            The extension of the files to be moved (e.g., &quot;txt&quot;, &quot;jpg&quot;).</span>
 <span class="sd">        num_cores : int, optional</span>
-<span class="sd">            Number of cores to be used.</span>
+<span class="sd">            The number of CPU cores to utilize for parallel processing.</span>
+<span class="sd">            If `None`, the process will default to 1 core (sequential execution).</span>
 <span class="sd">        fixed_names : np.ndarray, optional</span>
-<span class="sd">            Array of fixed names for the folders</span>
+<span class="sd">            An array of strings to use as names for the newly created folders.</span>
+<span class="sd">            If provided, the number of folders created will match the length of</span>
+<span class="sd">            this array. If `None`, folders will be created with unique random names,</span>
+<span class="sd">            matching the number of files found.</span>
 
-<span class="sd">        Results</span>
+<span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        None:</span>
-<span class="sd">            Move files to directories.</span>
+<span class="sd">        None</span>
+<span class="sd">            This method moves files and prints a message indicating completion.</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
 <span class="sd">        NotImplementedError</span>
-<span class="sd">            Folders can not be created.</span>
+<span class="sd">            This error is currently listed in the docstring but not explicitly</span>
+<span class="sd">            raised by the code. It might be a placeholder for future validation</span>
+<span class="sd">            or error handling related to folder creation issues.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">pathos.pools</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProcessPool</span>
-        
+
         <span class="n">num_cores</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">num_cores</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_cores</span><span class="p">)</span>
         <span class="n">files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">seek_files</span><span class="p">(</span><span class="n">format_extension</span><span class="p">)</span>
         <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">files</span><span class="p">]</span>
@@ -284,29 +358,34 @@
 <a class="viewcode-back" href="../../../pysoftk.folder_manager.html#pysoftk.folder_manager.folder_creator.Fld.move_files_to_folder">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">move_files_to_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_extension</span><span class="p">,</span> <span class="n">folder_name</span><span class="p">,</span> <span class="n">num_cores</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Moves all files with the given extension into a new folder with the </span>
-<span class="sd">        specified name, using parallel processing.</span>
+<span class="sd">        Moves all files with a specified extension from the current directory</span>
+<span class="sd">        into a single, newly created or existing folder. The operation can be</span>
+<span class="sd">        parallelized across multiple CPU cores.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        file_extension : str</span>
 <span class="sd">            The extension of the files to move (e.g., &quot;txt&quot;, &quot;csv&quot;, &quot;pdf&quot;).</span>
+<span class="sd">            The leading dot is optional (e.g., &quot;txt&quot; and &quot;.txt&quot; are both valid).</span>
 <span class="sd">        folder_name : str</span>
-<span class="sd">            The name of the folder to create and move the files into.</span>
+<span class="sd">            The name of the destination folder. If the folder does not exist,</span>
+<span class="sd">            it will be created.</span>
 <span class="sd">        num_cores : int, optional</span>
-<span class="sd">            The number of CPU cores to use for parallel processing. </span>
-<span class="sd">            Defaults to None, which uses the number of available cores.</span>
+<span class="sd">            The number of CPU cores to use for parallel processing. If `None`,</span>
+<span class="sd">            the function will automatically detect and use the number of</span>
+<span class="sd">            available cores.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
+<span class="sd">            This method performs file movements and does not return a value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">file_extension</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
             <span class="n">file_extension</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">file_extension</span>
 
         <span class="c1"># Use os.path.join for platform-independent path construction</span>
-        <span class="n">folder_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">(),</span> <span class="n">folder_name</span><span class="p">)</span> 
+        <span class="n">folder_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">(),</span> <span class="n">folder_name</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder_path</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
@@ -317,7 +396,7 @@
         <span class="n">num_cores</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="k">if</span> <span class="n">num_cores</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">num_cores</span>
 
         <span class="k">with</span> <span class="n">ProcessPool</span><span class="p">(</span><span class="n">nodes</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">num_cores</span><span class="p">))</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
-             <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">copy_dir</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">destinations</span><span class="p">)</span></div>
+            <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">copy_dir</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">destinations</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

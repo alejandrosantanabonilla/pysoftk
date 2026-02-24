@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.folder_manager package &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -108,24 +108,32 @@
 <dt class="sig sig-object py" id="pysoftk.folder_manager.folder_creator.Fld">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.folder_manager.folder_creator.</span></span><span class="sig-name descname"><span class="pre">Fld</span></span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Create folders automatically to be used as stand-alone
-application or along PySoftK.</p>
+<p>A utility class for automated folder and file management.</p>
+<p>This class provides methods to create, organize, and manipulate folders
+and files within the current working directory. It can be used as a
+stand-alone application or integrated with other Python projects like PySoftK.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.folder_manager.folder_creator.Fld.copy_dir">
 <span class="sig-name descname"><span class="pre">copy_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.copy_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.copy_dir" title="Link to this definition"></a></dt>
-<dd><p>Function to copy files to directories.</p>
+<dd><p>Moves a file or directory from a source path to a destination path.</p>
+<p>Note: Despite the name <cite>copy_dir</cite>, this function performs a move operation,
+renaming the source to the destination. If you intend to copy, use <cite>shutil.copy</cite>
+or <cite>shutil.copytree</cite> directly.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>source</strong> (<em>str</em>) – Source path where the files is located.</p></li>
-<li><p><strong>destination</strong> (<em>str</em>) – Source path where the directory is located.</p></li>
+<li><p><strong>source</strong> (<em>str</em>) – The path to the file or directory to be moved.</p></li>
+<li><p><strong>destination</strong> (<em>str</em>) – The new path, including the desired new name, for the moved file or directory.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Creates a folder with a provided name.</p>
+<dd class="field-even"><p>This method moves the specified item and does not return a value.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>OSError</strong> – If the move operation fails (e.g., file not found, permission denied).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -133,19 +141,26 @@ application or along PySoftK.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.folder_manager.folder_creator.Fld.create">
 <span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.create" title="Link to this definition"></a></dt>
-<dd><p>Function to create folders in the current working directory.</p>
+<dd><p>Creates one or more folders in the current working directory.</p>
+<p>You can either specify the number of folders to create (which will be
+assigned unique random names) or provide a pre-defined array of names.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>times</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of times that a folder will be created</p></li>
-<li><p><strong>fixed_names</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – Array of fixed names for the folders</p></li>
+<li><p><strong>times</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of folders to create. If provided, unique random names
+will be generated for each folder. Cannot be used with <cite>fixed_names</cite>.</p></li>
+<li><p><strong>fixed_names</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – An array of strings, where each string is a desired name for a folder.
+If provided, <cite>times</cite> will be ignored. Cannot be used with <cite>times</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Creates folders with provided names.</p>
+<dd class="field-even"><p>This method creates folders and prints a success message to the console.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If neither <cite>times</cite> nor <cite>fixed_names</cite> is provided, or if both are provided.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -153,20 +168,35 @@ application or along PySoftK.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.folder_manager.folder_creator.Fld.file_to_dir">
 <span class="sig-name descname"><span class="pre">file_to_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format_extension</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.file_to_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.file_to_dir" title="Link to this definition"></a></dt>
-<dd><p>Function to move files to directories in parallel</p>
+<dd><p>Moves files with a specific extension into newly created or existing directories
+in a parallelized manner.</p>
+<p>This method first identifies all files matching the given <cite>format_extension</cite>.
+Then, it either creates new uniquely named folders (if <cite>fixed_names</cite> is not
+provided) or uses the <cite>fixed_names</cite> to create folders. Finally, it moves
+each identified file into a corresponding folder, distributing the work
+across multiple CPU cores for efficiency.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>format_extension</strong> (<em>str</em>) – Format extension used to seek.</p></li>
-<li><p><strong>num_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of cores to be used.</p></li>
-<li><p><strong>fixed_names</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – Array of fixed names for the folders</p></li>
-<li><p><strong>Results</strong></p></li>
-<li><p><strong>-------</strong></p></li>
-<li><p><strong>None</strong> – Move files to directories.</p></li>
+<li><p><strong>format_extension</strong> (<em>str</em>) – The extension of the files to be moved (e.g., “txt”, “jpg”).</p></li>
+<li><p><strong>num_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of CPU cores to utilize for parallel processing.
+If <cite>None</cite>, the process will default to 1 core (sequential execution).</p></li>
+<li><p><strong>fixed_names</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – An array of strings to use as names for the newly created folders.
+If provided, the number of folders created will match the length of
+this array. If <cite>None</cite>, folders will be created with unique random names,
+matching the number of files found.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This method moves files and prints a message indicating completion.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>NotImplementedError</strong> – Folders can not be created.</p>
+<dd class="field-even"><p><strong>NotImplementedError</strong> – This error is currently listed in the docstring but not explicitly
+    raised by the code. It might be a placeholder for future validation
+    or error handling related to folder creation issues.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -174,16 +204,19 @@ application or along PySoftK.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.folder_manager.folder_creator.Fld.fxd_name">
 <span class="sig-name descname"><span class="pre">fxd_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">testname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.fxd_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.fxd_name" title="Link to this definition"></a></dt>
-<dd><p>Create an array of fixed names for folders.</p>
+<dd><p>Generates an array of sequentially numbered folder names based on a base name.</p>
+<p>This method is useful for creating a series of folders with a consistent
+naming convention, such as ‘experiment_1’, ‘experiment_2’, etc.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>testname</strong> (<em>str</em>) – Base name to be used as name</p></li>
-<li><p><strong>times</strong> (<em>int</em>) – Number of folders to create</p></li>
+<li><p><strong>testname</strong> (<em>str</em>) – The base name to be used for the folders (e.g., “my_experiment”).</p></li>
+<li><p><strong>times</strong> (<em>int</em>) – The number of folder names to generate.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An array of names for folders</p>
+<dd class="field-even"><p>An array of strings, where each string is a unique folder name
+(e.g., [“my_experiment_0”, “my_experiment_1”, …]).</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>np.ndarray</p>
@@ -194,19 +227,26 @@ application or along PySoftK.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.folder_manager.folder_creator.Fld.move_files_to_folder">
 <span class="sig-name descname"><span class="pre">move_files_to_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_extension</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.move_files_to_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.move_files_to_folder" title="Link to this definition"></a></dt>
-<dd><p>Moves all files with the given extension into a new folder with the
-specified name, using parallel processing.</p>
+<dd><p>Moves all files with a specified extension from the current directory
+into a single, newly created or existing folder. The operation can be
+parallelized across multiple CPU cores.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>file_extension</strong> (<em>str</em>) – The extension of the files to move (e.g., “txt”, “csv”, “pdf”).</p></li>
-<li><p><strong>folder_name</strong> (<em>str</em>) – The name of the folder to create and move the files into.</p></li>
-<li><p><strong>num_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of CPU cores to use for parallel processing.
-Defaults to None, which uses the number of available cores.</p></li>
+<li><p><strong>file_extension</strong> (<em>str</em>) – The extension of the files to move (e.g., “txt”, “csv”, “pdf”).
+The leading dot is optional (e.g., “txt” and “.txt” are both valid).</p></li>
+<li><p><strong>folder_name</strong> (<em>str</em>) – The name of the destination folder. If the folder does not exist,
+it will be created.</p></li>
+<li><p><strong>num_cores</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of CPU cores to use for parallel processing. If <cite>None</cite>,
+the function will automatically detect and use the number of
+available cores.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This method performs file movements and does not return a value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -214,16 +254,18 @@ Defaults to None, which uses the number of available cores.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.folder_manager.folder_creator.Fld.seek_files">
 <span class="sig-name descname"><span class="pre">seek_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format_extension</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/folder_manager/folder_creator.html#Fld.seek_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.folder_manager.folder_creator.Fld.seek_files" title="Link to this definition"></a></dt>
-<dd><p>Function to seek files in the current working directory.</p>
+<dd><p>Searches for files with a specific extension in the current working directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>format_extension</strong> (<em>str</em>) – Extension used to seek in the current working directory</p>
+<dd class="field-odd"><p><strong>format_extension</strong> (<em>str</em>) – The file extension to search for (e.g., “txt”, “csv”, “pdf”).
+The leading dot is optional (e.g., both “txt” and “.txt” are valid).</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>inp_name</strong></p>
+<dd class="field-even"><p>A list of <cite>pathlib.Path</cite> objects, each representing a file that matches
+the specified extension in the current directory.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
+<dd class="field-odd"><p>list[pathlib.Path]</p>
 </dd>
 </dl>
 </dd></dl>

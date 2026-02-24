@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pysoftk.tools.utils_ob &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
@@ -75,7 +75,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pysoftk.tools.utils_ob</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">.utils_func</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">.utils_func</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_file_extension</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">openbabel</span><span class="w"> </span><span class="kn">import</span> <span class="n">openbabel</span> <span class="k">as</span> <span class="n">ob</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">openbabel</span><span class="w"> </span><span class="kn">import</span> <span class="n">pybel</span> <span class="k">as</span> <span class="n">pb</span>
 
@@ -85,33 +85,40 @@
 <div class="viewcode-block" id="ff_ob_relaxation">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_ob.ff_ob_relaxation">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">ff_ob_relaxation</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF94&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">ff_thr</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Setting up an openbabel FF for </span>
-<span class="sd">       geometry optimization.</span>
-<span class="sd">      </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Performs geometry optimization on an Open Babel molecule using a specified force field.</span>
+
+<span class="sd">    The molecule&#39;s coordinates are updated in place.</span>
+
 <span class="sd">    Parameters</span>
-<span class="sd">    ===========</span>
-
-<span class="sd">    mol: OBabel.Mol</span>
-<span class="sd">      An user-provided OpenBabel moelcule.</span>
-
-<span class="sd">    FF: class.str</span>
-<span class="sd">      Selected Force Field. Options are MMFF94, UFF, GAFF.</span>
-
-<span class="sd">    iter: class.int</span>
-<span class="sd">      Number of iterations to be used for the FF. </span>
+<span class="sd">    ----------</span>
+<span class="sd">    mol : pybel.Molecule</span>
+<span class="sd">        The Open Babel molecule (as a Pybel Molecule object) to be optimized.</span>
+<span class="sd">        The `OBMol` attribute of this object will be used.</span>
+<span class="sd">    FF : str, optional</span>
+<span class="sd">        The force field to be used for optimization.</span>
+<span class="sd">        Supported options include &quot;MMFF94&quot;, &quot;UFF&quot;, &quot;GAFF&quot;.</span>
+<span class="sd">        Defaults to &quot;MMFF94&quot;.</span>
+<span class="sd">    relax_iterations : int, optional</span>
+<span class="sd">        The maximum number of iterations for the conjugate gradients algorithm.</span>
+<span class="sd">        Defaults to 100.</span>
+<span class="sd">    ff_thr : float, optional</span>
+<span class="sd">        The convergence criterion (e.g., energy difference or RMS gradient)</span>
+<span class="sd">        for the force field optimization. Defaults to 1.0e-6.</span>
 
 <span class="sd">    Returns</span>
-<span class="sd">    ========</span>
-
-<span class="sd">    mol_new: Mol.OBabel.Mol</span>
-<span class="sd">      Open Babel Molecule with optmised Geometry.</span>
-
+<span class="sd">    -------</span>
+<span class="sd">    pybel.Molecule</span>
+<span class="sd">        The input molecule with its geometry optimized. The modification is</span>
+<span class="sd">        done in-place, and the same molecule object is returned.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
+    <span class="c1"># Find and set up the specified force field</span>
     <span class="n">ff</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">OBForceField</span><span class="o">.</span><span class="n">FindForceField</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">FF</span><span class="p">))</span>
-    <span class="n">ff</span><span class="o">.</span><span class="n">Setup</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="p">)</span>
+    <span class="n">ff</span><span class="o">.</span><span class="n">Setup</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="p">)</span> <span class="c1"># Setup the force field with the molecule&#39;s OBMol representation</span>
+
+    <span class="c1"># Perform conjugate gradients optimization</span>
     <span class="n">ff</span><span class="o">.</span><span class="n">ConjugateGradients</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">relax_iterations</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">ff_thr</span><span class="p">))</span>
 
+    <span class="c1"># Update the molecule&#39;s coordinates with the optimized geometry</span>
     <span class="n">ff</span><span class="o">.</span><span class="n">GetCoordinates</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">mol</span></div>
@@ -120,74 +127,96 @@
 <div class="viewcode-block" id="rotor_opt">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_ob.rotor_opt">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">rotor_opt</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF94&quot;</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">125</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Setting up an openbabel FF for rotor </span>
-<span class="sd">    optimization.</span>
-<span class="sd">      </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Performs a rotor search (conformational search) on an Open Babel molecule.</span>
+
+<span class="sd">    This function attempts to find low-energy conformations by rotating</span>
+<span class="sd">    rotatable bonds. The molecule&#39;s coordinates are updated in place to</span>
+<span class="sd">    reflect the best conformation found.</span>
+
 <span class="sd">    Parameters</span>
-<span class="sd">    ===========</span>
-
-<span class="sd">    mol: OBabel.Mol</span>
-<span class="sd">      An user-provided OpenBabel moelcule.</span>
-
-<span class="sd">    FF: class.str</span>
-<span class="sd">      Selected Force Field. Options are MMFF94, UFF, GAFF.</span>
-
-<span class="sd">    rot_steps: class.int</span>
-<span class="sd">      Number of iterations to be used for the rotational </span>
-<span class="sd">      optimization.</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mol : pybel.Molecule</span>
+<span class="sd">        The Open Babel molecule (as a Pybel Molecule object) for which</span>
+<span class="sd">        to perform the rotor search.</span>
+<span class="sd">    FF : str, optional</span>
+<span class="sd">        The force field to be used during the rotor search.</span>
+<span class="sd">        Supported options include &quot;MMFF94&quot;, &quot;UFF&quot;, &quot;GAFF&quot;.</span>
+<span class="sd">        Defaults to &quot;MMFF94&quot;.</span>
+<span class="sd">    rot_steps : int, optional</span>
+<span class="sd">        The number of steps or iterations for the weighted rotor search.</span>
+<span class="sd">        This influences the thoroughness of the search. Defaults to 125.</span>
 
 <span class="sd">    Returns</span>
-<span class="sd">    ========</span>
-
-<span class="sd">    mol_new: Mol.OBabel.Mol</span>
-<span class="sd">      Open Babel Molecule with optmised Geometry.</span>
-
+<span class="sd">    -------</span>
+<span class="sd">    pybel.Molecule</span>
+<span class="sd">        The input molecule with its conformation optimized by the rotor search.</span>
+<span class="sd">        The modification is done in-place.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Find and set up the specified force field</span>
     <span class="n">ff</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">OBForceField</span><span class="o">.</span><span class="n">FindForceField</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">FF</span><span class="p">))</span>
     <span class="n">ff</span><span class="o">.</span><span class="n">Setup</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="p">)</span>
 
+    <span class="c1"># Perform a fast rotor search (preliminary)</span>
     <span class="n">ff</span><span class="o">.</span><span class="n">FastRotorSearch</span><span class="p">()</span>
     
-    <span class="c1"># N cycles, each with M forcefield ops</span>
-    <span class="n">ff</span><span class="o">.</span><span class="n">WeightedRotorSearch</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">rot_steps</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">rot_steps</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)))</span> 
+    <span class="c1"># Perform a more thorough weighted rotor search</span>
+    <span class="c1"># The second argument to WeightedRotorSearch is often related to the number of</span>
+    <span class="c1"># force field operations per cycle. Here it&#39;s half of rot_steps (rounded up).</span>
+    <span class="n">ff</span><span class="o">.</span><span class="n">WeightedRotorSearch</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">rot_steps</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">rot_steps</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)))</span>
+    
+    <span class="c1"># Update the molecule&#39;s coordinates with the best conformation found</span>
     <span class="n">ff</span><span class="o">.</span><span class="n">GetCoordinates</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">mol</span> </div>
+    <span class="k">return</span> <span class="n">mol</span></div>
 
 
 <div class="viewcode-block" id="global_opt">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_ob.global_opt">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">global_opt</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">FF</span><span class="o">=</span><span class="s2">&quot;MMFF94&quot;</span><span class="p">,</span> <span class="n">relax_iterations</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">rot_steps</span><span class="o">=</span><span class="mi">125</span><span class="p">,</span> <span class="n">ff_thr</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Setting up an openbabel FF for rotor </span>
-<span class="sd">    optimization.</span>
-<span class="sd">      </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Performs a global geometry optimization on an Open Babel molecule.</span>
+
+<span class="sd">    This typically involves a combination of conformational searching (rotor search)</span>
+<span class="sd">    and local geometry minimizations (e.g., conjugate gradients) to find a</span>
+<span class="sd">    low-energy structure. The molecule&#39;s coordinates are updated in place.</span>
+
 <span class="sd">    Parameters</span>
-<span class="sd">    ===========</span>
-
-<span class="sd">    mol: OBabel.Mol</span>
-<span class="sd">      An user-provided OpenBabel moelcule.</span>
-
-<span class="sd">    FF: class.str</span>
-<span class="sd">      Selected Force Field. Options are MMFF94, UFF, GAFF.</span>
-
-<span class="sd">    rot_steps: class.int</span>
-<span class="sd">      Number of iterations to be used for the rotational </span>
-<span class="sd">      optimization.</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mol : pybel.Molecule</span>
+<span class="sd">        The Open Babel molecule (as a Pybel Molecule object) to be optimized.</span>
+<span class="sd">    FF : str, optional</span>
+<span class="sd">        The force field to be used. Options include &quot;MMFF94&quot;, &quot;UFF&quot;, &quot;GAFF&quot;.</span>
+<span class="sd">        Defaults to &quot;MMFF94&quot;.</span>
+<span class="sd">    relax_iterations : int, optional</span>
+<span class="sd">        The maximum number of iterations for conjugate gradients steps.</span>
+<span class="sd">        Defaults to 150.</span>
+<span class="sd">    rot_steps : int, optional</span>
+<span class="sd">        The number of iterations for the weighted rotor search.</span>
+<span class="sd">        Defaults to 125.</span>
+<span class="sd">    ff_thr : float, optional</span>
+<span class="sd">        The convergence criterion for the final conjugate gradients optimization.</span>
+<span class="sd">        Defaults to 1.0e-6. A less strict criterion (ff_thr * 100) is used</span>
+<span class="sd">        for the initial relaxation.</span>
 
 <span class="sd">    Returns</span>
-<span class="sd">    ========</span>
-
-<span class="sd">    mol_new: Mol.OBabel.Mol</span>
-<span class="sd">      Open Babel Molecule with optmised Geometry.</span>
-
+<span class="sd">    -------</span>
+<span class="sd">    pybel.Molecule</span>
+<span class="sd">        The input molecule with its geometry globally optimized.</span>
+<span class="sd">        The modification is done in-place.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Find and set up the specified force field</span>
     <span class="n">ff</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">OBForceField</span><span class="o">.</span><span class="n">FindForceField</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">FF</span><span class="p">))</span>
     <span class="n">ff</span><span class="o">.</span><span class="n">Setup</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="p">)</span>
-    <span class="n">ff</span><span class="o">.</span><span class="n">ConjugateGradients</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">relax_iterations</span><span class="p">),</span><span class="n">ff_thr</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
-    <span class="n">ff</span><span class="o">.</span><span class="n">WeightedRotorSearch</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">rot_steps</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">rot_steps</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)))</span>
-    <span class="n">ff</span><span class="o">.</span><span class="n">ConjugateGradients</span><span class="p">(</span><span class="n">relax_iterations</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">ff_thr</span><span class="p">)</span>
 
-    <span class="c1"># update the coordinates</span>
+    <span class="c1"># Initial conjugate gradients relaxation (potentially with a looser threshold)</span>
+    <span class="n">ff</span><span class="o">.</span><span class="n">ConjugateGradients</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">relax_iterations</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">ff_thr</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
+    
+    <span class="c1"># Perform weighted rotor search for conformational space exploration</span>
+    <span class="n">ff</span><span class="o">.</span><span class="n">WeightedRotorSearch</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">rot_steps</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">rot_steps</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)))</span>
+    
+    <span class="c1"># Final conjugate gradients relaxation with a stricter threshold</span>
+    <span class="n">ff</span><span class="o">.</span><span class="n">ConjugateGradients</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">relax_iterations</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">ff_thr</span><span class="p">))</span> <span class="c1"># Note: relax_iterations is multiplied by 100 here.</span>
+
+    <span class="c1"># Update the molecule&#39;s coordinates with the optimized geometry</span>
     <span class="n">ff</span><span class="o">.</span><span class="n">GetCoordinates</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">mol</span></div>
@@ -197,42 +226,51 @@
 <div class="viewcode-block" id="check_bond_order">
 <a class="viewcode-back" href="../../../pysoftk.tools.html#pysoftk.tools.utils_ob.check_bond_order">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">check_bond_order</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to check and correct the bonds</span>
-<span class="sd">       of a given file. </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks and corrects bond orders for a molecule in a given file.</span>
 
-<span class="sd">       Parameters</span>
-<span class="sd">       ------------</span>
+<span class="sd">    This function reads a molecule from a file, removes existing hydrogens,</span>
+<span class="sd">    attempts to connect disconnected parts (if any), perceives bond orders,</span>
+<span class="sd">    and then re-adds hydrogens. The modified molecule is written to a new</span>
+<span class="sd">    file with &quot;_new&quot; appended to its original base name.</span>
 
-<span class="sd">       file_name: class.str</span>
-<span class="sd">          An user-provided file containing a molecule</span>
-<span class="sd">          in an accepted openbabel format.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file_name : str</span>
+<span class="sd">        The path to the input molecular file. The file format is inferred</span>
+<span class="sd">        from its extension and must be supported by Open Babel.</span>
 
-<span class="sd">       Returns</span>
-<span class="sd">       ---------</span>
-
-<span class="sd">        None:</span>
-
-<span class="sd">         A new file containing checked bond and bond order</span>
-<span class="sd">         molecular system.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        This function does not return a value but writes a new molecular file</span>
+<span class="sd">        (e.g., if `file_name` is &quot;molecule.mol&quot;, output is &quot;molecule_new.mol&quot;).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Extract base name and extension from the file path</span>
     <span class="n">base_name</span><span class="p">,</span> <span class="n">file_extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
-    <span class="n">format_ext</span><span class="o">=</span><span class="n">file_extension</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># Get the format string (e.g., &quot;mol&quot;, &quot;sdf&quot;) from the extension</span>
+    <span class="n">format_ext</span> <span class="o">=</span> <span class="n">file_extension</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     
-    <span class="n">inputfile</span><span class="o">=</span><span class="n">pb</span><span class="o">.</span><span class="n">readfile</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">format_ext</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">file_name</span><span class="p">))</span>
-    <span class="n">mol</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">inputfile</span><span class="p">)</span>
+    <span class="c1"># Read the first molecule from the input file</span>
+    <span class="c1"># Note: This assumes a single-molecule file or processes only the first molecule.</span>
+    <span class="n">inputfile</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">readfile</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">format_ext</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">file_name</span><span class="p">))</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">inputfile</span><span class="p">)</span> <span class="c1"># Get the first molecule object</span>
 
-    <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">DeleteHydrogens</span><span class="p">()</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">ConnectTheDots</span><span class="p">()</span> 
-    <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">PerceiveBondOrders</span><span class="p">()</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">AddHydrogens</span><span class="p">()</span>
+    <span class="c1"># Perform operations on the OBMol object</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">DeleteHydrogens</span><span class="p">()</span>      <span class="c1"># Remove all hydrogens</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">ConnectTheDots</span><span class="p">()</span>       <span class="c1"># Attempt to connect separate fragments if appropriate</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">PerceiveBondOrders</span><span class="p">()</span>   <span class="c1"># Deduce bond orders based on geometry and atom types</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">OBMol</span><span class="o">.</span><span class="n">AddHydrogens</span><span class="p">()</span>         <span class="c1"># Add hydrogens according to valence rules</span>
 
-    <span class="n">new_name</span><span class="o">=</span><span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">base_name</span><span class="p">),</span><span class="s2">&quot;new&quot;</span><span class="p">])</span>
-    <span class="n">output</span><span class="o">=</span><span class="n">pb</span><span class="o">.</span><span class="n">Outputfile</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">format_ext</span><span class="p">),</span>
-                         <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">new_name</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">format_ext</span><span class="p">)]),</span>
-                         <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Construct the output file name</span>
+    <span class="n">new_base_name</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">base_name</span><span class="p">),</span> <span class="s2">&quot;new&quot;</span><span class="p">])</span>
+    <span class="n">output_file_name</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">new_base_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">format_ext</span><span class="p">)])</span>
+    
+    <span class="c1"># Write the modified molecule to the new file, overwriting if it exists</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Outputfile</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">format_ext</span><span class="p">),</span>
+                           <span class="n">output_file_name</span><span class="p">,</span>
+                           <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
     <span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
-
 
 </pre></div>
 

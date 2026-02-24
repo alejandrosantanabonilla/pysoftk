@@ -1,0 +1,499 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pysoftk.topologies.dend &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PySoftK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/tutorials.html">Tutorials: Modelling Polymers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/tutorialspol.html">Tutorials: Analysis Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pysoftk</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PySoftK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pysoftk.topologies.dend</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pysoftk.topologies.dend</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="c1"># RDKit Imports</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem.rdchem</span><span class="w"> </span><span class="kn">import</span> <span class="n">BondType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">RDLogger</span>
+<span class="n">RDLogger</span><span class="o">.</span><span class="n">DisableLog</span><span class="p">(</span><span class="s1">&#39;rdApp.*&#39;</span><span class="p">)</span> <span class="c1"># Suppress RDKit warnings</span>
+
+<span class="c1"># Open Babel and Pysoftk Imports</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openbabel</span><span class="w"> </span><span class="kn">import</span> <span class="n">pybel</span> <span class="k">as</span> <span class="n">pb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.tools.utils_ob</span><span class="w"> </span><span class="kn">import</span> <span class="n">ff_ob_relaxation</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.format_printers.format_mol</span><span class="w"> </span><span class="kn">import</span> <span class="n">Fmt</span>
+
+<div class="viewcode-block" id="Monomer">
+<a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.dend.Monomer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Monomer</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for a monomer unit.</span>
+
+<span class="sd">    Represents a single molecular building block, holding its RDKit</span>
+<span class="sd">    molecule object and information about its connection points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">generation</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">smiles</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">attachment_map_numbers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the Monomer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            id (int): A unique identifier for this monomer instance.</span>
+<span class="sd">            generation (int): The generation layer this monomer belongs to (e.g., 0 for core).</span>
+<span class="sd">            smiles (str): The SMILES string of the monomer, which must include</span>
+<span class="sd">                          dummy atoms with map numbers (e.g., &quot;[*:1]&quot;) for</span>
+<span class="sd">                          each attachment point.</span>
+<span class="sd">            attachment_map_numbers (List[int]): A list of the integer map numbers</span>
+<span class="sd">                                                (e.g., [1, 2]) corresponding to the</span>
+<span class="sd">                                                dummy atoms in the SMILES string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generation</span> <span class="o">=</span> <span class="n">generation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid SMILES string for monomer </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">smiles</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Add hydrogens and generate an initial 3D conformer for the monomer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="p">)</span>
+        <span class="n">AllChem</span><span class="o">.</span><span class="n">EmbedMolecule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="p">,</span> <span class="n">AllChem</span><span class="o">.</span><span class="n">ETKDGv3</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">attachment_map_numbers</span> <span class="o">=</span> <span class="n">attachment_map_numbers</span>
+        <span class="c1"># Dictionary to store connections to other Monomer objects</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="s1">&#39;Monomer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># The atom index in *this* monomer that connects to its parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_connection_atom_idx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Maps local atom indices to global indices in the final combined molecule</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_atom_indices</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Stores the &quot;real&quot; atom indices that the dummy atoms are bonded to</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attachment_atom_indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_attachment_atom_indices</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_attachment_atom_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds the real atom indices that the dummy atoms are connected to.</span>
+
+<span class="sd">        This helper function iterates through the RDKit molecule to find the</span>
+<span class="sd">        dummy atoms (e.g., &quot;[*:1]&quot;) and then identifies their neighboring</span>
+<span class="sd">        atom, which is the actual point of connection.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[int]: A list of the RDKit atom indices for the connection points,</span>
+<span class="sd">                       in the same order as `self.attachment_map_numbers`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">atom</span><span class="o">.</span><span class="n">HasProp</span><span class="p">(</span><span class="s2">&quot;molAtomMapNumber&quot;</span><span class="p">):</span>
+                <span class="n">map_num</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetIntProp</span><span class="p">(</span><span class="s2">&quot;molAtomMapNumber&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">map_num</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attachment_map_numbers</span><span class="p">:</span>
+                    <span class="c1"># Assume dummy atom has only one neighbor</span>
+                    <span class="n">indices</span><span class="p">[</span><span class="n">map_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetNeighbors</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">()</span>
+        <span class="c1"># Return indices in the order specified by the input list</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">mn</span><span class="p">]</span> <span class="k">for</span> <span class="n">mn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attachment_map_numbers</span> <span class="k">if</span> <span class="n">mn</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="CustomMonomer">
+<a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.dend.CustomMonomer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomMonomer</span><span class="p">(</span><span class="n">Monomer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A specialized Monomer for dendrimer branching units.</span>
+
+<span class="sd">    This class distinguishes between a single parent attachment point</span>
+<span class="sd">    and multiple child attachment points, which is essential for</span>
+<span class="sd">    building the directed graph of a dendrimer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">generation</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">smiles</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">parent_attachment_map_num</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+                 <span class="n">child_attachment_map_nums</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the CustomMonomer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            id (int): A unique identifier for this monomer instance.</span>
+<span class="sd">            generation (int): The generation layer this monomer belongs to.</span>
+<span class="sd">            smiles (str): The SMILES string of the branching unit.</span>
+<span class="sd">            parent_attachment_map_num (Optional[int]): The map number for the</span>
+<span class="sd">                                                       single connection to the</span>
+<span class="sd">                                                       parent monomer. This is</span>
+<span class="sd">                                                       `None` for the core.</span>
+<span class="sd">            child_attachment_map_nums (List[int]): A list of map numbers for</span>
+<span class="sd">                                                   the new attachment points</span>
+<span class="sd">                                                   that will connect to the</span>
+<span class="sd">                                                   next generation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Combine all map numbers for the base Monomer class</span>
+        <span class="n">all_maps</span> <span class="o">=</span> <span class="n">child_attachment_map_nums</span> <span class="o">+</span> <span class="p">([</span><span class="n">parent_attachment_map_num</span><span class="p">]</span> <span class="k">if</span> <span class="n">parent_attachment_map_num</span> <span class="k">else</span> <span class="p">[])</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">generation</span><span class="p">,</span> <span class="n">smiles</span><span class="p">,</span> <span class="n">all_maps</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">child_attachment_map_nums</span> <span class="o">=</span> <span class="n">child_attachment_map_nums</span>
+        <span class="c1"># Maps child map numbers directly to their RDKit atom indices</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">child_attachment_atom_indices_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Create a quick lookup for all map numbers to their atom indices</span>
+        <span class="n">map_to_idx</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attachment_map_numbers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attachment_atom_indices</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">parent_attachment_map_num</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent_connection_atom_idx</span> <span class="o">=</span> <span class="n">map_to_idx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">parent_attachment_map_num</span><span class="p">)</span>
+
+        <span class="c1"># Populate the child-specific map</span>
+        <span class="k">for</span> <span class="n">map_num</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_attachment_map_nums</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">child_attachment_atom_indices_map</span><span class="p">[</span><span class="n">map_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">map_to_idx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">map_num</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SurfaceMonomer">
+<a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.dend.SurfaceMonomer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SurfaceMonomer</span><span class="p">(</span><span class="n">Monomer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A specialized Monomer for terminal surface (capping) groups.</span>
+
+<span class="sd">    This monomer only has a single parent connection and no child</span>
+<span class="sd">    connections, effectively terminating a branch.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">generation</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">smiles</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parent_attachment_map_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the SurfaceMonomer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            id (int): A unique identifier for this monomer instance.</span>
+<span class="sd">            generation (int): The generation layer this monomer belongs to.</span>
+<span class="sd">            smiles (str): The SMILES string of the capping group.</span>
+<span class="sd">            parent_attachment_map_num (int): The map number for the</span>
+<span class="sd">                                             single connection to the</span>
+<span class="sd">                                             parent monomer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">generation</span><span class="p">,</span> <span class="n">smiles</span><span class="p">,</span> <span class="p">[</span><span class="n">parent_attachment_map_num</span><span class="p">])</span>
+        <span class="c1"># The first (and only) attachment index is the parent connection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_connection_atom_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attachment_atom_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="DendrimerBuilder">
+<a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.dend.DendrimerBuilder">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DendrimerBuilder</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to construct, optimize, and manage dendrimer molecules.</span>
+
+<span class="sd">    This class orchestrates the entire workflow, from processing</span>
+<span class="sd">    monomer definitions to building the connectivity graph, constructing</span>
+<span class="sd">    the 2D molecule, and finally optimizing the 3D structure using</span>
+<span class="sd">    external libraries (pysoftk/Open Babel).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">branch_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">generations</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">surface_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the DendrimerBuilder.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            core_data (dict): A dictionary defining the core (G0) monomer.</span>
+<span class="sd">                Expected keys: &#39;smiles&#39;, &#39;child_attachment_map_nums&#39;.</span>
+<span class="sd">            branch_data (dict): A dictionary defining the branching monomer.</span>
+<span class="sd">                Expected keys: &#39;smiles&#39;, &#39;parent_attachment_map_num&#39;,</span>
+<span class="sd">                &#39;child_attachment_map_nums&#39;.</span>
+<span class="sd">            generations (int): The number of branching generations to build</span>
+<span class="sd">                               (e.g., 2 for a G2 dendrimer).</span>
+<span class="sd">            surface_data (Optional[dict]): An optional dictionary defining the</span>
+<span class="sd">                surface capping group. If provided, the dendrimer will be</span>
+<span class="sd">                capped. Expected keys: &#39;smiles&#39;, &#39;parent_attachment_map_num&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">core_data</span> <span class="o">=</span> <span class="n">core_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">branch_data</span> <span class="o">=</span> <span class="n">branch_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generations</span> <span class="o">=</span> <span class="n">generations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surface_data</span> <span class="o">=</span> <span class="n">surface_data</span>
+        
+        <span class="c1"># This list will hold the abstract graph of connected Monomer objects</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">monomer_graph</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Monomer</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># This will hold the final, 3D-optimized molecule</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimized_mol</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pb</span><span class="o">.</span><span class="n">Molecule</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="DendrimerBuilder.build">
+<a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.dend.DendrimerBuilder.build">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;UFF&quot;</span><span class="p">,</span> <span class="n">steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">ff_thr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Orchestrates the full dendrimer construction and optimization process.</span>
+
+<span class="sd">        This is the main method to run the workflow. It calls internal</span>
+<span class="sd">        methods to generate the graph, build the 2D molecule, and</span>
+<span class="sd">        run the 3D optimization.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            force_field (str, optional): The Open Babel force field to use for</span>
+<span class="sd">                                         optimization (e.g., &quot;UFF&quot;, &quot;MMFF94&quot;).</span>
+<span class="sd">                                         Defaults to &quot;UFF&quot;.</span>
+<span class="sd">            steps (int, optional): The maximum number of optimization steps.</span>
+<span class="sd">                                   Defaults to 1000.</span>
+<span class="sd">            ff_thr (float, optional): The energy convergence threshold for the</span>
+<span class="sd">                                      force field optimization. Defaults to 0.1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Step 1: Generating abstract dendrimer graph...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_graph</span><span class="p">()</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Step 2: Building and optimizing 3D molecule...&quot;</span><span class="p">)</span>
+        <span class="c1"># This internal method handles the RDKit build, conversion, and optimization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimized_mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_and_optimize_mol</span><span class="p">(</span><span class="n">force_field</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">ff_thr</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimized_mol</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dendrimer construction complete.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: Dendrimer construction failed.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DendrimerBuilder.get_optimized_mol">
+<a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.dend.DendrimerBuilder.get_optimized_mol">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_optimized_mol</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pb</span><span class="o">.</span><span class="n">Molecule</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the final, optimized molecule as a Pybel object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Optional[pb.Molecule]: The 3D optimized Pybel molecule,</span>
+<span class="sd">                                   or `None` if the build process failed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimized_mol</span></div>
+
+
+<div class="viewcode-block" id="DendrimerBuilder.plot_topology">
+<a class="viewcode-back" href="../../../pysoftk.topologies.html#pysoftk.topologies.dend.DendrimerBuilder.plot_topology">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_topology</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;dendrimer_topology.png&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plots the abstract topological graph of the dendrimer using NetworkX.</span>
+
+<span class="sd">        This visualization shows the monomer connectivity and generation,</span>
+<span class="sd">        not the chemical structure.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            output_filename (str, optional): The file path to save the</span>
+<span class="sd">                                             plot image.</span>
+<span class="sd">                                             Defaults to &quot;dendrimer_topology.png&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">monomer_graph</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot plot topology. Generate the graph first by running .build()&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+            
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="n">m</span><span class="o">.</span><span class="n">id</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;G</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">generation</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">monomer_graph</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">monomer_graph</span><span class="p">:</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">connections</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">child</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">kamada_kawai_layout</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+        <span class="n">node_colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">generation</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">monomer_graph</span><span class="p">]</span>
+
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+        <span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+                <span class="n">node_color</span><span class="o">=</span><span class="n">node_colors</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+        
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Dendrimer Topological Structure&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">output_filename</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Topology plot saved to &#39;</span><span class="si">{</span><span class="n">output_filename</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_generate_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        (Internal) Creates the abstract graph of connected Monomer objects.</span>
+
+<span class="sd">        This method builds the dendrimer layer by layer in memory,</span>
+<span class="sd">        populating `self.monomer_graph` with the connected</span>
+<span class="sd">        Monomer, CustomMonomer, and SurfaceMonomer objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">monomer_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Create the G0 core</span>
+        <span class="n">core</span> <span class="o">=</span> <span class="n">CustomMonomer</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">core_data</span><span class="p">[</span><span class="s1">&#39;smiles&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">core_data</span><span class="p">[</span><span class="s1">&#39;child_attachment_map_nums&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">monomer_graph</span> <span class="o">=</span> <span class="p">[</span><span class="n">core</span><span class="p">]</span>
+        
+        <span class="c1"># Build branching generations</span>
+        <span class="k">for</span> <span class="n">gen</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">generations</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">parents</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">monomer_graph</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">generation</span> <span class="o">==</span> <span class="n">gen</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">CustomMonomer</span><span class="p">):</span>
+                    <span class="c1"># Add a new child for each of the parent&#39;s child attachment points</span>
+                    <span class="k">for</span> <span class="n">map_num</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">child_attachment_map_nums</span><span class="p">:</span>
+                        <span class="n">monomer_count</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="n">child</span> <span class="o">=</span> <span class="n">CustomMonomer</span><span class="p">(</span><span class="n">monomer_count</span><span class="p">,</span> <span class="n">gen</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">branch_data</span><span class="p">)</span>
+                        <span class="n">parent</span><span class="o">.</span><span class="n">connections</span><span class="p">[</span><span class="n">map_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">monomer_graph</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+        
+        <span class="c1"># Add surface capping groups if specified</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_data</span><span class="p">:</span>
+            <span class="n">gen_to_cap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generations</span>
+            <span class="n">surface_parents</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">monomer_graph</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">generation</span> <span class="o">==</span> <span class="n">gen_to_cap</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">surface_parents</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">CustomMonomer</span><span class="p">):</span>
+                    <span class="c1"># Add a new cap for each of the final generation&#39;s attachment points</span>
+                    <span class="k">for</span> <span class="n">map_num</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">child_attachment_map_nums</span><span class="p">:</span>
+                        <span class="n">monomer_count</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="n">cap</span> <span class="o">=</span> <span class="n">SurfaceMonomer</span><span class="p">(</span><span class="n">monomer_count</span><span class="p">,</span> <span class="n">parent</span><span class="o">.</span><span class="n">generation</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">surface_data</span><span class="p">)</span>
+                        <span class="n">parent</span><span class="o">.</span><span class="n">connections</span><span class="p">[</span><span class="n">map_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">cap</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">monomer_graph</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cap</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_and_optimize_mol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">ff_thr</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pb</span><span class="o">.</span><span class="n">Molecule</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        (Internal) Handles the full molecule construction and optimization.</span>
+
+<span class="sd">        This method:</span>
+<span class="sd">        1. Builds the complete 2D molecular graph in RDKit (RWMol).</span>
+<span class="sd">        2. Forms all inter-monomer bonds.</span>
+<span class="sd">        3. Finalizes and sanitizes the RDKit molecule.</span>
+<span class="sd">        4. Converts the RDKit molecule to a Pybel molecule.</span>
+<span class="sd">        5. Generates an initial 3D structure.</span>
+<span class="sd">        6. Runs the pysoftk force field optimization.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            force_field (str): The Open Babel force field to use.</span>
+<span class="sd">            steps (int): The maximum number of optimization steps.</span>
+<span class="sd">            ff_thr (float): The energy convergence threshold.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Optional[pb.Molecule]: The optimized Pybel molecule, or `None` on failure.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rw_mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">RWMol</span><span class="p">()</span>
+        
+        <span class="c1"># 1. Add all atoms and internal bonds from each monomer to the RWMol</span>
+        <span class="k">for</span> <span class="n">monomer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">monomer_graph</span><span class="p">:</span>
+            <span class="n">mol_copy</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">(</span><span class="n">monomer</span><span class="o">.</span><span class="n">mol</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol_copy</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">atom</span><span class="o">.</span><span class="n">HasProp</span><span class="p">(</span><span class="s2">&quot;molAtomMapNumber&quot;</span><span class="p">):</span>
+                    <span class="c1"># Add non-dummy atoms and store their new global index</span>
+                    <span class="n">new_idx</span> <span class="o">=</span> <span class="n">rw_mol</span><span class="o">.</span><span class="n">AddAtom</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
+                    <span class="n">monomer</span><span class="o">.</span><span class="n">global_atom_indices</span><span class="p">[</span><span class="n">atom</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">()]</span> <span class="o">=</span> <span class="n">new_idx</span>
+            <span class="k">for</span> <span class="n">bond</span> <span class="ow">in</span> <span class="n">mol_copy</span><span class="o">.</span><span class="n">GetBonds</span><span class="p">():</span>
+                <span class="n">b</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">bond</span><span class="o">.</span><span class="n">GetBeginAtomIdx</span><span class="p">(),</span> <span class="n">bond</span><span class="o">.</span><span class="n">GetEndAtomIdx</span><span class="p">()</span>
+                <span class="c1"># Add internal bonds only between atoms that were added</span>
+                <span class="k">if</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">monomer</span><span class="o">.</span><span class="n">global_atom_indices</span> <span class="ow">and</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">monomer</span><span class="o">.</span><span class="n">global_atom_indices</span><span class="p">:</span>
+                    <span class="n">rw_mol</span><span class="o">.</span><span class="n">AddBond</span><span class="p">(</span><span class="n">monomer</span><span class="o">.</span><span class="n">global_atom_indices</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">monomer</span><span class="o">.</span><span class="n">global_atom_indices</span><span class="p">[</span><span class="n">e</span><span class="p">],</span> <span class="n">bond</span><span class="o">.</span><span class="n">GetBondType</span><span class="p">())</span>
+
+        <span class="c1"># 2. Add all inter-monomer bonds</span>
+        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">monomer_graph</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">CustomMonomer</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">map_num</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">connections</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="c1"># Find the global indices for the parent&#39;s and child&#39;s connection atoms</span>
+                    <span class="n">p_idx</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">global_atom_indices</span><span class="p">[</span><span class="n">parent</span><span class="o">.</span><span class="n">child_attachment_atom_indices_map</span><span class="p">[</span><span class="n">map_num</span><span class="p">]]</span>
+                    <span class="n">c_idx</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">global_atom_indices</span><span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">parent_connection_atom_idx</span><span class="p">]</span>
+                    <span class="n">rw_mol</span><span class="o">.</span><span class="n">AddBond</span><span class="p">(</span><span class="n">p_idx</span><span class="p">,</span> <span class="n">c_idx</span><span class="p">,</span> <span class="n">BondType</span><span class="o">.</span><span class="n">SINGLE</span><span class="p">)</span>
+        
+        <span class="c1"># 3. Finalize RDKit molecule</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">final_mol_rdkit</span> <span class="o">=</span> <span class="n">rw_mol</span><span class="o">.</span><span class="n">GetMol</span><span class="p">()</span>
+            <span class="n">Chem</span><span class="o">.</span><span class="n">SanitizeMol</span><span class="p">(</span><span class="n">final_mol_rdkit</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Error during RDKit molecule sanitization: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        
+        <span class="c1"># 4. Convert to Pybel object</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">mol_block</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToMolBlock</span><span class="p">(</span><span class="n">final_mol_rdkit</span><span class="p">)</span>
+            <span class="n">mol_pybel</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">readstring</span><span class="p">(</span><span class="s1">&#39;mol&#39;</span><span class="p">,</span> <span class="n">mol_block</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Error converting RDKit molecule to Pybel: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># 5. Generate 3D structure and add hydrogens</span>
+        <span class="n">mol_pybel</span><span class="o">.</span><span class="n">addh</span><span class="p">()</span>
+        <span class="n">mol_pybel</span><span class="o">.</span><span class="n">make3D</span><span class="p">()</span>
+        
+        <span class="c1"># 6. Optimize using pysoftk&#39;s ff_ob_relaxation function</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    Optimizing with pysoftk using </span><span class="si">{</span><span class="n">force_field</span><span class="si">}</span><span class="s2"> force field (</span><span class="si">{</span><span class="n">steps</span><span class="si">}</span><span class="s2"> steps, threshold </span><span class="si">{</span><span class="n">ff_thr</span><span class="si">}</span><span class="s2">)...&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># The function ff_ob_relaxation takes steps as the 3rd argument (relax_iterations)</span>
+            <span class="n">optimized_mol_pybel</span> <span class="o">=</span> <span class="n">ff_ob_relaxation</span><span class="p">(</span><span class="n">mol_pybel</span><span class="p">,</span> <span class="n">force_field</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">ff_thr</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    Optimization complete.&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    An exception occurred during pysoftk optimization: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+            
+        <span class="k">return</span> <span class="n">optimized_mol_pybel</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, Rob Ziolek, and Chris Lorenz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
