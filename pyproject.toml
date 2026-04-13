@@ -16,6 +16,7 @@ authors = [
 ]
 requires-python = ">=3.7"
 dependencies = [
+    "setuptools < 70.0",
     "pytest >= 2.7.2",
     "numpy",
     "Cython",  # Kept as a runtime dep since it was in your original list
@@ -41,3 +42,11 @@ dependencies = [
 [tool.setuptools.packages.find]
 where = ["."]
 exclude = ["test*"]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    # Silences the pkg_resources warning from berny
+    "ignore:pkg_resources is deprecated as an API:DeprecationWarning",
+    # Silences the PySCF B3LYP functional warning
+    "ignore:Since PySCF-2.3, B3LYP .* are changed to the VWN-RPA variant:UserWarning",
+]
