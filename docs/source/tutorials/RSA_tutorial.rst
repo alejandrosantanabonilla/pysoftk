@@ -1,7 +1,5 @@
-.. code:: rst
-
-    Tutorial on the Usage of the RSA Tool
-    =====================================
+Tutorial on the Usage of the RSA Tool
+=====================================
 
     This tutorial illustrates how to use the Ring Stacking Analysis (RSA) tool within the ``pysoftk`` library to identify and analyze $\pi$-$\pi$ stacking interactions in large polymer systems.
 
