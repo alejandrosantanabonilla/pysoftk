@@ -101,41 +101,24 @@ class micelle_whole(MDA_input):
             Array with the atom positions of the micelle made whole across the pbc
       
       """
-
-      import MDAnalysis as mda 
-      import MDAnalysis.analysis.distances
       import numpy as np
-      import scipy.stats as stats
 
-      cluster_sel_positions_return=cluster_sel_positions[:,dimension]
+      pos = cluster_sel_positions[:, dimension].copy()
 
-      y = stats.binned_statistic(cluster_sel_positions_return,
-                                     cluster_sel_positions_return,
-                                     bins=np.arange(bins_min, box[0]+bins_max, bins_step),
-                                     statistic='count').statistic
+      # SUPER-OPTIMIZATION: Use np.histogram instead of scipy's binned_statistic
+      y, a = np.histogram(pos, bins=np.arange(bins_min, box[0] + bins_max, bins_step))
+
+      filled = np.where(y != 0)[0]
         
-       
-      a = stats.binned_statistic(cluster_sel_positions_return,
-                                   cluster_sel_positions_return,
-                                   bins=np.arange(bins_min, box[0]+bins_max, bins_step),
-                                   statistic='count').bin_edges
-        
+      if len(filled) > 0:
+          # Find the empty gaps
+          move_above = [a[filled[i+1]] for i in range(len(filled)-1) if filled[i] != filled[i+1]-1]
+            
+          # Apply the PBC shift
+          for item in move_above:
+              pos[pos > item] -= box[dimension]
 
-        
-      move_above=False
-      filled=np.where(y!=0)[0]
-
-      move_above = [a[filled[i+1]] for i in range(len(filled)-1) if filled[i]!=filled[i+1]-1 ]
-
-          
-      if move_above!= False and len(move_above)>0:
-         array = cluster_sel_positions_return
-
-         for item in move_above:
-            cluster_sel_positions_return[np.where(array > item)] = array[np.where(array > item)]-box[dimension] 
-
-       
-      return cluster_sel_positions_return
+      return pos
 
 
    def get_polymer_positions(self, u, frame, resname, cluster_resids):
@@ -170,16 +153,18 @@ class micelle_whole(MDA_input):
             Array with the atoms that belong to the micelle/cluster.
          
       """
-
       import MDAnalysis as mda
-    
+        
       u.trajectory[frame]
-      #print(" ".join([str(item) for item in resname]))
-      #print(" ".join([str(i) for i in cluster_resids]))
-      cluster_sel = u.select_atoms('resname '+" ".join([str(item) for item in resname]) + ' and resid '+" ".join([str(i) for i in cluster_resids]))
-      #print(cluster_sel) 
-      cluster_atoms_positions=cluster_sel.positions.copy()
-      box=u.dimensions  
+        
+      # OPTIMIZATION 3: Faster string joins using map(str)
+      res_str = " ".join(map(str, resname))
+      resid_str = " ".join(map(str, cluster_resids))
+        
+      cluster_sel = u.select_atoms(f'resname {res_str} and resid {resid_str}')
+        
+      cluster_atoms_positions = cluster_sel.positions.copy()
+      box = u.dimensions  
 
       return box, cluster_atoms_positions, cluster_sel
 
@@ -324,31 +309,41 @@ class micelle_whole(MDA_input):
             made whole across the pbc at a specific time step.
 
       """
-
-      import MDAnalysis as mda
       import numpy as np
-      
       from tqdm.auto import tqdm
+        
+      u = super().get_mda_universe()
+      frames = [ts.frame for ts in u.trajectory[int(start):int(stop):int(skip)]]
+        
+      atom_positions_over_trajectory = []
+        
+      # Pre-build the resname string once
+      res_str = " ".join(map(str, resname))
+        
+      for i, frame in enumerate(tqdm(frames, desc="Healing PBC")):
+          u.trajectory[frame]
+          box = u.dimensions[:3]
+            
+          # THE FIX: Grab the specific resids for THIS frame. 
+          # Micelles are dynamic; polymers enter and leave!
+          current_resids = cluster_resids[i]
+          resid_str = " ".join(map(str, current_resids))
+           
+          # Re-select atoms dynamically per frame
+          cluster_sel = u.select_atoms(f'resname {res_str} and resid {resid_str}')
+          current_positions = cluster_sel.positions.copy()
+            
+          healed_dims = []
+          for dim in range(3):
+              healed_1d = self.pbc_per_dimension(
+                  current_positions, box, dim, bins_min, bins_max, bins_step
+              )
+              healed_dims.append(healed_1d)
+                
+          atom_positions_whole = np.stack(healed_dims, axis=1)
+          atom_positions_over_trajectory.append((frame, atom_positions_whole))
 
-      
-      u=super().get_mda_universe()
-      frames =[ts.frame for ts in u.trajectory[int(start):int(stop):int(skip)]]
-
-      resname = [resname]*len(frames)
-      cluster_resids_f = [cluster_resids]
-                                      
-      bins_min=len(frames)*[bins_min]
-      bins_max=len(frames)*[bins_max]
-      bins_step=len(frames)*[bins_step]
-
-      # Single-threaded version of
-      #atom_positions_over_trajectory = executor.map(self.make_cluster_whole, frames, resname, cluster_resids_f[0], bins_min, bins_max, bins_step)
-                                      
-      
-      atom_positions_over_trajectory = tqdm(map(self.make_cluster_whole, frames, resname, cluster_resids_f[0], 
-                                                                bins_min, bins_max, bins_step),total=len(frames))
-
-      return list(atom_positions_over_trajectory)
+      return atom_positions_over_trajectory
 
 
    def get_atom_name_list(self, atom_sel):
