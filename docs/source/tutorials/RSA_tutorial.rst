@@ -1,5 +1,3 @@
-Here is the updated tutorial formatted in **reStructuredText (.rst)**. This is ready to be included in your Sphinx documentation or your GitHub repository's `docs` folder.
-
 .. code:: rst
 
     Tutorial on the Usage of the RSA Tool
