@@ -52,6 +52,14 @@ pysoftk.pol\_analysis.intrinsic\_density\_water\_micelle module
    :undoc-members:
    :show-inheritance:
 
+pysoftk.pol\_analysis.kinetic\_clustering module
+------------------------------------------------
+
+.. automodule:: pysoftk.pol_analysis.kinetic_clustering
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pysoftk.pol\_analysis.make\_micelle\_whole module
 -------------------------------------------------
 

@@ -1,0 +1,399 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pysoftk.pol_analysis.kinetic_clustering &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PySoftK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/tutorials.html">Tutorials: Modelling Polymers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/tutorialspol.html">Tutorials: Analysis Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pysoftk</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PySoftK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pysoftk.pol_analysis.kinetic_clustering</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pysoftk.pol_analysis.kinetic_clustering</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">deeptime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">deeptime.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">TICA</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hdbscan</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">cdist</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm.auto</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
+
+<span class="c1"># Adjusted relative imports for the pol_analysis directory structure</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.tools.utils_mda</span><span class="w"> </span><span class="kn">import</span> <span class="n">MDA_input</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.tools.utils_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">distance_matrix_calc</span>
+
+<div class="viewcode-block" id="timeit">
+<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.kinetic_clustering.timeit">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">timeit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decorator to measure and print the execution time of a function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    func : callable</span>
+<span class="sd">        The function to be timed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    callable</span>
+<span class="sd">        The wrapped function that includes execution time printing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">timeit_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">total_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Function </span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1"> Took </span><span class="si">{</span><span class="n">total_time</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="n">timeit_wrapper</span></div>
+
+
+<div class="viewcode-block" id="AutomatedKineticClustering">
+<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AutomatedKineticClustering</span><span class="p">(</span><span class="n">MDA_input</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Automated Kinetic Clustering pipeline for single molecules.</span>
+
+<span class="sd">    This class provides a completely unsupervised workflow to isolate metastable</span>
+<span class="sd">    kinetic states from molecular dynamics trajectories. It leverages RDKit for</span>
+<span class="sd">    topological backbone identification, spatial contact maps for dimensionality</span>
+<span class="sd">    reduction, and tICA combined with HDBSCAN for kinetic state clustering.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tpr_file : str</span>
+<span class="sd">        Path to the topology file (e.g., .pdb, .tpr). Must contain bond information.</span>
+<span class="sd">    xtc_file : str</span>
+<span class="sd">        Path to the trajectory file (e.g., .xyz, .xtc, .trr).</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : MDAnalysis.Universe</span>
+<span class="sd">        The MDAnalysis Universe object containing the loaded topology and trajectory.</span>
+<span class="sd">    dt : float</span>
+<span class="sd">        The time step between frames in picoseconds (ps). Defaults to 1.0 if not found.</span>
+<span class="sd">    core_atoms : MDAnalysis.core.groups.AtomGroup or None</span>
+<span class="sd">        The subset of atoms identified as the structural backbone.</span>
+<span class="sd">    feature_matrix : numpy.ndarray or None</span>
+<span class="sd">        A 2D array of shape (n_frames, n_features) representing the binary contact maps.</span>
+<span class="sd">    embedding : numpy.ndarray or None</span>
+<span class="sd">        A 2D array of shape (n_frames, n_components) representing the projected tICA space.</span>
+<span class="sd">    labels : numpy.ndarray or None</span>
+<span class="sd">        A 1D array of shape (n_frames,) containing the cluster IDs assigned by HDBSCAN.</span>
+<span class="sd">        A label of -1 indicates transition states (noise).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tpr_file</span><span class="p">,</span> <span class="n">xtc_file</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">tpr_file</span><span class="p">,</span> <span class="n">xtc_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mda_universe</span><span class="p">()</span>
+        
+        <span class="c1"># Safely extract time step if available, default to 1.0 ps if missing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="p">,</span> <span class="s1">&#39;dt&#39;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span> 
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">core_atoms</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_matrix</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="AutomatedKineticClustering.define_backbone_by_centrality">
+<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.define_backbone_by_centrality">[docs]</a>
+    <span class="nd">@timeit</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">define_backbone_by_centrality</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">percentile</span><span class="o">=</span><span class="mi">75</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates Closeness Centrality via the RDKit topological distance matrix</span>
+<span class="sd">        to automatically define the structural core/backbone of the molecule.</span>
+
+<span class="sd">        Atoms with a centrality score in the top `100 - percentile` percent are </span>
+<span class="sd">        kept, effectively filtering out high-frequency flapping side-chains.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        percentile : int or float, optional</span>
+<span class="sd">            The percentile threshold for exclusion. A value of 75 means the top </span>
+<span class="sd">            25% most central atoms are retained (default is 75).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        MDAnalysis.core.groups.AtomGroup</span>
+<span class="sd">            An MDAnalysis AtomGroup containing the identified core atoms.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        RuntimeError</span>
+<span class="sd">            If the MDAnalysis topology cannot be converted to an RDKit molecule,</span>
+<span class="sd">            typically because the topology file lacks explicit bond information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Converting MDAnalysis topology to RDKit molecule...&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Native MDA to RDKit conversion preserves atom indices</span>
+            <span class="n">rdkit_mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">convert_to</span><span class="p">(</span><span class="s2">&quot;RDKIT&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to convert to RDKit. Ensure your topology has bond information. Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calculating RDKit topological distance matrix (C++ optimized)...&quot;</span><span class="p">)</span>
+        <span class="c1"># Returns a 2D matrix of the shortest path (in number of bonds) between all atom pairs</span>
+        <span class="n">dist_matrix</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">GetDistanceMatrix</span><span class="p">(</span><span class="n">rdkit_mol</span><span class="p">)</span>
+        
+        <span class="c1"># Closeness Centrality: Summing distances. Lower sum = more central.</span>
+        <span class="n">path_sums</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dist_matrix</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1"># We need the atoms with the LOWEST path sum scores.</span>
+        <span class="n">threshold_percentile</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">-</span> <span class="n">percentile</span>
+        <span class="n">threshold_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">path_sums</span><span class="p">,</span> <span class="n">threshold_percentile</span><span class="p">)</span>
+        
+        <span class="n">core_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">path_sums</span> <span class="o">&lt;=</span> <span class="n">threshold_value</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">core_atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">core_indices</span><span class="p">]</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span><span class="si">}</span><span class="s2"> total atoms down to a core backbone of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">core_atoms</span><span class="p">)</span><span class="si">}</span><span class="s2"> atoms (Top </span><span class="si">{</span><span class="mi">100</span><span class="o">-</span><span class="n">percentile</span><span class="si">}</span><span class="s2">%).&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">core_atoms</span></div>
+
+
+<div class="viewcode-block" id="AutomatedKineticClustering.extract_contact_maps">
+<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.extract_contact_maps">[docs]</a>
+    <span class="nd">@timeit</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract_contact_maps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r_cutoff</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes pairwise distances for the core atoms and applies a spatial cutoff </span>
+<span class="sd">        to generate binary contact matrices for each frame.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        r_cutoff : float, optional</span>
+<span class="sd">            The distance threshold in Angstroms to define a contact (default is 8.0).</span>
+<span class="sd">        step : int, optional</span>
+<span class="sd">            The step size for slicing the trajectory (default is 1, which reads every frame).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            A 2D matrix where each row represents a trajectory frame and each column </span>
+<span class="sd">            is a binary feature (1 if contact, 0 if no contact).</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If `core_atoms` have not been defined by running `define_backbone_by_centrality` first.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">core_atoms</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Run define_backbone_by_centrality first.&quot;</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Extracting contact maps with r_cutoff = </span><span class="si">{</span><span class="n">r_cutoff</span><span class="si">}</span><span class="s2"> Å...&quot;</span><span class="p">)</span>
+        <span class="n">feature_list</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="p">[::</span><span class="n">step</span><span class="p">],</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Building Contact Maps&quot;</span><span class="p">):</span>
+            <span class="n">dist_m</span> <span class="o">=</span> <span class="n">distance_matrix_calc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">core_atoms</span><span class="o">.</span><span class="n">positions</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">core_atoms</span><span class="o">.</span><span class="n">positions</span><span class="p">)</span>
+            
+            <span class="c1"># Extract upper triangle (exclude diagonal self-distances)</span>
+            <span class="n">tri_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">triu_indices</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">core_atoms</span><span class="p">),</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">distances</span> <span class="o">=</span> <span class="n">dist_m</span><span class="p">[</span><span class="n">tri_idx</span><span class="p">]</span>
+            
+            <span class="c1"># Apply cutoff to create a binary matrix (0 or 1)</span>
+            <span class="n">contacts</span> <span class="o">=</span> <span class="p">(</span><span class="n">distances</span> <span class="o">&lt;=</span> <span class="n">r_cutoff</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+            <span class="n">feature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">contacts</span><span class="p">)</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">feature_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_matrix</span></div>
+
+
+<div class="viewcode-block" id="AutomatedKineticClustering.run_tica_clustering">
+<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.run_tica_clustering">[docs]</a>
+    <span class="nd">@timeit</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_tica_clustering</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lag_time_frames</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">min_cs</span><span class="o">=</span><span class="mi">15</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Performs Time-lagged Independent Component Analysis (tICA) on the contact maps</span>
+<span class="sd">        to find slow collective variables, followed by HDBSCAN clustering to </span>
+<span class="sd">        identify distinct metastable states.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        lag_time_frames : int, optional</span>
+<span class="sd">            The lag time (tau) for the tICA estimator, defined in number of frames (default is 10).</span>
+<span class="sd">        n_components : int, optional</span>
+<span class="sd">            The number of tICA components (dimensions) to project the data onto (default is 2).</span>
+<span class="sd">        min_cs : int, optional</span>
+<span class="sd">            The `min_cluster_size` parameter for the HDBSCAN algorithm (default is 15).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple of (numpy.ndarray, numpy.ndarray)</span>
+<span class="sd">            - embedding: The (n_frames, n_components) array of coordinates in tICA space.</span>
+<span class="sd">            - labels: The (n_frames,) array of cluster assignments per frame.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If `feature_matrix` has not been generated by running `extract_contact_maps` first.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_matrix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Run extract_contact_maps first.&quot;</span><span class="p">)</span>
+
+        <span class="n">physical_lag</span> <span class="o">=</span> <span class="n">lag_time_frames</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running tICA. Lag time: </span><span class="si">{</span><span class="n">lag_time_frames</span><span class="si">}</span><span class="s2"> frames (</span><span class="si">{</span><span class="n">physical_lag</span><span class="si">}</span><span class="s2"> ps)...&quot;</span><span class="p">)</span>
+        
+        <span class="n">tica</span> <span class="o">=</span> <span class="n">TICA</span><span class="p">(</span><span class="n">lagtime</span><span class="o">=</span><span class="n">lag_time_frames</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="n">n_components</span><span class="p">)</span>
+        <span class="n">tica_model</span> <span class="o">=</span> <span class="n">tica</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feature_matrix</span><span class="p">)</span><span class="o">.</span><span class="n">fetch_model</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span> <span class="o">=</span> <span class="n">tica_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feature_matrix</span><span class="p">)</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Clustering kinetic states with HDBSCAN...&quot;</span><span class="p">)</span>
+        <span class="n">clusterer</span> <span class="o">=</span> <span class="n">hdbscan</span><span class="o">.</span><span class="n">HDBSCAN</span><span class="p">(</span><span class="n">min_cluster_size</span><span class="o">=</span><span class="n">min_cs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">clusterer</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="p">)</span>
+        
+        <span class="n">n_states</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">n_noise</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Identified </span><span class="si">{</span><span class="n">n_states</span><span class="si">}</span><span class="s2"> distinct metastable states.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Frames in transition states (noise): </span><span class="si">{</span><span class="n">n_noise</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">n_noise</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span></div>
+
+
+<div class="viewcode-block" id="AutomatedKineticClustering.export_representative_states">
+<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.export_representative_states">[docs]</a>
+    <span class="nd">@timeit</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">export_representative_states</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;metastable_states.pdb&quot;</span><span class="p">,</span> <span class="n">selection</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracts the geometric medoid (closest actual frame to the cluster center) </span>
+<span class="sd">        for each identified kinetic state and exports them sequentially to a single file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        output_file : str, optional</span>
+<span class="sd">            The output filepath for the resulting trajectory/PDB file (default is &quot;metastable_states.pdb&quot;).</span>
+<span class="sd">        selection : str, optional</span>
+<span class="sd">            The MDAnalysis selection string for atoms to export (default is &quot;all&quot;).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the tICA embedding or labels have not been generated by running `run_tica_clustering` first.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Run run_tica_clustering first.&quot;</span><span class="p">)</span>
+
+        <span class="n">unique_labels</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
+        <span class="n">sel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="n">selection</span><span class="p">)</span>
+        
+        <span class="k">with</span> <span class="n">mda</span><span class="o">.</span><span class="n">Writer</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="n">sel</span><span class="o">.</span><span class="n">n_atoms</span><span class="p">)</span> <span class="k">as</span> <span class="n">W</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">cluster_id</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">unique_labels</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">cluster_id</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="k">continue</span>  <span class="c1"># Skip transition states</span>
+                
+                <span class="n">cluster_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">==</span> <span class="n">cluster_id</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">cluster_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="p">[</span><span class="n">cluster_indices</span><span class="p">]</span>
+                
+                <span class="n">cluster_center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cluster_points</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                
+                <span class="n">distances</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">(</span><span class="n">cluster_points</span><span class="p">,</span> <span class="n">cluster_center</span><span class="p">)</span>
+                <span class="n">closest_local_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span>
+                <span class="n">closest_global_idx</span> <span class="o">=</span> <span class="n">cluster_indices</span><span class="p">[</span><span class="n">closest_local_idx</span><span class="p">]</span>
+                
+                <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="p">[</span><span class="n">closest_global_idx</span><span class="p">]</span>
+                <span class="n">W</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sel</span><span class="p">)</span>
+                
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;State </span><span class="si">{</span><span class="n">cluster_id</span><span class="si">}</span><span class="s2"> -&gt; Saved Frame </span><span class="si">{</span><span class="n">closest_global_idx</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">output_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Export complete.&quot;</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, Rob Ziolek, and Chris Lorenz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

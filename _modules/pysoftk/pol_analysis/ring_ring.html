@@ -78,672 +78,370 @@
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MDAnalysis.lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">distances</span> 
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">cKDTree</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">concurrent.futures</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">njit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.pol_analysis.tools.utils_mda</span><span class="w"> </span><span class="kn">import</span> <span class="n">MDA_input</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.pol_analysis.make_micelle_whole</span><span class="w"> </span><span class="kn">import</span> <span class="n">micelle_whole</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.pol_analysis.clustering</span><span class="w"> </span><span class="kn">import</span> <span class="n">SCP</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.pol_analysis.tools.utils_tools</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis.transformations</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">trans</span>
 
-<span class="c1"># suppress some MDAnalysis warnings when writing PDB files</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 
+<span class="c1"># =====================================================================</span>
+<span class="c1"># NUMBA MATH - nogil=True is the key to Threading speed</span>
+<span class="c1"># =====================================================================</span>
+
+<div class="viewcode-block" id="fast_svd">
+<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.fast_svd">[docs]</a>
+<span class="nd">@njit</span><span class="p">(</span><span class="n">nogil</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fast_svd</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the normal vector of a ring plane using Singular Value Decomposition.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : ndarray of shape (N, 3)</span>
+<span class="sd">        The Cartesian coordinates of the atoms in the ring.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray of shape (3,)</span>
+<span class="sd">        The normal vector (third principal component) of the ring plane.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">n_atoms</span> <span class="o">=</span> <span class="n">coordinates</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_atoms</span><span class="p">):</span>
+        <span class="n">mean</span> <span class="o">+=</span> <span class="n">coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">mean</span> <span class="o">/=</span> <span class="n">n_atoms</span>
+    <span class="n">centered</span> <span class="o">=</span> <span class="n">coordinates</span> <span class="o">-</span> <span class="n">mean</span>
+    <span class="n">u_</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">centered</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">vh</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:])</span></div>
+
+
+<div class="viewcode-block" id="fast_calc_angle">
+<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.fast_calc_angle">[docs]</a>
+<span class="nd">@njit</span><span class="p">(</span><span class="n">nogil</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fast_calc_angle</span><span class="p">(</span><span class="n">u_norm</span><span class="p">,</span> <span class="n">u_norm2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the acute angle between two normal vectors.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u_norm : ndarray of shape (3,)</span>
+<span class="sd">        Normal vector of the first ring.</span>
+<span class="sd">    u_norm2 : ndarray of shape (3,)</span>
+<span class="sd">        Normal vector of the second ring.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The angle between the planes in degrees.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_norm</span><span class="p">,</span> <span class="n">u_norm2</span><span class="p">)</span>
+    <span class="n">norm_prod</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u_norm</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u_norm2</span><span class="p">)</span>
+    <span class="n">cos_theta</span> <span class="o">=</span> <span class="n">dot</span> <span class="o">/</span> <span class="n">norm_prod</span>
+    <span class="n">cos_theta</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">cos_theta</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">cos_theta</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">180.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span></div>
+
+
+<span class="c1"># =====================================================================</span>
+<span class="c1"># THREAD-SAFE WORKER</span>
+<span class="c1"># =====================================================================</span>
+
+<div class="viewcode-block" id="evaluate_dimer_pair">
+<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.evaluate_dimer_pair">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">evaluate_dimer_pair</span><span class="p">(</span><span class="n">ring_comb</span><span class="p">,</span> <span class="n">positions</span><span class="p">,</span> <span class="n">box_dims</span><span class="p">,</span> <span class="n">cut_off</span><span class="p">,</span> <span class="n">ang_cutoff</span><span class="p">,</span> <span class="n">pol_idx</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Worker function to check if any pair of rings between two polymers are stacking.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ring_comb : list of tuples</span>
+<span class="sd">        Combinations of ring atom indices between polymer A and polymer B.</span>
+<span class="sd">    positions : ndarray of shape (N, 3)</span>
+<span class="sd">        Global atom positions from the trajectory.</span>
+<span class="sd">    box_dims : ndarray of shape (6,)</span>
+<span class="sd">        Simulation box dimensions for PBC handling.</span>
+<span class="sd">    cut_off : float</span>
+<span class="sd">        Distance threshold for ring-ring proximity.</span>
+<span class="sd">    ang_cutoff : float</span>
+<span class="sd">        Angle threshold (in degrees) for face-to-face stacking.</span>
+<span class="sd">    pol_idx : tuple</span>
+<span class="sd">        The Residue IDs of the two polymers being compared.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple or None</span>
+<span class="sd">        Returns `pol_idx` if a stacking event is found, otherwise None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">ringA_idx</span><span class="p">,</span> <span class="n">ringB_idx</span> <span class="ow">in</span> <span class="n">ring_comb</span><span class="p">:</span>
+        <span class="n">posA</span> <span class="o">=</span> <span class="n">positions</span><span class="p">[</span><span class="n">ringA_idx</span><span class="p">]</span>
+        <span class="n">posB</span> <span class="o">=</span> <span class="n">positions</span><span class="p">[</span><span class="n">ringB_idx</span><span class="p">]</span>
+        
+        <span class="n">dist_mat</span> <span class="o">=</span> <span class="n">distances</span><span class="o">.</span><span class="n">distance_array</span><span class="p">(</span><span class="n">posA</span><span class="p">,</span> <span class="n">posB</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">box_dims</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">dist_mat</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">cut_off</span><span class="p">:</span>
+            <span class="n">u_norm</span> <span class="o">=</span> <span class="n">fast_svd</span><span class="p">(</span><span class="n">posA</span><span class="p">)</span>
+            <span class="n">u_norm2</span> <span class="o">=</span> <span class="n">fast_svd</span><span class="p">(</span><span class="n">posB</span><span class="p">)</span>
+            <span class="n">angle</span> <span class="o">=</span> <span class="n">fast_calc_angle</span><span class="p">(</span><span class="n">u_norm</span><span class="p">,</span> <span class="n">u_norm2</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">angle</span> <span class="o">&lt;</span> <span class="n">ang_cutoff</span> <span class="ow">or</span> <span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">180</span> <span class="o">-</span> <span class="n">ang_cutoff</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">pol_idx</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<span class="c1"># =====================================================================</span>
+<span class="c1"># MAIN CLASS</span>
+<span class="c1"># =====================================================================</span>
 
 <div class="viewcode-block" id="timeit">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.timeit">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">timeit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decorator to measure and print function execution time.&quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">timeit_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
         <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
-        <span class="n">total_time</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Function </span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1"> Took </span><span class="si">{</span><span class="n">total_time</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Function </span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1"> Took </span><span class="si">{</span><span class="n">end_time</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_time</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
     <span class="k">return</span> <span class="n">timeit_wrapper</span></div>
-
 
 
 <div class="viewcode-block" id="RSA">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.RSA">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RSA</span><span class="p">(</span><span class="n">MDA_input</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class used to compute a Ring Stacking Analysis (RSA).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ring Stacking Analysis (RSA) for polymer systems.</span>
+
+<span class="sd">    Inherits from MDA_input to handle MDAnalysis universe initialization.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tpr_file</span><span class="p">,</span> <span class="n">xtc_file</span><span class="p">):</span>
-<span class="w">      </span><span class="sd">&quot;&quot;&quot;Instantiating the MDA_input class as</span>
-<span class="sd">         super function.</span>
-<span class="sd">      &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">tpr_file</span><span class="p">,</span> <span class="n">xtc_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ring_dict</span> <span class="o">=</span> <span class="p">{}</span>
 
-      <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">tpr_file</span><span class="p">,</span> <span class="n">xtc_file</span><span class="p">)</span>
-
-      
-<div class="viewcode-block" id="RSA.calc_angle">
-<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.RSA.calc_angle">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">calc_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_norm</span><span class="p">,</span> <span class="n">u_norm2</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Function to compute the dot product between two normal </span>
-<span class="sd">            vectors. </span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_global_rings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Identify rings in polymers using RDKit and map them to global MDAnalysis indices.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        -----------</span>
+<span class="sd">        ----------</span>
+<span class="sd">        u : MDAnalysis.Universe</span>
+<span class="sd">            The universe object containing the molecular system.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ring_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">processed_templates</span> <span class="o">=</span> <span class="p">{}</span>
+        
+        <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">fragments</span><span class="p">:</span>
+            <span class="n">sig</span> <span class="o">=</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">frag</span><span class="o">.</span><span class="n">resnames</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">frag</span><span class="o">.</span><span class="n">names</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">sig</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">processed_templates</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">mol</span> <span class="o">=</span> <span class="n">frag</span><span class="o">.</span><span class="n">convert_to</span><span class="p">(</span><span class="s1">&#39;RDKIT&#39;</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+                    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.pdb&quot;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">tmp</span><span class="p">:</span>
+                        <span class="n">frag</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromPDBFile</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">removeHs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sanitize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-<span class="sd">        u_norm: numpy.ndarray</span>
-<span class="sd">           An user-provided normal vector. </span>
+                <span class="n">rings</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">if</span> <span class="n">mol</span><span class="p">:</span>
+                    <span class="n">ring_info</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetRingInfo</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">cycle</span> <span class="ow">in</span> <span class="n">ring_info</span><span class="o">.</span><span class="n">AtomRings</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cycle</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+                            <span class="n">rings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cycle</span><span class="p">)</span>
+                <span class="n">processed_templates</span><span class="p">[</span><span class="n">sig</span><span class="p">]</span> <span class="o">=</span> <span class="n">rings</span>
 
-<span class="sd">        u_norm2: numpy.ndarray</span>
-<span class="sd">           An user-provided normal vector. </span>
+            <span class="k">for</span> <span class="n">local_ring</span> <span class="ow">in</span> <span class="n">processed_templates</span><span class="p">[</span><span class="n">sig</span><span class="p">]:</span>
+                <span class="n">global_indices</span> <span class="o">=</span> <span class="n">frag</span><span class="o">.</span><span class="n">indices</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">local_ring</span><span class="p">)]</span>
+                <span class="n">resid</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">global_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">resid</span>
+                <span class="k">if</span> <span class="n">resid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ring_dict</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ring_dict</span><span class="p">[</span><span class="n">resid</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ring_dict</span><span class="p">[</span><span class="n">resid</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">global_indices</span><span class="p">))</span>
 
-<span class="sd">        Return</span>
+<div class="viewcode-block" id="RSA.load_or_build_rings">
+<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.RSA.load_or_build_rings">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_or_build_rings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">cache_file</span><span class="o">=</span><span class="s2">&quot;ring_cache.dill&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load ring data from a cache file or build it if the cache does not exist.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        u : MDAnalysis.Universe</span>
+<span class="sd">            The universe object.</span>
+<span class="sd">        cache_file : str, optional</span>
+<span class="sd">            Path to the dill cache file, by default &quot;ring_cache.dill&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">dill</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">cache_file</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cache_file</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ring_dict</span> <span class="o">=</span> <span class="n">dill</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_build_global_rings</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cache_file</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">dill</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ring_dict</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RSA.pol_cutoff">
+<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.RSA.pol_cutoff">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pol_cutoff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Filter polymer pairs that are spatially close using a cKDTree.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        u : MDAnalysis.Universe</span>
+<span class="sd">            The universe object at the current frame.</span>
+<span class="sd">        cutoff : float</span>
+<span class="sd">            Distance cutoff for the initial spatial search.</span>
+
+<span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-
-<span class="sd">        None:</span>
-<span class="sd">           Result of a dot product between two vectors.</span>
-
+<span class="sd">        indices : list</span>
+<span class="sd">            List of indices (range of valid pairs).</span>
+<span class="sd">        pairs : list of tuples</span>
+<span class="sd">            List of polymer Residue ID pairs that are proximity candidates.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_norm</span><span class="p">,</span><span class="n">u_norm2</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u_norm</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u_norm2</span><span class="p">))))</span></div>
-
-
-<div class="viewcode-block" id="RSA.GetRingSystems">
-<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.RSA.GetRingSystems">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">GetRingSystems</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_1</span><span class="p">,</span> <span class="n">max_1</span><span class="p">,</span> <span class="n">min_2</span><span class="p">,</span> <span class="n">max_2</span><span class="p">,</span> <span class="n">includeSpiro</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to detect the atomic indexes  that  belong to a ring structure for a provided </span>
-<span class="sd">           molecular complex (single, dimer, timer and so on molecules).</span>
-<span class="sd"> </span>
-
-<span class="sd">           Parameters</span>
-<span class="sd">           -----------</span>
-
-<span class="sd">           min_1: int</span>
-<span class="sd">              smallest atom index of molecule 1</span>
-
-<span class="sd">           max_1: int</span>
-<span class="sd">              largest atom index of molecule 1</span>
-
-<span class="sd">           min_2: int</span>
-<span class="sd">              smallest atom index of molecule 2</span>
-
-<span class="sd">           max_2: int</span>
-<span class="sd">              largest atom index of molecule 2</span>
-
-<span class="sd">           includeSpiro: class.bool</span>
-<span class="sd">              To check for spiro sites</span>
-
-
-<span class="sd">           Returns</span>
-<span class="sd">           --------</span>
-<span class="sd"> </span>
-<span class="sd">           ring_contact_indices: class.list</span>
-<span class="sd">              A list of arrays with the mda atom indices of the </span>
-<span class="sd">              rings of the polymers.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>
-
-        <span class="n">mol</span><span class="o">=</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_mda_universe</span><span class="p">()</span>
-        <span class="n">universe</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;index &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">min_1</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;:&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">max_1</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39; or index &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">min_2</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;:&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">max_2</span><span class="p">)))</span>
-        <span class="n">rdkit_mol</span> <span class="o">=</span> <span class="n">universe</span><span class="o">.</span><span class="n">convert_to</span><span class="p">(</span><span class="s2">&quot;RDKIT&quot;</span><span class="p">)</span>
-
-        <span class="n">ri</span> <span class="o">=</span> <span class="n">rdkit_mol</span><span class="o">.</span><span class="n">GetRingInfo</span><span class="p">()</span>
+        <span class="n">all_ring_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx</span> <span class="k">for</span> <span class="n">res_rings</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ring_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">res_rings</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">r</span><span class="p">]</span>
+        <span class="n">ring_atom_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">all_ring_indices</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ring_atom_indices</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="p">[],</span> <span class="p">[]</span>
         
-        <span class="n">systems</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">ring</span> <span class="ow">in</span> <span class="n">ri</span><span class="o">.</span><span class="n">AtomRings</span><span class="p">():</span>
-            <span class="n">ringAts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ring</span><span class="p">)</span>
-            <span class="n">nSystems</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="n">systems</span><span class="p">:</span>
-                <span class="n">nInCommon</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ringAts</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">system</span><span class="p">))</span>
-                <span class="k">if</span> <span class="n">nInCommon</span> <span class="ow">and</span> <span class="p">(</span><span class="n">includeSpiro</span> <span class="ow">or</span> <span class="n">nInCommon</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">):</span>
-                    <span class="n">ringAts</span> <span class="o">=</span> <span class="n">ringAts</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">nSystems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
-                    
-            <span class="n">nSystems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ringAts</span><span class="p">)</span>
-            <span class="n">systems</span> <span class="o">=</span> <span class="n">nSystems</span> 
-
-        <span class="c1">#getting the atom indices in mdanalysis</span>
-        <span class="n">ring_contact_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">universe</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">item</span><span class="p">)]</span><span class="o">.</span><span class="n">indices</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">systems</span><span class="p">]</span>    
-      
-        <span class="k">return</span> <span class="n">ring_contact_indices</span> </div>
-
-
-
-<div class="viewcode-block" id="RSA.separate_rings">
-<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.RSA.separate_rings">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">separate_rings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ring_contact_indices</span><span class="p">,</span> <span class="n">pol2_min</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to get the possible ring combinations between two polymers to </span>
-<span class="sd">           calculate the distances between them.</span>
-<span class="sd"> </span>
-<span class="sd">           Parameters</span>
-<span class="sd">           -----------</span>
-
-<span class="sd">           ring_contact_indices: class.list</span>
-<span class="sd">              A list of arrays with the mda atom indices of the </span>
-<span class="sd">              rings of the polymers.</span>
-
-<span class="sd">           pol2_min: int</span>
-<span class="sd">              smallest atom index of the molecule with largest atom index </span>
-
-
-<span class="sd">           Returns</span>
-<span class="sd">           --------</span>
-<span class="sd"> </span>
-<span class="sd">           ring_comb: class.list</span>
-<span class="sd">              A list of arrays with the mda atom indices of the </span>
-<span class="sd">              rings of the polymers in contact.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
-
-        <span class="n">pol1_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">ring_contact_indices</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">item</span> <span class="o">&lt;</span> <span class="n">pol2_min</span><span class="p">)]</span>
-        <span class="n">pol2_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">ring_contact_indices</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">item</span> <span class="o">&gt;=</span> <span class="n">pol2_min</span><span class="p">)]</span>
-      
-        <span class="n">ring_comb</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">pol1_indices</span><span class="p">,</span> <span class="n">pol2_indices</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="n">ring_comb</span></div>
-
-
-<div class="viewcode-block" id="RSA.get_polymer_resids">
-<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.RSA.get_polymer_resids">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_polymer_resids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pol_indices</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to get the possible ring combinations between two polymers to </span>
-<span class="sd">           calculate the distances between them.</span>
-<span class="sd"> </span>
-<span class="sd">           Parameters</span>
-<span class="sd">           -----------</span>
-
-<span class="sd">           pol_indices: np.array</span>
-<span class="sd">              Numpy array with the atom indices of the dimer.</span>
-
-<span class="sd">           Returns</span>
-<span class="sd">           --------</span>
-<span class="sd"> </span>
-<span class="sd">           ring_comb: class.list</span>
-<span class="sd">             A list of arrays with the combination of mda molecule resids of the </span>
-<span class="sd">             two molecules involved</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
-
-        <span class="n">ring_comb</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">pol_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pol_indices</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
- 
-        <span class="k">return</span> <span class="n">ring_comb</span> </div>
-
-
-
-<div class="viewcode-block" id="RSA.svd">
-<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.RSA.svd">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">svd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to obtain the Single Value Decomposition (SVD) </span>
-<span class="sd">           of coordinates.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        -----------</span>
-<span class="sd">    </span>
-<span class="sd">        coordinates: numpy.ndarray</span>
-<span class="sd">           Array containing the coordinates upon which svd is going </span>
-<span class="sd">           to be calculated.</span>
-<span class="sd">    </span>
-
-
-<span class="sd">        Returns</span>
-<span class="sd">        ---------</span>
-<span class="sd">    </span>
-<span class="sd">        vh: numpy.ndarray </span>
-<span class="sd">            A numpy.ndarray with the right unitary singular vector, orthogonal to </span>
-<span class="sd">            the given set of coordinates.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-        <span class="n">u_</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">coordinates</span> <span class="o">-</span> <span class="n">coordinates</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">coordinates</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-   
-        <span class="k">return</span> <span class="n">vh</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:]</span> </div>
-
-
-    
-<div class="viewcode-block" id="RSA.rings_stacking_dist">
-<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.RSA.rings_stacking_dist">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">rings_stacking_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">ring_comb</span><span class="p">,</span> <span class="n">polymer_pos_1</span><span class="p">,</span>
-                            <span class="n">polymer_pos_2</span><span class="p">,</span> <span class="n">pol_indices</span><span class="p">,</span> <span class="n">cut_off_stack</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">par_scheme</span><span class="o">=</span><span class="s1">&#39;OpenMP&#39;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to find if two rings are stacked. This is done by checking if the distance of geometry between two rings is smaller than an user-defined cut off distance.</span>
-<span class="sd"> </span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ------------</span>
-
-<span class="sd">        ring_comb: numpy.ndarray</span>
-<span class="sd">            Numpy array with all possible ring combinations</span>
-
-<span class="sd">        polymer_pos_1: numpy.ndarray</span>
-<span class="sd">            Numpy array with the correct positions of all atoms </span>
-<span class="sd">            of the polymer.</span>
-
-<span class="sd">        polymer_pos_2: numpy.ndarray</span>
-<span class="sd">            Numpy array with the correct positions of all atoms </span>
-<span class="sd">            of the polymer.</span>
-
-<span class="sd">        pol_indices: numpy.ndarray</span>
-<span class="sd">            Numpy array with the first atom index of each polymer. The </span>
-<span class="sd">            first one needs to be the one corresponding to polymer_pos_1</span>
-<span class="sd">            and the second one to polymer_pos_2</span>
-
-<span class="sd">        cut_off_stack: class.float</span>
-<span class="sd">            Cut off distance for ring stackings</span>
-
-
-
-<span class="sd">        Returns</span>
-<span class="sd">        ---------</span>
-
-
-<span class="sd">        vector_angle: class.float or class.boolean</span>
-<span class="sd">               Angle between the two planes of atoms</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
-
-        <span class="n">mol1_pos</span> <span class="o">=</span> <span class="n">polymer_pos_1</span><span class="p">[</span><span class="n">ring_comb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">pol_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-        <span class="n">mol2_pos</span> <span class="o">=</span> <span class="n">polymer_pos_2</span><span class="p">[</span><span class="n">ring_comb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">pol_indices</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-
-        <span class="n">tot_dist</span> <span class="o">=</span> <span class="n">mda</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">distances</span><span class="o">.</span><span class="n">distance_array</span><span class="p">(</span><span class="n">mol1_pos</span><span class="p">,</span>
-                                                    <span class="n">mol2_pos</span><span class="p">,</span>
-                                                    <span class="n">backend</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">par_scheme</span><span class="p">),</span>
-                                                    <span class="n">box</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">dimensions</span><span class="p">)</span>
-
+        <span class="n">ring_atoms</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">ring_atom_indices</span><span class="p">]</span>
+        <span class="n">box</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">dimensions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
         
-        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tot_dist</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">cut_off_stack</span><span class="p">:</span>      
-            <span class="n">u_norm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">mol1_pos</span><span class="p">)</span>
-            <span class="n">u_norm2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">mol2_pos</span><span class="p">)</span>
-
-            <span class="c1">#finding the angle between the two vectors</span>
-            <span class="n">vector_angle</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_norm</span><span class="p">,</span><span class="n">u_norm2</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u_norm</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u_norm2</span><span class="p">))))</span>
-
+        <span class="k">if</span> <span class="n">box</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">wrapped</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ring_atoms</span><span class="o">.</span><span class="n">positions</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">%</span> <span class="n">box</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                <span class="n">wrapped</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">wrapped</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">box</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mf">1e-5</span><span class="p">)</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">cKDTree</span><span class="p">(</span><span class="n">wrapped</span><span class="p">,</span> <span class="n">boxsize</span><span class="o">=</span><span class="n">box</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">vector_angle</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">cKDTree</span><span class="p">(</span><span class="n">ring_atoms</span><span class="o">.</span><span class="n">positions</span><span class="p">)</span>
             
-        <span class="k">return</span> <span class="n">vector_angle</span></div>
-
-
-<div class="viewcode-block" id="RSA.run_rings_stacking_dist">
-<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.RSA.run_rings_stacking_dist">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">run_rings_stacking_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_frame</span><span class="p">,</span> <span class="n">ring_comb</span><span class="p">,</span> <span class="n">cut_off</span><span class="p">,</span> <span class="n">ang_cutoff</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to find if two rings are stacked. This is done by checking </span>
-<span class="sd">           if the distance of geometry between two rings is smaller than a </span>
-<span class="sd">           user-defined cut off distance.</span>
-<span class="sd"> </span>
-
-<span class="sd">           Parameters</span>
-<span class="sd">           -----------</span>
-
-
-<span class="sd">           u_frame: int</span>
-<span class="sd">               time step of the calculation</span>
-
-<span class="sd">           ring_comb: numpy.ndarray</span>
-<span class="sd">              Numpy array with all possible ring combinations</span>
-
-<span class="sd">           cutoff : class.float</span>
-<span class="sd">              Cut off distance for ring stackings</span>
-
-<span class="sd">           ang_cut_off : class.float</span>
-<span class="sd">              Cut off angle for ring stackings</span>
-
-
-
-<span class="sd">           Returns</span>
-<span class="sd">           --------</span>
-
-<span class="sd"> </span>
-<span class="sd">           ring_contact_atoms: class.list</span>
-<span class="sd">              A list of arrays with the mda atom indices of the rings of the polymers</span>
-
-<span class="sd">           pol_idx: class.list</span>
-<span class="sd">               A list of the resids of the molecules with ring stacking</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">MDAnalysis.lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">distances</span> 
+        <span class="n">pairs</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query_pairs</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">cutoff</span><span class="p">),</span> <span class="n">output_type</span><span class="o">=</span><span class="s1">&#39;ndarray&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pairs</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="p">[],</span> <span class="p">[]</span>
         
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ring_comb</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>            
-            <span class="k">pass</span>
-
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">u</span><span class="o">=</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_mda_universe</span><span class="p">()</span>
-            <span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="p">[</span><span class="n">u_frame</span><span class="p">]</span>
-            <span class="n">resid_1</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">ring_comb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">resids</span><span class="p">)</span>
-            <span class="n">resid_2</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">ring_comb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">resids</span><span class="p">)</span>
-
-            <span class="n">len_mol_1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;resid &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">resid_1</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
-            <span class="n">len_mol_2</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;resid &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">resid_2</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
-
-            <span class="n">pol_resids</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">resid_1</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">resid_2</span><span class="p">)]</span>
-            <span class="n">pol_resids_f</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">pol_resids</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]</span>
+        <span class="n">resids</span> <span class="o">=</span> <span class="n">ring_atoms</span><span class="o">.</span><span class="n">resids</span><span class="p">[</span><span class="n">pairs</span><span class="p">]</span>
+        <span class="n">valid</span> <span class="o">=</span> <span class="n">resids</span><span class="p">[</span><span class="n">resids</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">resids</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="n">valid</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="p">[],</span> <span class="p">[]</span>
         
-            <span class="c1">#number to substract to the atom indices to only do the atom positions once</span>
-            <span class="n">pol1_first_index</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;resid &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">pol_resids_f</span><span class="p">[</span><span class="mi">0</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
-            <span class="n">pol2_first_index</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;resid &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">pol_resids_f</span><span class="p">[</span><span class="mi">1</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
-            <span class="n">pol_indices_f</span> <span class="o">=</span> <span class="p">[</span><span class="n">pol1_first_index</span><span class="p">,</span> <span class="n">pol2_first_index</span><span class="p">]</span>
-
-            <span class="n">atom_pos_list</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;resid &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">pol_resids_f</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">+</span><span class="s1">&#39;  &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">pol_resids_f</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="o">.</span><span class="n">positions</span>
-            <span class="n">atom_positions_tot</span><span class="o">=</span><span class="n">atom_pos_list</span>
-
-            <span class="n">polymer_1_pos</span> <span class="o">=</span> <span class="n">atom_positions_tot</span><span class="p">[:</span><span class="n">len_mol_1</span><span class="p">]</span>
-            <span class="n">polymer_2_pos</span> <span class="o">=</span> <span class="n">atom_positions_tot</span><span class="p">[</span><span class="n">len_mol_1</span><span class="p">:]</span>
-    
-            <span class="n">angles_tot_list</span><span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rings_stacking_dist</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">ring_comb</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">polymer_1_pos</span><span class="p">,</span>
-                                                                <span class="n">polymer_2_pos</span><span class="p">,</span> <span class="n">pol_indices_f</span><span class="p">,</span> <span class="n">cut_off</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ring_comb</span><span class="p">))))</span>
-
-            <span class="n">ring_index_cutoff</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">angles_tot_list</span><span class="p">)</span>
-                             <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">ang_cutoff</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">180</span><span class="o">-</span><span class="n">ang_cutoff</span><span class="p">)]</span>
-        
-            <span class="n">ring_contact_atoms</span> <span class="o">=</span> <span class="p">[</span><span class="n">ring_comb</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ring_index_cutoff</span><span class="p">]</span>
-
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ring_contact_atoms</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
-               <span class="n">snapshot</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;resid &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">pol_resids_f</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">pol_resids_f</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-               <span class="n">snapshot</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">atom_positions_tot</span>
-            
-               <span class="k">with</span> <span class="n">mda</span><span class="o">.</span><span class="n">Writer</span><span class="p">(</span><span class="s1">&#39;snapshot_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">pol_resids_f</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">pol_resids_f</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">time</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.pdb&#39;</span><span class="p">,</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">n_atoms</span><span class="p">)</span> <span class="k">as</span> <span class="n">W</span><span class="p">:</span>              
-                     <span class="n">W</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">snapshot</span><span class="p">)</span>
-
-               <span class="n">pol_idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">pol_resids_f</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pol_resids_f</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-
-               <span class="k">return</span> <span class="p">(</span><span class="n">ring_contact_atoms</span><span class="p">,</span> <span class="n">pol_idx</span><span class="p">)</span></div>
-
+        <span class="n">unique_pairs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">unique_pairs</span><span class="p">))),</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">unique_pairs</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="RSA.find_several_rings_stacked">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.RSA.find_several_rings_stacked">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">find_several_rings_stacked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rings_df_name</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to find several rings stacked using a provided</span>
-<span class="sd">           pandas DataFrame from previous calculations.</span>
-
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract connected components (clusters) of polymers from the stacking results.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        -----------</span>
-
-
-<span class="sd">        rings_df_name: pandas.DataFrame</span>
-<span class="sd">             Pandas dataframe containing the results from the ring_ring </span>
-<span class="sd">             analysis.</span>
-
-
+<span class="sd">        ----------</span>
+<span class="sd">        rings_df_name : str</span>
+<span class="sd">            Path to the parquet file generated by `stacking_analysis`.</span>
 
 <span class="sd">        Returns</span>
-<span class="sd">        --------</span>
-
-
-<span class="sd">        connected_components: class.list</span>
-<span class="sd">              List of connected polymers along the trajectory.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-
-        <span class="n">rings_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">rings_df_name</span><span class="p">)</span>
-        
-        <span class="n">connected_components_list</span><span class="o">=</span><span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rings_df</span><span class="p">)):</span>
-    
-            <span class="n">flat_connection</span><span class="o">=</span><span class="p">[]</span>   
-            <span class="n">connections</span><span class="o">=</span><span class="n">rings_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-            <span class="n">flat_connection</span> <span class="o">=</span> <span class="p">[</span><span class="n">inner</span> <span class="k">for</span> <span class="n">outer</span> <span class="ow">in</span> <span class="n">connections</span> <span class="k">for</span> <span class="n">inner</span> <span class="ow">in</span> <span class="n">outer</span><span class="p">]</span>
-            <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
-
-            <span class="c1"># Add edges to the graph based on the connections</span>
-            <span class="k">for</span> <span class="n">connection</span> <span class="ow">in</span> <span class="n">flat_connection</span><span class="p">:</span>
-               <span class="n">elem1</span><span class="p">,</span> <span class="n">elem2</span> <span class="o">=</span> <span class="n">connection</span>
-               <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">elem1</span><span class="p">,</span> <span class="n">elem2</span><span class="p">)</span>
-
-            <span class="c1">#Find the connected components in the graph</span>
-            <span class="n">connected_components</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">connected_components</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
-            <span class="n">connected_components_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">connected_components</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">connected_components_list</span></div>
-
-
-
-<div class="viewcode-block" id="RSA.nearest_neighbours">
-<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.RSA.nearest_neighbours">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">nearest_neighbours</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">lab1</span><span class="p">,</span> <span class="n">lab2</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to filter different molecules</span>
-<span class="sd">           by closest interatomic distance.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        -----------</span>
-
-<span class="sd">        u: MDAnalysis.object</span>
-<span class="sd">           Universe containing the trajectory</span>
-
-<span class="sd">        lab1: str</span>
-<span class="sd">           User provided label of one molecule</span>
-
-<span class="sd">        lab2: str</span>
-<span class="sd">           User provided label for second molecule</span>
-
-<span class="sd">        frame : int</span>
-<span class="sd">            Frame for calculation</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        --------</span>
-
-<span class="sd">        float: np.float</span>
-<span class="sd">          Minimum distance between the atoms belonging to the polymer pair </span>
-<span class="sd">          and all the atompositions.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">MDAnalysis.lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">distances</span> 
-
-        <span class="n">mol</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lab1</span><span class="p">))</span> 
-        <span class="n">mol1</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lab2</span><span class="p">))</span>
-
-        <span class="n">tot_dist</span> <span class="o">=</span> <span class="n">distances</span><span class="o">.</span><span class="n">distance_array</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">positions</span><span class="p">,</span> <span class="n">mol1</span><span class="o">.</span><span class="n">positions</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">dimensions</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tot_dist</span><span class="p">)</span> </div>
-
-
-    
-<div class="viewcode-block" id="RSA.number_pol">
-<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.RSA.number_pol">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">number_pol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of polymers inside an user-provided box.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        -----------</span>
-
-<span class="sd">        u: MDAnalysis.Universe</span>
-<span class="sd">           An user-provided MDAnalysis universe.</span>
-
-<span class="sd">    </span>
-<span class="sd">        Return</span>
 <span class="sd">        -------</span>
-
-<span class="sd">        None:</span>
-<span class="sd">          Number of polymers within a box.</span>
-
+<span class="sd">        list of lists</span>
+<span class="sd">            For each frame, a list of polymer clusters (each cluster is a list of Residue IDs).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">rings_df_name</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)):</span>
+            <span class="n">adj</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">raw_pairs</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;pol_resid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
-        <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">raw_pairs</span><span class="p">:</span>
+                <span class="n">u_n</span><span class="p">,</span> <span class="n">v_n</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">adj</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">u_n</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">v_n</span><span class="p">)</span>
+                <span class="n">adj</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">v_n</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">u_n</span><span class="p">)</span>
+            
+            <span class="n">seen</span><span class="p">,</span> <span class="n">comps</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(),</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">adj</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+                    <span class="n">c</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(),</span> <span class="p">[</span><span class="n">node</span><span class="p">]</span>
+                    <span class="k">while</span> <span class="n">q</span><span class="p">:</span>
+                        <span class="n">curr</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">curr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">c</span><span class="p">:</span>
+                            <span class="n">c</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">curr</span><span class="p">);</span> <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">curr</span><span class="p">)</span>
+                            <span class="n">q</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">adj</span><span class="p">[</span><span class="n">curr</span><span class="p">]</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span>
+                    <span class="n">comps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">comps</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span></div>
 
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">residues</span><span class="p">)</span> </div>
 
-
-    
-<div class="viewcode-block" id="RSA.pol_cutoff">
-<a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.RSA.pol_cutoff">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">pol_cutoff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to count the number of polymers within an </span>
-<span class="sd">           user-provided cutoff.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        -----------</span>
-
-<span class="sd">        u: MDAnalysis.universe</span>
-<span class="sd">           An user-provided universe of MDAnalysis</span>
-<span class="sd"> </span>
-<span class="sd">        cutoff: float</span>
-<span class="sd">           An user provided cutoff defining closest distances.</span>
-
-<span class="sd">        frames : list</span>
-<span class="sd">           User provided frames where calculation will be carried out</span>
-
-<span class="sd">        Return</span>
-<span class="sd">        -------</span>
-
-<span class="sd">        index_cutoff: list</span>
-<span class="sd">           List of intergers with the indexes of the selected</span>
-<span class="sd">           molecules.</span>
-
-<span class="sd">         b: list</span>
-<span class="sd">            List of possible combinations of the selected molecules</span>
-<span class="sd">     </span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
-
-        <span class="n">a</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">resids</span><span class="p">)</span>
-        <span class="n">b</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">combinations</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  
-
-        <span class="n">all_comb</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;resid&#39;</span><span class="p">,</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;resid&#39;</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
-                  <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">b</span><span class="p">)]</span> 
-      
-        <span class="n">dist_tot</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">nearest_neighbours</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">all_comb</span><span class="p">)])</span>
-      
-        <span class="c1">#returns list with the pair indices of the polymers that have at least two atoms that are in contact</span>
-        <span class="n">index_cutoff</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dist_tot</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="n">cutoff</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> 
-    
-        <span class="k">return</span> <span class="n">index_cutoff</span><span class="p">,</span><span class="n">b</span></div>
-
-    
 <div class="viewcode-block" id="RSA.stacking_analysis">
 <a class="viewcode-back" href="../../../pysoftk.pol_analysis.html#pysoftk.pol_analysis.ring_ring.RSA.stacking_analysis">[docs]</a>
     <span class="nd">@timeit</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">stacking_analysis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cut_off</span><span class="p">,</span> <span class="n">ang_cut</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">output_name</span><span class="o">=</span><span class="s2">&quot;output.parquet&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to perform a stacking analysis over several frames </span>
-<span class="sd">         Parameters</span>
-<span class="sd">         -----------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stacking_analysis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cut_off</span><span class="p">,</span> <span class="n">ang_cut</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">output_name</span><span class="o">=</span><span class="s2">&quot;output.parquet&quot;</span><span class="p">,</span> <span class="n">write_pdb</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform high-throughput ring stacking analysis across trajectory frames.</span>
 
-<span class="sd">         u: MDAnalysis.universe</span>
-<span class="sd">           An user-provided universe of MDAnalysis</span>
-<span class="sd"> </span>
-<span class="sd">         cutoff: float</span>
-<span class="sd">           An user provided cutoff defining closest distances.</span>
-<span class="sd">         </span>
-<span class="sd">         ang_cut: float</span>
-<span class="sd">           An user provided cutoff defining the valid ring stacking angle range.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cut_off : float</span>
+<span class="sd">            Distance threshold for stacking.</span>
+<span class="sd">        ang_cut : float</span>
+<span class="sd">            Angle threshold (acute) for face-to-face orientation.</span>
+<span class="sd">        start : int</span>
+<span class="sd">            Starting frame index.</span>
+<span class="sd">        stop : int</span>
+<span class="sd">            Stopping frame index.</span>
+<span class="sd">        step : int</span>
+<span class="sd">            Frame stride.</span>
+<span class="sd">        output_name : str, optional</span>
+<span class="sd">            Name of the output parquet file, by default &quot;output.parquet&quot;.</span>
+<span class="sd">        write_pdb : bool, optional</span>
+<span class="sd">            Whether to write pdb files (legacy flag), by default False.</span>
 
-<span class="sd">         start : int</span>
-<span class="sd">           starting frame to perform the ring analysis.</span>
-
-<span class="sd">         stop : int</span>
-<span class="sd">           stopping frame of the ring analysis.</span>
-
-<span class="sd">         step : int</span>
-<span class="sd">           number of frames to skip during the ring analysis.</span>
-
-<span class="sd">         output_name : nstr</span>
-<span class="sd">            name of output parquet file with  the ring analysis.</span>
-
-<span class="sd">         Return</span>
-<span class="sd">         -------</span>
-
-<span class="sd">          None: </span>
-<span class="sd">            pandas dataframe with atom indexes of rings where there is ring stacking at each time frame.</span>
-<span class="sd">     </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pandas.DataFrame</span>
+<span class="sd">            The results containing polymer stacking pairs per frame.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-   
-        <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
-        
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ring Stacking analysis has started&#39;</span><span class="p">)</span>       
-        <span class="n">u</span><span class="o">=</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_mda_universe</span><span class="p">()</span>
-        
-        <span class="c1">#Get the indices of b of the polymers that are in contact</span>
-        <span class="c1">#Dimers with smallest distances according to radius cutoff</span>
-        <span class="n">index_cutoff</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pol_cutoff</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">cut_off</span><span class="p">))</span> 
-        <span class="n">dimer_mol</span><span class="o">=</span><span class="p">[</span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">index_cutoff</span><span class="p">]</span> <span class="c1">#list of resnum of polymers that are in contact</span>
-        
-        <span class="c1">#Array with atom indices of the polymers that are in contact given in only one array</span>
-        <span class="n">dimer_ind</span><span class="o">=</span><span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;resid </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="o">.</span><span class="n">indices</span>
-                   <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dimer_mol</span><span class="p">)]</span>  
-
-        <span class="n">dimers_indexes</span><span class="o">=</span><span class="p">[(</span><span class="nb">min</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;resid </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="o">.</span><span class="n">indices</span><span class="p">),</span> 
-        <span class="nb">max</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;resid </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="o">.</span><span class="n">indices</span><span class="p">),</span> 
-        <span class="nb">min</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;resid </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="o">.</span><span class="n">indices</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;resid </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="o">.</span><span class="n">indices</span><span class="p">))</span>
-                   <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dimer_mol</span><span class="p">)]</span> 
-       
-        <span class="n">us</span> <span class="o">=</span> <span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">dimers_indexes</span><span class="p">)</span>  
-
-        <span class="n">dim2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">GetRingSystems</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dimers_indexes</span><span class="p">],</span>
-                             <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dimers_indexes</span><span class="p">],</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dimers_indexes</span><span class="p">],</span>
-                             <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dimers_indexes</span><span class="p">]),</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">dimers_indexes</span><span class="p">),</span>
-                             <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Detecting atoms in Rings&quot;</span><span class="p">))</span>
-    
-        <span class="n">u4</span> <span class="o">=</span> <span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">dim2</span><span class="p">)</span>
-
-        <span class="n">dim3</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">separate_rings</span><span class="p">,</span> <span class="n">dim2</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dimers_indexes</span><span class="p">]),</span>
-                    <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">dim2</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Separating Rings&quot;</span><span class="p">)</span>
-
-        <span class="n">c</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dim3</span><span class="p">)</span>
-        <span class="n">u_f</span><span class="o">=</span><span class="p">[</span><span class="n">ts</span><span class="o">.</span><span class="n">frame</span> <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">start</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">stop</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">step</span><span class="p">)]]</span>
-
-        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Preparing DataFrame to store the results&quot;</span><span class="p">)</span>
-          
-        <span class="n">data</span> <span class="o">=</span> <span class="p">[[[],</span> <span class="p">[]]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">u_f</span><span class="p">))]</span>
-        <span class="n">timestep_count</span><span class="o">=</span><span class="mi">0</span>
-
-        <span class="k">for</span> <span class="n">u_t</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">u_f</span><span class="p">):</span>           
-            <span class="n">u4</span> <span class="o">=</span> <span class="p">[</span><span class="n">u_t</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-            <span class="n">cuts</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">cut_off</span><span class="p">)]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-            <span class="n">ang_cuts</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">ang_cut</span><span class="p">)]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-
-            <span class="n">dim4</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run_rings_stacking_dist</span><span class="p">,</span> <span class="n">u4</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">cuts</span><span class="p">,</span> <span class="n">ang_cuts</span><span class="p">),</span>
-                         <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">dim3</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Computing stacking distances&quot;</span><span class="p">))</span>
-    
-            <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">dim4</span> <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
-
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">:</span>
-                  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No ring stacking in this frame&#39;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-               <span class="n">results1</span><span class="p">,</span> <span class="n">results2</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">results</span><span class="p">)</span>
-               <span class="nb">print</span><span class="p">(</span><span class="n">results1</span><span class="p">)</span>
-                
-               <span class="n">flattened_list_1</span> <span class="o">=</span> <span class="p">[]</span>
-               <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">results1</span><span class="p">:</span>
-                     <span class="k">for</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
-                           <span class="n">flattened_list_1</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
-             
-              
-               <span class="n">data</span><span class="p">[</span><span class="n">timestep_count</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">flattened_list_1</span><span class="p">)</span>
-               <span class="n">data</span><span class="p">[</span><span class="n">timestep_count</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results2</span><span class="p">)</span>
-            <span class="n">timestep_count</span><span class="o">+=</span><span class="mi">1</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mda_universe</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="p">,</span> <span class="s1">&#39;bonds&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">bonds</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">guess_bonds</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">dimensions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
+            <span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">add_transformations</span><span class="p">(</span><span class="n">trans</span><span class="o">.</span><span class="n">unwrap</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="p">))</span>
             
-        <span class="n">df_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;atom_index&#39;</span><span class="p">,</span> <span class="s1">&#39;pol_resid&#39;</span><span class="p">])</span>
-
-        <span class="c1"># Save the DataFrame to a file</span>
-        <span class="n">df_results</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    
-        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Information succesfully stored in </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">output_name</span><span class="p">)))</span>
-        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Stacking analysis has succesfully finished!&quot;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_or_build_rings</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        <span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">ts</span><span class="o">.</span><span class="n">frame</span> <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">start</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">stop</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">step</span><span class="p">)]]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">())</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">f_idx</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Trajectory Progress&quot;</span><span class="p">):</span>            
+                <span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="p">[</span><span class="n">f_idx</span><span class="p">]</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">dimer_candidates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pol_cutoff</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">cut_off</span><span class="p">))</span> 
+                
+                <span class="n">pos</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">positions</span>
+                <span class="n">box</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">dimensions</span>
+                <span class="n">frame_resids</span> <span class="o">=</span> <span class="p">[]</span>
+                
+                <span class="n">futures</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">resA</span><span class="p">,</span> <span class="n">resB</span> <span class="ow">in</span> <span class="n">dimer_candidates</span><span class="p">:</span>
+                    <span class="n">ringsA</span><span class="p">,</span> <span class="n">ringsB</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ring_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">resA</span><span class="p">,</span> <span class="p">[]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ring_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">resB</span><span class="p">,</span> <span class="p">[])</span>
+                    <span class="k">if</span> <span class="n">ringsA</span> <span class="ow">and</span> <span class="n">ringsB</span><span class="p">:</span>
+                        <span class="n">comb</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">ringsA</span><span class="p">,</span> <span class="n">ringsB</span><span class="p">))</span>
+                        <span class="n">futures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">evaluate_dimer_pair</span><span class="p">,</span> <span class="n">comb</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">cut_off</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">ang_cut</span><span class="p">),</span> <span class="p">(</span><span class="n">resA</span><span class="p">,</span> <span class="n">resB</span><span class="p">)))</span>
+                
+                <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">as_completed</span><span class="p">(</span><span class="n">futures</span><span class="p">):</span>
+                    <span class="n">pol_idx</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">pol_idx</span><span class="p">:</span>
+                        <span class="n">frame_resids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">pol_idx</span><span class="p">))</span>
+                
+                <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">([[],</span> <span class="n">frame_resids</span><span class="p">])</span>
+            
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;atom_index&#39;</span><span class="p">,</span> <span class="s1">&#39;pol_resid&#39;</span><span class="p">])</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">output_name</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
 </div>
 
-    
 </pre></div>
 
            </div>

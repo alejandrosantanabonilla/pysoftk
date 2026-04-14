@@ -639,6 +639,213 @@ array with the values of the binned radial distance, this allows easier plotting
 <dd></dd></dl>
 
 </section>
+<section id="module-pysoftk.pol_analysis.kinetic_clustering">
+<span id="pysoftk-pol-analysis-kinetic-clustering-module"></span><h2>pysoftk.pol_analysis.kinetic_clustering module<a class="headerlink" href="#module-pysoftk.pol_analysis.kinetic_clustering" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.kinetic_clustering.</span></span><span class="sig-name descname"><span class="pre">AutomatedKineticClustering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tpr_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtc_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/kinetic_clustering.html#AutomatedKineticClustering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_mda.MDA_input" title="pysoftk.pol_analysis.tools.utils_mda.MDA_input"><code class="xref py py-class docutils literal notranslate"><span class="pre">MDA_input</span></code></a></p>
+<p>Automated Kinetic Clustering pipeline for single molecules.</p>
+<p>This class provides a completely unsupervised workflow to isolate metastable
+kinetic states from molecular dynamics trajectories. It leverages RDKit for
+topological backbone identification, spatial contact maps for dimensionality
+reduction, and tICA combined with HDBSCAN for kinetic state clustering.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tpr_file</strong> (<em>str</em>) – Path to the topology file (e.g., .pdb, .tpr). Must contain bond information.</p></li>
+<li><p><strong>xtc_file</strong> (<em>str</em>) – Path to the trajectory file (e.g., .xyz, .xtc, .trr).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.u">
+<span class="sig-name descname"><span class="pre">u</span></span><a class="headerlink" href="#pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.u" title="Link to this definition"></a></dt>
+<dd><p>The MDAnalysis Universe object containing the loaded topology and trajectory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MDAnalysis.Universe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.dt">
+<span class="sig-name descname"><span class="pre">dt</span></span><a class="headerlink" href="#pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.dt" title="Link to this definition"></a></dt>
+<dd><p>The time step between frames in picoseconds (ps). Defaults to 1.0 if not found.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.core_atoms">
+<span class="sig-name descname"><span class="pre">core_atoms</span></span><a class="headerlink" href="#pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.core_atoms" title="Link to this definition"></a></dt>
+<dd><p>The subset of atoms identified as the structural backbone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MDAnalysis.core.groups.AtomGroup or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.feature_matrix">
+<span class="sig-name descname"><span class="pre">feature_matrix</span></span><a class="headerlink" href="#pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.feature_matrix" title="Link to this definition"></a></dt>
+<dd><p>A 2D array of shape (n_frames, n_features) representing the binary contact maps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><a class="headerlink" href="#pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.embedding" title="Link to this definition"></a></dt>
+<dd><p>A 2D array of shape (n_frames, n_components) representing the projected tICA space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.labels">
+<span class="sig-name descname"><span class="pre">labels</span></span><a class="headerlink" href="#pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.labels" title="Link to this definition"></a></dt>
+<dd><p>A 1D array of shape (n_frames,) containing the cluster IDs assigned by HDBSCAN.
+A label of -1 indicates transition states (noise).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.define_backbone_by_centrality">
+<span class="sig-name descname"><span class="pre">define_backbone_by_centrality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percentile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">75</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/kinetic_clustering.html#AutomatedKineticClustering.define_backbone_by_centrality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.define_backbone_by_centrality" title="Link to this definition"></a></dt>
+<dd><p>Calculates Closeness Centrality via the RDKit topological distance matrix
+to automatically define the structural core/backbone of the molecule.</p>
+<p>Atoms with a centrality score in the top <cite>100 - percentile</cite> percent are
+kept, effectively filtering out high-frequency flapping side-chains.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>percentile</strong> (<em>int</em><em> or </em><em>float</em><em>, </em><em>optional</em>) – The percentile threshold for exclusion. A value of 75 means the top
+25% most central atoms are retained (default is 75).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An MDAnalysis AtomGroup containing the identified core atoms.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MDAnalysis.core.groups.AtomGroup</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If the MDAnalysis topology cannot be converted to an RDKit molecule,
+    typically because the topology file lacks explicit bond information.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.export_representative_states">
+<span class="sig-name descname"><span class="pre">export_representative_states</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'metastable_states.pdb'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/kinetic_clustering.html#AutomatedKineticClustering.export_representative_states"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.export_representative_states" title="Link to this definition"></a></dt>
+<dd><p>Extracts the geometric medoid (closest actual frame to the cluster center)
+for each identified kinetic state and exports them sequentially to a single file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_file</strong> (<em>str</em><em>, </em><em>optional</em>) – The output filepath for the resulting trajectory/PDB file (default is “metastable_states.pdb”).</p></li>
+<li><p><strong>selection</strong> (<em>str</em><em>, </em><em>optional</em>) – The MDAnalysis selection string for atoms to export (default is “all”).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the tICA embedding or labels have not been generated by running <cite>run_tica_clustering</cite> first.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.extract_contact_maps">
+<span class="sig-name descname"><span class="pre">extract_contact_maps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/kinetic_clustering.html#AutomatedKineticClustering.extract_contact_maps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.extract_contact_maps" title="Link to this definition"></a></dt>
+<dd><p>Computes pairwise distances for the core atoms and applies a spatial cutoff
+to generate binary contact matrices for each frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r_cutoff</strong> (<em>float</em><em>, </em><em>optional</em>) – The distance threshold in Angstroms to define a contact (default is 8.0).</p></li>
+<li><p><strong>step</strong> (<em>int</em><em>, </em><em>optional</em>) – The step size for slicing the trajectory (default is 1, which reads every frame).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 2D matrix where each row represents a trajectory frame and each column
+is a binary feature (1 if contact, 0 if no contact).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <cite>core_atoms</cite> have not been defined by running <cite>define_backbone_by_centrality</cite> first.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.run_tica_clustering">
+<span class="sig-name descname"><span class="pre">run_tica_clustering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lag_time_frames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_cs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/kinetic_clustering.html#AutomatedKineticClustering.run_tica_clustering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.kinetic_clustering.AutomatedKineticClustering.run_tica_clustering" title="Link to this definition"></a></dt>
+<dd><p>Performs Time-lagged Independent Component Analysis (tICA) on the contact maps
+to find slow collective variables, followed by HDBSCAN clustering to
+identify distinct metastable states.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lag_time_frames</strong> (<em>int</em><em>, </em><em>optional</em>) – The lag time (tau) for the tICA estimator, defined in number of frames (default is 10).</p></li>
+<li><p><strong>n_components</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of tICA components (dimensions) to project the data onto (default is 2).</p></li>
+<li><p><strong>min_cs</strong> (<em>int</em><em>, </em><em>optional</em>) – The <cite>min_cluster_size</cite> parameter for the HDBSCAN algorithm (default is 15).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>embedding: The (n_frames, n_components) array of coordinates in tICA space.</p></li>
+<li><p>labels: The (n_frames,) array of cluster assignments per frame.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple of (numpy.ndarray, numpy.ndarray)</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <cite>feature_matrix</cite> has not been generated by running <cite>extract_contact_maps</cite> first.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.kinetic_clustering.timeit">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.kinetic_clustering.</span></span><span class="sig-name descname"><span class="pre">timeit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/kinetic_clustering.html#timeit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.kinetic_clustering.timeit" title="Link to this definition"></a></dt>
+<dd><p>Decorator to measure and print the execution time of a function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>func</strong> (<em>callable</em>) – The function to be timed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The wrapped function that includes execution time printing.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>callable</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="module-pysoftk.pol_analysis.make_micelle_whole">
 <span id="pysoftk-pol-analysis-make-micelle-whole-module"></span><h2>pysoftk.pol_analysis.make_micelle_whole module<a class="headerlink" href="#module-pysoftk.pol_analysis.make_micelle_whole" title="Link to this heading"></a></h2>
 <dl class="py class">
@@ -920,134 +1127,35 @@ made whole across the pbc at a specific time step.</p>
 <dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.ring_ring.</span></span><span class="sig-name descname"><span class="pre">RSA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tpr_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtc_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="pysoftk.pol_analysis.tools.html#pysoftk.pol_analysis.tools.utils_mda.MDA_input" title="pysoftk.pol_analysis.tools.utils_mda.MDA_input"><code class="xref py py-class docutils literal notranslate"><span class="pre">MDA_input</span></code></a></p>
-<p>A class used to compute a Ring Stacking Analysis (RSA).</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.GetRingSystems">
-<span class="sig-name descname"><span class="pre">GetRingSystems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">includeSpiro</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.GetRingSystems"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.GetRingSystems" title="Link to this definition"></a></dt>
-<dd><p>Function to detect the atomic indexes  that  belong to a ring structure for a provided
-molecular complex (single, dimer, timer and so on molecules).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>min_1</strong> (<em>int</em>) – smallest atom index of molecule 1</p></li>
-<li><p><strong>max_1</strong> (<em>int</em>) – largest atom index of molecule 1</p></li>
-<li><p><strong>min_2</strong> (<em>int</em>) – smallest atom index of molecule 2</p></li>
-<li><p><strong>max_2</strong> (<em>int</em>) – largest atom index of molecule 2</p></li>
-<li><p><strong>includeSpiro</strong> (<em>class.bool</em>) – To check for spiro sites</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ring_contact_indices</strong> – A list of arrays with the mda atom indices of the
-rings of the polymers.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>class.list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.calc_angle">
-<span class="sig-name descname"><span class="pre">calc_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u_norm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_norm2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.calc_angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.calc_angle" title="Link to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to compute the dot product between two normal</dt><dd><p>vectors.</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>u_norm</strong> (<em>numpy.ndarray</em>) – An user-provided normal vector.</p></li>
-<li><p><strong>u_norm2</strong> (<em>numpy.ndarray</em>) – An user-provided normal vector.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Result of a dot product between two vectors.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
+<p>Ring Stacking Analysis (RSA) for polymer systems.</p>
+<p>Inherits from MDA_input to handle MDAnalysis universe initialization.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.find_several_rings_stacked">
 <span class="sig-name descname"><span class="pre">find_several_rings_stacked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rings_df_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.find_several_rings_stacked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.find_several_rings_stacked" title="Link to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to find several rings stacked using a provided</dt><dd><p>pandas DataFrame from previous calculations.</p>
-</dd>
-</dl>
+<dd><p>Extract connected components (clusters) of polymers from the stacking results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>rings_df_name</strong> (<em>pandas.DataFrame</em>) – Pandas dataframe containing the results from the ring_ring
-analysis.</p>
+<dd class="field-odd"><p><strong>rings_df_name</strong> (<em>str</em>) – Path to the parquet file generated by <cite>stacking_analysis</cite>.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>connected_components</strong> – List of connected polymers along the trajectory.</p>
+<dd class="field-even"><p>For each frame, a list of polymer clusters (each cluster is a list of Residue IDs).</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>class.list</p>
+<dd class="field-odd"><p>list of lists</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.get_polymer_resids">
-<span class="sig-name descname"><span class="pre">get_polymer_resids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pol_indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.get_polymer_resids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.get_polymer_resids" title="Link to this definition"></a></dt>
-<dd><p>Function to get the possible ring combinations between two polymers to
-calculate the distances between them.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>pol_indices</strong> (<em>np.array</em>) – Numpy array with the atom indices of the dimer.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ring_comb</strong> – A list of arrays with the combination of mda molecule resids of the
-two molecules involved</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>class.list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.nearest_neighbours">
-<span class="sig-name descname"><span class="pre">nearest_neighbours</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lab1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lab2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.nearest_neighbours"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.nearest_neighbours" title="Link to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to filter different molecules</dt><dd><p>by closest interatomic distance.</p>
-</dd>
-</dl>
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.load_or_build_rings">
+<span class="sig-name descname"><span class="pre">load_or_build_rings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ring_cache.dill'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.load_or_build_rings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.load_or_build_rings" title="Link to this definition"></a></dt>
+<dd><p>Load ring data from a cache file or build it if the cache does not exist.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> (<em>MDAnalysis.object</em>) – Universe containing the trajectory</p></li>
-<li><p><strong>lab1</strong> (<em>str</em>) – User provided label of one molecule</p></li>
-<li><p><strong>lab2</strong> (<em>str</em>) – User provided label for second molecule</p></li>
-<li><p><strong>frame</strong> (<em>int</em>) – Frame for calculation</p></li>
+<li><p><strong>u</strong> (<em>MDAnalysis.Universe</em>) – The universe object.</p></li>
+<li><p><strong>cache_file</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to the dill cache file, by default “ring_cache.dill”.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>float</strong> – Minimum distance between the atoms belonging to the polymer pair
-and all the atompositions.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.number_pol">
-<span class="sig-name descname"><span class="pre">number_pol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.number_pol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.number_pol" title="Link to this definition"></a></dt>
-<dd><p>Number of polymers inside an user-provided box.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>u</strong> (<em>MDAnalysis.Universe</em>) – An user-provided MDAnalysis universe.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Number of polymers within a box.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1055,154 +1163,45 @@ and all the atompositions.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.pol_cutoff">
 <span class="sig-name descname"><span class="pre">pol_cutoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.pol_cutoff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.pol_cutoff" title="Link to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to count the number of polymers within an</dt><dd><p>user-provided cutoff.</p>
-</dd>
-</dl>
+<dd><p>Filter polymer pairs that are spatially close using a cKDTree.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> (<em>MDAnalysis.universe</em>) – An user-provided universe of MDAnalysis</p></li>
-<li><p><strong>cutoff</strong> (<em>float</em>) – An user provided cutoff defining closest distances.</p></li>
-<li><p><strong>frames</strong> (<em>list</em>) – User provided frames where calculation will be carried out</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt><strong>index_cutoff</strong> –   List of intergers with the indexes of the selected</dt><dd><p>molecules.</p>
-</dd>
-<dt>b: list</dt><dd><p>List of possible combinations of the selected molecules</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.rings_stacking_dist">
-<span class="sig-name descname"><span class="pre">rings_stacking_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ring_comb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polymer_pos_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polymer_pos_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pol_indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_off_stack</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">par_scheme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'OpenMP'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.rings_stacking_dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.rings_stacking_dist" title="Link to this definition"></a></dt>
-<dd><p>Function to find if two rings are stacked. This is done by checking if the distance of geometry between two rings is smaller than an user-defined cut off distance.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ring_comb</strong> (<em>numpy.ndarray</em>) – Numpy array with all possible ring combinations</p></li>
-<li><p><strong>polymer_pos_1</strong> (<em>numpy.ndarray</em>) – Numpy array with the correct positions of all atoms
-of the polymer.</p></li>
-<li><p><strong>polymer_pos_2</strong> (<em>numpy.ndarray</em>) – Numpy array with the correct positions of all atoms
-of the polymer.</p></li>
-<li><p><strong>pol_indices</strong> (<em>numpy.ndarray</em>) – Numpy array with the first atom index of each polymer. The
-first one needs to be the one corresponding to polymer_pos_1
-and the second one to polymer_pos_2</p></li>
-<li><p><strong>cut_off_stack</strong> (<em>class.float</em>) – Cut off distance for ring stackings</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>vector_angle</strong> – Angle between the two planes of atoms</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>class.float or class.boolean</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.run_rings_stacking_dist">
-<span class="sig-name descname"><span class="pre">run_rings_stacking_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u_frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ring_comb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_off</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ang_cutoff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.run_rings_stacking_dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.run_rings_stacking_dist" title="Link to this definition"></a></dt>
-<dd><p>Function to find if two rings are stacked. This is done by checking
-if the distance of geometry between two rings is smaller than a
-user-defined cut off distance.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>u_frame</strong> (<em>int</em>) – time step of the calculation</p></li>
-<li><p><strong>ring_comb</strong> (<em>numpy.ndarray</em>) – Numpy array with all possible ring combinations</p></li>
-<li><p><strong>cutoff</strong> (<em>class.float</em>) – Cut off distance for ring stackings</p></li>
-<li><p><strong>ang_cut_off</strong> (<em>class.float</em>) – Cut off angle for ring stackings</p></li>
+<li><p><strong>u</strong> (<em>MDAnalysis.Universe</em>) – The universe object at the current frame.</p></li>
+<li><p><strong>cutoff</strong> (<em>float</em>) – Distance cutoff for the initial spatial search.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>ring_contact_atoms</strong> (<em>class.list</em>) – A list of arrays with the mda atom indices of the rings of the polymers</p></li>
-<li><p><strong>pol_idx</strong> (<em>class.list</em>) – A list of the resids of the molecules with ring stacking</p></li>
+<li><p><strong>indices</strong> (<em>list</em>) – List of indices (range of valid pairs).</p></li>
+<li><p><strong>pairs</strong> (<em>list of tuples</em>) – List of polymer Residue ID pairs that are proximity candidates.</p></li>
 </ul>
 </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.separate_rings">
-<span class="sig-name descname"><span class="pre">separate_rings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring_contact_indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pol2_min</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.separate_rings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.separate_rings" title="Link to this definition"></a></dt>
-<dd><p>Function to get the possible ring combinations between two polymers to
-calculate the distances between them.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ring_contact_indices</strong> (<em>class.list</em>) – A list of arrays with the mda atom indices of the
-rings of the polymers.</p></li>
-<li><p><strong>pol2_min</strong> (<em>int</em>) – smallest atom index of the molecule with largest atom index</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ring_comb</strong> – A list of arrays with the mda atom indices of the
-rings of the polymers in contact.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>class.list</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.stacking_analysis">
-<span class="sig-name descname"><span class="pre">stacking_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cut_off</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ang_cut</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output.parquet'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.stacking_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.stacking_analysis" title="Link to this definition"></a></dt>
-<dd><p>Function to perform a stacking analysis over several frames
-:param u: An user-provided universe of MDAnalysis
-:type u: MDAnalysis.universe
-:param cutoff: An user provided cutoff defining closest distances.
-:type cutoff: float
-:param ang_cut: An user provided cutoff defining the valid ring stacking angle range.
-:type ang_cut: float
-:param start: starting frame to perform the ring analysis.
-:type start: int
-:param stop: stopping frame of the ring analysis.
-:type stop: int
-:param step: number of frames to skip during the ring analysis.
-:type step: int
-:param output_name: name of output parquet file with  the ring analysis.
-:type output_name: nstr</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pandas dataframe with atom indexes of rings where there is ring stacking at each time frame.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.RSA.svd">
-<span class="sig-name descname"><span class="pre">svd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.svd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.svd" title="Link to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Function to obtain the Single Value Decomposition (SVD)</dt><dd><p>of coordinates.</p>
-</dd>
-</dl>
+<span class="sig-name descname"><span class="pre">stacking_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cut_off</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ang_cut</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output.parquet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_pdb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#RSA.stacking_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.RSA.stacking_analysis" title="Link to this definition"></a></dt>
+<dd><p>Perform high-throughput ring stacking analysis across trajectory frames.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>coordinates</strong> (<em>numpy.ndarray</em>) – Array containing the coordinates upon which svd is going
-to be calculated.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cut_off</strong> (<em>float</em>) – Distance threshold for stacking.</p></li>
+<li><p><strong>ang_cut</strong> (<em>float</em>) – Angle threshold (acute) for face-to-face orientation.</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – Starting frame index.</p></li>
+<li><p><strong>stop</strong> (<em>int</em>) – Stopping frame index.</p></li>
+<li><p><strong>step</strong> (<em>int</em>) – Frame stride.</p></li>
+<li><p><strong>output_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the output parquet file, by default “output.parquet”.</p></li>
+<li><p><strong>write_pdb</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to write pdb files (legacy flag), by default False.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>vh</strong> – A numpy.ndarray with the right unitary singular vector, orthogonal to
-the given set of coordinates.</p>
+<dd class="field-even"><p>The results containing polymer stacking pairs per frame.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
+<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1210,9 +1209,71 @@ the given set of coordinates.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.evaluate_dimer_pair">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.ring_ring.</span></span><span class="sig-name descname"><span class="pre">evaluate_dimer_pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring_comb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_dims</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_off</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ang_cutoff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pol_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#evaluate_dimer_pair"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.evaluate_dimer_pair" title="Link to this definition"></a></dt>
+<dd><p>Worker function to check if any pair of rings between two polymers are stacking.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ring_comb</strong> (<em>list</em><em> of </em><em>tuples</em>) – Combinations of ring atom indices between polymer A and polymer B.</p></li>
+<li><p><strong>positions</strong> (<em>ndarray</em><em> of </em><em>shape</em><em> (</em><em>N</em><em>, </em><em>3</em><em>)</em>) – Global atom positions from the trajectory.</p></li>
+<li><p><strong>box_dims</strong> (<em>ndarray</em><em> of </em><em>shape</em><em> (</em><em>6</em><em>,</em><em>)</em>) – Simulation box dimensions for PBC handling.</p></li>
+<li><p><strong>cut_off</strong> (<em>float</em>) – Distance threshold for ring-ring proximity.</p></li>
+<li><p><strong>ang_cutoff</strong> (<em>float</em>) – Angle threshold (in degrees) for face-to-face stacking.</p></li>
+<li><p><strong>pol_idx</strong> (<em>tuple</em>) – The Residue IDs of the two polymers being compared.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns <cite>pol_idx</cite> if a stacking event is found, otherwise None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.fast_calc_angle">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.ring_ring.</span></span><span class="sig-name descname"><span class="pre">fast_calc_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u_norm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_norm2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#fast_calc_angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.fast_calc_angle" title="Link to this definition"></a></dt>
+<dd><p>Calculate the acute angle between two normal vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u_norm</strong> (<em>ndarray</em><em> of </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em>) – Normal vector of the first ring.</p></li>
+<li><p><strong>u_norm2</strong> (<em>ndarray</em><em> of </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em>) – Normal vector of the second ring.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The angle between the planes in degrees.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.fast_svd">
+<span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.ring_ring.</span></span><span class="sig-name descname"><span class="pre">fast_svd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#fast_svd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.fast_svd" title="Link to this definition"></a></dt>
+<dd><p>Compute the normal vector of a ring plane using Singular Value Decomposition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>coordinates</strong> (<em>ndarray</em><em> of </em><em>shape</em><em> (</em><em>N</em><em>, </em><em>3</em><em>)</em>) – The Cartesian coordinates of the atoms in the ring.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The normal vector (third principal component) of the ring plane.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray of shape (3,)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pysoftk.pol_analysis.ring_ring.timeit">
 <span class="sig-prename descclassname"><span class="pre">pysoftk.pol_analysis.ring_ring.</span></span><span class="sig-name descname"><span class="pre">timeit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pysoftk/pol_analysis/ring_ring.html#timeit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysoftk.pol_analysis.ring_ring.timeit" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Decorator to measure and print function execution time.</p>
+</dd></dl>
 
 </section>
 <section id="module-pysoftk.pol_analysis.solvation">
