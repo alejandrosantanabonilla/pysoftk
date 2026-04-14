@@ -1,668 +1,233 @@
-Tutorial on the usage of RSA tool
-=================================
+Tutorial on the Usage of the RSA Tool
+=====================================
 
-This tutorial illsutrates how to use the RSA tool on proteins. This
-tutorial is divided into two parts. The first part shows how to edit a
-protein structure file so that the RSA tool can be ran. The second part
-is the running of the RSA tool.
+This tutorial illustrates how to use the Ring Stacking Analysis (RSA) tool within the ``pysoftk`` library to identify and analyze $\pi$-$\pi$ stacking interactions in large polymer systems.
 
-Before starting any analysis, load the neccesary modules for this class.
+Theoretical Background
+----------------------
 
-.. code:: ipython3
-    
-    from pysoftk.pol_analysis.tools.utils_mda import MDA_input
-    from pysoftk.pol_analysis.tools.utils_tools import *
-    from pysoftk.pol_analysis.make_micelle_whole import micelle_whole
-    from pysoftk.pol_analysis.ring_ring import RSA
-    
-    import numpy as np
-    import pandas as pd
-    import MDAnalysis as mda
+$\pi$-$\pi$ stacking is a non-covalent attractive force between aromatic rings. In polymer science, particularly for organic electronics, these interactions are crucial for charge transport and morphological stability. The RSA tool identifies these events based on two geometric criteria:
 
+1. **Distance Cutoff ($d$):** The minimum distance between the centers of mass of any two rings.
+2. **Angle Cutoff ($\theta$):** The angle between the normal vectors of the two ring planes.
 
-.. parsed-literal::
+Preparation
+-----------
 
-    /home/raquellrdc/.local/lib/python3.10/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
-      from .autonotebook import tqdm as notebook_tqdm
+Before starting any analysis, load the necessary modules and define your file paths and parameters. 
 
+.. code-block:: python
 
-1. Editing the protein structure file
--------------------------------------
+   import os
+   import pandas as pd
+   import MDAnalysis as mda 
+   from pysoftk.pol_analysis.ring_ring import RSA
 
-Load the initial trajectory
+   # 1. SETUP AND PATHS
+   topology = 'data/f8bt_slab_quench.tpr'
+   trajectory = 'data/1_frame_traj.xtc'
+   results_file = 'data/rsa.parquet'
 
-.. code:: ipython3
+   os.makedirs('data', exist_ok=True)
+   snapshot_dir = 'snapshots'
+   os.makedirs(snapshot_dir, exist_ok=True)
 
-    topology='data/protein_rsa_noedit.pdb'
-    
-    trajectory='data/trajectory_rsa_protein.xtc'
-    
-    u=mda.Universe(topology, trajectory)
+   # 2. CALCULATION PARAMETERS
+   ang_c = 25
+   dist_c = 4.5
+   start, stop, step = 0, 1, 1
 
-.. code:: ipython3
+The simulation utilized in this tutorial is a large polymer slab. Due to the high atom count, we will demonstrate the analysis on a single frame.
 
-    u.trajectory[0].time
+.. figure:: images/ring_system.png
+   :alt: Large polymer slab system
+   :align: center
 
-.. parsed-literal::
+   A simulation box containing 776 F8BT polymer chains.
 
-    150000.0
+Running the Stacking Analysis
+-----------------------------
 
-Now, we need to make sure that each protein can be identified by a
-unique resid. That is to say, all atoms of the same protein must have
-the same resid, and this resid must be different to the resid of other
-proteins in the system. The following code shows how this can be
-achieved:
+The RSA class requires minimal user input to run. Select your trajectory files (it is recommended to use a ``.tpr`` file for the topology and an ``.xtc`` file for the trajectory, though any MDAnalysis-supported file can be used).
 
-.. code:: ipython3
+The ``stacking_analysis`` function is highly optimized. It uses **Fragment Templating** to identify rings via RDKit only once per species, **cKDTree** for rapid neighbor searching, and **Numba-accelerated SVD** to calculate plane normals at near-C speeds. 
 
-    proteins_len=len(u.atoms)
-    protein_pos=u.atoms.positions
-    proteins=u.select_atoms('protein')
-    
-    proteins.positions=protein_pos
-    
-    
-    #this is a manual way to select the proteins of a system, you need to adapt this code to your own system 
-    protein_1=u.select_atoms('segid A')
-    protein_2=u.select_atoms('segid B')
-    protein_3=u.select_atoms('segid C')
-    protein_4=u.select_atoms('segid D')
-    protein_5=u.select_atoms('segid E')
-    protein_6=u.select_atoms('segid F')
-    protein_7=u.select_atoms('segid G')
-    protein_8=u.select_atoms('segid H')
-    protein_9=u.select_atoms('segid I')
-    protein_10=u.select_atoms('segid J')
-    
-    
-    protein_1_len=len(np.unique(protein_1.resids))
-    protein_2_len=len(np.unique(protein_2.resids))
-    protein_3_len=len(np.unique(protein_3.resids))
-    protein_4_len=len(np.unique(protein_4.resids))
-    protein_5_len=len(np.unique(protein_5.resids))
-    protein_6_len=len(np.unique(protein_6.resids))
-    protein_7_len=len(np.unique(protein_7.resids))
-    protein_8_len=len(np.unique(protein_8.resids))
-    protein_9_len=len(np.unique(protein_9.resids))
-    protein_10_len=len(np.unique(protein_10.resids))
-    
-    print(protein_1_len)
-    
-    
-    
-    
-    resids=[]
-    
-    
-    resids= resids + [1]*protein_1_len
-    resids= resids + [2]*protein_2_len
-    resids= resids + [3]*protein_3_len
-    
-    resids= resids + [4]*protein_4_len
-    resids= resids + [5]*protein_5_len
-    resids= resids + [6]*protein_6_len
-    
-    resids= resids + [7]*protein_7_len
-    resids= resids + [8]*protein_8_len
-    resids= resids + [9]*protein_9_len
-    
-    resids= resids + [10]*protein_10_len
-    
-    
-    
-    print(len(resids))
-    print(len(proteins))
-    
-    proteins.residues.resids=resids
-    
-    with mda.Writer("data/trajectory_resids.pdb", proteins.n_atoms) as W:
-        
-        W.write(proteins)
+.. note::
+   This version is optimized for polymer connectivity. To handle large systems (e.g., 100k+ atoms), it focuses on Polymer Residue IDs (``pol_resid``) rather than individual atom indices, significantly reducing memory overhead and calculation time.
 
+.. code-block:: python
+
+   # 3. RUNNING THE ANALYSIS
+   print(f"Loading topology: {topology}")
+   print(f"Loading trajectory: {trajectory}")
+   rsa_calc = RSA(topology, trajectory)
+
+   print("\n--- Running Stacking Analysis ---")
+   # write_pdb=False is used because we will generate snapshots selectively below
+   rsa_calc.stacking_analysis(dist_c, ang_c, start, stop, step, results_file, write_pdb=False)
 
 .. parsed-literal::
 
-    31
-    310
-    3270
+   Loading topology: data/f8bt_slab_quench.tpr
+   Loading trajectory: data/1_frame_traj.xtc
+
+   --- Running Stacking Analysis ---
+   Ring Stacking analysis has started...
+   Trajectory Progress: 100%|██████████| 1/1 [01:26<00:00, 86.51s/it]
+   Function stacking_analysis Took 98.4840 seconds
+
+Exploring the Results
+---------------------
+
+The output is stored in a Pandas DataFrame and saved as a Parquet file. The ``pol_resid`` column contains pairs of polymer Residue IDs that are participating in at least one stacking interaction.
+
+.. code-block:: python
+
+   print("\n--- Exploring Results ---")
+   df = pd.read_parquet(results_file)
+   
+   # Optional Cleanup: Drop the 'atom_index' column if it exists
+   if 'atom_index' in df.columns:
+       df = df.drop(columns=['atom_index'])
+
+   print(df.head())
 
 
-Great, now the new structure file has been created, so that each protein
-has a unique resid for all of its atoms. Now we can run the RSA tool on
-this new file.
+Selective PDB Generation
+------------------------
 
-2.Running RSA
--------------
+Instead of generating PDB files for every single stacked pair, you can parse the results to extract specific geometries. The following code demonstrates how to automatically extract two completely independent dimers for visual inspection.
 
-With the new structure file, we can run the RSA tool in the exact same
-way we run it on polymers
+.. code-block:: python
 
-.. code:: ipython3
+   print("\n--- Selective PDB Generation ---")
+   u = rsa_calc.get_mda_universe()
+   u.trajectory[0] # Ensure we are on the correct frame
 
-    
-    topology='data/trajectory_resids.pdb'
-    
-    trajectory='data/trajectory_rsa_protein.xtc'
+   # Extract all interacting pairs for the first frame
+   interactions = df['pol_resid'].iloc[0] 
 
-.. code:: ipython3
+   saved_polymers = set() # Track polymers to ensure distinct pairs
+   dimers_found = 0
+   required_dimers = 2
 
-    #name output file
-    results='data/rsa_prot_tutorial.parquet'
-    
-    #angle cutoff - angle range (val < ang_c or val> 180-ang_c). 
-    ang_c=30
-    
-    
-    #distance cutoff - distance between two rings to be considered stacked
-    dist_c=5
-    
+   for pair in interactions:
+       resA, resB = pair
+       
+       # Check if either polymer is already part of a saved dimer
+       if resA not in saved_polymers and resB not in saved_polymers:
+           selection = u.select_atoms(f'resid {resA} {resB}')
+           pdb_name = os.path.join(snapshot_dir, f"dimer_{resA}_{resB}.pdb")
+           
+           with mda.Writer(pdb_name, selection.n_atoms) as W:
+               W.write(selection)
+           
+           print(f"Generated independent dimer snapshot: {pdb_name}")
+           
+           # Mark these polymers as "used" and increment count
+           saved_polymers.update([resA, resB])
+           dimers_found += 1
+           
+       # Stop once we have our required number of unique dimers
+       if dimers_found == required_dimers:
+           break
 
+   print(f"Finished extracting {dimers_found} distinct dimers.")
 
-.. code:: ipython3
+Visual Inspection
+~~~~~~~~~~~~~~~~~
 
-    rsa=RSA(topology, trajectory).stacking_analysis(dist_c, ang_c, 0, 20, 2, results)
+You can open the generated PDB snapshots in your preferred molecular visualization software to verify the stacking geometry.
 
+.. figure:: images/ring_stacking_snapshot_1.png
+   :align: center
+   :alt: Visualized stacking pair 1
 
-.. parsed-literal::
+.. figure:: images/ring_stacking_snapshot_2.png
+   :align: center
+   :alt: Visualized stacking pair 2
 
-    Ring Stacking analysis has started
+Network Analysis
+----------------
 
+One of the most powerful features of the RSA tool is the ability to extract the **Connected Network**. This identifies clusters of polymers that are all interconnected through continuous stacking interactions. By analyzing these networks, you can determine if your system has reached percolation or remains as isolated aggregates.
 
-.. parsed-literal::
+.. code-block:: python
 
-    100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 45/45 [00:00<00:00, 548.29it/s]
-    Detecting atoms in Rings: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 26/26 [00:24<00:00,  1.08it/s]
-    Separating Rings: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 26/26 [00:00<00:00, 11647.11it/s]
+   # 5. NETWORK ANALYSIS
+   print("\n--- Extracting Connected Networks ---")
+   
+   # Returns a list of sets containing the clustered network IDs
+   sev_ring = rsa_calc.find_several_rings_stacked(results_file)
 
-
-.. parsed-literal::
-
-    
-    
-    Preparing DataFrame to store the results
-
-
-.. parsed-literal::
-
-      0%|                                                                                                                                                                                      | 0/10 [00:00<?, ?it/s]
-    Computing stacking distances:   0%|                                                                                                                                                        | 0/26 [00:00<?, ?it/s][A
-    Computing stacking distances:   4%|█████▌                                                                                                                                          | 1/26 [00:00<00:08,  2.91it/s][A
-    Computing stacking distances:  12%|████████████████▌                                                                                                                               | 3/26 [00:00<00:04,  5.06it/s][A
-    Computing stacking distances:  15%|██████████████████████▏                                                                                                                         | 4/26 [00:00<00:04,  4.55it/s][A
-    Computing stacking distances:  23%|█████████████████████████████████▏                                                                                                              | 6/26 [00:01<00:04,  4.97it/s][A
-    Computing stacking distances:  27%|██████████████████████████████████████▊                                                                                                         | 7/26 [00:01<00:04,  3.85it/s][A
-    Computing stacking distances:  31%|████████████████████████████████████████████▎                                                                                                   | 8/26 [00:02<00:05,  3.51it/s][A
-    Computing stacking distances:  35%|█████████████████████████████████████████████████▊                                                                                              | 9/26 [00:02<00:05,  3.00it/s][A
-    Computing stacking distances:  38%|███████████████████████████████████████████████████████                                                                                        | 10/26 [00:02<00:05,  2.81it/s][A
-    Computing stacking distances:  46%|██████████████████████████████████████████████████████████████████                                                                             | 12/26 [00:03<00:04,  3.30it/s][A
-    Computing stacking distances:  50%|███████████████████████████████████████████████████████████████████████▌                                                                       | 13/26 [00:03<00:04,  2.99it/s][A
-    Computing stacking distances:  54%|█████████████████████████████████████████████████████████████████████████████                                                                  | 14/26 [00:04<00:04,  2.77it/s][A
-    Computing stacking distances:  58%|██████████████████████████████████████████████████████████████████████████████████▍                                                            | 15/26 [00:04<00:03,  2.79it/s][A
-    Computing stacking distances:  62%|████████████████████████████████████████████████████████████████████████████████████████                                                       | 16/26 [00:05<00:03,  2.59it/s][A
-    Computing stacking distances:  65%|█████████████████████████████████████████████████████████████████████████████████████████████▌                                                 | 17/26 [00:05<00:03,  2.58it/s][A
-    Computing stacking distances:  69%|███████████████████████████████████████████████████████████████████████████████████████████████████                                            | 18/26 [00:05<00:03,  2.55it/s][A
-    Computing stacking distances:  73%|████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                      | 19/26 [00:06<00:02,  3.14it/s][A
-    Computing stacking distances:  77%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████                                 | 20/26 [00:06<00:01,  3.41it/s][A
-    Computing stacking distances:  81%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                           | 21/26 [00:06<00:01,  2.89it/s][A
-    Computing stacking distances:  85%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████                      | 22/26 [00:07<00:01,  3.00it/s][A
-    Computing stacking distances:  88%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                | 23/26 [00:07<00:01,  2.76it/s][A
-    Computing stacking distances:  92%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████           | 24/26 [00:07<00:00,  2.79it/s][A
-    Computing stacking distances:  96%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌     | 25/26 [00:08<00:00,  2.63it/s][A
-    Computing stacking distances: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 26/26 [00:08<00:00,  3.02it/s][A
-     10%|█████████████████▍                                                                                                                                                            | 1/10 [00:08<01:17,  8.61s/it]
-
-.. parsed-literal::
-
-    ([(array([740, 741, 744, 746, 749]), array([1171, 1172, 1174, 1176, 1179, 1181]))], [(array([2173, 2174, 2177, 2179, 2182]), array([2411, 2413, 2403, 2404, 2406, 2408]))], [(array([2482, 2484, 2487, 2489, 2479, 2480]), array([2833, 2836, 2827, 2828, 2831])), (array([2500, 2501, 2504, 2506, 2509]), array([2706, 2708, 2711, 2702, 2703]))])
-
-
-.. parsed-literal::
-
-    
-    Computing stacking distances:   0%|                                                                                                                                                        | 0/26 [00:00<?, ?it/s][A
-    Computing stacking distances:   4%|█████▌                                                                                                                                          | 1/26 [00:00<00:04,  5.93it/s][A
-    Computing stacking distances:   8%|███████████                                                                                                                                     | 2/26 [00:00<00:05,  4.11it/s][A
-    Computing stacking distances:  12%|████████████████▌                                                                                                                               | 3/26 [00:00<00:07,  2.93it/s][A
-    Computing stacking distances:  15%|██████████████████████▏                                                                                                                         | 4/26 [00:01<00:08,  2.58it/s][A
-    Computing stacking distances:  19%|███████████████████████████▋                                                                                                                    | 5/26 [00:01<00:05,  3.50it/s][A
-    Computing stacking distances:  23%|█████████████████████████████████▏                                                                                                              | 6/26 [00:01<00:05,  3.60it/s][A
-    Computing stacking distances:  31%|████████████████████████████████████████████▎                                                                                                   | 8/26 [00:01<00:03,  5.68it/s][A
-    Computing stacking distances:  35%|█████████████████████████████████████████████████▊                                                                                              | 9/26 [00:02<00:04,  4.23it/s][A
-    Computing stacking distances:  38%|███████████████████████████████████████████████████████                                                                                        | 10/26 [00:02<00:03,  4.99it/s][A
-    Computing stacking distances:  42%|████████████████████████████████████████████████████████████▌                                                                                  | 11/26 [00:02<00:03,  4.51it/s][A
-    Computing stacking distances:  46%|██████████████████████████████████████████████████████████████████                                                                             | 12/26 [00:03<00:04,  3.45it/s][A
-    Computing stacking distances:  50%|███████████████████████████████████████████████████████████████████████▌                                                                       | 13/26 [00:03<00:03,  4.07it/s][A
-    Computing stacking distances:  54%|█████████████████████████████████████████████████████████████████████████████                                                                  | 14/26 [00:03<00:03,  3.34it/s][A
-    Computing stacking distances:  58%|██████████████████████████████████████████████████████████████████████████████████▍                                                            | 15/26 [00:04<00:03,  3.03it/s][A
-    Computing stacking distances:  62%|████████████████████████████████████████████████████████████████████████████████████████                                                       | 16/26 [00:04<00:03,  2.84it/s][A
-    Computing stacking distances:  65%|█████████████████████████████████████████████████████████████████████████████████████████████▌                                                 | 17/26 [00:04<00:03,  2.64it/s][A
-    Computing stacking distances:  69%|███████████████████████████████████████████████████████████████████████████████████████████████████                                            | 18/26 [00:05<00:03,  2.52it/s][A
-    Computing stacking distances:  73%|████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                      | 19/26 [00:05<00:02,  2.45it/s][A
-    Computing stacking distances:  77%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████                                 | 20/26 [00:06<00:02,  2.91it/s][A
-    Computing stacking distances:  81%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                           | 21/26 [00:06<00:01,  2.81it/s][A
-    Computing stacking distances:  85%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████                      | 22/26 [00:06<00:01,  3.50it/s][A
-    Computing stacking distances:  88%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                | 23/26 [00:06<00:00,  3.51it/s][A
-    Computing stacking distances:  92%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████           | 24/26 [00:07<00:00,  2.93it/s][A
-    Computing stacking distances:  96%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌     | 25/26 [00:07<00:00,  2.64it/s][A
-    Computing stacking distances: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 26/26 [00:08<00:00,  3.21it/s][A
-     20%|██████████████████████████████████▊                                                                                                                                           | 2/10 [00:16<01:06,  8.31s/it]
+   if sev_ring and len(sev_ring[0]) > 0:
+       clusters = sev_ring[0]
+       print(f"Total isolated pi-stacked clusters found: {len(clusters)}")
+       
+       # Sort clusters by size to easily find the largest
+       clusters_sorted = sorted(clusters, key=len, reverse=True)
+       largest_cluster = clusters_sorted[0]
+       
+       print(f"Largest connected network contains {len(largest_cluster)} polymers.")
+       
+       # Convert the set to a sorted list so we can slice it safely
+       sorted_members = sorted(list(largest_cluster))
+       print(f"First 20 members of largest cluster: {sorted_members[:20]}")
+       
+       # Optional: Show the second largest for context
+       if len(clusters_sorted) > 1:
+           second_largest = clusters_sorted[1]
+           print(f"Second largest network contains {len(second_largest)} polymers.")
+   else:
+       print("No stacked networks found with these parameters.")
 
 .. parsed-literal::
 
-    ([(array([86, 87, 90, 92, 95]), array([544, 547, 538, 539, 542]))], [(array([193, 195, 198, 200, 190, 191]), array([871, 874, 865, 866, 869]))], [(array([211, 212, 215, 217, 220]), array([1171, 1172, 1174, 1176, 1179, 1181]))], [(array([740, 741, 744, 746, 749]), array([1171, 1172, 1174, 1176, 1179, 1181]))], [(array([1192, 1193, 1196, 1198, 1201]), array([1852, 1855, 1846, 1847, 1850]))], [(array([1749, 1750, 1752, 1754, 1757, 1759]), array([3133, 3134, 3136, 3138, 3141, 3143]))], [(array([2482, 2484, 2487, 2489, 2479, 2480]), array([2833, 2836, 2827, 2828, 2831]))], [(array([2809, 2811, 2814, 2816, 2806, 2807]), array([3065, 3067, 3057, 3058, 3060, 3062]))])
+   --- Extracting Connected Networks ---
+   Total isolated pi-stacked clusters found: 51
+   Largest connected network contains 418 polymers.
+   First 20 members of largest cluster: [1, 2, 3, 4, 5, 7, 8, 9, 10, 12, 14, 16, 19, 20, 22, 25, 26, 28, 29, 33]
+   Second largest network contains 20 polymers.
 
+Network PDB Generation
+~~~~~~~~~~~~~~~~~~~~~~
 
-.. parsed-literal::
+The code block below demonstrates how to iterate over the identified networks, select their respective atoms, and output each complete, isolated macro-structure as a new ``.pdb`` file.
 
-    
-    Computing stacking distances:   0%|                                                                                                                                                        | 0/26 [00:00<?, ?it/s][A
-    Computing stacking distances:   4%|█████▌                                                                                                                                          | 1/26 [00:00<00:11,  2.24it/s][A
-    Computing stacking distances:  12%|████████████████▌                                                                                                                               | 3/26 [00:00<00:04,  4.79it/s][A
-    Computing stacking distances:  15%|██████████████████████▏                                                                                                                         | 4/26 [00:01<00:06,  3.60it/s][A
-    Computing stacking distances:  19%|███████████████████████████▋                                                                                                                    | 5/26 [00:01<00:06,  3.01it/s][A
-    Computing stacking distances:  23%|█████████████████████████████████▏                                                                                                              | 6/26 [00:01<00:05,  3.63it/s][A
-    Computing stacking distances:  27%|██████████████████████████████████████▊                                                                                                         | 7/26 [00:02<00:06,  3.02it/s][A
-    Computing stacking distances:  31%|████████████████████████████████████████████▎                                                                                                   | 8/26 [00:02<00:06,  2.77it/s][A
-    Computing stacking distances:  35%|█████████████████████████████████████████████████▊                                                                                              | 9/26 [00:02<00:04,  3.47it/s][A
-    Computing stacking distances:  38%|███████████████████████████████████████████████████████                                                                                        | 10/26 [00:02<00:04,  3.70it/s][A
-    Computing stacking distances:  42%|████████████████████████████████████████████████████████████▌                                                                                  | 11/26 [00:03<00:04,  3.02it/s][A
-    Computing stacking distances:  46%|██████████████████████████████████████████████████████████████████                                                                             | 12/26 [00:03<00:04,  3.08it/s][A
-    Computing stacking distances:  50%|███████████████████████████████████████████████████████████████████████▌                                                                       | 13/26 [00:04<00:04,  2.77it/s][A
-    Computing stacking distances:  54%|█████████████████████████████████████████████████████████████████████████████                                                                  | 14/26 [00:04<00:04,  2.47it/s][A
-    Computing stacking distances:  62%|████████████████████████████████████████████████████████████████████████████████████████                                                       | 16/26 [00:05<00:03,  2.87it/s][A
-    Computing stacking distances:  65%|█████████████████████████████████████████████████████████████████████████████████████████████▌                                                 | 17/26 [00:05<00:03,  2.65it/s][A
-    Computing stacking distances:  69%|███████████████████████████████████████████████████████████████████████████████████████████████████                                            | 18/26 [00:06<00:03,  2.41it/s][A
-    Computing stacking distances:  73%|████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                      | 19/26 [00:06<00:02,  2.35it/s][A
-    Computing stacking distances:  77%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████                                 | 20/26 [00:06<00:02,  2.87it/s][A
-    Computing stacking distances:  81%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                           | 21/26 [00:07<00:01,  3.09it/s][A
-    Computing stacking distances:  85%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████                      | 22/26 [00:07<00:01,  3.04it/s][A
-    Computing stacking distances:  88%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                | 23/26 [00:07<00:01,  2.81it/s][A
-    Computing stacking distances:  92%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████           | 24/26 [00:08<00:00,  2.80it/s][A
-    Computing stacking distances:  96%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌     | 25/26 [00:08<00:00,  2.57it/s][A
-    Computing stacking distances: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 26/26 [00:09<00:00,  2.86it/s][A
-     30%|████████████████████████████████████████████████████▏                                                                                                                         | 3/10 [00:25<01:00,  8.67s/it]
+.. code-block:: python
 
-.. parsed-literal::
+   # Extracting the networks to individual PDBs
+   network_pdb_dir = 'data/network_pdbs'
+   os.makedirs(network_pdb_dir, exist_ok=True)
 
-    ([(array([86, 87, 90, 92, 95]), array([544, 547, 538, 539, 542]))], [(array([740, 741, 744, 746, 749]), array([1171, 1172, 1174, 1176, 1179, 1181]))], [(array([847, 849, 852, 854, 844, 845]), array([1498, 1499, 1501, 1503, 1506, 1508]))], [(array([1067, 1068, 1071, 1073, 1076]), array([1852, 1855, 1846, 1847, 1850]))], [(array([2173, 2174, 2177, 2179, 2182]), array([2411, 2413, 2403, 2404, 2406, 2408]))], [(array([2482, 2484, 2487, 2489, 2479, 2480]), array([2833, 2836, 2827, 2828, 2831])), (array([2500, 2501, 2504, 2506, 2509]), array([2706, 2708, 2711, 2702, 2703]))])
+   u_rsa = rsa_calc.get_mda_universe()
+   u_rsa.trajectory[0] 
 
+   if sev_ring and len(sev_ring) > 0:
+       for i, network in enumerate(sev_ring[0], start=1):
+           # Convert the set of resids into an MDAnalysis selection string
+           resid_str = " ".join(map(str, network))
+           cluster_selection = u_rsa.select_atoms(f'resid {resid_str}')
+           
+           pdb_filename = os.path.join(network_pdb_dir, f"network_cluster_{i}.pdb")
+           with mda.Writer(pdb_filename, cluster_selection.n_atoms) as W:
+               W.write(cluster_selection)
+               
+           print(f"Saved Network {i} to: {pdb_filename}")
 
-.. parsed-literal::
+Connectivity Visualization
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    
-    Computing stacking distances:   0%|                                                                                                                                                        | 0/26 [00:00<?, ?it/s][A
-    Computing stacking distances:   4%|█████▌                                                                                                                                          | 1/26 [00:00<00:10,  2.46it/s][A
-    Computing stacking distances:  12%|████████████████▌                                                                                                                               | 3/26 [00:00<00:05,  3.86it/s][A
-    Computing stacking distances:  15%|██████████████████████▏                                                                                                                         | 4/26 [00:01<00:06,  3.27it/s][A
-    Computing stacking distances:  19%|███████████████████████████▋                                                                                                                    | 5/26 [00:01<00:06,  3.49it/s][A
-    Computing stacking distances:  23%|█████████████████████████████████▏                                                                                                              | 6/26 [00:01<00:05,  3.50it/s][A
-    Computing stacking distances:  27%|██████████████████████████████████████▊                                                                                                         | 7/26 [00:02<00:06,  3.15it/s][A
-    Computing stacking distances:  31%|████████████████████████████████████████████▎                                                                                                   | 8/26 [00:02<00:05,  3.07it/s][A
-    Computing stacking distances:  35%|█████████████████████████████████████████████████▊                                                                                              | 9/26 [00:02<00:05,  3.14it/s][A
-    Computing stacking distances:  38%|███████████████████████████████████████████████████████                                                                                        | 10/26 [00:03<00:05,  2.90it/s][A
-    Computing stacking distances:  42%|████████████████████████████████████████████████████████████▌                                                                                  | 11/26 [00:03<00:05,  2.95it/s][A
-    Computing stacking distances:  46%|██████████████████████████████████████████████████████████████████                                                                             | 12/26 [00:03<00:05,  2.70it/s][A
-    Computing stacking distances:  50%|███████████████████████████████████████████████████████████████████████▌                                                                       | 13/26 [00:04<00:04,  2.71it/s][A
-    Computing stacking distances:  54%|█████████████████████████████████████████████████████████████████████████████                                                                  | 14/26 [00:04<00:04,  2.70it/s][A
-    Computing stacking distances:  58%|██████████████████████████████████████████████████████████████████████████████████▍                                                            | 15/26 [00:05<00:04,  2.56it/s][A
-    Computing stacking distances:  62%|████████████████████████████████████████████████████████████████████████████████████████                                                       | 16/26 [00:05<00:04,  2.39it/s][A
-    Computing stacking distances:  65%|█████████████████████████████████████████████████████████████████████████████████████████████▌                                                 | 17/26 [00:06<00:03,  2.32it/s][A
-    Computing stacking distances:  69%|███████████████████████████████████████████████████████████████████████████████████████████████████                                            | 18/26 [00:06<00:03,  2.48it/s][A
-    Computing stacking distances:  73%|████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                      | 19/26 [00:06<00:02,  2.39it/s][A
-    Computing stacking distances:  77%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████                                 | 20/26 [00:07<00:02,  2.36it/s][A
-    Computing stacking distances:  81%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                           | 21/26 [00:07<00:01,  2.85it/s][A
-    Computing stacking distances:  85%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████                      | 22/26 [00:07<00:01,  3.41it/s][A
-    Computing stacking distances:  88%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                | 23/26 [00:08<00:01,  2.96it/s][A
-    Computing stacking distances:  92%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████           | 24/26 [00:08<00:00,  2.83it/s][A
-    Computing stacking distances:  96%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌     | 25/26 [00:08<00:00,  2.89it/s][A
-    Computing stacking distances: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 26/26 [00:09<00:00,  2.82it/s][A
-     40%|█████████████████████████████████████████████████████████████████████▌                                                                                                        | 4/10 [00:35<00:53,  8.89s/it]
+The generated ``.pdb`` files allow you to easily render and study the complete connectivity paths inside your simulation box.
 
-.. parsed-literal::
+.. figure:: images/network_cluster_1.png
+   :alt: Visualization of stacked network 1
+   :align: center
 
-    ([(array([86, 87, 90, 92, 95]), array([544, 547, 538, 539, 542]))], [(array([740, 741, 744, 746, 749]), array([1171, 1172, 1174, 1176, 1179, 1181]))], [(array([1192, 1193, 1196, 1198, 1201]), array([1852, 1855, 1846, 1847, 1850]))], [(array([1192, 1193, 1196, 1198, 1201]), array([3160, 3163, 3154, 3155, 3158]))], [(array([2173, 2174, 2177, 2179, 2182]), array([2411, 2413, 2403, 2404, 2406, 2408]))])
+   Rendering of the largest connected network (Cluster 1) extracted from the simulation.
 
+.. figure:: images/network_cluster_2.png
+   :alt: Visualization of stacked network 2
+   :align: center
 
-.. parsed-literal::
-
-    
-    Computing stacking distances:   0%|                                                                                                                                                        | 0/26 [00:00<?, ?it/s][A
-    Computing stacking distances:   4%|█████▌                                                                                                                                          | 1/26 [00:00<00:11,  2.15it/s][A
-    Computing stacking distances:   8%|███████████                                                                                                                                     | 2/26 [00:00<00:10,  2.23it/s][A
-    Computing stacking distances:  12%|████████████████▌                                                                                                                               | 3/26 [00:01<00:09,  2.48it/s][A
-    Computing stacking distances:  15%|██████████████████████▏                                                                                                                         | 4/26 [00:01<00:07,  2.75it/s][A
-    Computing stacking distances:  19%|███████████████████████████▋                                                                                                                    | 5/26 [00:02<00:08,  2.50it/s][A
-    Computing stacking distances:  23%|█████████████████████████████████▏                                                                                                              | 6/26 [00:02<00:08,  2.49it/s][A
-    Computing stacking distances:  27%|██████████████████████████████████████▊                                                                                                         | 7/26 [00:02<00:07,  2.43it/s][A
-    Computing stacking distances:  31%|████████████████████████████████████████████▎                                                                                                   | 8/26 [00:03<00:06,  2.63it/s][A
-    Computing stacking distances:  35%|█████████████████████████████████████████████████▊                                                                                              | 9/26 [00:03<00:05,  3.39it/s][A
-    Computing stacking distances:  38%|███████████████████████████████████████████████████████                                                                                        | 10/26 [00:03<00:05,  2.85it/s][A
-    Computing stacking distances:  42%|████████████████████████████████████████████████████████████▌                                                                                  | 11/26 [00:04<00:05,  2.99it/s][A
-    Computing stacking distances:  46%|██████████████████████████████████████████████████████████████████                                                                             | 12/26 [00:04<00:04,  3.30it/s][A
-    Computing stacking distances:  50%|███████████████████████████████████████████████████████████████████████▌                                                                       | 13/26 [00:04<00:04,  2.91it/s][A
-    Computing stacking distances:  54%|█████████████████████████████████████████████████████████████████████████████                                                                  | 14/26 [00:05<00:04,  2.68it/s][A
-    Computing stacking distances:  62%|████████████████████████████████████████████████████████████████████████████████████████                                                       | 16/26 [00:05<00:02,  4.37it/s][A
-    Computing stacking distances:  65%|█████████████████████████████████████████████████████████████████████████████████████████████▌                                                 | 17/26 [00:05<00:02,  3.97it/s][A
-    Computing stacking distances:  73%|████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                      | 19/26 [00:05<00:01,  4.52it/s][A
-    Computing stacking distances:  77%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████                                 | 20/26 [00:06<00:01,  4.23it/s][A
-    Computing stacking distances:  81%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                           | 21/26 [00:06<00:01,  3.60it/s][A
-    Computing stacking distances:  85%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████                      | 22/26 [00:07<00:01,  3.11it/s][A
-    Computing stacking distances:  88%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                | 23/26 [00:07<00:00,  3.46it/s][A
-    Computing stacking distances:  92%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████           | 24/26 [00:07<00:00,  2.93it/s][A
-    Computing stacking distances:  96%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌     | 25/26 [00:08<00:00,  2.73it/s][A
-    Computing stacking distances: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 26/26 [00:08<00:00,  3.13it/s][A
-     50%|███████████████████████████████████████████████████████████████████████████████████████                                                                                       | 5/10 [00:43<00:43,  8.68s/it]
-
-.. parsed-literal::
-
-    ([(array([86, 87, 90, 92, 95]), array([544, 547, 538, 539, 542]))], [(array([193, 195, 198, 200, 190, 191]), array([871, 874, 865, 866, 869]))], [(array([740, 741, 744, 746, 749]), array([1171, 1172, 1174, 1176, 1179, 1181]))], [(array([847, 849, 852, 854, 844, 845]), array([1498, 1499, 1501, 1503, 1506, 1508]))], [(array([1067, 1068, 1071, 1073, 1076]), array([1852, 1855, 1846, 1847, 1850])), (array([1192, 1193, 1196, 1198, 1201]), array([1725, 1727, 1730, 1721, 1722]))], [(array([2173, 2174, 2177, 2179, 2182]), array([2411, 2413, 2403, 2404, 2406, 2408]))], [(array([2482, 2484, 2487, 2489, 2479, 2480]), array([2833, 2836, 2827, 2828, 2831]))])
-
-
-.. parsed-literal::
-
-    
-    Computing stacking distances:   0%|                                                                                                                                                        | 0/26 [00:00<?, ?it/s][A
-    Computing stacking distances:   4%|█████▌                                                                                                                                          | 1/26 [00:00<00:11,  2.16it/s][A
-    Computing stacking distances:   8%|███████████                                                                                                                                     | 2/26 [00:00<00:09,  2.54it/s][A
-    Computing stacking distances:  12%|████████████████▌                                                                                                                               | 3/26 [00:01<00:09,  2.34it/s][A
-    Computing stacking distances:  15%|██████████████████████▏                                                                                                                         | 4/26 [00:01<00:08,  2.69it/s][A
-    Computing stacking distances:  19%|███████████████████████████▋                                                                                                                    | 5/26 [00:01<00:07,  2.94it/s][A
-    Computing stacking distances:  27%|██████████████████████████████████████▊                                                                                                         | 7/26 [00:02<00:04,  4.73it/s][A
-    Computing stacking distances:  31%|████████████████████████████████████████████▎                                                                                                   | 8/26 [00:02<00:04,  3.75it/s][A
-    Computing stacking distances:  35%|█████████████████████████████████████████████████▊                                                                                              | 9/26 [00:02<00:03,  4.44it/s][A
-    Computing stacking distances:  38%|███████████████████████████████████████████████████████                                                                                        | 10/26 [00:02<00:04,  3.62it/s][A
-    Computing stacking distances:  46%|██████████████████████████████████████████████████████████████████                                                                             | 12/26 [00:03<00:02,  5.47it/s][A
-    Computing stacking distances:  50%|███████████████████████████████████████████████████████████████████████▌                                                                       | 13/26 [00:03<00:02,  4.65it/s][A
-    Computing stacking distances:  54%|█████████████████████████████████████████████████████████████████████████████                                                                  | 14/26 [00:03<00:03,  3.60it/s][A
-    Computing stacking distances:  58%|██████████████████████████████████████████████████████████████████████████████████▍                                                            | 15/26 [00:04<00:03,  3.28it/s][A
-    Computing stacking distances:  62%|████████████████████████████████████████████████████████████████████████████████████████                                                       | 16/26 [00:04<00:03,  2.89it/s][A
-    Computing stacking distances:  65%|█████████████████████████████████████████████████████████████████████████████████████████████▌                                                 | 17/26 [00:04<00:02,  3.17it/s][A
-    Computing stacking distances:  69%|███████████████████████████████████████████████████████████████████████████████████████████████████                                            | 18/26 [00:05<00:02,  3.56it/s][A
-    Computing stacking distances:  73%|████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                      | 19/26 [00:05<00:02,  3.04it/s][A
-    Computing stacking distances:  77%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████                                 | 20/26 [00:06<00:02,  2.81it/s][A
-    Computing stacking distances:  81%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                           | 21/26 [00:06<00:01,  3.29it/s][A
-    Computing stacking distances:  85%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████                      | 22/26 [00:06<00:01,  2.97it/s][A
-    Computing stacking distances:  88%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                | 23/26 [00:06<00:01,  2.90it/s][A
-    Computing stacking distances:  92%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████           | 24/26 [00:07<00:00,  3.00it/s][A
-    Computing stacking distances: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 26/26 [00:07<00:00,  3.34it/s][A
-     60%|████████████████████████████████████████████████████████████████████████████████████████████████████████▍                                                                     | 6/10 [00:51<00:33,  8.38s/it]
-
-.. parsed-literal::
-
-    ([(array([86, 87, 90, 92, 95]), array([544, 547, 538, 539, 542]))], [(array([211, 212, 215, 217, 220]), array([1171, 1172, 1174, 1176, 1179, 1181]))], [(array([740, 741, 744, 746, 749]), array([1171, 1172, 1174, 1176, 1179, 1181]))], [(array([1067, 1068, 1071, 1073, 1076]), array([1852, 1855, 1846, 1847, 1850])), (array([1192, 1193, 1196, 1198, 1201]), array([1852, 1855, 1846, 1847, 1850]))])
-
-
-.. parsed-literal::
-
-    
-    Computing stacking distances:   0%|                                                                                                                                                        | 0/26 [00:00<?, ?it/s][A
-    Computing stacking distances:   4%|█████▌                                                                                                                                          | 1/26 [00:00<00:10,  2.39it/s][A
-    Computing stacking distances:  12%|████████████████▌                                                                                                                               | 3/26 [00:00<00:07,  3.20it/s][A
-    Computing stacking distances:  15%|██████████████████████▏                                                                                                                         | 4/26 [00:01<00:07,  2.81it/s][A
-    Computing stacking distances:  23%|█████████████████████████████████▏                                                                                                              | 6/26 [00:01<00:06,  3.29it/s][A
-    Computing stacking distances:  27%|██████████████████████████████████████▊                                                                                                         | 7/26 [00:02<00:06,  2.98it/s][A
-    Computing stacking distances:  31%|████████████████████████████████████████████▎                                                                                                   | 8/26 [00:02<00:05,  3.02it/s][A
-    Computing stacking distances:  35%|█████████████████████████████████████████████████▊                                                                                              | 9/26 [00:02<00:05,  3.27it/s][A
-    Computing stacking distances:  38%|███████████████████████████████████████████████████████                                                                                        | 10/26 [00:03<00:05,  3.09it/s][A
-    Computing stacking distances:  42%|████████████████████████████████████████████████████████████▌                                                                                  | 11/26 [00:03<00:05,  2.75it/s][A
-    Computing stacking distances:  46%|██████████████████████████████████████████████████████████████████                                                                             | 12/26 [00:03<00:04,  3.06it/s][A
-    Computing stacking distances:  50%|███████████████████████████████████████████████████████████████████████▌                                                                       | 13/26 [00:04<00:04,  2.78it/s][A
-    Computing stacking distances:  58%|██████████████████████████████████████████████████████████████████████████████████▍                                                            | 15/26 [00:04<00:03,  3.25it/s][A
-    Computing stacking distances:  62%|████████████████████████████████████████████████████████████████████████████████████████                                                       | 16/26 [00:05<00:03,  2.98it/s][A
-    Computing stacking distances:  65%|█████████████████████████████████████████████████████████████████████████████████████████████▌                                                 | 17/26 [00:05<00:03,  2.80it/s][A
-    Computing stacking distances:  69%|███████████████████████████████████████████████████████████████████████████████████████████████████                                            | 18/26 [00:06<00:02,  2.98it/s][A
-    Computing stacking distances:  73%|████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                      | 19/26 [00:06<00:02,  3.03it/s][A
-    Computing stacking distances:  77%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████                                 | 20/26 [00:06<00:02,  2.71it/s][A
-    Computing stacking distances:  81%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                           | 21/26 [00:07<00:01,  2.53it/s][A
-    Computing stacking distances:  85%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████                      | 22/26 [00:07<00:01,  2.42it/s][A
-    Computing stacking distances:  88%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                | 23/26 [00:08<00:01,  2.27it/s][A
-    Computing stacking distances:  92%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████           | 24/26 [00:08<00:00,  2.19it/s][A
-    Computing stacking distances:  96%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌     | 25/26 [00:09<00:00,  2.13it/s][A
-    Computing stacking distances: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 26/26 [00:09<00:00,  2.69it/s][A
-     70%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▊                                                    | 7/10 [01:00<00:26,  8.81s/it]
-
-.. parsed-literal::
-
-    ([(array([86, 87, 90, 92, 95]), array([544, 547, 538, 539, 542]))], [(array([740, 741, 744, 746, 749]), array([1171, 1172, 1174, 1176, 1179, 1181]))], [(array([847, 849, 852, 854, 844, 845]), array([1498, 1499, 1501, 1503, 1506, 1508]))], [(array([1192, 1193, 1196, 1198, 1201]), array([1852, 1855, 1846, 1847, 1850]))], [(array([2482, 2484, 2487, 2489, 2479, 2480]), array([2833, 2836, 2827, 2828, 2831]))])
-
-
-.. parsed-literal::
-
-    
-    Computing stacking distances:   0%|                                                                                                                                                        | 0/26 [00:00<?, ?it/s][A
-    Computing stacking distances:   4%|█████▌                                                                                                                                          | 1/26 [00:00<00:09,  2.55it/s][A
-    Computing stacking distances:   8%|███████████                                                                                                                                     | 2/26 [00:00<00:07,  3.03it/s][A
-    Computing stacking distances:  12%|████████████████▌                                                                                                                               | 3/26 [00:01<00:08,  2.84it/s][A
-    Computing stacking distances:  15%|██████████████████████▏                                                                                                                         | 4/26 [00:01<00:08,  2.55it/s][A
-    Computing stacking distances:  19%|███████████████████████████▋                                                                                                                    | 5/26 [00:01<00:08,  2.43it/s][A
-    Computing stacking distances:  23%|█████████████████████████████████▏                                                                                                              | 6/26 [00:02<00:07,  2.53it/s][A
-    Computing stacking distances:  27%|██████████████████████████████████████▊                                                                                                         | 7/26 [00:02<00:06,  3.05it/s][A
-    Computing stacking distances:  31%|████████████████████████████████████████████▎                                                                                                   | 8/26 [00:02<00:05,  3.21it/s][A
-    Computing stacking distances:  35%|█████████████████████████████████████████████████▊                                                                                              | 9/26 [00:02<00:04,  3.58it/s][A
-    Computing stacking distances:  38%|███████████████████████████████████████████████████████                                                                                        | 10/26 [00:03<00:05,  3.03it/s][A
-    Computing stacking distances:  42%|████████████████████████████████████████████████████████████▌                                                                                  | 11/26 [00:03<00:05,  2.75it/s][A
-    Computing stacking distances:  46%|██████████████████████████████████████████████████████████████████                                                                             | 12/26 [00:04<00:05,  2.60it/s][A
-    Computing stacking distances:  50%|███████████████████████████████████████████████████████████████████████▌                                                                       | 13/26 [00:04<00:04,  2.61it/s][A
-    Computing stacking distances:  54%|█████████████████████████████████████████████████████████████████████████████                                                                  | 14/26 [00:04<00:03,  3.15it/s][A
-    Computing stacking distances:  58%|██████████████████████████████████████████████████████████████████████████████████▍                                                            | 15/26 [00:05<00:03,  2.81it/s][A
-    Computing stacking distances:  62%|████████████████████████████████████████████████████████████████████████████████████████                                                       | 16/26 [00:05<00:03,  2.77it/s][A
-    Computing stacking distances:  65%|█████████████████████████████████████████████████████████████████████████████████████████████▌                                                 | 17/26 [00:06<00:03,  2.68it/s][A
-    Computing stacking distances:  69%|███████████████████████████████████████████████████████████████████████████████████████████████████                                            | 18/26 [00:06<00:03,  2.53it/s][A
-    Computing stacking distances:  73%|████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                      | 19/26 [00:06<00:02,  2.42it/s][A
-    Computing stacking distances:  77%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████                                 | 20/26 [00:07<00:02,  2.36it/s][A
-    Computing stacking distances:  81%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                           | 21/26 [00:07<00:01,  2.99it/s][A
-    Computing stacking distances:  85%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████                      | 22/26 [00:08<00:01,  2.69it/s][A
-    Computing stacking distances:  88%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                | 23/26 [00:08<00:01,  2.63it/s][A
-    Computing stacking distances:  92%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████           | 24/26 [00:08<00:00,  3.26it/s][A
-    Computing stacking distances:  96%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌     | 25/26 [00:08<00:00,  3.18it/s][A
-    Computing stacking distances: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 26/26 [00:09<00:00,  2.80it/s][A
-     80%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▏                                  | 8/10 [01:10<00:17,  8.96s/it]
-
-.. parsed-literal::
-
-    ([(array([86, 87, 90, 92, 95]), array([544, 547, 538, 539, 542]))], [(array([740, 741, 744, 746, 749]), array([1171, 1172, 1174, 1176, 1179, 1181]))], [(array([847, 849, 852, 854, 844, 845]), array([1498, 1499, 1501, 1503, 1506, 1508]))], [(array([1067, 1068, 1071, 1073, 1076]), array([1852, 1855, 1846, 1847, 1850])), (array([1174, 1176, 1179, 1181, 1171, 1172]), array([1852, 1855, 1846, 1847, 1850])), (array([1192, 1193, 1196, 1198, 1201]), array([1852, 1855, 1846, 1847, 1850]))], [(array([1192, 1193, 1196, 1198, 1201]), array([3160, 3163, 3154, 3155, 3158]))], [(array([2173, 2174, 2177, 2179, 2182]), array([2411, 2413, 2403, 2404, 2406, 2408]))])
-
-
-.. parsed-literal::
-
-    
-    Computing stacking distances:   0%|                                                                                                                                                        | 0/26 [00:00<?, ?it/s][A
-    Computing stacking distances:   4%|█████▌                                                                                                                                          | 1/26 [00:00<00:08,  2.93it/s][A
-    Computing stacking distances:   8%|███████████                                                                                                                                     | 2/26 [00:00<00:06,  3.64it/s][A
-    Computing stacking distances:  12%|████████████████▌                                                                                                                               | 3/26 [00:01<00:07,  2.88it/s][A
-    Computing stacking distances:  15%|██████████████████████▏                                                                                                                         | 4/26 [00:01<00:08,  2.64it/s][A
-    Computing stacking distances:  19%|███████████████████████████▋                                                                                                                    | 5/26 [00:01<00:07,  2.67it/s][A
-    Computing stacking distances:  23%|█████████████████████████████████▏                                                                                                              | 6/26 [00:02<00:07,  2.54it/s][A
-    Computing stacking distances:  27%|██████████████████████████████████████▊                                                                                                         | 7/26 [00:02<00:07,  2.48it/s][A
-    Computing stacking distances:  31%|████████████████████████████████████████████▎                                                                                                   | 8/26 [00:03<00:07,  2.44it/s][A
-    Computing stacking distances:  35%|█████████████████████████████████████████████████▊                                                                                              | 9/26 [00:03<00:06,  2.44it/s][A
-    Computing stacking distances:  38%|███████████████████████████████████████████████████████                                                                                        | 10/26 [00:03<00:06,  2.34it/s][A
-    Computing stacking distances:  42%|████████████████████████████████████████████████████████████▌                                                                                  | 11/26 [00:04<00:06,  2.30it/s][A
-    Computing stacking distances:  46%|██████████████████████████████████████████████████████████████████                                                                             | 12/26 [00:04<00:05,  2.77it/s][A
-    Computing stacking distances:  50%|███████████████████████████████████████████████████████████████████████▌                                                                       | 13/26 [00:05<00:04,  2.64it/s][A
-    Computing stacking distances:  54%|█████████████████████████████████████████████████████████████████████████████                                                                  | 14/26 [00:05<00:04,  2.59it/s][A
-    Computing stacking distances:  58%|██████████████████████████████████████████████████████████████████████████████████▍                                                            | 15/26 [00:05<00:03,  3.17it/s][A
-    Computing stacking distances:  62%|████████████████████████████████████████████████████████████████████████████████████████                                                       | 16/26 [00:05<00:03,  3.24it/s][A
-    Computing stacking distances:  65%|█████████████████████████████████████████████████████████████████████████████████████████████▌                                                 | 17/26 [00:06<00:03,  2.92it/s][A
-    Computing stacking distances:  69%|███████████████████████████████████████████████████████████████████████████████████████████████████                                            | 18/26 [00:06<00:02,  2.97it/s][A
-    Computing stacking distances:  73%|████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                      | 19/26 [00:07<00:02,  2.65it/s][A
-    Computing stacking distances:  77%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████                                 | 20/26 [00:07<00:02,  2.45it/s][A
-    Computing stacking distances:  81%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                           | 21/26 [00:08<00:02,  2.34it/s][A
-    Computing stacking distances:  85%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████                      | 22/26 [00:08<00:01,  2.48it/s][A
-    Computing stacking distances:  92%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████           | 24/26 [00:08<00:00,  2.92it/s][A
-    Computing stacking distances: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 26/26 [00:09<00:00,  2.79it/s][A
-     90%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                 | 9/10 [01:19<00:09,  9.07s/it]
-
-.. parsed-literal::
-
-    ([(array([86, 87, 90, 92, 95]), array([544, 547, 538, 539, 542]))], [(array([740, 741, 744, 746, 749]), array([1171, 1172, 1174, 1176, 1179, 1181]))], [(array([847, 849, 852, 854, 844, 845]), array([1498, 1499, 1501, 1503, 1506, 1508]))], [(array([1095, 1096, 1098, 1100, 1103, 1105]), array([1498, 1499, 1501, 1503, 1506, 1508]))], [(array([1067, 1068, 1071, 1073, 1076]), array([1852, 1855, 1846, 1847, 1850])), (array([1192, 1193, 1196, 1198, 1201]), array([1852, 1855, 1846, 1847, 1850]))], [(array([1192, 1193, 1196, 1198, 1201]), array([3160, 3163, 3154, 3155, 3158]))], [(array([2482, 2484, 2487, 2489, 2479, 2480]), array([2833, 2836, 2827, 2828, 2831]))])
-
-
-.. parsed-literal::
-
-    
-    Computing stacking distances:   0%|                                                                                                                                                        | 0/26 [00:00<?, ?it/s][A
-    Computing stacking distances:   4%|█████▌                                                                                                                                          | 1/26 [00:00<00:11,  2.18it/s][A
-    Computing stacking distances:   8%|███████████                                                                                                                                     | 2/26 [00:00<00:11,  2.18it/s][A
-    Computing stacking distances:  12%|████████████████▌                                                                                                                               | 3/26 [00:01<00:10,  2.24it/s][A
-    Computing stacking distances:  15%|██████████████████████▏                                                                                                                         | 4/26 [00:01<00:07,  2.95it/s][A
-    Computing stacking distances:  19%|███████████████████████████▋                                                                                                                    | 5/26 [00:01<00:06,  3.34it/s][A
-    Computing stacking distances:  23%|█████████████████████████████████▏                                                                                                              | 6/26 [00:02<00:05,  3.35it/s][A
-    Computing stacking distances:  27%|██████████████████████████████████████▊                                                                                                         | 7/26 [00:02<00:05,  3.31it/s][A
-    Computing stacking distances:  31%|████████████████████████████████████████████▎                                                                                                   | 8/26 [00:02<00:06,  2.82it/s][A
-    Computing stacking distances:  35%|█████████████████████████████████████████████████▊                                                                                              | 9/26 [00:03<00:06,  2.63it/s][A
-    Computing stacking distances:  38%|███████████████████████████████████████████████████████                                                                                        | 10/26 [00:03<00:05,  2.90it/s][A
-    Computing stacking distances:  42%|████████████████████████████████████████████████████████████▌                                                                                  | 11/26 [00:03<00:05,  2.66it/s][A
-    Computing stacking distances:  46%|██████████████████████████████████████████████████████████████████                                                                             | 12/26 [00:04<00:05,  2.62it/s][A
-    Computing stacking distances:  50%|███████████████████████████████████████████████████████████████████████▌                                                                       | 13/26 [00:04<00:05,  2.45it/s][A
-    Computing stacking distances:  54%|█████████████████████████████████████████████████████████████████████████████                                                                  | 14/26 [00:05<00:05,  2.28it/s][A
-    Computing stacking distances:  58%|██████████████████████████████████████████████████████████████████████████████████▍                                                            | 15/26 [00:05<00:03,  2.77it/s][A
-    Computing stacking distances:  62%|████████████████████████████████████████████████████████████████████████████████████████                                                       | 16/26 [00:05<00:03,  2.93it/s][A
-    Computing stacking distances:  65%|█████████████████████████████████████████████████████████████████████████████████████████████▌                                                 | 17/26 [00:06<00:02,  3.26it/s][A
-    Computing stacking distances:  69%|███████████████████████████████████████████████████████████████████████████████████████████████████                                            | 18/26 [00:06<00:02,  2.94it/s][A
-    Computing stacking distances:  73%|████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                      | 19/26 [00:06<00:02,  3.11it/s][A
-    Computing stacking distances:  77%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████                                 | 20/26 [00:07<00:01,  3.06it/s][A
-    Computing stacking distances:  81%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                           | 21/26 [00:07<00:01,  2.69it/s][A
-    Computing stacking distances:  85%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████                      | 22/26 [00:07<00:01,  3.13it/s][A
-    Computing stacking distances:  88%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                | 23/26 [00:08<00:01,  2.79it/s][A
-    Computing stacking distances:  92%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████           | 24/26 [00:08<00:00,  2.56it/s][A
-    Computing stacking distances:  96%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌     | 25/26 [00:09<00:00,  2.48it/s][A
-    Computing stacking distances: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 26/26 [00:09<00:00,  2.74it/s][A
-    100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [01:28<00:00,  8.89s/it]
-
-.. parsed-literal::
-
-    ([(array([740, 741, 744, 746, 749]), array([1171, 1172, 1174, 1176, 1179, 1181]))], [(array([847, 849, 852, 854, 844, 845]), array([1498, 1499, 1501, 1503, 1506, 1508]))], [(array([1095, 1096, 1098, 1100, 1103, 1105]), array([1498, 1499, 1501, 1503, 1506, 1508]))], [(array([1192, 1193, 1196, 1198, 1201]), array([1852, 1855, 1846, 1847, 1850]))], [(array([1192, 1193, 1196, 1198, 1201]), array([3160, 3163, 3154, 3155, 3158]))], [(array([1749, 1750, 1752, 1754, 1757, 1759]), array([3133, 3134, 3136, 3138, 3141, 3143]))], [(array([2173, 2174, 2177, 2179, 2182]), array([2411, 2413, 2403, 2404, 2406, 2408]))], [(array([2482, 2484, 2487, 2489, 2479, 2480]), array([2833, 2836, 2827, 2828, 2831]))])
-    Information succesfully stored in data/rsa_prot_tutorial.parquet
-    Stacking analysis has succesfully finished!
-    Function stacking_analysis Took 113.2266 seconds
-
-
-.. code:: ipython3
-
-    
-    df_results = 'data/rsa_prot_tutorial.parquet'
-    df = pd.read_parquet(df_results)
-    
-    df
-
-
-
-
-.. raw:: html
-
-    <div>
-    <style scoped>
-        .dataframe tbody tr th:only-of-type {
-            vertical-align: middle;
-        }
-    
-        .dataframe tbody tr th {
-            vertical-align: top;
-        }
-    
-        .dataframe thead th {
-            text-align: right;
-        }
-    </style>
-    <table border="1" class="dataframe">
-      <thead>
-        <tr style="text-align: right;">
-          <th></th>
-          <th>atom_index</th>
-          <th>pol_resid</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>0</th>
-          <td>[[[740, 741, 744, 746, 749], [1171, 1172, 1174...</td>
-          <td>[[[3, 4], [7, 8], [8, 9]]]</td>
-        </tr>
-        <tr>
-          <th>1</th>
-          <td>[[[86, 87, 90, 92, 95], [544, 547, 538, 539, 5...</td>
-          <td>[[[1, 2], [1, 3], [1, 4], [3, 4], [4, 6], [6, ...</td>
-        </tr>
-        <tr>
-          <th>2</th>
-          <td>[[[86, 87, 90, 92, 95], [544, 547, 538, 539, 5...</td>
-          <td>[[[1, 2], [3, 4], [3, 5], [4, 6], [7, 8], [8, ...</td>
-        </tr>
-        <tr>
-          <th>3</th>
-          <td>[[[86, 87, 90, 92, 95], [544, 547, 538, 539, 5...</td>
-          <td>[[[1, 2], [3, 4], [4, 6], [4, 10], [7, 8]]]</td>
-        </tr>
-        <tr>
-          <th>4</th>
-          <td>[[[86, 87, 90, 92, 95], [544, 547, 538, 539, 5...</td>
-          <td>[[[1, 2], [1, 3], [3, 4], [3, 5], [4, 6], [7, ...</td>
-        </tr>
-        <tr>
-          <th>5</th>
-          <td>[[[86, 87, 90, 92, 95], [544, 547, 538, 539, 5...</td>
-          <td>[[[1, 2], [1, 4], [3, 4], [4, 6]]]</td>
-        </tr>
-        <tr>
-          <th>6</th>
-          <td>[[[86, 87, 90, 92, 95], [544, 547, 538, 539, 5...</td>
-          <td>[[[1, 2], [3, 4], [3, 5], [4, 6], [8, 9]]]</td>
-        </tr>
-        <tr>
-          <th>7</th>
-          <td>[[[86, 87, 90, 92, 95], [544, 547, 538, 539, 5...</td>
-          <td>[[[1, 2], [3, 4], [3, 5], [4, 6], [4, 10], [7,...</td>
-        </tr>
-        <tr>
-          <th>8</th>
-          <td>[[[86, 87, 90, 92, 95], [544, 547, 538, 539, 5...</td>
-          <td>[[[1, 2], [3, 4], [3, 5], [4, 5], [4, 6], [4, ...</td>
-        </tr>
-        <tr>
-          <th>9</th>
-          <td>[[[740, 741, 744, 746, 749], [1171, 1172, 1174...</td>
-          <td>[[[3, 4], [3, 5], [4, 5], [4, 6], [4, 10], [6,...</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-
-
-
-.. code:: ipython3
-
-    df.iloc[0][0]
-
-
-
-
-.. parsed-literal::
-
-    array([array([array([740, 741, 744, 746, 749]),
-                  array([1171, 1172, 1174, 1176, 1179, 1181]),
-                  array([2173, 2174, 2177, 2179, 2182]),
-                  array([2411, 2413, 2403, 2404, 2406, 2408]),
-                  array([2482, 2484, 2487, 2489, 2479, 2480]),
-                  array([2833, 2836, 2827, 2828, 2831]),
-                  array([2500, 2501, 2504, 2506, 2509]),
-                  array([2706, 2708, 2711, 2702, 2703])], dtype=object)],
-          dtype=object)
-
-
-
-.. code:: ipython3
-
-    sev_ring=RSA(topology, trajectory).find_several_rings_stacked(df_results)
-
-.. code:: ipython3
-
-    #print the resids of the networ of polymers connected by their stacked rings
-    print(sev_ring)
-
-
-.. parsed-literal::
-
-    [[{3, 4}, {8, 9, 7}], [{1, 2, 3, 4, 6, 8, 9, 10}], [{1, 2}, {3, 4, 5, 6}, {8, 9, 7}], [{1, 2}, {10, 3, 4, 6}, {8, 7}], [{1, 2, 3, 4, 5, 6}, {8, 9, 7}], [{1, 2, 3, 4, 6}], [{1, 2}, {3, 4, 5, 6}, {8, 9}], [{1, 2}, {3, 4, 5, 6, 10}, {8, 7}], [{1, 2}, {3, 4, 5, 6, 10}, {8, 9}], [{3, 4, 5, 6, 10}, {8, 9, 7}]]
-
-
+   Rendering of the second largest connected network (Cluster 2) extracted from the simulation.
