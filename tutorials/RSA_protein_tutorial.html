@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tutorial on the Usage of the RSA Tool &mdash; PySoftK 1.0.1 documentation</title>
+  <title>Tutorial: Analyzing $pi$-$pi$ Stacking in Proteins with RSA &mdash; PySoftK 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
@@ -56,17 +56,13 @@
 <li class="toctree-l2"><a class="reference internal" href="rgyr_tutorial.html">Tutorial on the usage of rgyr_micelle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rgyr_mdanalysis_vs_pysoftk.html">Case example of MDAnalysis vs Pysoftk’s rgyr_micelle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="RSA_tutorial.html">Tutorial on the Usage of the RSA Tool</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial on the Usage of the RSA Tool</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial: Analyzing $pi$-$pi$ Stacking in Proteins with RSA</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#theoretical-background">Theoretical Background</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#preparation">Preparation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#running-the-stacking-analysis">Running the Stacking Analysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#exploring-the-results">Exploring the Results</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#selective-pdb-generation">Selective PDB Generation</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#visual-inspection">Visual Inspection</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#network-analysis">Network Analysis</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#network-pdb-generation">Network PDB Generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-editing-the-protein-structure-file">Step 1: Editing the Protein Structure File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-running-the-stacking-analysis">Step 2: Running the Stacking Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-exploring-the-results">Step 3: Exploring the Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-network-analysis-pdb-generation">Step 4: Network Analysis &amp; PDB Generation</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#connectivity-visualization">Connectivity Visualization</a></li>
 </ul>
 </li>
@@ -96,7 +92,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="tutorialspol.html">Tutorials: Analysis Tools</a></li>
-      <li class="breadcrumb-item active">Tutorial on the Usage of the RSA Tool</li>
+      <li class="breadcrumb-item active">Tutorial: Analyzing $pi$-$pi$ Stacking in Proteins with RSA</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/tutorials/RSA_protein_tutorial.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -106,214 +102,203 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="tutorial-on-the-usage-of-the-rsa-tool">
-<h1>Tutorial on the Usage of the RSA Tool<a class="headerlink" href="#tutorial-on-the-usage-of-the-rsa-tool" title="Link to this heading"></a></h1>
-<p>This tutorial illustrates how to use the Ring Stacking Analysis (RSA) tool within the <code class="docutils literal notranslate"><span class="pre">pysoftk</span></code> library to identify and analyze $pi$-$pi$ stacking interactions in large polymer systems.</p>
+  <section id="tutorial-analyzing-pi-pi-stacking-in-proteins-with-rsa">
+<h1>Tutorial: Analyzing $pi$-$pi$ Stacking in Proteins with RSA<a class="headerlink" href="#tutorial-analyzing-pi-pi-stacking-in-proteins-with-rsa" title="Link to this heading"></a></h1>
+<p>This tutorial illustrates how to use the Ring Stacking Analysis (RSA) tool within the <code class="docutils literal notranslate"><span class="pre">pysoftk</span></code> library to identify and analyze $pi$-$pi$ stacking interactions in protein systems.</p>
 <section id="theoretical-background">
 <h2>Theoretical Background<a class="headerlink" href="#theoretical-background" title="Link to this heading"></a></h2>
-<p>$pi$-$pi$ stacking is a non-covalent attractive force between aromatic rings. In polymer science, particularly for organic electronics, these interactions are crucial for charge transport and morphological stability. The RSA tool identifies these events based on two geometric criteria:</p>
+<p>In protein structures, $pi$-$pi$ stacking commonly occurs between the aromatic rings of specific amino acid side chains (e.g., Phenylalanine, Tyrosine, and Tryptophan). These non-covalent interactions are critical for protein folding, stability, and protein-protein interactions. The RSA tool identifies these events across periodic boundaries based on two geometric criteria:</p>
 <ol class="arabic simple">
-<li><p><strong>Distance Cutoff ($d$):</strong> The minimum distance between the centers of mass of any two rings.</p></li>
+<li><p><strong>Distance Cutoff ($d$):</strong> The minimum distance between the centers of mass of any two aromatic rings.</p></li>
 <li><p><strong>Angle Cutoff ($theta$):</strong> The angle between the normal vectors of the two ring planes.</p></li>
 </ol>
 </section>
 <section id="preparation">
 <h2>Preparation<a class="headerlink" href="#preparation" title="Link to this heading"></a></h2>
-<p>Before starting any analysis, load the necessary modules and define your file paths and parameters.</p>
+<p>Before starting any analysis, load the necessary modules and define your file paths.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.pol_analysis.ring_ring</span><span class="w"> </span><span class="kn">import</span> <span class="n">RSA</span>
 
 <span class="c1"># 1. SETUP AND PATHS</span>
-<span class="n">topology</span> <span class="o">=</span> <span class="s1">&#39;data/f8bt_slab_quench.tpr&#39;</span>
-<span class="n">trajectory</span> <span class="o">=</span> <span class="s1">&#39;data/1_frame_traj.xtc&#39;</span>
-<span class="n">results_file</span> <span class="o">=</span> <span class="s1">&#39;data/rsa.parquet&#39;</span>
-
 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">snapshot_dir</span> <span class="o">=</span> <span class="s1">&#39;snapshots&#39;</span>
-<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">snapshot_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="c1"># 2. CALCULATION PARAMETERS</span>
-<span class="n">ang_c</span> <span class="o">=</span> <span class="mi">25</span>
-<span class="n">dist_c</span> <span class="o">=</span> <span class="mf">4.5</span>
-<span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
-</pre></div>
-</div>
-<p>The simulation utilized in this tutorial is a large polymer slab. Due to the high atom count, we will demonstrate the analysis on a single frame.</p>
-<figure class="align-center" id="id1">
-<img alt="Large polymer slab system" src="../_images/ring_system.png" />
-<figcaption>
-<p><span class="caption-text">A simulation box containing 776 F8BT polymer chains.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</section>
-<section id="running-the-stacking-analysis">
-<h2>Running the Stacking Analysis<a class="headerlink" href="#running-the-stacking-analysis" title="Link to this heading"></a></h2>
-<p>The RSA class requires minimal user input to run. Select your trajectory files (it is recommended to use a <code class="docutils literal notranslate"><span class="pre">.tpr</span></code> file for the topology and an <code class="docutils literal notranslate"><span class="pre">.xtc</span></code> file for the trajectory, though any MDAnalysis-supported file can be used).</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">stacking_analysis</span></code> function is highly optimized. It uses <strong>Fragment Templating</strong> to identify rings via RDKit only once per species, <strong>cKDTree</strong> for rapid neighbor searching, and <strong>Numba-accelerated SVD</strong> to calculate plane normals at near-C speeds.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This version is optimized for polymer connectivity. To handle large systems (e.g., 100k+ atoms), it focuses on Polymer Residue IDs (<code class="docutils literal notranslate"><span class="pre">pol_resid</span></code>) rather than individual atom indices, significantly reducing memory overhead and calculation time.</p>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 3. RUNNING THE ANALYSIS</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading topology: </span><span class="si">{</span><span class="n">topology</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading trajectory: </span><span class="si">{</span><span class="n">trajectory</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">rsa_calc</span> <span class="o">=</span> <span class="n">RSA</span><span class="p">(</span><span class="n">topology</span><span class="p">,</span> <span class="n">trajectory</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Running Stacking Analysis ---&quot;</span><span class="p">)</span>
-<span class="c1"># write_pdb=False is used because we will generate snapshots selectively below</span>
-<span class="n">rsa_calc</span><span class="o">.</span><span class="n">stacking_analysis</span><span class="p">(</span><span class="n">dist_c</span><span class="p">,</span> <span class="n">ang_c</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">results_file</span><span class="p">,</span> <span class="n">write_pdb</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Loading topology: data/f8bt_slab_quench.tpr
-Loading trajectory: data/1_frame_traj.xtc
-
---- Running Stacking Analysis ---
-Ring Stacking analysis has started...
-Trajectory Progress: 100%|██████████| 1/1 [01:26&lt;00:00, 86.51s/it]
-Function stacking_analysis Took 98.4840 seconds
-</pre></div>
-</div>
-</section>
-<section id="exploring-the-results">
-<h2>Exploring the Results<a class="headerlink" href="#exploring-the-results" title="Link to this heading"></a></h2>
-<p>The output is stored in a Pandas DataFrame and saved as a Parquet file. The <code class="docutils literal notranslate"><span class="pre">pol_resid</span></code> column contains pairs of polymer Residue IDs that are participating in at least one stacking interaction.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Exploring Results ---&quot;</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">results_file</span><span class="p">)</span>
-
-<span class="c1"># Optional Cleanup: Drop the &#39;atom_index&#39; column if it exists</span>
-<span class="k">if</span> <span class="s1">&#39;atom_index&#39;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;atom_index&#39;</span><span class="p">])</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
-</pre></div>
-</div>
-</section>
-<section id="selective-pdb-generation">
-<h2>Selective PDB Generation<a class="headerlink" href="#selective-pdb-generation" title="Link to this heading"></a></h2>
-<p>Instead of generating PDB files for every single stacked pair, you can parse the results to extract specific geometries. The following code demonstrates how to automatically extract two completely independent dimers for visual inspection.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Selective PDB Generation ---&quot;</span><span class="p">)</span>
-<span class="n">u</span> <span class="o">=</span> <span class="n">rsa_calc</span><span class="o">.</span><span class="n">get_mda_universe</span><span class="p">()</span>
-<span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Ensure we are on the correct frame</span>
-
-<span class="c1"># Extract all interacting pairs for the first frame</span>
-<span class="n">interactions</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;pol_resid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-<span class="n">saved_polymers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span> <span class="c1"># Track polymers to ensure distinct pairs</span>
-<span class="n">dimers_found</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">required_dimers</span> <span class="o">=</span> <span class="mi">2</span>
-
-<span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">interactions</span><span class="p">:</span>
-    <span class="n">resA</span><span class="p">,</span> <span class="n">resB</span> <span class="o">=</span> <span class="n">pair</span>
-
-    <span class="c1"># Check if either polymer is already part of a saved dimer</span>
-    <span class="k">if</span> <span class="n">resA</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">saved_polymers</span> <span class="ow">and</span> <span class="n">resB</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">saved_polymers</span><span class="p">:</span>
-        <span class="n">selection</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;resid </span><span class="si">{</span><span class="n">resA</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">resB</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">pdb_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">snapshot_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;dimer_</span><span class="si">{</span><span class="n">resA</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">resB</span><span class="si">}</span><span class="s2">.pdb&quot;</span><span class="p">)</span>
-
-        <span class="k">with</span> <span class="n">mda</span><span class="o">.</span><span class="n">Writer</span><span class="p">(</span><span class="n">pdb_name</span><span class="p">,</span> <span class="n">selection</span><span class="o">.</span><span class="n">n_atoms</span><span class="p">)</span> <span class="k">as</span> <span class="n">W</span><span class="p">:</span>
-            <span class="n">W</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">selection</span><span class="p">)</span>
-
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated independent dimer snapshot: </span><span class="si">{</span><span class="n">pdb_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-        <span class="c1"># Mark these polymers as &quot;used&quot; and increment count</span>
-        <span class="n">saved_polymers</span><span class="o">.</span><span class="n">update</span><span class="p">([</span><span class="n">resA</span><span class="p">,</span> <span class="n">resB</span><span class="p">])</span>
-        <span class="n">dimers_found</span> <span class="o">+=</span> <span class="mi">1</span>
-
-    <span class="c1"># Stop once we have our required number of unique dimers</span>
-    <span class="k">if</span> <span class="n">dimers_found</span> <span class="o">==</span> <span class="n">required_dimers</span><span class="p">:</span>
-        <span class="k">break</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Finished extracting </span><span class="si">{</span><span class="n">dimers_found</span><span class="si">}</span><span class="s2"> distinct dimers.&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<section id="visual-inspection">
-<h3>Visual Inspection<a class="headerlink" href="#visual-inspection" title="Link to this heading"></a></h3>
-<p>You can open the generated PDB snapshots in your preferred molecular visualization software to verify the stacking geometry.</p>
-<figure class="align-center">
-<img alt="Visualized stacking pair 1" src="../_images/ring_stacking_snapshot_1.png" />
-</figure>
-<figure class="align-center">
-<img alt="Visualized stacking pair 2" src="../_images/ring_stacking_snapshot_2.png" />
-</figure>
-</section>
-</section>
-<section id="network-analysis">
-<h2>Network Analysis<a class="headerlink" href="#network-analysis" title="Link to this heading"></a></h2>
-<p>One of the most powerful features of the RSA tool is the ability to extract the <strong>Connected Network</strong>. This identifies clusters of polymers that are all interconnected through continuous stacking interactions. By analyzing these networks, you can determine if your system has reached percolation or remains as isolated aggregates.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 5. NETWORK ANALYSIS</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Extracting Connected Networks ---&quot;</span><span class="p">)</span>
-
-<span class="c1"># Returns a list of sets containing the clustered network IDs</span>
-<span class="n">sev_ring</span> <span class="o">=</span> <span class="n">rsa_calc</span><span class="o">.</span><span class="n">find_several_rings_stacked</span><span class="p">(</span><span class="n">results_file</span><span class="p">)</span>
-
-<span class="k">if</span> <span class="n">sev_ring</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">sev_ring</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="n">clusters</span> <span class="o">=</span> <span class="n">sev_ring</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total isolated pi-stacked clusters found: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Sort clusters by size to easily find the largest</span>
-    <span class="n">clusters_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">clusters</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">largest_cluster</span> <span class="o">=</span> <span class="n">clusters_sorted</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Largest connected network contains </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">largest_cluster</span><span class="p">)</span><span class="si">}</span><span class="s2"> polymers.&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Convert the set to a sorted list so we can slice it safely</span>
-    <span class="n">sorted_members</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">largest_cluster</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;First 20 members of largest cluster: </span><span class="si">{</span><span class="n">sorted_members</span><span class="p">[:</span><span class="mi">20</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Optional: Show the second largest for context</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">clusters_sorted</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">second_largest</span> <span class="o">=</span> <span class="n">clusters_sorted</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Second largest network contains </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">second_largest</span><span class="p">)</span><span class="si">}</span><span class="s2"> polymers.&quot;</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No stacked networks found with these parameters.&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---</span> <span class="n">Extracting</span> <span class="n">Connected</span> <span class="n">Networks</span> <span class="o">---</span>
-<span class="n">Total</span> <span class="n">isolated</span> <span class="n">pi</span><span class="o">-</span><span class="n">stacked</span> <span class="n">clusters</span> <span class="n">found</span><span class="p">:</span> <span class="mi">51</span>
-<span class="n">Largest</span> <span class="n">connected</span> <span class="n">network</span> <span class="n">contains</span> <span class="mi">418</span> <span class="n">polymers</span><span class="o">.</span>
-<span class="n">First</span> <span class="mi">20</span> <span class="n">members</span> <span class="n">of</span> <span class="n">largest</span> <span class="n">cluster</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">33</span><span class="p">]</span>
-<span class="n">Second</span> <span class="n">largest</span> <span class="n">network</span> <span class="n">contains</span> <span class="mi">20</span> <span class="n">polymers</span><span class="o">.</span>
-</pre></div>
-</div>
-<section id="network-pdb-generation">
-<h3>Network PDB Generation<a class="headerlink" href="#network-pdb-generation" title="Link to this heading"></a></h3>
-<p>The code block below demonstrates how to iterate over the identified networks, select their respective atoms, and output each complete, isolated macro-structure as a new <code class="docutils literal notranslate"><span class="pre">.pdb</span></code> file.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extracting the networks to individual PDBs</span>
 <span class="n">network_pdb_dir</span> <span class="o">=</span> <span class="s1">&#39;data/network_pdbs&#39;</span>
 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">network_pdb_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
+<span class="n">original_topology</span> <span class="o">=</span> <span class="s1">&#39;data/protein_rsa_noedit.pdb&#39;</span>
+<span class="n">trajectory</span> <span class="o">=</span> <span class="s1">&#39;data/trajectory_rsa_protein.xtc&#39;</span>
+<span class="n">edited_topology</span> <span class="o">=</span> <span class="s1">&#39;data/trajectory_resids.pdb&#39;</span>
+<span class="n">results_file</span> <span class="o">=</span> <span class="s1">&#39;data/rsa_prot_tutorial.parquet&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="step-1-editing-the-protein-structure-file">
+<h2>Step 1: Editing the Protein Structure File<a class="headerlink" href="#step-1-editing-the-protein-structure-file" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Why is this necessary?</strong> The PySoftK RSA tool identifies distinct macromolecules by their MDAnalysis <code class="docutils literal notranslate"><span class="pre">resid</span></code>. In a standard protein PDB, the <code class="docutils literal notranslate"><span class="pre">resid</span></code> denotes individual amino acids (e.g., Res 1, Res 2) and resets for each chain, leading to overlapping IDs across different proteins.</p>
+<p>To use the RSA tool correctly, <strong>all atoms of the same protein must share a single, unique ``resid``</strong>, and this ID must be different from every other protein in the system.</p>
+</div>
+<p>The following code dynamically iterates through the distinct chains (segments) in your system and assigns a single, unique <code class="docutils literal notranslate"><span class="pre">resid</span></code> to each entire protein.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- 1. Processing Initial Topology: </span><span class="si">{</span><span class="n">original_topology</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">mda</span><span class="o">.</span><span class="n">Universe</span><span class="p">(</span><span class="n">original_topology</span><span class="p">,</span> <span class="n">trajectory</span><span class="p">)</span>
+
+<span class="c1"># Extract all protein atoms and their positions</span>
+<span class="n">proteins</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="s1">&#39;protein&#39;</span><span class="p">)</span>
+<span class="n">protein_pos</span> <span class="o">=</span> <span class="n">proteins</span><span class="o">.</span><span class="n">positions</span>
+<span class="n">proteins</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">protein_pos</span>
+
+<span class="c1"># Assign a unique resid to each protein chain (segid)</span>
+<span class="n">segids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;J&#39;</span><span class="p">]</span>
+<span class="n">new_resids</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">seg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">segids</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">protein_seg</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;segid </span><span class="si">{</span><span class="n">seg</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">seg_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">protein_seg</span><span class="o">.</span><span class="n">resids</span><span class="p">))</span>
+    <span class="n">new_resids</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">seg_len</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total new resids generated: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">new_resids</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total protein atoms: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">proteins</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Overwrite the topology&#39;s resids with our new unique identifiers</span>
+<span class="n">proteins</span><span class="o">.</span><span class="n">residues</span><span class="o">.</span><span class="n">resids</span> <span class="o">=</span> <span class="n">new_resids</span>
+
+<span class="c1"># Save the properly formatted structure for the RSA tool</span>
+<span class="k">with</span> <span class="n">mda</span><span class="o">.</span><span class="n">Writer</span><span class="p">(</span><span class="n">edited_topology</span><span class="p">,</span> <span class="n">proteins</span><span class="o">.</span><span class="n">n_atoms</span><span class="p">)</span> <span class="k">as</span> <span class="n">W</span><span class="p">:</span>
+    <span class="n">W</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">proteins</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Edited topology saved to: </span><span class="si">{</span><span class="n">edited_topology</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---</span> <span class="mf">1.</span> <span class="n">Processing</span> <span class="n">Initial</span> <span class="n">Topology</span><span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">protein_rsa_noedit</span><span class="o">.</span><span class="n">pdb</span> <span class="o">---</span>
+<span class="n">Total</span> <span class="n">new</span> <span class="n">resids</span> <span class="n">generated</span><span class="p">:</span> <span class="mi">310</span>
+<span class="n">Total</span> <span class="n">protein</span> <span class="n">atoms</span><span class="p">:</span> <span class="mi">3270</span>
+<span class="n">Edited</span> <span class="n">topology</span> <span class="n">saved</span> <span class="n">to</span><span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">trajectory_resids</span><span class="o">.</span><span class="n">pdb</span>
+</pre></div>
+</div>
+</section>
+<section id="step-2-running-the-stacking-analysis">
+<h2>Step 2: Running the Stacking Analysis<a class="headerlink" href="#step-2-running-the-stacking-analysis" title="Link to this heading"></a></h2>
+<p>With the newly formatted structure file, we can run the RSA tool. We will initialize the <code class="docutils literal notranslate"><span class="pre">RSA</span></code> calculator using the <code class="docutils literal notranslate"><span class="pre">edited_topology</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- 2. Running Stacking Analysis ---&quot;</span><span class="p">)</span>
+
+<span class="c1"># Calculation parameters</span>
+<span class="n">ang_c</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">dist_c</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">2</span>
+
+<span class="c1"># Initialize RSA with the NEW edited topology</span>
+<span class="n">rsa_calc</span> <span class="o">=</span> <span class="n">RSA</span><span class="p">(</span><span class="n">edited_topology</span><span class="p">,</span> <span class="n">trajectory</span><span class="p">)</span>
+
+<span class="c1"># Run the highly optimized calculation</span>
+<span class="c1"># write_pdb=False is used because we will generate network PDBs later</span>
+<span class="n">rsa_calc</span><span class="o">.</span><span class="n">stacking_analysis</span><span class="p">(</span><span class="n">dist_c</span><span class="p">,</span> <span class="n">ang_c</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">results_file</span><span class="p">,</span> <span class="n">write_pdb</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Stacking analysis complete.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>--- 2. Running Stacking Analysis ---
+Ring Stacking analysis has started...
+Trajectory Progress: 100%|██████████| 10/10 [00:00&lt;00:00, 14.29it/s]
+Function stacking_analysis Took 4.3362 seconds
+Stacking analysis complete.
+</pre></div>
+</div>
+</section>
+<section id="step-3-exploring-the-results">
+<h2>Step 3: Exploring the Results<a class="headerlink" href="#step-3-exploring-the-results" title="Link to this heading"></a></h2>
+<p>The output is stored in a Pandas DataFrame and saved as a Parquet file. Because we are analyzing entire macromolecules, we can safely drop the redundant <code class="docutils literal notranslate"><span class="pre">atom_index</span></code> column to clean up our workspace. The remaining <code class="docutils literal notranslate"><span class="pre">pol_resid</span></code> column contains pairs of our newly assigned Protein IDs that are participating in a stacking interaction.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- 3. Analyzing Output Data ---&quot;</span><span class="p">)</span>
+
+<span class="c1"># Load the DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">results_file</span><span class="p">)</span>
+
+<span class="c1"># CLEANUP: Drop the &#39;atom_index&#39; column since the new RSA tool</span>
+<span class="c1"># optimizes by using &#39;pol_resid&#39; exclusively.</span>
+<span class="k">if</span> <span class="s1">&#39;atom_index&#39;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;atom_index&#39;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cleaned DataFrame Head:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Example of interacting protein pairs in the first recorded stack:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;pol_resid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---</span> <span class="mf">3.</span> <span class="n">Analyzing</span> <span class="n">Output</span> <span class="n">Data</span> <span class="o">---</span>
+<span class="n">Cleaned</span> <span class="n">DataFrame</span> <span class="n">Head</span><span class="p">:</span>
+                                           <span class="n">pol_resid</span>
+<span class="mi">0</span>                           <span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]]</span>
+<span class="mi">1</span>  <span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">...</span>
+<span class="mi">2</span>   <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]]</span>
+<span class="mi">3</span>           <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]]</span>
+<span class="mi">4</span>  <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mf">9.</span><span class="o">..</span>
+
+<span class="n">Example</span> <span class="n">of</span> <span class="n">interacting</span> <span class="n">protein</span> <span class="n">pairs</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">first</span> <span class="n">recorded</span> <span class="n">stack</span><span class="p">:</span>
+<span class="p">[</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span> <span class="n">array</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span> <span class="n">array</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])]</span>
+</pre></div>
+</div>
+</section>
+<section id="step-4-network-analysis-pdb-generation">
+<h2>Step 4: Network Analysis &amp; PDB Generation<a class="headerlink" href="#step-4-network-analysis-pdb-generation" title="Link to this heading"></a></h2>
+<p>One of the most powerful features of the RSA tool is the ability to extract <strong>Connected Networks</strong>. A graph theory algorithm evaluates the pairs to identify continuous clusters of proteins interconnected through $pi$-$pi$ stacking.</p>
+<p>The code block below demonstrates how to extract these networks and automatically save each complete, isolated macro-structure as a new <code class="docutils literal notranslate"><span class="pre">.pdb</span></code> file for visualization.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- 4. Extracting Connected Protein Networks ---&quot;</span><span class="p">)</span>
+
+<span class="c1"># Extract the network groupings</span>
+<span class="n">sev_ring</span> <span class="o">=</span> <span class="n">rsa_calc</span><span class="o">.</span><span class="n">find_several_rings_stacked</span><span class="p">(</span><span class="n">results_file</span><span class="p">)</span>
+
+<span class="c1"># Grab the universe from our RSA calculator and set it to the first frame</span>
 <span class="n">u_rsa</span> <span class="o">=</span> <span class="n">rsa_calc</span><span class="o">.</span><span class="n">get_mda_universe</span><span class="p">()</span>
 <span class="n">u_rsa</span><span class="o">.</span><span class="n">trajectory</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Connected Networks (Residue IDs of stacked proteins):&quot;</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">sev_ring</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">sev_ring</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">network</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sev_ring</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  Cluster </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> members: </span><span class="si">{</span><span class="n">network</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="c1"># Convert the set of resids into an MDAnalysis selection string</span>
         <span class="n">resid_str</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">network</span><span class="p">))</span>
         <span class="n">cluster_selection</span> <span class="o">=</span> <span class="n">u_rsa</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;resid </span><span class="si">{</span><span class="n">resid_str</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
+        <span class="c1"># Define the output path and write the PDB</span>
         <span class="n">pdb_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">network_pdb_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;network_cluster_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.pdb&quot;</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">mda</span><span class="o">.</span><span class="n">Writer</span><span class="p">(</span><span class="n">pdb_filename</span><span class="p">,</span> <span class="n">cluster_selection</span><span class="o">.</span><span class="n">n_atoms</span><span class="p">)</span> <span class="k">as</span> <span class="n">W</span><span class="p">:</span>
             <span class="n">W</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cluster_selection</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved Network </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> to: </span><span class="si">{</span><span class="n">pdb_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  -&gt; Saved structure to: </span><span class="si">{</span><span class="n">pdb_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  No networks found.&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Workflow complete!&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>--- 4. Extracting Connected Protein Networks ---
+Connected Networks (Residue IDs of stacked proteins):
+
+  Cluster 1 members: {3, 4}
+  -&gt; Saved structure to: data/network_pdbs/network_cluster_1.pdb
+
+  Cluster 2 members: {8, 9, 7}
+  -&gt; Saved structure to: data/network_pdbs/network_cluster_2.pdb
+
+Workflow complete!
+</pre></div>
+</div>
 <section id="connectivity-visualization">
 <h3>Connectivity Visualization<a class="headerlink" href="#connectivity-visualization" title="Link to this heading"></a></h3>
-<p>The generated <code class="docutils literal notranslate"><span class="pre">.pdb</span></code> files allow you to easily render and study the complete connectivity paths inside your simulation box.</p>
-<figure class="align-center" id="id2">
-<img alt="Visualization of stacked network 1" src="../_images/network_cluster_1.png" />
+<p>The generated <code class="docutils literal notranslate"><span class="pre">.pdb</span></code> files allow you to easily render and study the complete connectivity paths inside your simulation box. You can open these files in PyMOL, VMD, or your preferred visualization software.</p>
+<figure class="align-center" id="id1">
+<img alt="Visualization of stacked protein network 1" src="tutorials/images/protein_network_cluster_1.png" />
 <figcaption>
-<p><span class="caption-text">Rendering of the largest connected network (Cluster 1) extracted from the simulation.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-text">Rendering of the first connected network (Cluster 1, containing Proteins 3 and 4) extracted from the simulation.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<figure class="align-center" id="id3">
-<img alt="Visualization of stacked network 2" src="../_images/network_cluster_2.png" />
+<figure class="align-center" id="id2">
+<img alt="Visualization of stacked protein network 2" src="tutorials/images/protein_network_cluster_2.png" />
 <figcaption>
-<p><span class="caption-text">Rendering of the second largest connected network (Cluster 2) extracted from the simulation.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-text">Rendering of the second connected network (Cluster 2, containing Proteins 7, 8, and 9) extracted from the simulation.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
