@@ -206,13 +206,13 @@ Connectivity Visualization
 
 The generated ``.pdb`` files allow you to easily render and study the complete connectivity paths inside your simulation box. You can open these files in PyMOL, VMD, or your preferred visualization software.
 
-.. figure:: images/protein_network_cluster_1.png
+.. figure:: images/network_cluster_1.png
    :alt: Visualization of stacked protein network 1
    :align: center
 
    Rendering of the first connected network (Cluster 1, containing Proteins 3 and 4) extracted from the simulation.
 
-.. figure:: images/protein_network_cluster_2.png
+.. figure:: images/network_cluster_2.png
    :alt: Visualization of stacked protein network 2
    :align: center
 
