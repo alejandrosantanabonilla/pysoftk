@@ -1,3 +1,5 @@
+.. _kinetic_clustering_tutorial:
+
 =================================================
 Automated Kinetic State Discovery with PySoftK
 =================================================
@@ -104,7 +106,41 @@ We can use MDAnalysis to measure the Ramachandran dihedral angles and the intram
         print(f"  -> Psi (ψ): {psi_angle:.1f}°")
         print(f"  -> O-H Distance: {hbond_dist:.2f} Å\n")
 
-Step 4: Interactive 3D Visualization
+Step 4: The Three Discovered Phases
+-----------------------------------
+The algorithm successfully isolates three physically distinct metastable states from the trajectory. Below are the structural representations of these kinetic basins:
+
+**1. The Beta-Sheet (C5) State**
+This is the fully extended conformation where the backbone is stretched out. The oxygen on the acetyl group and the hydrogen on the N-methyl group point in opposite directions, preventing any intramolecular hydrogen bonding.
+
+.. figure:: images/Beta-Sheet.png
+   :alt: Beta-Sheet conformation
+   :align: center
+   :width: 80%
+
+   The extended Beta-Sheet (C5) conformation.
+
+**2. The Polyproline II (PII) State**
+Similar to the beta-sheet, the psi angle is highly extended, but the phi angle has twisted significantly inward. This twisted-extended state is a signature, highly-populated basin for unfolded peptides.
+
+.. figure:: images/Polyproline_II.png
+   :alt: Polyproline II conformation
+   :align: center
+   :width: 80%
+
+   The twisted Polyproline II (PII) conformation.
+
+**3. The Alpha-Helix (aR / C7eq) State**
+The molecule curls back on itself to form a closed ring. This state is locked into place by a strong, ~2.0 Å intramolecular hydrogen bond between the Acetyl oxygen and the N-methylamide hydrogen.
+
+.. figure:: images/Alpha-Helix.png
+   :alt: Alpha-Helix conformation
+   :align: center
+   :width: 80%
+
+   The folded Alpha-Helix (aR / C7eq) conformation featuring a strong intramolecular hydrogen bond.
+
+Step 5: Interactive 3D Visualization
 ------------------------------------
 Finally, use ``py3Dmol`` to load the generated PDB file and visualize the folding transitions right in your Jupyter environment.
 
@@ -128,4 +164,4 @@ Finally, use ``py3Dmol`` to load the generated PDB file and visualize the foldin
     # Animate through the states
     view.animate({'loop': 'forward', 'step': 1000}) 
     view.zoomTo()
-    view.show()999999
+    view.show()
