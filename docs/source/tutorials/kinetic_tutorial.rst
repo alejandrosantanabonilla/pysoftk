@@ -1,5 +1,3 @@
-.. _kinetic_clustering_tutorial:
-
 =================================================
 Automated Kinetic State Discovery with PySoftK
 =================================================
