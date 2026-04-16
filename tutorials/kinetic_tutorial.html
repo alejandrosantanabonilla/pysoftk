@@ -1,0 +1,291 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automated Kinetic State Discovery with PySoftK &mdash; PySoftK 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=292eb321"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Frequently Asked Questions" href="../faq.html" />
+    <link rel="prev" title="Tutorial on the usage of spherical_density tool" href="spherical_density_tutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PySoftK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials: Modelling Polymers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorialspol.html">Tutorials: Analysis Tools</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="contacts_tutorial.html">Tutorial on the usage of contacts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ecc_tutorial.html">Tutorial on the usage of ecc_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intrinsic_density_tutorial.html">Tutorial on the usage of intrinsic_density_micelle tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="micelle_whole_tutorial.html">Tutorial on the usage of micelle_whole tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_tutorial.html">Tutorial on the usage of rgyr_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgyr_mdanalysis_vs_pysoftk.html">Case example of MDAnalysis vs Pysoftk’s rgyr_micelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RSA_tutorial.html">Tutorial on the Usage of the RSA Tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RSA_protein_tutorial.html">Tutorial: Analyzing $pi$-$pi$ Stacking in Proteins with RSA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SCP_tutorial.html">Tutorial on the usage of SCP tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvation_tutorial.html">Tutorial on the usage of hydration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spherical_density_tutorial.html">Tutorial on the usage of spherical_density tool</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Automated Kinetic State Discovery with PySoftK</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-define-data-paths">Step 1: Define Data Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-run-the-kinetic-clustering-pipeline">Step 2: Run the Kinetic Clustering Pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-mathematical-analysis-of-discovered-states">Step 3: Mathematical Analysis of Discovered States</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-the-three-discovered-phases">Step 4: The Three Discovered Phases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-5-interactive-3d-visualization">Step 5: Interactive 3D Visualization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">pysoftk</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PySoftK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="tutorialspol.html">Tutorials: Analysis Tools</a></li>
+      <li class="breadcrumb-item active">Automated Kinetic State Discovery with PySoftK</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/kinetic_tutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="automated-kinetic-state-discovery-with-pysoftk">
+<span id="kinetic-clustering-tutorial"></span><h1>Automated Kinetic State Discovery with PySoftK<a class="headerlink" href="#automated-kinetic-state-discovery-with-pysoftk" title="Link to this heading"></a></h1>
+<p>This tutorial demonstrates how to process a raw Molecular Dynamics trajectory (e.g., from xTB), automatically identify the molecular backbone, filter out thermal noise, and cluster the distinct kinetic states using tICA and HDBSCAN. Finally, we will mathematically analyze and interactively visualize the discovered conformations.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<p>Make sure you have installed PySoftK and its dependencies. If you are running this in a Jupyter Notebook or Google Colab, you can install it directly:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/alejandrosantanabonilla/pysoftk
+<span class="nb">cd</span><span class="w"> </span>pysoftk
+pip<span class="w"> </span>install<span class="w"> </span>.
+pip<span class="w"> </span>install<span class="w"> </span>py3Dmol<span class="w"> </span>MDAnalysis
+</pre></div>
+</div>
+</section>
+<section id="step-1-define-data-paths">
+<h2>Step 1: Define Data Paths<a class="headerlink" href="#step-1-define-data-paths" title="Link to this heading"></a></h2>
+<p>For this tutorial, the required trajectory (<code class="docutils literal notranslate"><span class="pre">xtb.xyz</span></code>) and topology (<code class="docutils literal notranslate"><span class="pre">topology.pdb</span></code>) of Alanine Dipeptide are located in the <code class="docutils literal notranslate"><span class="pre">topologies_tutorials/data/</span></code> folder of the repository.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;topologies_tutorials/data&quot;</span>
+<span class="n">topology_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;topology.pdb&quot;</span><span class="p">)</span>
+<span class="n">trajectory_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;xtb.xyz&quot;</span><span class="p">)</span>
+<span class="n">output_conformers</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;representative_conformers.pdb&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">topology_file</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: Could not find </span><span class="si">{</span><span class="n">topology_file</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Topology found at: </span><span class="si">{</span><span class="n">topology_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">trajectory_file</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: Could not find </span><span class="si">{</span><span class="n">trajectory_file</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Trajectory found at: </span><span class="si">{</span><span class="n">trajectory_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-2-run-the-kinetic-clustering-pipeline">
+<h2>Step 2: Run the Kinetic Clustering Pipeline<a class="headerlink" href="#step-2-run-the-kinetic-clustering-pipeline" title="Link to this heading"></a></h2>
+<p>We will use PySoftK to automatically extract the dominant conformations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pysoftk.pol_analysis.kinetic_clustering</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutomatedKineticClustering</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading trajectory data...&quot;</span><span class="p">)</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">AutomatedKineticClustering</span><span class="p">(</span><span class="n">topology_file</span><span class="p">,</span> <span class="n">trajectory_file</span><span class="p">)</span>
+
+<span class="c1"># Identify the structural core (Top 60% centrality, filtering out fast-moving hydrogens)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">define_backbone_by_centrality</span><span class="p">(</span><span class="n">percentile</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="c1"># Build contact maps (4.5 Å cutoff for H-bonding in small peptides)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">extract_contact_maps</span><span class="p">(</span><span class="n">r_cutoff</span><span class="o">=</span><span class="mf">4.5</span><span class="p">)</span>
+
+<span class="c1"># Project and cluster (Lag time of 5 frames)</span>
+<span class="n">embedding</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">run_tica_clustering</span><span class="p">(</span><span class="n">lag_time_frames</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">min_cs</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Save the physical frames closest to the cluster centers</span>
+<span class="n">app</span><span class="o">.</span><span class="n">export_representative_states</span><span class="p">(</span><span class="n">output_conformers</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-3-mathematical-analysis-of-discovered-states">
+<h2>Step 3: Mathematical Analysis of Discovered States<a class="headerlink" href="#step-3-mathematical-analysis-of-discovered-states" title="Link to this heading"></a></h2>
+<p>We can use MDAnalysis to measure the Ramachandran dihedral angles and the intramolecular hydrogen bond distance to classify the discovered states mathematically.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">MDAnalysis</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mda</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MDAnalysis.lib.distances</span><span class="w"> </span><span class="kn">import</span> <span class="n">calc_dihedrals</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Analyzing </span><span class="si">{</span><span class="n">output_conformers</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">mda</span><span class="o">.</span><span class="n">Universe</span><span class="p">(</span><span class="n">output_conformers</span><span class="p">)</span>
+
+<span class="c1"># Atom indices for Alanine Dipeptide (0-based)</span>
+<span class="n">phi_indices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">14</span><span class="p">]</span> <span class="c1"># C(ACE) - N - CA - C</span>
+<span class="n">psi_indices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">]</span> <span class="c1"># N - CA - C - N(NME)</span>
+<span class="n">o_idx</span><span class="p">,</span> <span class="n">h_idx</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">17</span> <span class="c1"># O(ACE) to H(NME) for H-Bond</span>
+
+<span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">u</span><span class="o">.</span><span class="n">trajectory</span><span class="p">:</span>
+    <span class="c1"># Extract coordinates</span>
+    <span class="n">phi_coords</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">phi_indices</span><span class="p">]</span><span class="o">.</span><span class="n">positions</span>
+    <span class="n">psi_coords</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">psi_indices</span><span class="p">]</span><span class="o">.</span><span class="n">positions</span>
+
+    <span class="c1"># Calculate Dihedrals and grab the raw float value using [0]</span>
+    <span class="n">phi_angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">calc_dihedrals</span><span class="p">(</span><span class="o">*</span><span class="n">phi_coords</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">psi_angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">calc_dihedrals</span><span class="p">(</span><span class="o">*</span><span class="n">psi_coords</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Calculate H-Bond Distance</span>
+    <span class="n">hbond_dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">o_idx</span><span class="p">]</span><span class="o">.</span><span class="n">position</span> <span class="o">-</span> <span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">h_idx</span><span class="p">]</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+
+    <span class="c1"># Classify state based on precise xTB Ramachandran boundaries</span>
+    <span class="k">if</span> <span class="n">hbond_dist</span> <span class="o">&lt;</span> <span class="mf">2.5</span><span class="p">:</span>
+        <span class="n">state_name</span> <span class="o">=</span> <span class="s2">&quot;Alpha-Helix (aR / C7eq)&quot;</span>
+    <span class="k">elif</span> <span class="n">phi_angle</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">130</span> <span class="ow">and</span> <span class="n">psi_angle</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="n">state_name</span> <span class="o">=</span> <span class="s2">&quot;Beta-Sheet (C5)&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">state_name</span> <span class="o">=</span> <span class="s2">&quot;Polyproline II (PII)&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;State </span><span class="si">{</span><span class="n">ts</span><span class="o">.</span><span class="n">frame</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">state_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  -&gt; Phi (φ): </span><span class="si">{</span><span class="n">phi_angle</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">°&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  -&gt; Psi (ψ): </span><span class="si">{</span><span class="n">psi_angle</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">°&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  -&gt; O-H Distance: </span><span class="si">{</span><span class="n">hbond_dist</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> Å</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-4-the-three-discovered-phases">
+<h2>Step 4: The Three Discovered Phases<a class="headerlink" href="#step-4-the-three-discovered-phases" title="Link to this heading"></a></h2>
+<p>The algorithm successfully isolates three physically distinct metastable states from the trajectory. Below are the structural representations of these kinetic basins:</p>
+<p><strong>1. The Beta-Sheet (C5) State</strong>
+This is the fully extended conformation where the backbone is stretched out. The oxygen on the acetyl group and the hydrogen on the N-methyl group point in opposite directions, preventing any intramolecular hydrogen bonding.</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/Beta-Sheet.png"><img alt="Beta-Sheet conformation" src="../_images/Beta-Sheet.png" style="width: 80%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">The extended Beta-Sheet (C5) conformation.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>2. The Polyproline II (PII) State</strong>
+Similar to the beta-sheet, the psi angle is highly extended, but the phi angle has twisted significantly inward. This twisted-extended state is a signature, highly-populated basin for unfolded peptides.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/Polyproline_II.png"><img alt="Polyproline II conformation" src="../_images/Polyproline_II.png" style="width: 80%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">The twisted Polyproline II (PII) conformation.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>3. The Alpha-Helix (aR / C7eq) State</strong>
+The molecule curls back on itself to form a closed ring. This state is locked into place by a strong, ~2.0 Å intramolecular hydrogen bond between the Acetyl oxygen and the N-methylamide hydrogen.</p>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/Alpha-Helix.png"><img alt="Alpha-Helix conformation" src="../_images/Alpha-Helix.png" style="width: 80%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">The folded Alpha-Helix (aR / C7eq) conformation featuring a strong intramolecular hydrogen bond.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="step-5-interactive-3d-visualization">
+<h2>Step 5: Interactive 3D Visualization<a class="headerlink" href="#step-5-interactive-3d-visualization" title="Link to this heading"></a></h2>
+<p>Finally, use <code class="docutils literal notranslate"><span class="pre">py3Dmol</span></code> to load the generated PDB file and visualize the folding transitions right in your Jupyter environment.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">py3Dmol</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Visualizing </span><span class="si">{</span><span class="n">output_conformers</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
+
+<span class="c1"># Read the generated PDB file containing our 3 states</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_conformers</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pdb_data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="c1"># Initialize the 3D viewer</span>
+<span class="n">view</span> <span class="o">=</span> <span class="n">py3Dmol</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="n">view</span><span class="o">.</span><span class="n">addModelsAsFrames</span><span class="p">(</span><span class="n">pdb_data</span><span class="p">)</span>
+
+<span class="c1"># Style the molecule</span>
+<span class="n">view</span><span class="o">.</span><span class="n">setStyle</span><span class="p">({</span><span class="s1">&#39;stick&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">},</span> <span class="s1">&#39;sphere&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">}})</span>
+
+<span class="c1"># Animate through the states</span>
+<span class="n">view</span><span class="o">.</span><span class="n">animate</span><span class="p">({</span><span class="s1">&#39;loop&#39;</span><span class="p">:</span> <span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="s1">&#39;step&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">})</span>
+<span class="n">view</span><span class="o">.</span><span class="n">zoomTo</span><span class="p">()</span>
+<span class="n">view</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="spherical_density_tutorial.html" class="btn btn-neutral float-left" title="Tutorial on the usage of spherical_density tool" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../faq.html" class="btn btn-neutral float-right" title="Frequently Asked Questions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Alejandro Santana-Bonilla, Raquel Lopez-Rios de Castro, Rob Ziolek, and Chris Lorenz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

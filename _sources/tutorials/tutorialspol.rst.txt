@@ -23,3 +23,4 @@ ring-ring stacking enviorements, contact analysis have been developed.
    SCP_tutorial
    solvation_tutorial
    spherical_density_tutorial
+   kinetic_tutorial.rst
