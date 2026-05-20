@@ -177,12 +177,12 @@ class AutomatedKineticClustering(MDA_input):
         return self.feature_matrix
 
     @timeit
-    def run_tica_clustering(self, lag_time_frames=10, n_components=2, min_cs=15):
+    def run_tica_clustering(self, lag_time_frames=10, n_components=2, min_cs=15, variance_threshold=1e-4):
         """
         Performs Time-lagged Independent Component Analysis (tICA) on the contact maps
         to find slow collective variables, followed by HDBSCAN clustering to 
         identify distinct metastable states. Utilizes a threading backend to prevent 
-        leaked semaphores and memory crashes during clustering.
+        leaked semaphores and a variance filter to prevent memory crashes.
 
         Parameters
         ----------
@@ -192,6 +192,8 @@ class AutomatedKineticClustering(MDA_input):
             The number of tICA components (dimensions) to project the data onto (default is 2).
         min_cs : int, optional
             The `min_cluster_size` parameter for the HDBSCAN algorithm (default is 15).
+        variance_threshold : float, optional
+            The minimum variance required to keep a contact feature (default is 1e-4).
 
         Returns
         -------
@@ -207,12 +209,35 @@ class AutomatedKineticClustering(MDA_input):
         if self.feature_matrix is None:
             raise ValueError("Run extract_contact_maps first.")
 
+        # ==========================================
+        # 🚨 NEW: The Variance Filter 🚨
+        # ==========================================
+        print("Filtering out invariant (zero-variance) contact pairs...")
+        # Calculate the variance for every single column (feature)
+        feature_variances = np.var(self.feature_matrix, axis=0)
+        
+        # Keep only the indices of columns whose variance is higher than the threshold
+        active_feature_indices = np.where(feature_variances > variance_threshold)[0]
+        
+        n_orig = self.feature_matrix.shape[1]
+        n_filtered = len(active_feature_indices)
+        print(f"-> Feature dimensionality reduced from {n_orig} to {n_filtered} active contacts.")
+        
+        if n_filtered == 0:
+            raise ValueError("No features passed the variance threshold. Check your trajectory.")
+            
+        # Create a new, tiny matrix containing ONLY the moving features
+        filtered_features = self.feature_matrix[:, active_feature_indices]
+        # ==========================================
+
         physical_lag = lag_time_frames * self.dt
         print(f"Running tICA. Lag time: {lag_time_frames} frames ({physical_lag} ps)...")
         
         tica = TICA(lagtime=lag_time_frames, dim=n_components)
-        tica_model = tica.fit(self.feature_matrix).fetch_model()
-        self.embedding = tica_model.transform(self.feature_matrix)
+        
+        # 🚨 IMPORTANT: Pass the new 'filtered_features' to tICA instead of 'self.feature_matrix'
+        tica_model = tica.fit(filtered_features).fetch_model()
+        self.embedding = tica_model.transform(filtered_features)
         
         print("Clustering kinetic states with HDBSCAN...")
         
@@ -282,4 +307,5 @@ class AutomatedKineticClustering(MDA_input):
                 print(f"State {cluster_id} -> Saved Frame {closest_global_idx} to {output_file}")
                 
         print("Export complete.")
+
 
