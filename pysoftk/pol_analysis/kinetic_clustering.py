@@ -4,6 +4,7 @@ from rdkit import Chem
 import deeptime
 from deeptime.decomposition import TICA
 import hdbscan
+import joblib  # Imported for backend threading management
 import MDAnalysis as mda
 from scipy.spatial.distance import cdist
 from tqdm.auto import tqdm
@@ -119,7 +120,6 @@ class AutomatedKineticClustering(MDA_input):
         # Returns a 2D matrix of the shortest path (in number of bonds) between all atom pairs
         dist_matrix = Chem.GetDistanceMatrix(rdkit_mol)
         
-        # Closeness Centrality: Summing distances. Lower sum = more central.
         path_sums = np.sum(dist_matrix, axis=1)
         
         # We need the atoms with the LOWEST path sum scores.
@@ -169,8 +169,8 @@ class AutomatedKineticClustering(MDA_input):
             tri_idx = np.triu_indices(len(self.core_atoms), k=1)
             distances = dist_m[tri_idx]
             
-            # Apply cutoff to create a binary matrix (0 or 1)
-            contacts = (distances <= r_cutoff).astype(float)
+            # Apply cutoff to create a binary matrix (0 or 1). Cast to int8 for massive RAM savings.
+            contacts = (distances <= r_cutoff).astype(np.int8)
             feature_list.append(contacts)
             
         self.feature_matrix = np.array(feature_list)
@@ -181,7 +181,8 @@ class AutomatedKineticClustering(MDA_input):
         """
         Performs Time-lagged Independent Component Analysis (tICA) on the contact maps
         to find slow collective variables, followed by HDBSCAN clustering to 
-        identify distinct metastable states.
+        identify distinct metastable states. Utilizes a threading backend to prevent 
+        leaked semaphores and memory crashes during clustering.
 
         Parameters
         ----------
@@ -214,8 +215,17 @@ class AutomatedKineticClustering(MDA_input):
         self.embedding = tica_model.transform(self.feature_matrix)
         
         print("Clustering kinetic states with HDBSCAN...")
-        clusterer = hdbscan.HDBSCAN(min_cluster_size=min_cs)
-        self.labels = clusterer.fit_predict(self.embedding)
+        
+        # Initialize HDBSCAN with memory-efficient tree and maximum thread usage
+        clusterer = hdbscan.HDBSCAN(
+            min_cluster_size=min_cs,
+            core_dist_n_jobs=-1,
+            algorithm='boruvka_kdtree'
+        )
+        
+        # Force the threading backend to bypass Loky/multiprocessing crashes
+        with joblib.parallel_backend('threading'):
+            self.labels = clusterer.fit_predict(self.embedding)
         
         n_states = len(set(self.labels)) - (1 if -1 in self.labels else 0)
         n_noise = list(self.labels).count(-1)
@@ -272,3 +282,4 @@ class AutomatedKineticClustering(MDA_input):
                 print(f"State {cluster_id} -> Saved Frame {closest_global_idx} to {output_file}")
                 
         print("Export complete.")
+
