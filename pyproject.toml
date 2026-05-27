@@ -29,7 +29,7 @@ dependencies = [
     "pyscf < 2.5.0",
     "pyscf-semiempirical @ git+https://github.com/pyscf/semiempirical",
     "pyberny",
-    "openbabel-wheel",
+    "openbabel>=3.2.0",
     "numba",
     "umap-learn",
     "hdbscan",
