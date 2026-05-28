@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         os: ["ubuntu-latest", "macos-latest"]
-        python-version: ["3.10.10", "3.13"]
+        python-version: ["3.10.10", "3.11", "3.12", "3.13"]
     steps:
       - name: Clear conda cache
         run: |
@@ -20,23 +20,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
+      # Removed the redundant actions/setup-python@v5 step here.
+      # Conda handles the Python version automatically via setup-miniconda.
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v3
         with:
           activate-environment: my_env
           auto-update-conda: true
-          channels: conda-forge, defaults # Add channels as needed
+          channels: conda-forge, defaults
           python-version: ${{ matrix.python-version }}
 
-      - name: xtb installation
+      - name: xtb and pip installation
         shell: bash -l {0}
         run: |
-          conda install -n my_env -c conda-forge xtb "libgfortran=14.2.0" "libgfortran5=14.2.0" -y 
+          # Added 'pip' to the list of packages to install into my_env
+          conda install -n my_env -c conda-forge pip xtb "libgfortran=14.2.0" "libgfortran5=14.2.0" -y 
 
       - name: Install MDAnalysis
         shell: bash -l {0}
@@ -71,6 +70,12 @@ jobs:
           python -m pip install pytest pytest-cov "setuptools<70.0.0"
           python -m pytest --junitxml=pytest3.xml --cov-report=xml:coverage3.xml --cov-report=term-missing:skip-covered --cov=pysoftk | tee pytest-coverage_3.txt
 
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./test/test_pysoftk/coverage1.xml,./test/test_pol/coverage2.xml,./test/test_umap/coverage3.xml
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
