@@ -121,45 +121,6 @@ class ConformerGenerator:
         else:
             print("No conformers found.")
             return 0
-        # --- END OF NEW LOGIC ---
-
-    def save_conformers_to_separate_files(self, molecule_with_conformers: pybel.Molecule,
-                                          base_name: str,
-                                          output_dir: str = None,
-                                          file_format: str = "xyz"):
-        """
-        Splits a pybel.Molecule object containing multiple conformers into
-        separate files, one for each conformer.
-        """
-        if not molecule_with_conformers or molecule_with_conformers.OBMol.NumConformers() == 0:
-            print("No conformers found in the input molecule, nothing to save.")
-            return
-
-        num_found = molecule_with_conformers.OBMol.NumConformers()
-        print(f"\nSaving {num_found} conformers for {molecule_with_conformers.title} to separate files.")
-
-        if output_dir is None:
-            output_dir = f"{base_name}_conformers"
-        os.makedirs(output_dir, exist_ok=True)
-        print(f"Saving individual conformers into directory: '{output_dir}/'")
-
-        padding = len(str(num_found))
-
-        for i in range(num_found):
-            molecule_with_conformers.OBMol.SetConformer(i)
-            single_conformer_mol = pybel.Molecule(molecule_with_conformers.OBMol)
-            single_conformer_mol.title = f"{molecule_with_conformers.title}_conformer_{i+1}"
-            output_filename = os.path.join(
-                output_dir,
-                f"{base_name}_conf_{str(i+1).zfill(padding)}.{file_format}"
-            )
-            try:
-                single_conformer_mol.write(file_format, output_filename, overwrite=True)
-                print(f" Saved: {os.path.basename(output_filename)}", end='\r')
-            except Exception as e:
-                print(f"\nError saving conformer {i+1} to file '{output_filename}': {e}", file=sys.stderr)
-
-        print("\nFinished saving all conformers to separate files.")
 
     def confab_generate_conformers(self, molecule_input: str,
                                        output_dir: str,
@@ -226,27 +187,15 @@ class ConformerGenerator:
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
             return 0
-
     def save_conformers_to_separate_files(self, molecule_with_conformers: pybel.Molecule,
-                                               base_name: str,
-                                               output_dir: str = None,
-                                               file_format: str = "xyz"):
+                                          base_name: str,
+                                          output_dir: str = None,
+                                          file_format: str = "xyz"):
         """
         Splits a pybel.Molecule object containing multiple conformers into
-        separate files, one for each conformer.
-
-        Args:
-            molecule_with_conformers: A pybel.Molecule object that contains
-                                      multiple conformers (e.g., the output
-                                      from generate_conformers()).
-            base_name: The base name to use for the output filenames
-                       (e.g., "propanol").
-            output_dir: The directory where the individual conformer files
-                        will be saved. If None, a directory named
-                        "{base_name}_conformers" will be created in the
-                        current working directory (default: None).
-            file_format: The file format to use for saving the conformers
-                         (default: "xyz"). Common options include "mol", "pdb", "xyz".
+        separate files, one for each conformer. It calculates the energy of
+        each conformer using the instance's default force field and writes it
+        directly into the second line (header space) of the XYZ file.
         """
         if not molecule_with_conformers or molecule_with_conformers.OBMol.NumConformers() == 0:
             print("No conformers found in the input molecule, nothing to save.")
@@ -264,16 +213,28 @@ class ConformerGenerator:
         # Determine padding for filenames
         padding = len(str(num_found))
 
+        # Set up the force field to extract energy states for each conformer coordinate set
+        ff = pybel._forcefields[self.default_forcefield]
+        if not ff.Setup(molecule_with_conformers.OBMol):
+            print(f"Warning: Force field '{self.default_forcefield}' setup failed for energy extraction. Writing without energy updates.", file=sys.stderr)
+            ff = None
+
         # Loop through each found conformer index
         for i in range(num_found):
-            # Set the molecule's coordinates to the i-th conformer
+            # Update the underlying OBMol to the active conformer coordinates
             molecule_with_conformers.OBMol.SetConformer(i)
 
-            # Create a *new* molecule object containing ONLY the current conformer
+            # Extract the energy if the force field set up successfully
+            energy_str = ""
+            if ff is not None:
+                energy = ff.Energy()
+                energy_str = f" Energy: {energy:.4f} kJ/mol"
+
+            # Create a isolated molecule snapshot of the current conformer state
             single_conformer_mol = pybel.Molecule(molecule_with_conformers.OBMol)
 
-            # Optional: Set a unique title for the individual conformer file
-            single_conformer_mol.title = f"{molecule_with_conformers.title}_conformer_{i+1}"
+            # Assigning this text targets the 2nd line comment/header space in the final XYZ output
+            single_conformer_mol.title = f"{molecule_with_conformers.title}_conf_{i+1}{energy_str}"
 
             # Define the output filename
             output_filename = os.path.join(
